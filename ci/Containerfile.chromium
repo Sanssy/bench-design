@@ -1,0 +1,14 @@
+# Slim CI image: Chromium only, with pinned Node and pnpm preinstalled.
+# Rebuilt by the CI `image` job whenever this file or install-toolchain.sh
+# changes (tag = hash of both). Keep the Playwright version equal to
+# @playwright/test in package.json.
+FROM ubuntu:24.04@sha256:a853f94d226358a79c740cfc7bce0c289748f3fe3488d921d038ccd752c61b60
+ENV DEBIAN_FRONTEND=noninteractive PLAYWRIGHT_BROWSERS_PATH=/ms-playwright
+RUN apt-get update && apt-get install -y --no-install-recommends ca-certificates curl \
+    && rm -rf /var/lib/apt/lists/*
+COPY install-toolchain.sh /tmp/install-toolchain.sh
+RUN sh /tmp/install-toolchain.sh && rm /tmp/install-toolchain.sh \
+    && npx -y playwright@1.63.0 install --with-deps chromium \
+    && rm -rf /var/lib/apt/lists/* /root/.npm
+ENV CI=true STORYBOOK_DISABLE_TELEMETRY=1
+WORKDIR /workspace

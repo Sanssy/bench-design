@@ -1,14 +1,11 @@
 name: CI
 # PRs run Chromium only; the full three-browser run happens locally with
 # `pnpm verify` before every push. main is not re-run after a squash merge.
-# Captures are Chromium-only; Run workflow re-runs browser tests on all three.
+# Captures are Chromium-only. Browser jobs use a slim Chromium image
+# (ci/Containerfile.chromium) built once per recipe and cached in GHCR.
 on:
   pull_request:
   workflow_dispatch:
-    inputs:
-      browsers:
-        description: Comma-separated Playwright projects
-        default: chromium,firefox,webkit
 permissions:
   contents: read
 concurrency:
@@ -17,36 +14,63 @@ concurrency:
 env:
   CI: "true"
   STORYBOOK_DISABLE_TELEMETRY: "1"
-  BD_BROWSERS: ${{ inputs.browsers || 'chromium' }}
-  # Firefox refuses to run as root with a HOME owned by another user.
-  HOME: /root
+  BD_BROWSERS: chromium
 jobs:
-  verify:
+  # Ensures the slim browser image for the current recipe exists in GHCR.
+  image:
     runs-on: ubuntu-latest
-    # Same pinned base image as ci/Containerfile, used directly: no image build.
-    container:
-      image: mcr.microsoft.com/playwright:v1.63.0-noble@sha256:eff16c30e6f3f4af0a03fa4b706120d5e9b0891c344a27d64559aff5900a4a27
-      options: --init --shm-size=1g
+    permissions:
+      contents: read
+      packages: write
+    outputs:
+      ref: ${{ steps.tag.outputs.ref }}
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+      - id: tag
+        run: |
+          hash=$(cat ci/Containerfile.chromium ci/install-toolchain.sh | sha256sum | cut -c1-16)
+          echo "ref=ghcr.io/sanssy/bench-design-ci:$hash" >> "$GITHUB_OUTPUT"
+      - name: Build and push only when the recipe changed
+        env:
+          REF: ${{ steps.tag.outputs.ref }}
+          TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          echo "$TOKEN" | docker login ghcr.io -u "${{ github.actor }}" --password-stdin
+          if docker manifest inspect "$REF" > /dev/null 2>&1; then
+            echo "Reusing $REF"
+          else
+            docker build --platform linux/amd64 -f ci/Containerfile.chromium -t "$REF" ci
+            docker push "$REF"
+          fi
+  # Checks, unit tests, build and package test need no browser.
+  static:
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
       - name: Install pinned Node and pnpm
-        run: sh ci/install-toolchain.sh
+        run: sudo sh ci/install-toolchain.sh && node --version | grep -qx v24.21.0
       - run: pnpm install --frozen-lockfile
-      - run: pnpm verify
-  visual:
+      - run: pnpm check
+      - run: pnpm test
+      - run: pnpm build
+      - run: pnpm check:visual-values
+      - run: pnpm test:package
+  browser:
+    needs: image
     runs-on: ubuntu-latest
-    env:
-      BD_BROWSERS: chromium
     container:
-      image: mcr.microsoft.com/playwright:v1.63.0-noble@sha256:eff16c30e6f3f4af0a03fa4b706120d5e9b0891c344a27d64559aff5900a4a27
+      image: ${{ needs.image.outputs.ref }}
+      credentials:
+        username: ${{ github.actor }}
+        password: ${{ secrets.GITHUB_TOKEN }}
       options: --init --shm-size=1g
     steps:
       - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
-      - name: Install pinned Node and pnpm
-        run: sh ci/install-toolchain.sh
       - run: pnpm install --frozen-lockfile
       - run: pnpm build-storybook
+      - run: pnpm test:browser
       - name: Compare approved references and retain candidates
+        if: ${{ !cancelled() }}
         run: pnpm exec playwright test --config playwright.visual.config.ts
       - name: Upload candidates, diffs and reports even on failure
         if: always()
@@ -54,7 +78,7 @@ jobs:
         with:
           name: button-visual-${{ github.run_id }}-${{ github.run_attempt }}
           path: |
-            test-results/visual/
+            test-results/
             playwright-report/
           if-no-files-found: warn
           retention-days: 14

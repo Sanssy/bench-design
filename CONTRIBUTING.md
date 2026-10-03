@@ -34,8 +34,11 @@ Une sélection vide ou un test non exécuté ne vaut jamais succès.
 `pnpm verify` est obligatoire avant chaque push : c'est la seule exécution
 dans les trois navigateurs. La CI d'une PR ne lance que Chromium
 (`BD_BROWSERS=chromium`) et ne relance rien sur `main` après le merge.
-Actions › CI › Run workflow relance les tests navigateur dans les trois
-navigateurs si besoin.
+Elle répartit le travail en deux jobs parallèles :
+- `static`, sans conteneur : check, tests unitaires, build et package ;
+- `browser` : tests navigateur et captures, dans une image Chromium légère
+  (`ci/Containerfile.chromium`). Cette image est reconstruite et publiée sur
+  GHCR seulement quand sa recette change.
 
 ## Vérification Linux facultative
 
@@ -65,7 +68,8 @@ L'environnement canonique des captures est la CI GitHub (Linux x64, même image
 Button (deux variantes, cinq états, deux thèmes) dans Chromium seulement ;
 Firefox et WebKit sont couverts par les tests de styles calculés.
 La commande est `pnpm exec playwright test --config playwright.visual.config.ts`
-après `pnpm build-storybook`, dans l'image Playwright épinglée de `ci/Containerfile` (même digest, Node et pnpm via `ci/install-toolchain.sh`), en Linux x64.
+après `pnpm build-storybook`, dans l'image `ci/Containerfile.chromium` (Ubuntu 24.04 épinglée, Chromium de
+Playwright 1.63.0, Node et pnpm via `ci/install-toolchain.sh`), en Linux x64.
 Les références sont dans `tests/visual/baselines/chromium/`.
 
 Le viewport est 400 × 160, DPR 1 ; les polices locales sont attendues via

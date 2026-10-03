@@ -3,7 +3,7 @@ import { expect, test } from "@playwright/test";
 
 test.beforeEach(async ({ page }) => {
   await page.goto(
-    "/iframe.html?id=technical-bootstrap-harness--native-control&viewMode=story",
+    "/iframe.html?id=technical-bootstrap-harness--native-control&viewMode=story&globals=a11y.manual:!true",
   );
   await expect(page.getByRole("main")).toBeVisible();
 });

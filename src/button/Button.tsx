@@ -13,7 +13,12 @@ export interface ButtonProps {
   "aria-labelledby"?: string;
 }
 
-/** Native button semantics with React Aria activation. Visual variants are deferred. */
+/**
+ * A visible-label action with React Aria activation and native button semantics.
+ * Defaults to the secondary variant and type="button"; submit and reset are native.
+ * Use the DOM ref to restore focus. Explicit accessible names must include the
+ * visible label; prefer children alone when no additional context is needed.
+ */
 export function Button({
   children,
   onPress,

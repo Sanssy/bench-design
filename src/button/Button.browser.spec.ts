@@ -5,10 +5,10 @@ for (const theme of ["light", "dark"]) {
     tag: `@theme:${theme}`,
   }, async ({ page }) => {
     await page.goto(
-      `/iframe.html?id=components-button--disabled&viewMode=story&globals=theme:${theme}`,
+      `/iframe.html?id=form-button--disabled&viewMode=story&globals=theme:${theme}`,
     );
     const button = page.getByRole("button", {
-      name: "Enregistrer",
+      name: "Save",
       exact: true,
     });
     await expect(button).toBeVisible();
@@ -38,10 +38,10 @@ for (const theme of ["light", "dark"]) {
     tag: `@theme:${theme}`,
   }, async ({ page }) => {
     await page.goto(
-      `/iframe.html?id=components-button--primary&viewMode=story&globals=theme:${theme}`,
+      `/iframe.html?id=form-button--primary&viewMode=story&globals=theme:${theme}`,
     );
     const button = page.getByRole("button", {
-      name: "Enregistrer",
+      name: "Save",
       exact: true,
     });
     await expect(button).toBeVisible();
@@ -88,13 +88,13 @@ for (const theme of ["light", "dark"]) {
     }, async ({ page }) => {
       await page.setViewportSize({ width: 320, height: 240 });
       await page.goto(
-        `/iframe.html?id=components-button--primary&viewMode=story&globals=theme:${theme}`,
+        `/iframe.html?id=form-button--primary&viewMode=story&globals=theme:${theme}`,
       );
       const button = page.getByRole("button");
       // The wrap rule is pure CSS: swap in a long unbreakable label in place.
       await button.evaluate((element) => {
         element.textContent =
-          "Enregistrer toutes les modifications du document et revenir à la liste des documents disponibles — RéférenceSansEspaceABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+          "Save all changes to the document and return to the list of available documents — UnbrokenReferenceABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
       });
       // CSS magnification exercises reflow; browser zoom still needs manual proof.
       await page.locator("body").evaluate((element, value) => {
@@ -113,7 +113,7 @@ for (const theme of ["light", "dark"]) {
       expect(bounds.overflow).not.toBe("hidden");
       await page.keyboard.press("Tab");
       await expect(button).toBeFocused();
-      await expect(button).toContainText("RéférenceSansEspace");
+      await expect(button).toContainText("UnbrokenReference");
       await button.click({ trial: true });
     });
   }
@@ -126,10 +126,10 @@ for (const theme of ["light", "dark"]) {
         tag: `@theme:${theme}`,
       }, async ({ page }) => {
         await page.goto(
-          `/iframe.html?id=components-button--${state === "disabled" ? "disabled" : variant}&viewMode=story&globals=theme:${theme}&args=variant:${variant}`,
+          `/iframe.html?id=form-button--${state === "disabled" ? "disabled" : variant}&viewMode=story&globals=theme:${theme}&args=variant:${variant}`,
         );
         const button = page.getByRole("button", {
-          name: "Enregistrer",
+          name: "Save",
           exact: true,
         });
         await expect(button).toBeVisible();

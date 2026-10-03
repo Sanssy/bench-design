@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { useRef, useState } from "react";
+import { userEvent } from "storybook/test";
 import { Button } from "./Button";
 
 export default {
@@ -10,7 +11,7 @@ export default {
     docs: {
       description: {
         component:
-          "Activation, désactivation, noms accessibles, ref et focus. Styles des variantes différés à S4.",
+          "Activation, noms accessibles, ref et focus. Styles primary et secondary, survol, pression, focus et désactivation ratifiés ; captures de référence en attente d’approbation.",
       },
     },
   },
@@ -131,3 +132,31 @@ export const RestoreFocus: Story = {
     );
   },
 };
+
+// play uses actual interactions, preserving React Aria ownership of state.
+const visualStory = (
+  variant: "primary" | "secondary",
+  state: "rest" | "hover" | "pressed" | "focus" | "disabled",
+): Story => ({
+  args: { variant, children: "Enregistrer", isDisabled: state === "disabled" },
+  play: async ({ canvasElement }) => {
+    const button = canvasElement.querySelector("button");
+    if (!button) throw new Error("Button story has no button");
+    if (state === "hover") await userEvent.hover(button);
+    if (state === "focus" || state === "pressed") {
+      await userEvent.tab();
+      if (document.activeElement !== button) button.focus();
+    }
+    if (state === "pressed") await userEvent.keyboard("[Space>]");
+  },
+});
+export const PrimaryRest = visualStory("primary", "rest");
+export const PrimaryHover = visualStory("primary", "hover");
+export const PrimaryPressed = visualStory("primary", "pressed");
+export const PrimaryFocus = visualStory("primary", "focus");
+export const PrimaryDisabled = visualStory("primary", "disabled");
+export const SecondaryRest = visualStory("secondary", "rest");
+export const SecondaryHover = visualStory("secondary", "hover");
+export const SecondaryPressed = visualStory("secondary", "pressed");
+export const SecondaryFocus = visualStory("secondary", "focus");
+export const SecondaryDisabled = visualStory("secondary", "disabled");

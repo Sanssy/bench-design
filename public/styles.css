@@ -1,17 +1,3 @@
 @import "./tokens.css";
 @import "./fonts.css";
-
-.bd-button {
-  max-inline-size: 100%;
-  white-space: normal;
-  overflow-wrap: anywhere;
-}
-
-.bd-button:focus {
-  outline: none;
-}
-
-.bd-button[data-focus-visible] {
-  outline: var(--bd-strong) solid var(--bd-focus);
-  outline-offset: var(--bd-space-4);
-}
+@import "./button.css";

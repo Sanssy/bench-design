@@ -70,3 +70,15 @@ test("usage metadata is sourced guidance rather than a repeated label", () => {
     }
   }
 });
+
+test("Button hover accent is ratified in both themes", () => {
+  const tokens = JSON.parse(readFileSync("src/tokens.json", "utf8"));
+  for (const theme of ["light", "dark"]) {
+    const token = tokens[theme]["accent-hover"];
+    assert.ok(token, `${theme} hover accent must exist`);
+    assert.equal(token.$value.hex, "#e5f593");
+    assert.equal(token.$type, "color");
+    assert.match(token.$extensions["org.bench-design"].usage, /--bd-on-accent/);
+    assert.match(token.$extensions["org.bench-design"].usageSource, /§8/);
+  }
+});

@@ -13,7 +13,7 @@ export interface ButtonProps {
   "aria-labelledby"?: string;
 }
 
-/** Native button semantics with React Aria activation. Styles are deferred. */
+/** Native button semantics with React Aria activation. Visual variants are deferred. */
 export function Button({
   children,
   onPress,
@@ -26,6 +26,7 @@ export function Button({
 }: ButtonProps) {
   return (
     <AriaButton
+      className="bd-button"
       ref={ref}
       type={type}
       {...(onPress === undefined ? {} : { onPress })}

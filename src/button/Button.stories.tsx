@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { Button } from "./Button";
 
 export default {
@@ -10,7 +10,7 @@ export default {
     docs: {
       description: {
         component:
-          "S1/S2 : activation, types natifs et désactivation. Styles et documentation complète différés à S3/S4.",
+          "Activation, désactivation, noms accessibles, ref et focus. Styles des variantes différés à S4.",
       },
     },
   },
@@ -90,6 +90,44 @@ export const Disabled: Story = {
           Réinitialisations: {resets}
         </p>
       </main>
+    );
+  },
+};
+
+export const ShortContent: Story = { args: { children: "Enregistrer" } };
+export const LongContent: Story = {
+  args: {
+    children:
+      "Enregistrer toutes les modifications du document et revenir à la liste des documents disponibles — RéférenceSansEspaceABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789",
+  },
+  render: function LongContent(args) {
+    const [count, setCount] = useState(0);
+    return (
+      <main>
+        <Button {...args} onPress={() => setCount((value) => value + 1)} />
+        <p role="status">Activations: {count}</p>
+      </main>
+    );
+  },
+};
+export const AccessibleName: Story = {
+  render: () => (
+    <>
+      <span id="save-label">Enregistrer le document</span>
+      <Button aria-label="Enregistrer ailleurs" aria-labelledby="save-label">
+        Enregistrer
+      </Button>
+    </>
+  ),
+};
+export const RestoreFocus: Story = {
+  render: function RestoreFocus() {
+    const ref = useRef<HTMLButtonElement>(null);
+    return (
+      <>
+        <Button ref={ref}>Enregistrer</Button>
+        <Button onPress={() => ref.current?.focus()}>Rendre le focus</Button>
+      </>
     );
   },
 };

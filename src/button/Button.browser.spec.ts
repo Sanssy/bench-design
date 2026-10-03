@@ -71,3 +71,84 @@ for (const theme of ["light", "dark"]) {
     }
   }
 }
+
+for (const theme of ["light", "dark"]) {
+  test(`keyboard focus uses the focus token, mouse hides it in ${theme}`, async ({
+    page,
+  }) => {
+    await page.goto(
+      `/iframe.html?id=components-button--short-content&viewMode=story&globals=theme:${theme}`,
+    );
+    const button = page.getByRole("button", {
+      name: "Enregistrer",
+      exact: true,
+    });
+    await expect(button).toBeVisible();
+    await page.keyboard.press("Tab");
+    await expect(button).toBeFocused();
+    await expect(button).toHaveAttribute("data-focus-visible", "true");
+    const outline = await button.evaluate((element) => {
+      const probe = document.createElement("span");
+      probe.style.color = "var(--bd-focus)";
+      probe.style.outline = "var(--bd-strong) solid var(--bd-focus)";
+      probe.style.outlineOffset = "var(--bd-space-4)";
+      element.append(probe);
+      const probeStyle = getComputedStyle(probe);
+      const expected = probeStyle.color;
+      const expectedWidth = Number.parseFloat(probeStyle.outlineWidth);
+      const expectedOffset = Number.parseFloat(probeStyle.outlineOffset);
+      probe.remove();
+      const style = getComputedStyle(element);
+      return {
+        color: style.outlineColor,
+        expected,
+        style: style.outlineStyle,
+        width: Number.parseFloat(style.outlineWidth),
+        expectedWidth,
+        offset: Number.parseFloat(style.outlineOffset),
+        expectedOffset,
+      };
+    });
+    expect(outline.color).toBe(outline.expected);
+    expect(outline.style).toBe("solid");
+    expect(outline.width).toBeGreaterThan(0);
+    expect(outline.width).toBe(outline.expectedWidth);
+    expect(outline.offset).toBe(outline.expectedOffset);
+    await button.click();
+    await expect(button).not.toHaveAttribute("data-focus-visible");
+    await expect(button).toHaveCSS("outline-style", "none");
+  });
+
+  for (const scale of [1, 2]) {
+    test(`long content remains reachable in short viewport, ${theme}, scale ${scale}`, async ({
+      page,
+    }) => {
+      await page.setViewportSize({ width: 320, height: 240 });
+      await page.goto(
+        `/iframe.html?id=components-button--long-content&viewMode=story&globals=theme:${theme}`,
+      );
+      // CSS magnification exercises reflow; browser zoom still needs manual proof.
+      await page.locator("body").evaluate((element, value) => {
+        element.style.zoom = String(value);
+      }, scale);
+      const button = page.getByRole("button");
+      await expect(button).toBeVisible();
+      const bounds = await button.evaluate((element) => ({
+        content: element.scrollWidth,
+        available: element.clientWidth,
+        page: document.documentElement.scrollWidth,
+        viewport: document.documentElement.clientWidth,
+        overflow: getComputedStyle(element).overflowY,
+      }));
+      expect(bounds.content).toBeLessThanOrEqual(bounds.available);
+      expect(bounds.page).toBeLessThanOrEqual(bounds.viewport);
+      expect(bounds.overflow).not.toBe("hidden");
+      await page.keyboard.press("Tab");
+      await expect(button).toBeFocused();
+      await page.keyboard.press("Enter");
+      await expect(page.getByRole("status")).toHaveText("Activations: 1");
+      await button.click();
+      await expect(page.getByRole("status")).toHaveText("Activations: 2");
+    });
+  }
+}

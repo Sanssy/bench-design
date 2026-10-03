@@ -16,7 +16,8 @@ export function createArgs(id: string, image: string): string[] {
 export function owned(labels: Record<string, string>, id: string) {
   return labels[ownerLabel] === id;
 }
-export function classify(code: number | null) {
+export function classify(code: number | null, interruption?: string) {
+  if (interruption) return "interrupted";
   return code === 0 ? "success" : code === 41 ? "assertion" : "infrastructure";
 }
 export function snapshot(root: string, destination: string) {
@@ -60,4 +61,14 @@ export function snapshot(root: string, destination: string) {
     included.push(file);
   }
   return { sha, dirty, hash: hash.digest("hex"), files: included };
+}
+
+export function exitCode(result: string, interruption?: string) {
+  return interruption === "SIGINT"
+    ? 130
+    : result === "success"
+      ? 0
+      : result === "assertion"
+        ? 1
+        : 2;
 }

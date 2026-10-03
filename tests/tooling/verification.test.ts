@@ -7,6 +7,7 @@ import test from "node:test";
 import {
   classify,
   createArgs,
+  exitCode,
   owned,
   snapshot,
 } from "../../scripts/verification.ts";
@@ -61,4 +62,14 @@ test("gate failures and infrastructure failures have distinct nonzero results", 
   assert.equal(classify(41), "assertion");
   assert.equal(classify(125), "infrastructure");
   assert.equal(classify(0), "success");
+});
+
+test("interruption takes precedence over gate and infrastructure results", () => {
+  for (const reason of ["SIGINT", "SIGTERM", "deadline"]) {
+    assert.equal(classify(41, reason), "interrupted");
+    assert.equal(
+      exitCode("interrupted", reason),
+      reason === "SIGINT" ? 130 : 2,
+    );
+  }
 });

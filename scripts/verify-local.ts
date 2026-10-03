@@ -3,12 +3,44 @@ import { randomUUID } from "node:crypto";
 import { mkdirSync, mkdtempSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
-import { classify, createArgs, owned, snapshot } from "./verification.ts";
+import {
+  classify,
+  createArgs,
+  exitCode,
+  owned,
+  snapshot,
+} from "./verification.ts";
 
-if (process.argv.slice(2).filter((arg) => arg !== "--").length) {
-  console.error(
-    "B3 tranche 1 accepts no filters yet; refusing unsupported arguments.",
+import { browserArgs, selection } from "./verification-selection.ts";
+
+const input = process.argv.slice(2);
+const normalized = input[0] === "--" ? input.slice(1) : input;
+if (normalized.length === 1 && normalized[0] === "--help") {
+  console.log(
+    "Usage: pnpm verify:local -- [--target bootstrap|fonts|foundations|themes|button] [--theme light|dark|system] [--viewport desktop|mobile|short] [--workers <positive integer>]\nDefaults: all scenarios, one worker. mobile has no scenarios; short covers Button. desktop excludes short. --parallel is not available yet.",
   );
+  process.exit(0);
+}
+let plan: ReturnType<typeof selection>;
+try {
+  plan = selection(input);
+} catch (error) {
+  console.error(String(error));
+  process.exit(2);
+}
+try {
+  const { checkBrowserTags } = await import("./check-browser-tags.ts");
+  checkBrowserTags();
+} catch (error) {
+  if (
+    error instanceof Error &&
+    "code" in error &&
+    error.code === "ERR_MODULE_NOT_FOUND"
+  )
+    console.error(
+      "Dépendances manquantes : lancer `pnpm install` avant verify:local.",
+    );
+  else console.error(String(error));
   process.exit(2);
 }
 const id = randomUUID();
@@ -22,7 +54,9 @@ const deadline = Date.now() + 15 * 60 * 1000;
 const manifest: Record<string, unknown> = {
   id,
   started: new Date().toISOString(),
-  filters: {},
+  filters: plan.filters,
+  workers: plan.workers,
+  targets: plan.targets,
   commands: [],
   result: "infrastructure",
   cleanup: "pending",
@@ -33,7 +67,7 @@ const save = () =>
     JSON.stringify(manifest, null, 2),
   );
 const interrupt = (signal: string) => {
-  manifest.interruption = signal;
+  manifest.interruption ??= signal;
   controller.abort();
 };
 const onInt = () => interrupt("SIGINT");
@@ -127,10 +161,22 @@ try {
     name,
     "sh",
     "-c",
-    gates.map((gate) => `pnpm ${gate} || exit 41`).join("; "),
+    gates
+      .map(
+        (gate) =>
+          `pnpm ${gate}${
+            gate === "test:browser"
+              ? " " +
+                browserArgs(plan)
+                  .map((arg) => `'${arg}'`)
+                  .join(" ")
+              : ""
+          } || exit 41`,
+      )
+      .join("; "),
   ]);
   manifest.result = classify(result.code);
-  process.exitCode = result.code === 0 ? 0 : result.code === 41 ? 1 : 2;
+  process.exitCode = exitCode(String(manifest.result));
 } catch (error) {
   manifest.error = String(error);
   console.error(manifest.error);
@@ -141,6 +187,14 @@ try {
   rmSync(scratch, { recursive: true, force: true });
   manifest.finished = new Date().toISOString();
   save();
+  if (manifest.interruption) {
+    manifest.result = classify(null, String(manifest.interruption));
+    process.exitCode = exitCode(
+      String(manifest.result),
+      String(manifest.interruption),
+    );
+    save();
+  }
   process.off("SIGINT", onInt);
   process.off("SIGTERM", onTerm);
   console.log(`Verification ${manifest.result}; reports: ${reports}`);

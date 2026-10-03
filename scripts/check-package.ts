@@ -12,6 +12,8 @@ import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { pathToFileURL } from "node:url";
 import { checkFontAssets } from "./check-font-assets.ts";
+import { checkPublicJavaScript } from "./check-public-javascript.ts";
+import { checkPublicTypes } from "./check-public-types.ts";
 
 const consumer = mkdtempSync(join(tmpdir(), "bench-design-consumer-"));
 const run = (cmd: string, args: string[]) =>
@@ -56,10 +58,12 @@ try {
   const extracted = join(consumer, "extracted");
   mkdirSync(extracted);
   execFileSync("tar", ["-xzf", tarball, "-C", extracted]);
+  checkPublicTypes(join(extracted, "package/dist"));
+  checkPublicJavaScript(join(extracted, "package/dist"));
   checkFontAssets(pathToFileURL(join(extracted, "package/dist/styles.css")));
   const pkg: {
     packageManager: string;
-    devDependencies: { typescript: string };
+    devDependencies: { typescript: string; "@types/react": string };
   } = JSON.parse(readFileSync("package.json", "utf8"));
   writeFileSync(
     join(consumer, "package.json"),
@@ -73,12 +77,30 @@ try {
         react: "19.3.0",
         "react-dom": "19.3.0",
       },
-      devDependencies: { typescript: pkg.devDependencies.typescript },
+      devDependencies: {
+        typescript: pkg.devDependencies.typescript,
+        "@types/react": pkg.devDependencies["@types/react"],
+      },
     }),
   );
   writeFileSync(
-    join(consumer, "index.ts"),
-    'import * as ds from "bench-design";\nconst api: Record<string, never> = ds;\nvoid api;\n',
+    join(consumer, "index.tsx"),
+    `import { Button, type ButtonProps } from "bench-design";
+import { createRef } from "react";
+const props: ButtonProps = { children: "Save", type: "submit", variant: "primary", ref: createRef<HTMLButtonElement>(), onPress: () => {}, isDisabled: false, "aria-label": "Save document", "aria-labelledby": "save-label" };
+const button = <Button {...props} />;
+// @ts-expect-error content is required
+const missingContent = <Button />;
+// @ts-expect-error general HTML passthrough is excluded
+const click = <Button onClick={() => {}}>Save</Button>;
+// @ts-expect-error routing is excluded
+const link = <Button href="/">Save</Button>;
+// @ts-expect-error unapproved variant
+const variant = <Button variant="tertiary">Save</Button>;
+// @ts-expect-error unapproved type
+const type = <Button type="link">Save</Button>;
+void [button, missingContent, click, link, variant, type];
+`,
   );
   run("pnpm", ["install", "--ignore-scripts", "--strict-peer-dependencies"]);
   run("pnpm", [
@@ -90,12 +112,14 @@ try {
     "NodeNext",
     "--moduleResolution",
     "NodeNext",
-    "index.ts",
+    "--jsx",
+    "react-jsx",
+    "index.tsx",
   ]);
   run("node", [
     "--input-type=module",
     "-e",
-    'import assert from "node:assert/strict"; import * as ds from "bench-design"; assert.deepEqual(Object.keys(ds), []);',
+    'import assert from "node:assert/strict"; import * as ds from "bench-design"; assert.deepEqual(Object.keys(ds), ["Button"]); assert.equal(typeof ds.Button, "function");',
   ]);
   run("node", [
     "--input-type=module",
@@ -115,7 +139,7 @@ try {
     pathToFileURL(join(consumer, "node_modules/bench-design/dist/styles.css")),
   );
   console.log(
-    "Distribution PASS: isolated tarball ESM/types, no public API or private files",
+    "Distribution PASS: isolated tarball ESM/types, Button public API, no private files",
   );
 } finally {
   rmSync(consumer, { recursive: true, force: true });

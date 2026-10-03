@@ -1,6 +1,7 @@
 import { defineConfig, devices } from "@playwright/test";
 export default defineConfig({
-  testDir: "./tests/browser",
+  testDir: ".",
+  testMatch: ["tests/browser/**/*.spec.ts", "src/**/*.browser.spec.ts"],
   workers: 1,
   forbidOnly: !!process.env.CI,
   retries: 0,

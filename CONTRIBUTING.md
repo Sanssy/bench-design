@@ -1,109 +1,109 @@
-# Contribuer à bench-design
+# Contributing to bench-design
 
-## Socle B1
+## Toolchain and commands
 
-Node 24.21.0 et pnpm 12.8.1 sont épinglés. Installer avec
-`pnpm install --frozen-lockfile`. Le point d'entrée public est vide ; le harnais
-natif de Storybook sert uniquement à vérifier l'outillage.
+Use the pinned Node 24.21.0 (`.nvmrc`) and pnpm 12.8.1.
+Install dependencies with `pnpm install --frozen-lockfile`. On a development
+machine, install Playwright browsers once with `pnpm exec playwright install`.
 
-| Commande disponible | Responsabilité |
+| Command | Responsibility |
 | --- | --- |
-| `pnpm check` | Formatage, types stricts et frontières des imports |
-| `pnpm test` | Rendu, interaction et contrôles de frontières |
-| `pnpm build` | Package ESM et déclarations TypeScript |
-| `pnpm build-storybook` | Construction de la story technique |
-| `pnpm test:package` | Tarball importé et typé depuis un consommateur isolé |
-| `pnpm test:browser` | Chromium, Firefox, WebKit et axe sur le harnais |
-| `pnpm verify` | Tous les contrôles B1 ci-dessus |
+| `pnpm check` | Formatting, strict types, import boundaries and generated catalogs |
+| `pnpm test` | Render/interact/assert and tooling tests |
+| `pnpm build` | ESM package, TypeScript declarations, CSS and integration docs |
+| `pnpm build-storybook` | Foundation documentation and component examples |
+| `pnpm test:package` | Tarball imported and type-checked by an isolated consumer |
+| `pnpm test:browser` | Chromium, Firefox, WebKit and automated accessibility checks |
+| `pnpm verify` | All checks above, including visual-value validation |
 
-## Vérifier ses changements
-
-Au quotidien, tout tourne sur la machine de développement. Node est épinglé
-dans `.nvmrc` (`nvm install` puis `nvm use`), les navigateurs Playwright
-s'installent une fois avec `pnpm exec playwright install`.
+## Verify changes
 
 ```sh
 pnpm install --frozen-lockfile
 pnpm verify
 ```
 
-`pnpm verify` enchaîne check, test, build, contrôle des valeurs visuelles,
-Storybook, test du package et tests navigateur (Chromium, Firefox, WebKit).
-Une sélection vide ou un test non exécuté ne vaut jamais succès.
+Run `pnpm verify` before every push. It runs check, test, build, visual-value
+validation, Storybook, package consumption and browser tests in Chromium,
+Firefox and WebKit. An empty selection or skipped execution is never success.
 
-`pnpm verify` est obligatoire avant chaque push : c'est la seule exécution
-dans les trois navigateurs. La CI d'une PR ne lance que Chromium
-(`BD_BROWSERS=chromium`) et ne relance rien sur `main` après le merge.
-Elle répartit le travail en deux jobs parallèles :
-- `static`, sans conteneur : check, tests unitaires, build et package ;
-- `browser` : tests navigateur et captures, dans une image Chromium légère
-  (`ci/Containerfile.chromium`). Cette image est reconstruite et publiée sur
-  GHCR seulement quand sa recette change.
+PR CI runs Chromium only (`BD_BROWSERS=chromium`); it does not rerun on `main`
+after merge. The `static` job runs checks, unit tests, build, visual-value
+validation and package tests without a container. The `browser` job runs browser
+tests and captures in the slim image from `ci/Containerfile.chromium`.
+The image job builds and publishes that image to GHCR only when the recipe
+or toolchain installer changes.
 
-## Vérification Linux facultative
+## Optional Linux verification
 
-`pnpm verify:local` rejoue les mêmes contrôles dans l'image Playwright épinglée
-par version et digest (`ci/Containerfile`), avec Podman et une VM active. Il
-vérifie un instantané du checkout courant, fichiers non commités compris ; le
-checkout, `.git` et `node_modules` ne sont jamais montés.
+`pnpm verify:local` runs checks in the Playwright image pinned by version and
+digest (`ci/Containerfile`), using Podman with an active VM. It verifies a snapshot
+of the current checkout, including uncommitted files; the checkout, `.git` and
+`node_modules` are never mounted.
 
 ```sh
 pnpm verify:local -- --help
 pnpm verify:local -- --target button --theme dark --workers 2
 ```
 
-Filtres : `--target` (bootstrap, fonts, foundations, themes, button), `--theme`
-(light, dark, system), `--viewport` (desktop, short ; mobile n'a pas encore de
-scénario), `--workers`. Ils se combinent par intersection ; une option
-invalide ou une sélection vide est refusée avant tout démarrage. Les rapports
-restent dans `.verification/runs/<uuid>/` avec un `manifest.json` (instantané,
-sélection, commandes, résultat, nettoyage). Codes de sortie : 0 succès,
-1 assertion échouée, 2 infrastructure, 130 interruption (Ctrl+C). Le nettoyage
-ne touche que les ressources du run.
+Filters: `--target` (bootstrap, fonts, foundations, themes, button), `--theme`
+(light, dark, system), `--viewport` (desktop, short; mobile has no scenarios yet),
+and `--workers`. Filters intersect; invalid options and empty selections are
+rejected before startup. Reports remain in `.verification/runs/<uuid>/`, with
+`manifest.json` recording the snapshot, selection, commands, result and cleanup.
+Exit codes: 0 success, 1 assertion failure, 2 infrastructure, 130 interruption.
+Cleanup touches only resources owned by that run.
 
-## Captures de référence
+## Visual references
 
-L'environnement canonique des captures est la CI GitHub (Linux x64, même image
-épinglée). Le job `visual` du workflow `CI` compare les vingt scénarios
-Button (deux variantes, cinq états, deux thèmes) dans Chromium seulement ;
-Firefox et WebKit sont couverts par les tests de styles calculés.
-La commande est `pnpm exec playwright test --config playwright.visual.config.ts`
-après `pnpm build-storybook`, dans l'image `ci/Containerfile.chromium` (Ubuntu 24.04 épinglée, Chromium de
-Playwright 1.63.0, Node et pnpm via `ci/install-toolchain.sh`), en Linux x64.
-Les références sont dans `tests/visual/baselines/chromium/`.
+GitHub CI is the canonical capture environment: Linux x64 with the pinned
+Chromium image. The capture step in the `browser` job compares twenty Button
+scenarios (two variants, five states, two themes) in Chromium. Firefox and
+WebKit are covered by computed-style tests. After `pnpm build-storybook`, run:
 
-Le viewport est 400 × 160, DPR 1 ; les polices locales sont attendues via
-`document.fonts.ready`, les animations désactivées. `threshold: 0` et
-`maxDiffPixels: 0` imposent une égalité exacte dans cet environnement fixé.
-Une référence absente ou un écart fait échouer le job. `updateSnapshots: none`
-interdit la création ou le remplacement automatique des références. L'artefact
-`button-visual-<run>-<attempt>` conserve candidates, diffs, traces et rapport
-pendant 14 jours, même si la comparaison échoue.
+```sh
+pnpm exec playwright test --config playwright.visual.config.ts
+```
 
-Pour approuver : télécharger l'artefact du SHA candidat depuis la CI, examiner
-chaque candidate (variante, état, thème et navigateur) et les diffs éventuels,
-puis obtenir l'approbation explicite du responsable visuel. Après cet accord,
-copier manuellement les seuls fichiers `candidate-<variante>-<état>-<thème>.png`
-approuvés vers le répertoire du navigateur, en retirant le préfixe `candidate-`.
-Inclure le SHA et le lien du run approuvé dans la PR, puis relancer la CI pour
-vérifier ces références. Aucun `--update-snapshots` ni remplacement destiné
-uniquement à masquer un échec. Aucune référence n'est encore approuvée.
+Canonical execution uses `ci/Containerfile.chromium`: pinned Ubuntu 24.04,
+Playwright 1.63.0 Chromium, and Node/pnpm from `ci/install-toolchain.sh`.
+References live in `tests/visual/baselines/chromium/`.
+The viewport is 400 × 160, DPR 1; captures wait for `document.fonts.ready`
+and disable animations. `threshold: 0` and `maxDiffPixels: 0` require exact equality
+in this environment. Missing references and differences fail the comparison.
+`updateSnapshots: none` prevents automatic reference creation or replacement.
+The `button-visual-<run>-<attempt>` artifact retains candidates, diffs, traces
+and reports for 14 days, including failed comparisons.
 
-## Compatibilité et portée
+For approval, download the artifact for the candidate SHA, inspect every candidate
+and any diffs, and obtain explicit approval from the visual owner. After approval,
+manually copy only approved `candidate-<variant>-<state>-<theme>.png` files into
+`tests/visual/baselines/chromium/`, removing the `candidate-` prefix. Include the
+SHA and approved run link in the PR, then rerun CI against those references.
+Never use `--update-snapshots` or replace references just to hide a failure.
 
-La toolchain de développement et CI reste Node 24.21.0, pnpm 12.8.1 et
-React/React DOM 19.3.0 exactement. Le package accepte React/React DOM `^19.3.0`
-et Node `>=24.21.0`. Le consommateur isolé teste explicitement les bornes basses ;
-les versions futures admises par ces plages ne sont pas présentées comme testées.
+## Stories and boundaries
 
-## Règles de contribution
+A story is a usage example. Keep component stories beside their implementation
+(`src/**/*.stories.tsx`), covering variants and static states in light and dark.
+Tests drive examples to exercise hover, press and focus. Do not create test-only
+stories with counters, control forms or forced interaction states. Observable
+behavior that needs no browser belongs in unit tests. `tests/fixtures/` is a
+technical harness. Storybook loads distributed CSS and offers light, dark and
+system themes. A missing story for an exported component fails `pnpm check`;
+story presence alone does not prove state coverage.
 
-- Garder code métier, règles produit et contenus hors du package.
-- Encapsuler React Aria sans exposer toutes ses props par passthrough.
-- Utiliser les tokens et primitives partagés lorsqu'ils seront livrés à B2.
-- Tester le comportement observable et le package distribué.
-- Ne pas modifier du code généré manuellement ni approuver une baseline soi-même.
-- Décrire l'impact consommateur de chaque changement de contrat public.
+Keep business rules and product content outside the package. Encapsulate React
+Aria behind an explicit API. Shared visual fixes belong in tokens and primitives.
+Test observable behavior and the distributed package. Do not edit generated
+files manually or approve visual references yourself. Describe consumer impact
+for every public contract change. Public documentation, examples, commit messages
+and PR titles/descriptions use English; consumers supply component labels.
 
-Les plans, skills et preuves privés restent dans l'écosystème local.
-Les commandes produit et la CI fonctionnent depuis un clone sans ces liens.
+## Compatibility
+
+Development and CI use exactly Node 24.21.0, pnpm 12.8.1 and React/React DOM
+19.3.0. The package accepts React/React DOM `^19.3.0` and Node `>=24.21.0`.
+The isolated consumer explicitly tests the lower bounds; later versions allowed
+by those ranges are not claimed to be tested. Product commands and CI work from
+a standalone clone.

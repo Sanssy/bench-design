@@ -1,66 +1,71 @@
-# 0001 — Un Design System React externe
+# 0001 — A standalone React design system
 
-Statut : décisions acquises. Le bootstrap et les composants restent à livrer.
+Status: accepted decisions. Foundations and Button are implemented; visual
+reference approval and publication remain separate decisions.
 
-## Contexte et décision
+## Context and decision
 
-Trame, Bibliothèque + Atelier et Decision Engine partagent une identité visuelle
-et des composants génériques. Trame constitue un produit distinct ; Bibliothèque
-et Atelier sont regroupés. `bench-design` possède son propre dépôt et distribue
-initialement un seul package, sans logique métier de ces produits.
+Trame, Bibliothèque + Atelier and Decision Engine share a visual identity and
+generic components. Trame is a separate product; Bibliothèque and Atelier are
+grouped together. `bench-design` has its own repository and initially distributes
+one package without product business logic.
 
-React et TypeScript constituent la couche de composants. React Aria Components
-fournit les interactions accessibles ; le DS encapsule son API et conserve la
-responsabilité des noms accessibles, du focus, des styles et de leur vérification.
-Les consommateurs utilisent les exports du DS. Storybook présente les composants
-réels et leurs états, sans réimplémentation parallèle.
+React and TypeScript form the component layer. React Aria Components provides
+accessible interactions; the design system encapsulates its API and remains
+responsible for accessible names, focus, styles and verification. Consumers use
+the design system exports. Storybook shows real components and their states,
+without a parallel implementation.
 
-Les fondations CSS et tokens sont indépendantes de React : primitifs, sémantiques,
-puis tokens de composants seulement lorsqu'un besoin le justifie. Les compositions
-restent génériques. Les règles, permissions et contenus métier appartiennent aux
-produits. DDD, Tell Don't Ask et la loi de Demeter guident les frontières pertinentes.
+CSS foundations and tokens are independent of React: primitive tokens, semantic
+tokens, then component tokens only when needed. Compositions remain generic.
+Business rules, permissions and content belong to products. DDD, Tell Don't Ask
+and the Law of Demeter guide relevant boundaries.
 
-## Distribution et maintenance
+## Distribution and maintenance
 
-Package ESM avec déclarations TypeScript ; CSS et tokens importés explicitement.
-React et React DOM sont des peers, React Aria Components une dépendance runtime.
-Les polices sont distribuées localement avec leurs licences. Un consommateur
-isolé installé depuis `pnpm pack` doit prouver les exports, types, CSS et assets.
+The package uses ESM with TypeScript declarations; CSS and tokens are imported
+explicitly. React and React DOM are peers; React Aria Components is a runtime
+dependency. Fonts are distributed locally with their licenses. An isolated
+consumer installed from `pnpm pack` must verify exports, types, CSS and assets.
 
-Node utilise la dernière LTS disponible lors du bootstrap ; les autres outils
-utilisent les dernières versions stables compatibles. Les versions retenues sont
-exactes et le lockfile est suivi. Les images de test sont épinglées par digest.
+Node uses the latest LTS available at bootstrap; other tools use the latest
+compatible stable versions. Selected versions are exact and the lockfile is
+tracked. Test images are pinned by digest.
 
-Première ligne de version : 0.1.x. Avant 1.0, une incompatibilité augmente MINOR,
-une correction compatible PATCH. À partir de 1.0, SemVer s'applique normalement.
-L'API inclut exports, props, tokens et comportements documentés. Les retraits sont
-annoncés avec remplacement et version de retrait ; les migrations sont documentées.
-Le registre et la première publication restent à décider.
+The initial version line is 0.1.x. Before 1.0, incompatible changes increment
+MINOR and compatible fixes increment PATCH. From 1.0 onward, standard SemVer
+applies. The API includes exports, props, tokens and documented behavior.
+Removals are announced with a replacement and removal version; migrations are
+documented. The registry, initial publication, documentation hosting and design
+system license remain undecided.
 
-## Vérification
+## Verification
 
-Tests UI : render/interact/assert. Given/When/Then concerne les comportements de
-domaine. Les tests d'accessibilité combinent contrôles automatiques et parcours
-clavier. Les captures canoniques sont prises dans un environnement Linux épinglé.
-Une baseline nouvelle ou modifiée exige une validation humaine ; aucun remplacement
-automatique des images attendues n'est permis.
+UI tests use render/interact/assert. Given/When/Then applies to domain behavior.
+Accessibility tests combine automated checks and keyboard navigation. Canonical
+captures use a pinned Linux environment. New or changed visual references require
+human approval; automatic replacement of expected images is prohibited.
 
-Les commandes et la CI vivent dans le dépôt produit et ne dépendent pas du corpus
-privé. Skills, plans, matrices de livraison, audits et preuves d'exécution restent
-dans l'écosystème privé et sont référencés localement, sans duplication dans Git
-produit. Ce document conserve les décisions de maintenance lisibles dans un clone neuf.
+Product commands and CI work from a standalone clone. This document records
+lasting maintenance decisions; execution planning and evidence do not belong in
+the distributed package. `pnpm verify` runs all three browsers before every push;
+PR CI runs Chromium, including captures in its browser job.
 
-## Storybook et définition de livré
+## Storybook and delivery
 
-Une fondation ou un composant est livré lorsque ses stories couvrent variantes
-et états en clair et sombre. Sans stories, la tranche reste ouverte et la revue
-est refusée. Les composants ont leurs stories adjacentes (`src/**/*.stories.tsx`) ;
-`tests/fixtures/` reste un harnais technique. Les pages Fondations documentent
-couleurs, typographie, espacements, géométrie et thèmes. Storybook charge le CSS
-distribué et propose clair, sombre et système ; ses scripts construisent le package.
+A foundation or component is delivered only when its stories cover variants
+and static states in light and dark themes. Without stories, the slice remains
+open and review is refused. Each story is a usage example; interaction states
+are exercised by driving those examples, without test-only stories. Behavior
+observable without a browser belongs in unit tests.
 
-`pnpm check` contrôle les exports de `src/index.ts`, suit barrels et alias et exige
-une story adjacente pour les fonctions, classes et wrappers exportés en PascalCase
-(et les exports par défaut). Zéro composant produit un rapport explicite.
-Ce contrôle de présence ne prouve pas la couverture des variantes et états :
-les stories servent de base aux tests navigateur et aux futures captures visuelles.
+Component stories are adjacent (`src/**/*.stories.tsx`); `tests/fixtures/`
+remains a technical harness. Foundation pages document colors, typography,
+spacing, geometry and themes. Storybook loads distributed CSS and offers light,
+dark and system themes; its commands build the package.
+
+`pnpm check` checks exports from `src/index.ts`, follows barrels and aliases,
+and requires adjacent stories for exported PascalCase functions, classes and
+wrappers, as well as default exports. Zero components produces an explicit
+report. Presence checks do not prove variant or state coverage: stories provide
+the basis for browser tests and visual captures.

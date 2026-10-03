@@ -1,21 +1,15 @@
 import { type ReactNode, useEffect, useState } from "react";
 
-const roles = [
-  ["surface", "Fond de page", "text"],
-  ["surface-raised", "Panneau", "text"],
-  ["surface-subtle", "Fond discret", "text"],
-  ["text", "Texte principal", "surface"],
-  ["text-muted", "Texte secondaire", "surface"],
-  ["border", "Contour des contrôles", "surface"],
-  ["border-strong", "Contour structurel", "surface"],
-  ["divider", "Séparateur décoratif (clair seulement)", "surface"],
-  ["accent", "Surface d’accent — contour obligatoire", "surface"],
-  ["on-accent", "Texte sur accent", "accent"],
-  ["focus", "Anneau de focus", "surface"],
-  ["shadow", "Relief", "surface"],
-  ["selection", "Surface de sélection", "on-selection"],
-  ["on-selection", "Texte sélectionné", "selection"],
-] as const;
+import tokens from "../src/tokens.json";
+
+const roles = Object.entries(tokens.light).map(
+  ([role, token]) =>
+    [
+      role,
+      token.$description,
+      token.$extensions["org.bench-design"].against,
+    ] as const,
+);
 
 function luminance(hex: string) {
   return [0.2126, 0.7152, 0.0722].reduce((sum, weight, index) => {
@@ -43,23 +37,28 @@ export function Palette({ theme }: { theme: string }) {
     return () => media.removeEventListener("change", update);
   }, [theme]);
   const groups = [
-    ["Surfaces", ["surface", "surface-raised", "surface-subtle"]],
-    ["Texte", ["text", "text-muted"]],
-    ["Bordures", ["border", "border-strong", "divider", "shadow"]],
-    ["Accent", ["accent", "on-accent"]],
-    ["Focus et sélection", ["focus", "selection", "on-selection"]],
-  ] as const;
+    ...new Set(
+      Object.values(tokens.light).map(
+        (token) => token.$extensions["org.bench-design"].group,
+      ),
+    ),
+  ];
   return (
     <Foundation
       title="Couleurs"
       intro="Le papier, l’encre et le citron composent notre palette. Explorez les rôles et leurs contrastes dans le thème actif."
     >
-      {groups.map(([title, group]) => (
+      {groups.map((title) => (
         <section key={title}>
           <h2>{title}</h2>
           <div className="foundation-grid">
             {roles
-              .filter(([role]) => group.some((item) => item === role))
+              .filter(
+                ([role]) =>
+                  tokens.light[role as keyof typeof tokens.light].$extensions[
+                    "org.bench-design"
+                  ].group === title,
+              )
               .map(([role, label, against]) => {
                 const value = values[role];
                 const background = values[against];
@@ -97,6 +96,12 @@ export function Palette({ theme }: { theme: string }) {
                     />
                     <div className="card-content">
                       <h3>{label}</h3>
+                      <p>
+                        {
+                          tokens.light[role as keyof typeof tokens.light]
+                            .$extensions["org.bench-design"].usage
+                        }
+                      </p>
                       <code>--bd-{role}</code>
                       <p className="metadata">{value || "Non ratifié"}</p>
                       <span className="contrast-badge">{badge}</span>
@@ -135,16 +140,28 @@ function Foundation({
   );
 }
 
-const scale = [
-  ["meta", 0.8, "reading"],
-  ["ui", 1, "normal"],
-  ["body", 1.25, "reading"],
-  ["lead", 1.5625, "reading"],
-  ["heading", 1.953125, "tight"],
-  ["display", 3.0517578125, "tight"],
-  ["hero", 5.9604644775390625, "solid"],
-] as const;
-const lines = { reading: 1.5, normal: 1.25, tight: 1.1, solid: 1 };
+const scale = Object.entries(tokens.base).flatMap(([name, token]) =>
+  "line" in token.$extensions["org.bench-design"] &&
+  typeof token.$value === "object"
+    ? [
+        [
+          name.slice(5),
+          token.$value.value,
+          token.$extensions["org.bench-design"].line,
+        ] as const,
+      ]
+    : [],
+);
+const lines = Object.fromEntries(
+  Object.entries(tokens.base)
+    .filter(([name]) => name.startsWith("line-"))
+    .map(([name, token]) => [name.slice(5), token.$value]),
+);
+const spaces = Object.entries(tokens.base).flatMap(([name, token]) =>
+  name.startsWith("space-") && typeof token.$value === "object"
+    ? [token.$value.value]
+    : [],
+);
 
 export function Typography() {
   return (
@@ -167,7 +184,10 @@ export function Typography() {
           ÉDITION 01 · BENCH DESIGN · 0123456789
         </p>
         <p className="metadata">
-          Fraunces : wght 500 · SOFT 35 · WONK 0 · opsz 60
+          Fraunces : wght {tokens.base["weight-editorial"].$value} · SOFT{" "}
+          {tokens.base["editorial-soft"].$value} · WONK{" "}
+          {tokens.base["editorial-wonk"].$value} · opsz{" "}
+          {tokens.base["editorial-opsz"].$value}
         </p>
       </section>
       <section>
@@ -197,9 +217,9 @@ export function Typography() {
                     <code>--bd-size-{size}</code>
                   </th>
                   <td>{rem}</td>
-                  <td>{rem * 16}</td>
+                  <td>{rem * tokens.base["font-base"].$value.value}</td>
                   <td>
-                    {line} · {lines[line]}
+                    {line} · {String(lines[line])}
                   </td>
                   <td>
                     <span
@@ -231,7 +251,7 @@ export function Geometry() {
       <section>
         <h2>Le rythme de l’espace</h2>
         <ul className="space-scale">
-          {[4, 8, 12, 16, 24, 32, 48, 64, 96].map((space) => (
+          {spaces.map((space) => (
             <li key={space}>
               <code>
                 --bd-space-{space} · {space} px
@@ -252,15 +272,20 @@ export function Geometry() {
           <div className="geometry-card">
             <h3>Le filet d’encre</h3>
             <p>
-              Contour 1 px · <code>--bd-hair</code>
+              Contour {tokens.base.hair.$value.value} px ·{" "}
+              <code>--bd-hair</code>
             </p>
             <p>
-              Angle vif · <code>--bd-radius</code> : 0
+              Angle vif · <code>--bd-radius</code> : {tokens.base.radius.$value}
             </p>
           </div>
           <div className="relief" data-geometry>
             <h3>Le citron en relief</h3>
-            <p>Contour 1 px · rayon 0 · ombre décalée 3 px</p>
+            <p>
+              Contour {tokens.base.hair.$value.value} px · rayon{" "}
+              {tokens.base.radius.$value} · ombre décalée{" "}
+              {tokens.base.offset.$value.value} px
+            </p>
             <code>--bd-offset / --bd-shadow</code>
           </div>
         </div>

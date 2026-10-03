@@ -44,7 +44,13 @@ try {
     ),
     "unexpected private/source/test file in tarball",
   );
-  for (const name of ["tokens.css", "styles.css", "theme-init.js"]) {
+  for (const name of [
+    "tokens.css",
+    "tokens.json",
+    "AGENTS.md",
+    "styles.css",
+    "theme-init.js",
+  ]) {
     assert(entries.includes(`package/dist/${name}`), `packed ${name} missing`);
   }
   const extracted = join(consumer, "extracted");

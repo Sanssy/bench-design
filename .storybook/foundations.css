@@ -152,3 +152,14 @@ code,
   outline: var(--bd-stroke) solid var(--bd-focus);
   outline-offset: var(--bd-offset);
 }
+.foundation pre {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  padding: var(--bd-space-16);
+  border: var(--bd-hair) solid var(--bd-border-strong);
+  background: var(--bd-surface-raised);
+}
+
+.documentation p {
+  max-width: var(--bd-measure);
+}

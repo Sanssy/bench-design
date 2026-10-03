@@ -46,7 +46,7 @@ pnpm verify:local -- --help
 pnpm verify:local -- --target button --theme dark --workers 2
 ```
 
-Filters: `--target` (bootstrap, fonts, foundations, themes, button), `--theme`
+Filters: `--target` (a11y, fonts, foundations, themes, button), `--theme`
 (light, dark, system), `--viewport` (desktop, short; mobile has no scenarios yet),
 and `--workers`. Filters intersect; invalid options and empty selections are
 rejected before startup. Reports remain in `.verification/runs/<uuid>/`, with
@@ -88,8 +88,9 @@ A story is a usage example. Keep component stories beside their implementation
 (`src/**/*.stories.tsx`), covering variants and static states in light and dark.
 Tests drive examples to exercise hover, press and focus. Do not create test-only
 stories with counters, control forms or forced interaction states. Observable
-behavior that needs no browser belongs in unit tests. `tests/fixtures/` is a
-technical harness. Storybook loads distributed CSS and offers light, dark and
+behavior that needs no browser belongs in unit tests. Automated WCAG 2 A/AA
+checks run on the Button examples, Foundations and Docs pages in both light and
+dark themes (`--target a11y`). Storybook loads distributed CSS and offers light, dark and
 system themes. A missing story for an exported component fails `pnpm check`;
 story presence alone does not prove state coverage.
 

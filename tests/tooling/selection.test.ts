@@ -37,6 +37,7 @@ test("filters correspond to existing themed scenarios and reject empty intersect
     ["foundations"],
   );
   assert.deepEqual(selection(["--theme", "dark"]).targets, [
+    "a11y",
     "foundations",
     "themes",
     "button",
@@ -169,4 +170,19 @@ test("CLI validates before loading dependencies and explains missing dependencie
   } finally {
     rmSync(cwd, { recursive: true, force: true });
   }
+});
+
+test("a11y replaces bootstrap and supports only explicit themes", () => {
+  for (const theme of ["light", "dark"]) {
+    const args = browserArgs(selection(["--target", "a11y", "--theme", theme]));
+    assert(args.includes("tests/browser/a11y.spec.ts"));
+    const grep = new RegExp(args[args.indexOf("--grep") + 1] ?? "");
+    assert(grep.test(`page @theme:${theme}`));
+    assert(!grep.test(`page @theme:${theme === "light" ? "dark" : "light"}`));
+  }
+  assert.throws(() => selection(["--target", "bootstrap"]), /Unknown target/);
+  assert.throws(
+    () => selection(["--target", "a11y", "--theme", "system"]),
+    /Empty/,
+  );
 });

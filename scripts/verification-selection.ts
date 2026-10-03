@@ -1,5 +1,5 @@
 const targets = {
-  bootstrap: { file: "tests/browser/bootstrap.spec.ts", themes: [] },
+  a11y: { file: "tests/browser/a11y.spec.ts", themes: ["light", "dark"] },
   fonts: { file: "tests/browser/fonts.spec.ts", themes: [] },
   foundations: {
     file: "tests/browser/foundations.spec.ts",

@@ -38,7 +38,7 @@ try {
     error.code === "ERR_MODULE_NOT_FOUND"
   )
     console.error(
-      "Dépendances manquantes : lancer `pnpm install` avant verify:local.",
+      "Missing dependencies: run `pnpm install` before verify:local.",
     );
   else console.error(String(error));
   process.exit(2);

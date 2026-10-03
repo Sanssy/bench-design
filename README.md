@@ -1,61 +1,97 @@
 # bench-design
 
-Shared React Design System for Trame, Bibliothèque + Atelier and Decision Engine.
-React Aria remains encapsulated inside the package.
+A React design system combining editorial typography, clear structure and
+accessible interactions. Shared visual foundations stay in CSS and tokens;
+React Aria is encapsulated behind a small component API.
 
-B1 establishes the executable toolchain. The public ESM entry and declarations
-are deliberately empty: no design system components are delivered yet. B2 adds the foundations below. The Storybook technical bootstrap harness exercises tooling;
-its tests do not establish accessibility of future design system components.
+## Current status
 
-Use Node 24.21.0 and pnpm 12.8.1, then:
+Available today: semantic tokens, local fonts, light/dark/system themes,
+foundation documentation and Button with primary and secondary variants.
+The package is private and has not been published to npm. Documentation hosting,
+the registry and the design system license remain to be decided. Visual
+references require explicit human approval; implementation is not approval.
+
+## Installation
+
+Use Node 24.21.0 and pnpm 12.8.1 for development. The package requires Node
+>=24.21.0 and React/React DOM ^19.3.0 as peer dependencies.
+Until publication, build and pack this checkout:
 
 ```sh
 pnpm install --frozen-lockfile
-pnpm check
-pnpm test
 pnpm build
-pnpm build-storybook
-pnpm test:package
+pnpm pack
+```
+
+In your React application, install the resulting local tarball:
+
+```sh
+pnpm add /path/to/bench-design-0.1.0.tgz
+```
+
+## Minimal usage
+
+```tsx
+import "bench-design/styles.css";
+import { Button } from "bench-design";
+
+export function SaveAction() {
+  return <Button variant="primary" onPress={() => console.log("Saved")}>Save</Button>;
+}
+```
+
+Import styles once. For tokens alone, use `bench-design/tokens.css`.
+Serve the CSS and its relative `fonts/` assets together, including font licenses.
+Button defaults to the secondary variant and `type="button"`; use `isDisabled`
+for unavailable actions and native `type="submit"` or `type="reset"` for forms.
+Prefer a visible label for the accessible name.
+
+Copy the distributed `bench-design/theme-init.js` to your application's public
+assets and load it as a classic blocking script before CSS and React:
+
+```html
+<head>
+  <script src="/theme-init.js"></script>
+  <!-- Application styles follow. -->
+</head>
+```
+
+Do not add `async`, `defer` or `type="module"`. The initializer reads
+`localStorage["bench-design-theme"]`: `light` and `dark` set `data-theme` on
+`<html>`; system, missing/invalid values or blocked storage leave it absent.
+An existing server attribute wins. Without the attribute, CSS follows the OS
+color scheme. To change themes later, set the attribute or remove it for system,
+and persist the choice when storage is available. The React entry has no theme
+side effects.
+
+## Documentation
+
+Run `pnpm storybook` and open [Storybook](http://localhost:6006/) for getting
+started, principles, themes, foundations and Button examples.
+After `pnpm build-storybook`, the generated site also provides
+`llms.txt`. After `pnpm build`, the package provides
+`AGENTS.md` for AI integration. These generated files are not
+available in a fresh checkout until built.
+The [component manifest](components.json) describes the public API;
+[tokens.json](src/tokens.json) is the DTCG token source and is also distributed
+as `bench-design/tokens.json`.
+
+## Development
+
+```sh
+pnpm install --frozen-lockfile
+pnpm verify
 pnpm storybook
 ```
 
-Browser tests require the pinned Linux image. See [Contributing](CONTRIBUTING.md).
-The [foundation decision](docs/decisions/0001-design-system.md) records boundaries
-and versioning. CI and package distribution require no private ecosystem links.
+Run `pnpm verify` before every push. It checks formatting, types, boundaries,
+tests, builds, visual values, package consumption and all three browsers.
+See [CONTRIBUTING.md](CONTRIBUTING.md) for CI, captures and approval, and the
+[design system decision](docs/decisions/0001-design-system.md) for boundaries
+and versioning.
 
-B2 foundations: import
-`bench-design/styles.css` once, or `bench-design/tokens.css` for tokens alone.
-Component CSS uses semantic roles (`--bd-surface`, `--bd-text`, `--bd-border`,
-`--bd-border-strong`, `--bd-accent`, `--bd-on-accent`, `--bd-focus`, etc.).
-Every light accent surface requires a strong border; the dark decorative divider
-is unavailable until ratified. Breakpoint tokens are documentation values;
-CSS custom properties cannot be substituted in media query conditions.
+## License
 
-Serve `bench-design/theme-init.js` from your own origin as a classic blocking
-script in `<head>`, before styles and React rendering (no async/defer). It reads
-`localStorage["bench-design-theme"]`: `light`/`dark` set `data-theme` on `<html>`;
-`system`, missing/invalid entries or blocked storage leave it absent. An existing
-server attribute wins. For later changes, set `data-theme="light|dark"` explicitly,
-or remove it for system mode, and persist the same choice if storage is available.
-Without the attribute CSS follows `prefers-color-scheme`, including OS changes.
-The ESM entry has no theme side effects. The initializer also tolerates SSR import.
-
-`styles.css` loads local Bench Fraunces (100–900), Bench Manrope (200–800)
-and Bench Plex (400), with `font-display: swap`. Font roles are
-`--bd-font-editorial` (serif fallback), `--bd-font-ui` (sans-serif),
-`--bd-font-metadata` and `--bd-font-mono` (monospace). Serve the CSS and its
-relative `fonts/` assets together; no CDN or local installed font is required.
-The distributed `fonts/` directory includes original OFL licenses and
-`provenance.json` with source URLs and SHA-256 hashes. Fonts were copied
-unchanged from the approved trame-core reference. Await `document.fonts.ready`
-before captures.
-
-The visual-value check (`node scripts/check-visual-values.ts`, after build)
-examines declarations in distributed `dist/**/*.css` using a CSS parser.
-Only `dist/tokens.css` and `dist/fonts.css` are exempt definition files;
-other exceptions require an exact file, selector, property, value and reason.
-The check rejects raw colors and lengths, including variable fallbacks.
-Unitless numbers such as `line-height: 1.5` and `font-weight: 500`, media query
-conditions and unparsed `Raw` values are outside its current coverage.
-Percentages, `auto`, `currentColor` and `transparent` are accepted.
-Unitless zero is accepted for absent spacing or borders without a token.
+The design system license is undecided. Bundled fonts retain their own OFL
+licenses in the distributed `fonts/` directory.

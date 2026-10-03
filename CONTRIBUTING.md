@@ -31,6 +31,12 @@ pnpm verify
 Storybook, test du package et tests navigateur (Chromium, Firefox, WebKit).
 Une sélection vide ou un test non exécuté ne vaut jamais succès.
 
+`pnpm verify` est obligatoire avant chaque push : c'est la seule exécution
+dans les trois navigateurs. La CI d'une PR ne lance que Chromium
+(`BD_BROWSERS=chromium`) et ne relance rien sur `main` après le merge. Les
+captures Firefox et WebKit se lancent à la demande (Actions › CI › Run
+workflow), notamment quand une PR touche au CSS.
+
 ## Vérification Linux facultative
 
 `pnpm verify:local` rejoue les mêmes contrôles dans l'image Playwright épinglée

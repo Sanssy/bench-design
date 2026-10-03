@@ -1,4 +1,17 @@
 import { defineConfig, devices } from "@playwright/test";
+
+const browsers = [
+  { name: "chromium", use: { ...devices["Desktop Chrome"] } },
+  { name: "firefox", use: { ...devices["Desktop Firefox"] } },
+  { name: "webkit", use: { ...devices["Desktop Safari"] } },
+];
+// BD_BROWSERS narrows the run (PR CI: chromium); unset runs all three.
+const selected = process.env.BD_BROWSERS?.split(",").map((name) => name.trim());
+const projects = selected
+  ? browsers.filter((browser) => selected.includes(browser.name))
+  : browsers;
+if (!projects.length) throw new Error("No browser matches BD_BROWSERS");
+
 export default defineConfig({
   testDir: ".",
   testMatch: ["tests/browser/**/*.spec.ts", "src/**/*.browser.spec.ts"],
@@ -16,11 +29,7 @@ export default defineConfig({
     reducedMotion: "reduce",
     trace: "retain-on-failure",
   },
-  projects: [
-    { name: "chromium", use: { ...devices["Desktop Chrome"] } },
-    { name: "firefox", use: { ...devices["Desktop Firefox"] } },
-    { name: "webkit", use: { ...devices["Desktop Safari"] } },
-  ],
+  projects,
   webServer: {
     command:
       "pnpm exec vite preview --outDir storybook-static --host 127.0.0.1 --port 6007 --strictPort",

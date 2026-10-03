@@ -1,9 +1,14 @@
 name: CI
+# PRs run Chromium only; the full three-browser run happens locally with
+# `pnpm verify` before every push. main is not re-run after a squash merge.
+# Firefox and WebKit captures run on demand (Actions > CI > Run workflow).
 on:
-  push:
-    branches: [main]
   pull_request:
   workflow_dispatch:
+    inputs:
+      browsers:
+        description: Comma-separated Playwright projects
+        default: chromium,firefox,webkit
 permissions:
   contents: read
 concurrency:
@@ -12,6 +17,7 @@ concurrency:
 env:
   CI: "true"
   STORYBOOK_DISABLE_TELEMETRY: "1"
+  BD_BROWSERS: ${{ inputs.browsers || 'chromium' }}
   # Firefox refuses to run as root with a HOME owned by another user.
   HOME: /root
 jobs:

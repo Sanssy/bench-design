@@ -27,8 +27,13 @@ Run `pnpm verify` before every push. It runs check, test, build, visual-value
 validation, Storybook, package consumption and browser tests in Chromium,
 Firefox and WebKit. An empty selection or skipped execution is never success.
 
-PR CI runs Chromium only (`BD_BROWSERS=chromium`); it does not rerun on `main`
-after merge. The `static` job runs checks, unit tests, build, visual-value
+PR CI runs Chromium only (`BD_BROWSERS=chromium`), selecting changed components
+and their axe stories against the PR base. Tooling tests, decision docs and root
+Markdown need no browser tests; shared or unknown paths and unavailable bases
+run the full suite. Button or shared changes also run visual comparisons.
+Manual CI dispatch runs the full Chromium suite. Nightly CI runs all three
+browsers on `main` using the cached full image from `ci/Containerfile`.
+`pnpm verify` always runs the complete suite before every push. The `static` job runs checks, unit tests, build, visual-value
 validation and package tests without a container. The `browser` job runs browser
 tests and captures in the slim image from `ci/Containerfile.chromium`.
 The image job builds and publishes that image to GHCR only when the recipe

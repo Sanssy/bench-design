@@ -2,7 +2,7 @@ import { expect, test } from "@playwright/test";
 
 for (const theme of ["light", "dark"]) {
   test(`Link styles and keyboard focus in ${theme}`, {
-    tag: `@theme:${theme}`,
+    tag: [`@theme:${theme}`, "@component:link"],
   }, async ({ page }) => {
     await page.goto(
       `/iframe.html?id=typography-link--paragraph&viewMode=story&globals=theme:${theme}`,
@@ -52,7 +52,7 @@ for (const theme of ["light", "dark"]) {
     await expect(link).toHaveCSS("outline-offset", tokens.focusOffset);
   });
   test(`Link external announcement is visually hidden in ${theme}`, {
-    tag: `@theme:${theme}`,
+    tag: [`@theme:${theme}`, "@component:link"],
   }, async ({ page }) => {
     await page.goto(
       `/iframe.html?id=typography-link--external&viewMode=story&globals=theme:${theme}`,

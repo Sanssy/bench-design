@@ -10,5 +10,5 @@
     "types": []
   },
   "include": ["src"],
-  "exclude": ["tests", ".storybook"]
+  "exclude": ["tests", ".storybook", "src/**/*.stories.tsx"]
 }

@@ -1,0 +1,39 @@
+body {
+  background: var(--bd-surface);
+  color: var(--bd-text);
+  font-family: var(--bd-font-ui);
+  font-size: var(--bd-size-ui);
+  line-height: var(--bd-line-reading);
+}
+h1,
+.editorial {
+  font-family: var(--bd-font-editorial);
+  font-weight: var(--bd-weight-editorial);
+  font-variation-settings:
+    "SOFT" var(--bd-editorial-soft),
+    "WONK" var(--bd-editorial-wonk),
+    "opsz" var(--bd-editorial-opsz);
+}
+.metadata,
+code {
+  font-family: var(--bd-font-metadata);
+}
+.swatch,
+.space {
+  width: var(--bd-space-32);
+  display: inline-block;
+  height: var(--bd-space-24);
+  border: var(--bd-hair) solid var(--bd-border-strong);
+}
+.space {
+  background: var(--bd-surface-subtle);
+  box-sizing: border-box;
+}
+.relief {
+  padding: var(--bd-space-16);
+  background: var(--bd-accent);
+  color: var(--bd-on-accent);
+  border: var(--bd-hair) solid var(--bd-border-strong);
+  border-radius: var(--bd-radius);
+  box-shadow: var(--bd-offset) var(--bd-offset) 0 var(--bd-shadow);
+}

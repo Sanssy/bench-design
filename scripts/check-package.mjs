@@ -40,6 +40,9 @@ try {
     ),
     "unexpected private/source/test file in tarball",
   );
+  for (const name of ["tokens.css", "styles.css", "theme-init.js"]) {
+    assert(entries.includes(`package/dist/${name}`), `packed ${name} missing`);
+  }
   const pkg = JSON.parse(readFileSync("package.json", "utf8"));
   writeFileSync(
     join(consumer, "package.json"),
@@ -76,6 +79,20 @@ try {
     "--input-type=module",
     "-e",
     'import assert from "node:assert/strict"; import * as ds from "bench-design"; assert.deepEqual(Object.keys(ds), []);',
+  ]);
+  run("node", [
+    "--input-type=module",
+    "-e",
+    `
+    import assert from "node:assert/strict";
+    import { readFileSync } from "node:fs";
+    const tokens = readFileSync(new URL(import.meta.resolve("bench-design/tokens.css")), "utf8");
+    assert(tokens.includes("--bd-surface:"));
+    const styles = readFileSync(new URL(import.meta.resolve("bench-design/styles.css")), "utf8");
+    assert(styles.includes('@import "./tokens.css"'));
+    const init = await import("bench-design/theme-init.js");
+    assert.deepEqual(Object.keys(init), []);
+  `,
   ]);
   console.log(
     "Distribution PASS: isolated tarball ESM/types, no public API or private files",

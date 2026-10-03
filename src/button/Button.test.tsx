@@ -1,5 +1,6 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+import { createRef } from "react";
 import { expect, test, vi } from "vitest";
 import { Button } from "./Button";
 
@@ -132,3 +133,58 @@ for (const action of ["pointer", "{Enter}", " "]) {
     expect(input).toHaveValue("Modifié");
   });
 }
+
+test("content supplies the accessible name", () => {
+  render(<Button>Enregistrer</Button>);
+  expect(screen.getByRole("button")).toHaveAccessibleName("Enregistrer");
+});
+
+for (const mechanism of ["aria-label", "aria-labelledby"] as const) {
+  for (const name of ["Enregistrer le document", "Valider"]) {
+    test(`${mechanism} preserves native name ${name} without rewriting`, () => {
+      render(
+        <>
+          <span id="button-name">{name}</span>
+          <Button
+            {...{
+              [mechanism]: mechanism === "aria-label" ? name : "button-name",
+            }}
+          >
+            Enregistrer
+          </Button>
+        </>,
+      );
+      expect(screen.getByRole("button")).toHaveAccessibleName(name);
+      expect(screen.getByRole("button")).toHaveTextContent("Enregistrer");
+    });
+  }
+}
+
+test("aria-labelledby takes precedence over aria-label and content", () => {
+  render(
+    <>
+      <span id="priority-name">Enregistrer le document</span>
+      <Button aria-label="Enregistrer ailleurs" aria-labelledby="priority-name">
+        Enregistrer
+      </Button>
+    </>,
+  );
+  expect(screen.getByRole("button")).toHaveAccessibleName(
+    "Enregistrer le document",
+  );
+});
+
+test("consumer restores focus through the DOM ref", async () => {
+  const user = userEvent.setup();
+  const ref = createRef<HTMLButtonElement>();
+  render(
+    <>
+      <Button ref={ref}>Enregistrer</Button>
+      <button type="button" onClick={() => ref.current?.focus()}>
+        Rendre le focus
+      </button>
+    </>,
+  );
+  await user.click(screen.getByRole("button", { name: "Rendre le focus" }));
+  expect(screen.getByRole("button", { name: "Enregistrer" })).toHaveFocus();
+});

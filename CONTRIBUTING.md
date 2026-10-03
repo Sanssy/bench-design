@@ -31,6 +31,12 @@ pnpm verify
 Storybook, test du package et tests navigateur (Chromium, Firefox, WebKit).
 Une sélection vide ou un test non exécuté ne vaut jamais succès.
 
+`pnpm verify` est obligatoire avant chaque push : c'est la seule exécution
+dans les trois navigateurs. La CI d'une PR ne lance que Chromium
+(`BD_BROWSERS=chromium`) et ne relance rien sur `main` après le merge.
+Actions › CI › Run workflow relance les tests navigateur dans les trois
+navigateurs si besoin.
+
 ## Vérification Linux facultative
 
 `pnpm verify:local` rejoue les mêmes contrôles dans l'image Playwright épinglée
@@ -55,11 +61,12 @@ ne touche que les ressources du run.
 ## Captures de référence
 
 L'environnement canonique des captures est la CI GitHub (Linux x64, même image
-épinglée). Le workflow `Button visual candidates` compare les vingt scénarios
-Button (deux variantes, cinq états, deux thèmes) dans les trois navigateurs.
+épinglée). Le job `visual` du workflow `CI` compare les vingt scénarios
+Button (deux variantes, cinq états, deux thèmes) dans Chromium seulement ;
+Firefox et WebKit sont couverts par les tests de styles calculés.
 La commande est `pnpm exec playwright test --config playwright.visual.config.ts`
-après `pnpm build-storybook`, dans l'image `ci/Containerfile` en Linux x64.
-Les références sont dans `tests/visual/baselines/<navigateur>/`.
+après `pnpm build-storybook`, dans l'image Playwright épinglée de `ci/Containerfile` (même digest, Node et pnpm via `ci/install-toolchain.sh`), en Linux x64.
+Les références sont dans `tests/visual/baselines/chromium/`.
 
 Le viewport est 400 × 160, DPR 1 ; les polices locales sont attendues via
 `document.fonts.ready`, les animations désactivées. `threshold: 0` et

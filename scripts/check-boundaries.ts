@@ -76,9 +76,9 @@ if (
   process.argv[1] &&
   resolve(process.argv[1]) === fileURLToPath(import.meta.url)
 ) {
-  const errors = globSync("src/**/*.{ts,tsx}").flatMap((file) =>
-    violations(readFileSync(file, "utf8"), resolve(file)),
-  );
+  const errors = globSync("src/**/*.{ts,tsx}")
+    .filter((file) => !file.endsWith(".stories.tsx"))
+    .flatMap((file) => violations(readFileSync(file, "utf8"), resolve(file)));
   for (const error of errors) console.error(error);
   if (errors.length) process.exitCode = 1;
   else console.log("Package TypeScript boundaries PASS");

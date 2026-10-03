@@ -12,3 +12,6 @@ playwright-report/
 
 # Per-run verification snapshots and evidence
 .verification/
+
+# Local Storybook log
+debug-storybook.log

@@ -49,3 +49,18 @@ Les commandes et la CI vivent dans le dépôt produit et ne dépendent pas du co
 privé. Skills, plans, matrices de livraison, audits et preuves d'exécution restent
 dans l'écosystème privé et sont référencés localement, sans duplication dans Git
 produit. Ce document conserve les décisions de maintenance lisibles dans un clone neuf.
+
+## Storybook et définition de livré
+
+Une fondation ou un composant est livré lorsque ses stories couvrent variantes
+et états en clair et sombre. Sans stories, la tranche reste ouverte et la revue
+est refusée. Les composants ont leurs stories adjacentes (`src/**/*.stories.tsx`) ;
+`tests/fixtures/` reste un harnais technique. Les pages Fondations documentent
+couleurs, typographie, espacements, géométrie et thèmes. Storybook charge le CSS
+distribué et propose clair, sombre et système ; ses scripts construisent le package.
+
+`pnpm check` contrôle les exports de `src/index.ts`, suit barrels et alias et exige
+une story adjacente pour les fonctions, classes et wrappers exportés en PascalCase
+(et les exports par défaut). Zéro composant produit un rapport explicite.
+Ce contrôle de présence ne prouve pas la couverture des variantes et états :
+les stories servent de base aux tests navigateur et aux futures captures visuelles.

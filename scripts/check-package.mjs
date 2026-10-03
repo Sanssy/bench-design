@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
 import { execFileSync } from "node:child_process";
 import {
+  mkdirSync,
   mkdtempSync,
   readdirSync,
   readFileSync,
@@ -9,6 +10,8 @@ import {
 } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
+import { pathToFileURL } from "node:url";
+import { checkFontAssets } from "./check-font-assets.mjs";
 
 const consumer = mkdtempSync(join(tmpdir(), "bench-design-consumer-"));
 const run = (cmd, args) =>
@@ -40,6 +43,13 @@ try {
     ),
     "unexpected private/source/test file in tarball",
   );
+  for (const name of ["tokens.css", "styles.css", "theme-init.js"]) {
+    assert(entries.includes(`package/dist/${name}`), `packed ${name} missing`);
+  }
+  const extracted = join(consumer, "extracted");
+  mkdirSync(extracted);
+  execFileSync("tar", ["-xzf", tarball, "-C", extracted]);
+  checkFontAssets(pathToFileURL(join(extracted, "package/dist/styles.css")));
   const pkg = JSON.parse(readFileSync("package.json", "utf8"));
   writeFileSync(
     join(consumer, "package.json"),
@@ -77,6 +87,23 @@ try {
     "-e",
     'import assert from "node:assert/strict"; import * as ds from "bench-design"; assert.deepEqual(Object.keys(ds), []);',
   ]);
+  run("node", [
+    "--input-type=module",
+    "-e",
+    `
+    import assert from "node:assert/strict";
+    import { readFileSync } from "node:fs";
+    const tokens = readFileSync(new URL(import.meta.resolve("bench-design/tokens.css")), "utf8");
+    assert(tokens.includes("--bd-surface:"));
+    const styles = readFileSync(new URL(import.meta.resolve("bench-design/styles.css")), "utf8");
+    assert(styles.includes('@import "./tokens.css"'));
+    const init = await import("bench-design/theme-init.js");
+    assert.deepEqual(Object.keys(init), []);
+  `,
+  ]);
+  checkFontAssets(
+    pathToFileURL(join(consumer, "node_modules/bench-design/dist/styles.css")),
+  );
   console.log(
     "Distribution PASS: isolated tarball ESM/types, no public API or private files",
   );

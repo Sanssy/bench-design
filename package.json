@@ -15,18 +15,24 @@
     ".": {
       "types": "./dist/index.d.ts",
       "import": "./dist/index.js"
-    }
+    },
+    "./tokens.css": "./dist/tokens.css",
+    "./styles.css": "./dist/styles.css",
+    "./theme-init.js": "./dist/theme-init.js"
   },
-  "sideEffects": false,
+  "sideEffects": [
+    "**/*.css"
+  ],
   "scripts": {
-    "build": "vite build && tsc -p tsconfig.build.json",
+    "build": "vite build && tsc -p tsconfig.build.json && node scripts/build-foundations.mjs",
     "test:package": "node scripts/check-package.mjs",
     "storybook": "storybook dev --port 6006 --host 127.0.0.1 --no-open --disable-telemetry",
     "build-storybook": "storybook build --disable-telemetry",
     "check": "biome check . && tsc --noEmit && node scripts/check-boundaries.mjs",
     "test": "vitest run && node --test tests/tooling/*.test.mjs",
     "test:browser": "playwright test",
-    "verify": "node scripts/verify.mjs"
+    "verify": "node scripts/verify.mjs",
+    "check:visual-values": "node scripts/check-visual-values.mjs"
   },
   "peerDependencies": {
     "react": "^19.3.0",
@@ -56,6 +62,7 @@
     "storybook": "10.6.1",
     "typescript": "7.0.2",
     "vite": "8.3.2",
-    "vitest": "5.0.3"
+    "vitest": "5.0.3",
+    "css-tree": "3.2.1"
   }
 }

@@ -1,0 +1,29 @@
+[
+  {
+    "family": "manrope",
+    "file": "Manrope.ttf",
+    "role": "ui",
+    "source": "https://raw.githubusercontent.com/google/fonts/main/ofl/manrope/Manrope%5Bwght%5D.ttf",
+    "license_source": "https://raw.githubusercontent.com/google/fonts/main/ofl/manrope/OFL.txt",
+    "sha256": "d0639be45d0af36e798172419d7bd173c4bd4f29e2b76cbb69db1d11bf8b0a40",
+    "bytes": 165420
+  },
+  {
+    "family": "ibmplexmono",
+    "file": "IBMPlexMono-Regular.ttf",
+    "role": "metadata",
+    "source": "https://raw.githubusercontent.com/google/fonts/main/ofl/ibmplexmono/IBMPlexMono-Regular.ttf",
+    "license_source": "https://raw.githubusercontent.com/google/fonts/main/ofl/ibmplexmono/OFL.txt",
+    "sha256": "6a3412f058c7d8dfd9170c41e85ade48e5156ecb89356110ca57a0a27734af46",
+    "bytes": 135580
+  },
+  {
+    "family": "fraunces",
+    "file": "Fraunces.ttf",
+    "role": "editorial",
+    "source": "https://raw.githubusercontent.com/google/fonts/main/ofl/fraunces/Fraunces%5BSOFT%2CWONK%2Copsz%2Cwght%5D.ttf",
+    "license_source": "https://raw.githubusercontent.com/google/fonts/main/ofl/fraunces/OFL.txt",
+    "sha256": "177ff6c0f14e5550a3c624247cd1189611d4eb65d000b14944c63d967958abbb",
+    "bytes": 360440
+  }
+]

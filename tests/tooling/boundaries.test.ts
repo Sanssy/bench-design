@@ -4,7 +4,10 @@ import { violations } from "../../scripts/check-boundaries.ts";
 
 const file = `${process.cwd()}/src/index.ts`;
 test("package rejects product dependencies", () => {
-  assert.equal(violations('import { rule } from "trame";', file).length, 1);
+  assert.equal(
+    violations('import { rule } from "consumer-product";', file).length,
+    1,
+  );
 });
 test("package rejects relative test imports", () => {
   assert.equal(

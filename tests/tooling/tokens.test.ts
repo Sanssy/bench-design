@@ -74,7 +74,8 @@ test("usage metadata is guidance rather than a repeated label", () => {
 
 test("published tokens cite no private design documents", () => {
   const source = readFileSync("src/tokens.json", "utf8");
-  assert.doesNotMatch(source, /B2-TOKENS-PROPOSAL|Atelier|trame-core|Parcours/);
+  // Section marks or proposal names would point to private design documents.
+  assert.doesNotMatch(source, /B2-TOKENS-PROPOSAL|§/);
 });
 
 test("Button hover accent is ratified in both themes", () => {

@@ -16,10 +16,10 @@ for (const theme of ["light", "dark"] as const) {
         },
         async ({ page }, testInfo) => {
           await page.goto(
-            `/iframe.html?id=components-button--${state === "disabled" ? "disabled" : variant}&viewMode=story&globals=theme:${theme}&args=variant:${variant}&embed=true`,
+            `/iframe.html?id=form-button--${state === "disabled" ? "disabled" : variant}&viewMode=story&globals=theme:${theme}&args=variant:${variant}&embed=true`,
           );
           const button = page.getByRole("button", {
-            name: "Enregistrer",
+            name: "Save",
             exact: true,
           });
           await expect(button).toBeVisible();

@@ -7,8 +7,8 @@ import { Button } from "./Button";
 test("pointer activation calls onPress once", async () => {
   const user = userEvent.setup();
   const onPress = vi.fn();
-  render(<Button onPress={onPress}>Activer</Button>);
-  await user.click(screen.getByRole("button", { name: "Activer" }));
+  render(<Button onPress={onPress}>Activate</Button>);
+  await user.click(screen.getByRole("button", { name: "Activate" }));
   expect(onPress).toHaveBeenCalledTimes(1);
 });
 
@@ -16,7 +16,7 @@ for (const key of ["{Enter}", " "]) {
   test(`${key} activation calls onPress once`, async () => {
     const user = userEvent.setup();
     const onPress = vi.fn();
-    render(<Button onPress={onPress}>Activer</Button>);
+    render(<Button onPress={onPress}>Activate</Button>);
     await user.tab();
     await user.keyboard(key);
     expect(onPress).toHaveBeenCalledTimes(1);
@@ -28,10 +28,10 @@ test("default button does not submit its form", async () => {
   const onSubmit = vi.fn((event) => event.preventDefault());
   render(
     <form onSubmit={onSubmit}>
-      <Button>Activer</Button>
+      <Button>Activate</Button>
     </form>,
   );
-  await user.click(screen.getByRole("button", { name: "Activer" }));
+  await user.click(screen.getByRole("button", { name: "Activate" }));
   expect(onSubmit).not.toHaveBeenCalled();
 });
 
@@ -40,10 +40,10 @@ test("explicit submit submits its form once", async () => {
   const onSubmit = vi.fn((event) => event.preventDefault());
   render(
     <form onSubmit={onSubmit}>
-      <Button type="submit">Envoyer</Button>
+      <Button type="submit">Submit</Button>
     </form>,
   );
-  await user.click(screen.getByRole("button", { name: "Envoyer" }));
+  await user.click(screen.getByRole("button", { name: "Submit" }));
   expect(onSubmit).toHaveBeenCalledTimes(1);
 });
 
@@ -52,22 +52,22 @@ test("explicit reset restores the native input value", async () => {
   render(
     <form>
       <label>
-        Nom
+        Name
         <input defaultValue="Initial" />
       </label>
-      <Button type="reset">Réinitialiser</Button>
+      <Button type="reset">Reset</Button>
     </form>,
   );
-  const input = screen.getByRole("textbox", { name: "Nom" });
+  const input = screen.getByRole("textbox", { name: "Name" });
   await user.clear(input);
-  await user.type(input, "Modifié");
-  await user.click(screen.getByRole("button", { name: "Réinitialiser" }));
+  await user.type(input, "Edited");
+  await user.click(screen.getByRole("button", { name: "Reset" }));
   expect(input).toHaveValue("Initial");
 });
 
 test("disabled button exposes native disabled semantics", () => {
-  render(<Button isDisabled>Activer</Button>);
-  expect(screen.getByRole("button", { name: "Activer" })).toBeDisabled();
+  render(<Button isDisabled>Activate</Button>);
+  expect(screen.getByRole("button", { name: "Activate" })).toBeDisabled();
 });
 
 for (const action of ["pointer", "{Enter}", " "]) {
@@ -76,10 +76,10 @@ for (const action of ["pointer", "{Enter}", " "]) {
     const onPress = vi.fn();
     render(
       <Button isDisabled onPress={onPress}>
-        Activer
+        Activate
       </Button>,
     );
-    const button = screen.getByRole("button", { name: "Activer" });
+    const button = screen.getByRole("button", { name: "Activate" });
     if (action === "pointer") await user.click(button);
     else {
       button.focus();
@@ -94,11 +94,11 @@ for (const action of ["pointer", "{Enter}", " "]) {
     render(
       <form onSubmit={onSubmit}>
         <Button isDisabled type="submit">
-          Envoyer
+          Submit
         </Button>
       </form>,
     );
-    const button = screen.getByRole("button", { name: "Envoyer" });
+    const button = screen.getByRole("button", { name: "Submit" });
     if (action === "pointer") await user.click(button);
     else {
       button.focus();
@@ -112,35 +112,35 @@ for (const action of ["pointer", "{Enter}", " "]) {
     render(
       <form>
         <label>
-          Nom
+          Name
           <input defaultValue="Initial" />
         </label>
         <Button isDisabled type="reset">
-          Réinitialiser
+          Reset
         </Button>
       </form>,
     );
-    const input = screen.getByRole("textbox", { name: "Nom" });
+    const input = screen.getByRole("textbox", { name: "Name" });
     await user.clear(input);
-    await user.type(input, "Modifié");
-    const button = screen.getByRole("button", { name: "Réinitialiser" });
+    await user.type(input, "Edited");
+    const button = screen.getByRole("button", { name: "Reset" });
     if (action === "pointer") await user.click(button);
     else {
       input.blur();
       button.focus();
       await user.keyboard(action);
     }
-    expect(input).toHaveValue("Modifié");
+    expect(input).toHaveValue("Edited");
   });
 }
 
 test("content supplies the accessible name", () => {
-  render(<Button>Enregistrer</Button>);
-  expect(screen.getByRole("button")).toHaveAccessibleName("Enregistrer");
+  render(<Button>Save</Button>);
+  expect(screen.getByRole("button")).toHaveAccessibleName("Save");
 });
 
 for (const mechanism of ["aria-label", "aria-labelledby"] as const) {
-  for (const name of ["Enregistrer le document", "Valider"]) {
+  for (const name of ["Save the document", "Confirm"]) {
     test(`${mechanism} preserves native name ${name} without rewriting`, () => {
       render(
         <>
@@ -150,12 +150,12 @@ for (const mechanism of ["aria-label", "aria-labelledby"] as const) {
               [mechanism]: mechanism === "aria-label" ? name : "button-name",
             }}
           >
-            Enregistrer
+            Save
           </Button>
         </>,
       );
       expect(screen.getByRole("button")).toHaveAccessibleName(name);
-      expect(screen.getByRole("button")).toHaveTextContent("Enregistrer");
+      expect(screen.getByRole("button")).toHaveTextContent("Save");
     });
   }
 }
@@ -163,15 +163,13 @@ for (const mechanism of ["aria-label", "aria-labelledby"] as const) {
 test("aria-labelledby takes precedence over aria-label and content", () => {
   render(
     <>
-      <span id="priority-name">Enregistrer le document</span>
-      <Button aria-label="Enregistrer ailleurs" aria-labelledby="priority-name">
-        Enregistrer
+      <span id="priority-name">Save the document</span>
+      <Button aria-label="Save elsewhere" aria-labelledby="priority-name">
+        Save
       </Button>
     </>,
   );
-  expect(screen.getByRole("button")).toHaveAccessibleName(
-    "Enregistrer le document",
-  );
+  expect(screen.getByRole("button")).toHaveAccessibleName("Save the document");
 });
 
 test("consumer restores focus through the DOM ref", async () => {
@@ -179,12 +177,12 @@ test("consumer restores focus through the DOM ref", async () => {
   const ref = createRef<HTMLButtonElement>();
   render(
     <>
-      <Button ref={ref}>Enregistrer</Button>
+      <Button ref={ref}>Save</Button>
       <button type="button" onClick={() => ref.current?.focus()}>
-        Rendre le focus
+        Restore focus
       </button>
     </>,
   );
-  await user.click(screen.getByRole("button", { name: "Rendre le focus" }));
-  expect(screen.getByRole("button", { name: "Enregistrer" })).toHaveFocus();
+  await user.click(screen.getByRole("button", { name: "Restore focus" }));
+  expect(screen.getByRole("button", { name: "Save" })).toHaveFocus();
 });

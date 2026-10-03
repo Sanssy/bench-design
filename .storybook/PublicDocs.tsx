@@ -19,9 +19,9 @@ export function GettingStarted() {
       <section>
         <h2>Available today</h2>
         <p>
-          Tokens, styles, local fonts and theme initialization. No public React
-          components yet; the JavaScript entry point is empty. The package is
-          private and no npm release is available.
+          Tokens, styles, local fonts, theme initialization and the React Button
+          component with primary and secondary variants. The package is private
+          and no npm release is available.
         </p>
       </section>
       <section>
@@ -109,9 +109,9 @@ export function Principles() {
         <h2>Accessible integration</h2>
         <p>
           Keep semantic HTML, accessible names and visible focus. Check focus
-          order and keyboard operation. The DS wraps React Aria for future
-          controls; no delivered component demonstrates these interactions yet.
-          UI tests follow render/interact/assert.
+          order and keyboard operation. Button wraps React Aria for activation
+          and disabled semantics; its stories demonstrate primary, secondary and
+          disabled usage. UI tests follow render/interact/assert.
         </p>
       </section>
     </Page>

@@ -5,66 +5,75 @@ import * as ButtonStories from './Button.stories';
 
 # Button
 
-Déclenche une action avec un libellé visible. Importer `Button` depuis
-`bench-design` et `bench-design/styles.css` dans l’application.
+Triggers an action with a visible label. Import `Button` from `bench-design`
+and load `bench-design/styles.css` once in your application.
 
-## Aperçu
+## Overview
 
 <Canvas of={ButtonStories.Variants} />
 
-## Quand l’utiliser
+## Usage
 
-Pour déclencher une action ; `primary` désigne l’action principale et
-`secondary` une action secondaire (valeur par défaut). Un seul `primary` par
-zone d’action. Pour naviguer vers une destination, utiliser un lien.
-Éviter les libellés ambigus et les boutons sans texte visible.
+Use `primary` for the main action and `secondary` for supporting actions
+(the default). Use only one `primary` per action area.
 
-## API TypeScript
+- Do use clear action labels, such as “Save” and “Cancel”.
+- Do supply visible text and pass `isDisabled` from the application when needed.
+- Avoid ambiguous labels and buttons without visible text.
+- Use a link when navigating to a destination.
 
-Table générée depuis le composant TypeScript, sans liste parallèle de props.
+## TypeScript API
+
+The table is generated from the TypeScript component, without a separate prop list.
 
 <ArgTypes of={ButtonStories} />
 
-`type` vaut `button` ; `submit` et `reset` gardent leur sémantique native.
-`onPress` est un callback sans argument. Aucun passthrough général.
+`type` defaults to `button`; `submit` and `reset` retain native form semantics.
+`onPress` is a callback without arguments. General HTML attribute passthrough
+is not supported.
 
-## Exemples
+## Examples
 
 <Canvas of={ButtonStories.Primary} />
 <Canvas of={ButtonStories.Secondary} />
 <Canvas of={ButtonStories.Disabled} />
 
-Le sélecteur de thème permet de parcourir les exemples en clair et sombre.
+Use the theme selector to view the examples in light and dark themes.
 
-Restaurer le focus avec la ref :
+### Restore focus
+
+The DOM ref lets the application restore focus without importing React Aria:
 
 ```tsx
 const ref = useRef<HTMLButtonElement>(null);
-<Button ref={ref}>Enregistrer</Button>
-<Button onPress={() => ref.current?.focus()}>Rendre le focus</Button>
+<Button ref={ref}>Save</Button>
+<Button onPress={() => ref.current?.focus()}>Restore focus</Button>
 ```
 
-Compléter le nom accessible sans masquer le texte visible :
+## Keyboard and ARIA
+
+Tab reaches an enabled button; Enter and Space each trigger `onPress` once.
+A disabled button cannot receive focus or trigger an action.
+Keyboard focus uses `--bd-focus`.
+
+Content normally supplies the accessible name. `aria-labelledby` takes
+precedence over `aria-label`, which takes precedence over content. Prefer the
+content alone when no additional context is needed.
+
+An explicit accessible name must contain the visible label, preferably at its
+start ([WCAG 2.5.3: Label in Name](https://www.w3.org/WAI/WCAG22/Understanding/label-in-name.html)).
+“Save the document” includes “Save”; “Confirm” replaces it and fails this rule.
+The DS does not extract visible text or rewrite accessible names automatically.
 
 ```tsx
-<span id="save-label">Enregistrer le document</span>
-<Button aria-labelledby="save-label">Enregistrer</Button>
+<Button aria-label="Save the document">Save</Button>
+
+<span id="save-label">Save the document</span>
+<Button aria-labelledby="save-label">Save</Button>
 ```
 
-## Clavier et ARIA
+## Out of scope
 
-Tab atteint le bouton actif ; Entrée et Espace déclenchent `onPress` une fois.
-Un bouton désactivé ne reçoit pas le focus et ne déclenche aucune action.
-Le focus clavier utilise `--bd-focus`. La ref DOM permet au consommateur
-l’appel `ref.current?.focus()` pour restaurer le focus.
-
-Le contenu donne le nom accessible. `aria-labelledby` a priorité sur
-`aria-label`, qui a priorité sur le contenu. Garder le texte visible dans le
-nom calculé : « Enregistrer le document » complète « Enregistrer » ;
-« Valider » le remplace et viole WCAG 2.5.3. Le DS ne réécrit pas les noms.
-
-## Hors du périmètre
-
-Ghost, danger, taille compacte, icône, chargement, bascule et routage ne sont
-pas livrés. Les règles métier et workflows de formulaire appartiennent aux
-produits.
+Ghost and danger variants, compact sizes, icons, loading, toggling and routing
+are not provided. Business permissions, validation, form state and application
+workflows belong to the consuming product.

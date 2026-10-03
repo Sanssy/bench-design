@@ -3,9 +3,9 @@ import { spawnSync } from "node:child_process";
 import { mkdirSync, mkdtempSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
-import { test } from "node:test";
+import { type TestContext, test } from "node:test";
 import { fileURLToPath } from "node:url";
-import { visualViolations } from "../../scripts/check-visual-values.mjs";
+import { visualViolations } from "../../scripts/check-visual-values.ts";
 
 for (const value of ["#fff", "red", "rgb(1 2 3)", "oklch(50% 0.2 30)"]) {
   test(`rejects raw color ${value}`, () => {
@@ -89,10 +89,10 @@ test("accepts unitless zero for absent spacing and borders", () => {
 });
 
 const cli = fileURLToPath(
-  new URL("../../scripts/check-visual-values.mjs", import.meta.url),
+  new URL("../../scripts/check-visual-values.ts", import.meta.url),
 );
 
-function runCli(t, css) {
+function runCli(t: TestContext, css?: string) {
   const cwd = mkdtempSync(join(tmpdir(), "bench-visual-values-"));
   t.after(() => rmSync(cwd, { recursive: true, force: true }));
   if (css !== undefined) {

@@ -3,7 +3,7 @@ import { createHash } from "node:crypto";
 import { existsSync, readFileSync } from "node:fs";
 import test from "node:test";
 
-const assets = [
+const assets: [string, string, string][] = [
   [
     "Fraunces.ttf",
     "177ff6c0f14e5550a3c624247cd1189611d4eb65d000b14944c63d967958abbb",
@@ -47,8 +47,9 @@ test("font foundations expose approved families, weight ranges, swap and role fa
     [0, "Bench Fraunces", "100 900", "Fraunces.ttf"],
     [1, "Bench Manrope", "200 800", "Manrope.ttf"],
     [2, "Bench Plex", "400", "IBMPlexMono-Regular.ttf"],
-  ]) {
+  ] as const) {
     const face = faces[index];
+    assert(face, `missing font face ${index}`);
     assert(face.includes(`font-family: "${family}"`));
     assert(face.includes(`font-weight: ${weight};`));
     assert(face.includes("font-style: normal;"));

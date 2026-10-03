@@ -11,7 +11,17 @@
     "isolatedModules": true,
     "skipLibCheck": true,
     "noEmit": true,
-    "types": ["node", "vitest/globals", "@testing-library/jest-dom"]
+    "types": ["node", "vitest/globals", "@testing-library/jest-dom"],
+    "allowImportingTsExtensions": true,
+    "allowJs": true,
+    "checkJs": true
   },
-  "include": ["src", "tests", ".storybook", "*.ts"]
+  "include": [
+    "src",
+    "tests",
+    ".storybook",
+    "*.ts",
+    "scripts",
+    "public/theme-init.js"
+  ]
 }

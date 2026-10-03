@@ -4,11 +4,22 @@ import { fileURLToPath } from "node:url";
 import { generate, lexer, parse, walk } from "css-tree";
 
 const definitions = new Set(["dist/tokens.css", "dist/fonts.css"]);
-export const exceptions = [];
+export interface VisualException {
+  file: string;
+  selector: string;
+  property: string;
+  value: string;
+  reason: string;
+}
+export const exceptions: VisualException[] = [];
 
-export function visualViolations(source, file, registry = exceptions) {
+export function visualViolations(
+  source: string,
+  file: string,
+  registry = exceptions,
+) {
   if (definitions.has(file)) return [];
-  const errors = [];
+  const errors: string[] = [];
   const tree = parse(source, { positions: true, parseCustomProperty: true });
   walk(tree, {
     visit: "Declaration",
@@ -37,14 +48,19 @@ export function visualViolations(source, file, registry = exceptions) {
         if (
           ["Hash", "Identifier", "Function"].includes(node.type) &&
           lexer.matchType("color", node).matched &&
-          !["currentcolor", "transparent"].includes(node.name?.toLowerCase())
+          !["currentcolor", "transparent"].includes(
+            node.name?.toLowerCase() ?? "",
+          )
         )
           forbidden = true;
       });
-      if (forbidden)
+      if (forbidden) {
+        const location = declaration.loc;
+        if (!location) throw new Error("Declaration source location missing");
         errors.push(
-          `${file}:${declaration.loc.start.line}: ${selector} ${declaration.property}: ${value} requires a token`,
+          `${file}:${location.start.line}: ${selector} ${declaration.property}: ${value} requires a token`,
         );
+      }
     },
   });
   return errors;

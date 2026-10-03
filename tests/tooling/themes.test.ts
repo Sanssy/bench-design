@@ -3,13 +3,21 @@ import { readFileSync } from "node:fs";
 import test from "node:test";
 import { JSDOM } from "jsdom";
 
+interface FoundationRule {
+  style: CSSStyleDeclaration;
+  conditionText?: string;
+  selectorText?: string;
+  cssRules?: FoundationRule[];
+}
+
 const css = () => {
   const dom = new JSDOM("<style></style>");
-  dom.window.document.querySelector("style").textContent = readFileSync(
-    "src/tokens.css",
-    "utf8",
-  );
-  return [...dom.window.document.styleSheets[0].cssRules];
+  const element = dom.window.document.querySelector("style");
+  assert(element, "style element absent");
+  element.textContent = readFileSync("src/tokens.css", "utf8");
+  const sheet = dom.window.document.styleSheets[0];
+  assert(sheet, "stylesheet absent");
+  return [...sheet.cssRules] as unknown as FoundationRule[];
 };
 test("ratified scales are available", () => {
   const style = css()[0]?.style;
@@ -34,15 +42,22 @@ const light = Object.fromEntries(
     .split(" ")
     .map((pair) => pair.split("=")),
 );
-const palette = (style, expected) => {
-  const primitives = css()[0].style;
+const palette = (
+  style: CSSStyleDeclaration,
+  expected: Record<string, string>,
+) => {
+  const root = css()[0];
+  assert(root, "root rule absent");
+  const primitives = root.style;
   for (const [name, value] of Object.entries(expected)) {
     const alias = style.getPropertyValue(`--bd-${name}`);
     assert.equal(primitives.getPropertyValue(alias.slice(4, -1)), value, name);
   }
 };
 test("light roles use the ratified palette", () => {
-  palette(css()[0].style, light);
+  const root = css()[0];
+  assert(root, "root rule absent");
+  palette(root.style, light);
 });
 
 const dark = Object.fromEntries(
@@ -56,21 +71,26 @@ test("system dark applies only without an explicit theme", () => {
     (rule) => rule.conditionText === "(prefers-color-scheme: dark)",
   );
   assert.ok(media, "system dark media absent");
-  assert.equal(media.cssRules[0].selectorText, ":root:not([data-theme])");
-  palette(media.cssRules[0].style, dark);
+  const system = media.cssRules?.[0];
+  assert(system, "system dark rule absent");
+  assert.equal(system.selectorText, ":root:not([data-theme])");
+  palette(system.style, dark);
   const explicit = rules.find(
     (rule) => rule.selectorText === ':root[data-theme="dark"]',
   );
   assert.ok(explicit, "explicit dark absent");
   palette(explicit.style, dark);
-  for (const rule of [media.cssRules[0], explicit]) {
+  for (const rule of [system, explicit]) {
     assert.equal(rule.style.getPropertyValue("color-scheme"), "dark");
     assert.equal(rule.style.getPropertyValue("--bd-divider"), "initial");
   }
-  assert.equal(rules[0].style.getPropertyValue("color-scheme"), "light");
+  const root = rules[0];
+  assert(root, "root rule absent");
+  assert.equal(root.style.getPropertyValue("color-scheme"), "light");
 });
 test("package exports foundations with CSS side effects", () => {
-  const pkg = JSON.parse(readFileSync("package.json", "utf8"));
+  const pkg: { exports: Record<string, string>; sideEffects: string[] } =
+    JSON.parse(readFileSync("package.json", "utf8"));
   for (const name of ["tokens.css", "styles.css", "theme-init.js"])
     assert.equal(pkg.exports[`./${name}`], `./dist/${name}`);
   assert.deepEqual(pkg.sideEffects, ["**/*.css"]);

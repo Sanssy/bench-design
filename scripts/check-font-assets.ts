@@ -2,13 +2,18 @@ import assert from "node:assert/strict";
 import { createHash } from "node:crypto";
 import { existsSync, readFileSync } from "node:fs";
 
-export function checkFontAssets(stylesURL) {
+export function checkFontAssets(stylesURL: URL) {
   const styles = readFileSync(stylesURL, "utf8");
   assert(styles.includes('@import "./fonts.css"'), "fonts import missing");
   const cssURL = new URL("./fonts.css", stylesURL);
   assert(existsSync(cssURL), "packed fonts.css missing");
   const css = readFileSync(cssURL, "utf8");
-  const provenance = JSON.parse(
+  const provenance: {
+    file: string;
+    bytes: number;
+    sha256: string;
+    family: string;
+  }[] = JSON.parse(
     readFileSync(new URL("./fonts/provenance.json", stylesURL), "utf8"),
   );
   const urls = [...css.matchAll(/url\("([^"]+)"\)/g)].map((match) => match[1]);

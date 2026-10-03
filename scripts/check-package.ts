@@ -11,19 +11,20 @@ import {
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { pathToFileURL } from "node:url";
-import { checkFontAssets } from "./check-font-assets.mjs";
+import { checkFontAssets } from "./check-font-assets.ts";
 
 const consumer = mkdtempSync(join(tmpdir(), "bench-design-consumer-"));
-const run = (cmd, args) =>
+const run = (cmd: string, args: string[]) =>
   execFileSync(cmd, args, { cwd: consumer, stdio: "inherit" });
 try {
   execFileSync("pnpm", ["pack", "--pack-destination", consumer], {
     stdio: "inherit",
   });
-  const tarball = join(
-    consumer,
-    readdirSync(consumer).find((name) => name.endsWith(".tgz")),
+  const tarballName = readdirSync(consumer).find((name) =>
+    name.endsWith(".tgz"),
   );
+  assert(tarballName, "packed tarball is missing");
+  const tarball = join(consumer, tarballName);
   const entries = execFileSync("tar", ["-tzf", tarball], { encoding: "utf8" })
     .trim()
     .split("\n");
@@ -50,7 +51,10 @@ try {
   mkdirSync(extracted);
   execFileSync("tar", ["-xzf", tarball, "-C", extracted]);
   checkFontAssets(pathToFileURL(join(extracted, "package/dist/styles.css")));
-  const pkg = JSON.parse(readFileSync("package.json", "utf8"));
+  const pkg: {
+    packageManager: string;
+    devDependencies: { typescript: string };
+  } = JSON.parse(readFileSync("package.json", "utf8"));
   writeFileSync(
     join(consumer, "package.json"),
     JSON.stringify({

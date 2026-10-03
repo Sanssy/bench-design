@@ -55,10 +55,28 @@ ne touche que les ressources du run.
 ## Captures de référence
 
 L'environnement canonique des captures est la CI GitHub (Linux x64, même image
-épinglée). Le workflow qui y produira les captures candidates arrive avec la
-première story stylée (Button S4) ; aucune capture de référence n'existe encore.
-Une capture ne sera commitée qu'après approbation humaine, jamais par mise à
-jour automatique.
+épinglée). Le workflow `Button visual candidates` compare les vingt scénarios
+Button (deux variantes, cinq états, deux thèmes) dans les trois navigateurs.
+La commande est `pnpm exec playwright test --config playwright.visual.config.ts`
+après `pnpm build-storybook`, dans l'image `ci/Containerfile` en Linux x64.
+Les références sont dans `tests/visual/baselines/<navigateur>/`.
+
+Le viewport est 400 × 160, DPR 1 ; les polices locales sont attendues via
+`document.fonts.ready`, les animations désactivées. `threshold: 0` et
+`maxDiffPixels: 0` imposent une égalité exacte dans cet environnement fixé.
+Une référence absente ou un écart fait échouer le job. `updateSnapshots: none`
+interdit la création ou le remplacement automatique des références. L'artefact
+`button-visual-<run>-<attempt>` conserve candidates, diffs, traces et rapport
+pendant 14 jours, même si la comparaison échoue.
+
+Pour approuver : télécharger l'artefact du SHA candidat depuis la CI, examiner
+chaque candidate (variante, état, thème et navigateur) et les diffs éventuels,
+puis obtenir l'approbation explicite du responsable visuel. Après cet accord,
+copier manuellement les seuls fichiers `candidate-<variante>-<état>-<thème>.png`
+approuvés vers le répertoire du navigateur, en retirant le préfixe `candidate-`.
+Inclure le SHA et le lien du run approuvé dans la PR, puis relancer la CI pour
+vérifier ces références. Aucun `--update-snapshots` ni remplacement destiné
+uniquement à masquer un échec. Aucune référence n'est encore approuvée.
 
 ## Compatibilité et portée
 

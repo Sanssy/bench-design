@@ -1,0 +1,23 @@
+name: Button visual candidates
+on: [push, pull_request, workflow_dispatch]
+permissions:
+  contents: read
+jobs:
+  visual:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+      - name: Build pinned Linux x64 image
+        run: docker build --platform linux/amd64 -f ci/Containerfile -t bench-design-visual ci
+      - name: Compare approved references and retain candidates
+        run: docker run --platform linux/amd64 --rm --init --shm-size=1g -v "$PWD:/workspace" bench-design-visual sh -c 'pnpm install --frozen-lockfile && pnpm build-storybook && pnpm exec playwright test --config playwright.visual.config.ts'
+      - name: Upload candidates, diffs and reports even on failure
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: button-visual-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            test-results/visual/
+            playwright-report/
+          if-no-files-found: warn
+          retention-days: 14

@@ -7,13 +7,13 @@ const preview: Preview = {
   initialGlobals: { theme: "system" },
   globalTypes: {
     theme: {
-      description: "Thème",
+      description: "Theme",
       toolbar: {
         icon: "circlehollow",
         items: [
-          { value: "light", title: "Clair" },
-          { value: "dark", title: "Sombre" },
-          { value: "system", title: "Système" },
+          { value: "light", title: "Light" },
+          { value: "dark", title: "Dark" },
+          { value: "system", title: "System" },
         ],
       },
     },

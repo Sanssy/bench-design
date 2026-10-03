@@ -9,10 +9,10 @@ for (const theme of ["light", "dark"] as const) {
       colorScheme: theme === "light" ? "dark" : "light",
     });
     await page.goto(
-      `/iframe.html?id=fondations-couleurs--palette&globals=theme:${theme}`,
+      `/iframe.html?id=foundations-colors--palette&globals=theme:${theme}`,
     );
     await expect(page.locator("html")).toHaveAttribute("data-theme", theme);
-    await expect(page.getByRole("heading", { name: "Couleurs" })).toBeVisible();
+    await expect(page.getByRole("heading", { name: "Colors" })).toBeVisible();
     await expect(page.locator("[data-role]")).toHaveCount(
       new Set([...Object.keys(tokens.light), ...Object.keys(tokens.dark)]).size,
     );
@@ -22,10 +22,10 @@ for (const theme of ["light", "dark"] as const) {
       theme === "light" ? "15.11" : "14.07",
     );
     await expect(page.locator('[data-role="divider"]')).toContainText(
-      theme === "light" ? "#d6d8ce" : "Non ratifié",
+      theme === "light" ? "#d6d8ce" : "Not ratified",
     );
     await page.goto(
-      `/iframe.html?id=fondations-typographie--scale&globals=theme:${theme}`,
+      `/iframe.html?id=foundations-typography--scale&globals=theme:${theme}`,
     );
     await expect(page.locator("[data-family]")).toHaveCount(3);
     await page.evaluate(() => document.fonts.ready);
@@ -56,7 +56,7 @@ for (const theme of ["light", "dark"] as const) {
       "500",
     );
     await page.goto(
-      `/iframe.html?id=fondations-espacements-et-géométrie--scale&globals=theme:${theme}`,
+      `/iframe.html?id=foundations-spacing-geometry--scale&globals=theme:${theme}`,
     );
     for (const space of [4, 8, 12, 16, 24, 32, 48, 64, 96]) {
       await expect(page.locator(`[data-space="${space}"]`)).toHaveCSS(
@@ -80,9 +80,9 @@ test("system theme follows OS live in the iframe", {
 }, async ({ page }) => {
   await page.emulateMedia({ colorScheme: "light" });
   await page.goto(
-    "/iframe.html?id=fondations-couleurs--palette&globals=theme:system",
+    "/iframe.html?id=foundations-colors--palette&globals=theme:system",
   );
-  await expect(page.getByRole("heading", { name: "Couleurs" })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Colors" })).toBeVisible();
   await expect(page.locator("html")).not.toHaveAttribute("data-theme");
   await expect(page.locator("body")).toHaveCSS(
     "background-color",

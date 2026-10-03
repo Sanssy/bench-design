@@ -66,9 +66,9 @@ const site = process.argv.find((arg) => arg.startsWith("--site="))?.slice(7);
 if (site) {
   mkdirSync(site, { recursive: true });
   const pages = [
-    ["Getting started", "documentation-démarrer--page"],
-    ["Principles", "documentation-principes--page"],
-    ["Themes", "documentation-thèmes--page"],
+    ["Getting started", "docs-getting-started--page"],
+    ["Principles", "docs-principles--page"],
+    ["Themes", "docs-themes--page"],
   ] as const;
   writeFileSync(
     `${site}/llms.txt`,

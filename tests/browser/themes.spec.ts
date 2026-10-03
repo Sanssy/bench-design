@@ -74,7 +74,9 @@ const scenarios: ThemeScenario[] = [
 ];
 
 for (const scenario of scenarios) {
-  test(scenario.name, async ({ page }) => {
+  test(scenario.name, {
+    tag: `@theme:${scenario.attribute ?? (scenario.stored === "blocked" ? "system" : scenario.stored) ?? "system"}`,
+  }, async ({ page }) => {
     const errors: string[] = [];
     page.on("pageerror", (error) => errors.push(error.message));
     await renderTheme(page, scenario);
@@ -83,7 +85,9 @@ for (const scenario of scenarios) {
   });
 }
 
-test("OS change is followed live in system mode", async ({ page }) => {
+test("OS change is followed live in system mode", {
+  tag: "@theme:system",
+}, async ({ page }) => {
   await renderTheme(page, {
     name: "system light",
     scheme: "light",

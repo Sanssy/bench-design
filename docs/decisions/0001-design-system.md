@@ -5,10 +5,9 @@ reference approval and publication remain separate decisions.
 
 ## Context and decision
 
-Trame, Bibliothèque + Atelier and Decision Engine share a visual identity and
-generic components. Trame is a separate product; Bibliothèque and Atelier are
-grouped together. `bench-design` has its own repository and initially distributes
-one package without product business logic.
+Several products share a visual identity and generic components.
+`bench-design` has its own repository and initially distributes one package
+without product business logic.
 
 React and TypeScript form the component layer. React Aria Components provides
 accessible interactions; the design system encapsulates its API and remains

@@ -1,7 +1,9 @@
 import { expect, test } from "@playwright/test";
 
 for (const theme of ["light", "dark"] as const) {
-  test(`foundations render in explicit ${theme}`, async ({ page }) => {
+  test(`foundations render in explicit ${theme}`, {
+    tag: `@theme:${theme}`,
+  }, async ({ page }) => {
     await page.emulateMedia({
       colorScheme: theme === "light" ? "dark" : "light",
     });
@@ -70,7 +72,9 @@ for (const theme of ["light", "dark"] as const) {
   });
 }
 
-test("system theme follows OS live in the iframe", async ({ page }) => {
+test("system theme follows OS live in the iframe", {
+  tag: "@theme:system",
+}, async ({ page }) => {
   await page.emulateMedia({ colorScheme: "light" });
   await page.goto(
     "/iframe.html?id=fondations-couleurs--palette&globals=theme:system",

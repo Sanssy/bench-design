@@ -16,25 +16,49 @@ natif de Storybook sert uniquement à vérifier l'outillage.
 | `pnpm test:browser` | Chromium, Firefox, WebKit et axe sur le harnais |
 | `pnpm verify` | Tous les contrôles B1 ci-dessus |
 
-## Environnement navigateur canonique
+## Vérifier ses changements
 
-L'image Playwright est épinglée par version et digest dans `ci/Containerfile`.
-Elle installe aussi les versions exactes de Node et pnpm. Sur macOS, transférer
-le Containerfile à la VM évite le montage partagé du contexte de construction :
+Au quotidien, tout tourne sur la machine de développement. Node est épinglé
+dans `.nvmrc` (`nvm install` puis `nvm use`), les navigateurs Playwright
+s'installent une fois avec `pnpm exec playwright install`.
 
 ```sh
-podman machine ssh 'task_context=$(mktemp -d); cat > "$task_context/Containerfile"; podman build -t bench-design-verify "$task_context"; result=$?; rm -rf "$task_context"; exit "$result"' < ci/Containerfile
-git archive HEAD | podman run --rm -i --init --shm-size=1g bench-design-verify \
-  sh -c 'tar -xf - -C /workspace && pnpm install --frozen-lockfile && pnpm verify'
+pnpm install --frozen-lockfile
+pnpm verify
 ```
 
-Cette commande teste uniquement le commit HEAD : committer les changements à
-vérifier avant de la lancer. Aucun checkout, corpus ou node_modules hôte n'est
-monté ; installation et résultats restent dans le conteneur temporaire.
-Les résultats sont affichés dans le terminal. La CI utilise la même image.
-Le runner isolé et parallèle avec rapports persistants `verify:local` sera livré
-à B3 ; il n'est pas encore disponible. Une sélection vide ou un test non exécuté
-ne vaut jamais succès. Aucune baseline visuelle n'existe à B1.
+`pnpm verify` enchaîne check, test, build, contrôle des valeurs visuelles,
+Storybook, test du package et tests navigateur (Chromium, Firefox, WebKit).
+Une sélection vide ou un test non exécuté ne vaut jamais succès.
+
+## Vérification Linux facultative
+
+`pnpm verify:local` rejoue les mêmes contrôles dans l'image Playwright épinglée
+par version et digest (`ci/Containerfile`), avec Podman et une VM active. Il
+vérifie un instantané du checkout courant, fichiers non commités compris ; le
+checkout, `.git` et `node_modules` ne sont jamais montés.
+
+```sh
+pnpm verify:local -- --help
+pnpm verify:local -- --target button --theme dark --workers 2
+```
+
+Filtres : `--target` (bootstrap, fonts, foundations, themes, button), `--theme`
+(light, dark, system), `--viewport` (desktop, short ; mobile n'a pas encore de
+scénario), `--workers`. Ils se combinent par intersection ; une option
+invalide ou une sélection vide est refusée avant tout démarrage. Les rapports
+restent dans `.verification/runs/<uuid>/` avec un `manifest.json` (instantané,
+sélection, commandes, résultat, nettoyage). Codes de sortie : 0 succès,
+1 assertion échouée, 2 infrastructure, 130 interruption (Ctrl+C). Le nettoyage
+ne touche que les ressources du run.
+
+## Captures de référence
+
+L'environnement canonique des captures est la CI GitHub (Linux x64, même image
+épinglée). Le workflow qui y produira les captures candidates arrive avec la
+première story stylée (Button S4) ; aucune capture de référence n'existe encore.
+Une capture ne sera commitée qu'après approbation humaine, jamais par mise à
+jour automatique.
 
 ## Compatibilité et portée
 
@@ -42,8 +66,6 @@ La toolchain de développement et CI reste Node 24.21.0, pnpm 12.8.1 et
 React/React DOM 19.3.0 exactement. Le package accepte React/React DOM `^19.3.0`
 et Node `>=24.21.0`. Le consommateur isolé teste explicitement les bornes basses ;
 les versions futures admises par ces plages ne sont pas présentées comme testées.
-`pnpm verify` annonce ses contrôles techniques B1. Son succès ne clôt pas la
-revue indépendante et ne valide pas le socle complet : B2/B3 restent à livrer.
 
 ## Règles de contribution
 

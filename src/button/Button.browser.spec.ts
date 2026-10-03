@@ -41,9 +41,9 @@ test("reset restores the native field", async ({ page }) => {
 for (const theme of ["light", "dark"]) {
   for (const name of ["Activer", "Envoyer", "Réinitialiser"]) {
     for (const action of ["pointer", "Enter", "Space"] as const) {
-      test(`disabled ${name} ${action} has no effect in ${theme}`, async ({
-        page,
-      }) => {
+      test(`disabled ${name} ${action} has no effect in ${theme}`, {
+        tag: `@theme:${theme}`,
+      }, async ({ page }) => {
         await page.goto(
           `/iframe.html?id=components-button--disabled&viewMode=story&globals=theme:${theme}`,
         );
@@ -73,9 +73,9 @@ for (const theme of ["light", "dark"]) {
 }
 
 for (const theme of ["light", "dark"]) {
-  test(`keyboard focus uses the focus token, mouse hides it in ${theme}`, async ({
-    page,
-  }) => {
+  test(`keyboard focus uses the focus token, mouse hides it in ${theme}`, {
+    tag: `@theme:${theme}`,
+  }, async ({ page }) => {
     await page.goto(
       `/iframe.html?id=components-button--short-content&viewMode=story&globals=theme:${theme}`,
     );
@@ -120,9 +120,9 @@ for (const theme of ["light", "dark"]) {
   });
 
   for (const scale of [1, 2]) {
-    test(`long content remains reachable in short viewport, ${theme}, scale ${scale}`, async ({
-      page,
-    }) => {
+    test(`long content remains reachable in short viewport, ${theme}, scale ${scale}`, {
+      tag: [`@theme:${theme}`, "@viewport:short"],
+    }, async ({ page }) => {
       await page.setViewportSize({ width: 320, height: 240 });
       await page.goto(
         `/iframe.html?id=components-button--long-content&viewMode=story&globals=theme:${theme}`,

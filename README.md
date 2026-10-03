@@ -4,8 +4,7 @@ Shared React Design System for Trame, Bibliothèque + Atelier and Decision Engin
 React Aria remains encapsulated inside the package.
 
 B1 establishes the executable toolchain. The public ESM entry and declarations
-are deliberately empty: no design system components, tokens, styles or fonts
-are delivered yet. The Storybook technical bootstrap harness exercises tooling;
+are deliberately empty: no design system components are delivered yet. B2 adds the foundations below. The Storybook technical bootstrap harness exercises tooling;
 its tests do not establish accessibility of future design system components.
 
 Use Node 24.21.0 and pnpm 12.8.1, then:
@@ -24,7 +23,7 @@ Browser tests require the pinned Linux image. See [Contributing](CONTRIBUTING.md
 The [foundation decision](docs/decisions/0001-design-system.md) records boundaries
 and versioning. CI and package distribution require no private ecosystem links.
 
-B2 foundations (fonts and visual-value enforcement still pending): import
+B2 foundations (visual-value enforcement still pending): import
 `bench-design/styles.css` once, or `bench-design/tokens.css` for tokens alone.
 Component CSS uses semantic roles (`--bd-surface`, `--bd-text`, `--bd-border`,
 `--bd-border-strong`, `--bd-accent`, `--bd-on-accent`, `--bd-focus`, etc.).
@@ -40,3 +39,13 @@ server attribute wins. For later changes, set `data-theme="light|dark"` explicit
 or remove it for system mode, and persist the same choice if storage is available.
 Without the attribute CSS follows `prefers-color-scheme`, including OS changes.
 The ESM entry has no theme side effects. The initializer also tolerates SSR import.
+
+`styles.css` loads local Bench Fraunces (100–900), Bench Manrope (200–800)
+and Bench Plex (400), with `font-display: swap`. Font roles are
+`--bd-font-editorial` (serif fallback), `--bd-font-ui` (sans-serif),
+`--bd-font-metadata` and `--bd-font-mono` (monospace). Serve the CSS and its
+relative `fonts/` assets together; no CDN or local installed font is required.
+The distributed `fonts/` directory includes original OFL licenses and
+`provenance.json` with source URLs and SHA-256 hashes. Fonts were copied
+unchanged from the approved trame-core reference. Await `document.fonts.ready`
+before captures.

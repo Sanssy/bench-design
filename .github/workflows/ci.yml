@@ -58,6 +58,9 @@ jobs:
   browser:
     needs: image
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: read
     container:
       image: ${{ needs.image.outputs.ref }}
       credentials:

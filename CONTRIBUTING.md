@@ -31,6 +31,5 @@ de run sont des résultats temporaires attribuables à leur invocation.
 - Ne pas modifier du code généré manuellement ni approuver une baseline soi-même.
 - Décrire l'impact consommateur de chaque changement de contrat public.
 
-Le workflow local des agents référence les skills de l'écosystème installé.
-`eco install` dans le checkout principal prépare les liens des nouveaux worktrees ;
-`eco doctor` contrôle leur présence. La CI ne lance aucune de ces commandes privées.
+Le workflow local des agents est décrit dans leurs instructions privées.
+Les commandes produit et la CI fonctionnent indépendamment de cet environnement.

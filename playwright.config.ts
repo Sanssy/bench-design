@@ -2,6 +2,8 @@ import { defineConfig, devices } from "@playwright/test";
 export default defineConfig({
   testDir: ".",
   testMatch: ["tests/browser/**/*.spec.ts", "src/**/*.browser.spec.ts"],
+  // Local agent worktrees live under .claude/ and carry their own specs.
+  testIgnore: ["**/.claude/**"],
   workers: 1,
   forbidOnly: !!process.env.CI,
   retries: 0,

@@ -33,6 +33,7 @@
     "test": "vitest run && node --test tests/tooling/*.test.ts",
     "test:browser": "playwright test",
     "verify": "node scripts/verify.ts",
+    "verify:local": "node scripts/verify-local.ts",
     "check:visual-values": "node scripts/check-visual-values.ts",
     "tokens:generate": "node scripts/generate-tokens.ts",
     "tokens:check": "node scripts/generate-tokens.ts --check"

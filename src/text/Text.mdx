@@ -1,0 +1,37 @@
+import { Meta, Canvas, ArgTypes } from '@storybook/addon-docs/blocks';
+import * as Stories from './Text.stories';
+
+<Meta of={Stories} />
+
+# Text
+
+Import `Text` from `bench-design` and load `bench-design/styles.css` once.
+
+## Usage
+
+Use paragraphs for reading and `as="span"` for inline content.
+Size defaults to ui; label and mono always use meta size.
+
+- Do use muted text for secondary information.
+- Avoid label styling for long passages; it renders uppercase metadata.
+
+## API
+
+<ArgTypes of={Stories} />
+
+## Examples
+
+<Canvas of={Stories.Paragraph} />
+<Canvas of={Stories.Body} />
+<Canvas of={Stories.Lead} />
+<Canvas of={Stories.Metadata} />
+<Canvas of={Stories.Muted} />
+<Canvas of={Stories.Label} />
+<Canvas of={Stories.Mono} />
+
+Use the theme selector to inspect light and dark themes.
+
+## Accessibility
+
+Native p/span semantics preserve reading order. Text has no keyboard interaction.
+Label is visual metadata, not a form label; provide a native label for inputs.

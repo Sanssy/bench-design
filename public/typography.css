@@ -27,3 +27,37 @@
 .bd-heading[data-size="ui"] {
   font-size: var(--bd-size-ui);
 }
+.bd-text {
+  font-family: var(--bd-font-ui);
+  font-weight: var(--bd-weight-regular);
+  line-height: var(--bd-line-reading);
+  color: var(--bd-text);
+}
+.bd-text[data-size="lead"] {
+  font-size: var(--bd-size-lead);
+}
+.bd-text[data-size="body"] {
+  font-size: var(--bd-size-body);
+}
+.bd-text[data-size="ui"] {
+  font-size: var(--bd-size-ui);
+}
+.bd-text[data-size="meta"] {
+  line-height: var(--bd-line-normal);
+}
+.bd-text[data-size="meta"],
+.bd-text[data-variant="label"],
+.bd-text[data-variant="mono"] {
+  font-size: var(--bd-size-meta);
+}
+.bd-text[data-variant="label"] {
+  font-family: var(--bd-font-metadata);
+  text-transform: uppercase;
+  letter-spacing: var(--bd-tracking-label);
+}
+.bd-text[data-variant="mono"] {
+  font-family: var(--bd-font-mono);
+}
+.bd-text[data-tone="muted"] {
+  color: var(--bd-text-muted);
+}

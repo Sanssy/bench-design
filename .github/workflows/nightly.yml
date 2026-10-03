@@ -58,7 +58,10 @@ jobs:
           ref: main
       - run: pnpm install --frozen-lockfile
       - run: pnpm build-storybook
+      # Firefox refuses to start as root when $HOME belongs to another user.
       - run: pnpm test:browser
+        env:
+          HOME: /root
       - name: Upload candidates, diffs and reports even on failure
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2

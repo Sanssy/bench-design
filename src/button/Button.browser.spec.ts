@@ -1,11 +1,11 @@
 import { expect, test } from "@playwright/test";
 
-for (const theme of ["light", "dark"]) {
-  test(`disabled Button is inert and unfocusable in ${theme}`, {
-    tag: [`@theme:${theme}`, "@component:button"],
-  }, async ({ page }) => {
+test("disabled Button is inert and unfocusable in both themes", {
+  tag: ["@theme:light", "@theme:dark", "@component:button"],
+}, async ({ page }) => {
+  for (const theme of ["light", "dark"]) {
     await page.goto(
-      `/iframe.html?id=form-button--disabled&viewMode=story&globals=theme:${theme}`,
+      `/iframe.html?id=form-button--disabled&viewMode=story&globals=a11y.manual:!true;theme:${theme}`,
     );
     const button = page.getByRole("button", {
       name: "Save",
@@ -30,15 +30,15 @@ for (const theme of ["light", "dark"]) {
     await page.keyboard.press("Space");
     await expect(button).not.toBeFocused();
     await expect(button).toHaveAttribute("data-clicks", "0");
-  });
-}
+  }
+});
 
-for (const theme of ["light", "dark"]) {
-  test(`keyboard focus uses the focus token, mouse hides it in ${theme}`, {
-    tag: [`@theme:${theme}`, "@component:button"],
-  }, async ({ page }) => {
+test("keyboard focus uses the focus token, mouse hides it in both themes", {
+  tag: ["@theme:light", "@theme:dark", "@component:button"],
+}, async ({ page }) => {
+  for (const theme of ["light", "dark"]) {
     await page.goto(
-      `/iframe.html?id=form-button--primary&viewMode=story&globals=theme:${theme}`,
+      `/iframe.html?id=form-button--primary&viewMode=story&globals=a11y.manual:!true;theme:${theme}`,
     );
     const button = page.getByRole("button", {
       name: "Save",
@@ -80,15 +80,17 @@ for (const theme of ["light", "dark"]) {
     await expect(button).not.toHaveAttribute("data-hovered");
     await expect(button).not.toHaveAttribute("data-focus-visible");
     await expect(button).toHaveCSS("outline-style", "none");
-  });
+  }
+});
 
-  for (const scale of [1, 2]) {
-    test(`long content remains reachable in short viewport, ${theme}, scale ${scale}`, {
-      tag: [`@theme:${theme}`, "@viewport:short", "@component:button"],
-    }, async ({ page }) => {
+for (const theme of ["light", "dark"]) {
+  test(`long content remains reachable in short viewport, ${theme}`, {
+    tag: [`@theme:${theme}`, "@viewport:short", "@component:button"],
+  }, async ({ page }) => {
+    for (const scale of [1, 2]) {
       await page.setViewportSize({ width: 320, height: 240 });
       await page.goto(
-        `/iframe.html?id=form-button--primary&viewMode=story&globals=theme:${theme}`,
+        `/iframe.html?id=form-button--primary&viewMode=story&globals=a11y.manual:!true;theme:${theme}`,
       );
       const button = page.getByRole("button");
       // The wrap rule is pure CSS: swap in a long unbreakable label in place.
@@ -115,18 +117,17 @@ for (const theme of ["light", "dark"]) {
       await expect(button).toBeFocused();
       await expect(button).toContainText("UnbrokenReference");
       await button.click({ trial: true });
-    });
-  }
+    }
+  });
 }
 
 for (const theme of ["light", "dark"]) {
   for (const variant of ["primary", "secondary"]) {
     for (const state of ["rest", "hover", "pressed", "focus", "disabled"]) {
       test(`${variant} ${state} visual tokens in ${theme}`, {
-        tag: [`@theme:${theme}`, "@component:button"],
-      }, async ({ page, browserName }) => {
         // Chromium is covered pixel-exactly by tests/visual captures.
-        test.skip(browserName === "chromium", "covered by visual captures");
+        tag: [`@theme:${theme}`, "@component:button", "@covered-by-captures"],
+      }, async ({ page }) => {
         await page.goto(
           `/iframe.html?id=form-button--${state === "disabled" ? "disabled" : variant}&viewMode=story&globals=theme:${theme}&args=variant:${variant}`,
         );

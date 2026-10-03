@@ -2,7 +2,12 @@ import { fileURLToPath } from "node:url";
 import { defineConfig, devices } from "@playwright/test";
 
 const browsers = [
-  { name: "chromium", use: { ...devices["Desktop Chrome"] } },
+  // Chromium state tests are covered pixel-exactly by tests/visual captures.
+  {
+    name: "chromium",
+    use: { ...devices["Desktop Chrome"] },
+    grepInvert: /@covered-by-captures/,
+  },
   { name: "firefox", use: { ...devices["Desktop Firefox"] } },
   { name: "webkit", use: { ...devices["Desktop Safari"] } },
 ];

@@ -59,8 +59,9 @@ open and review is refused. Each story is a usage example; interaction states
 are exercised by driving those examples, without test-only stories. Behavior
 observable without a browser belongs in unit tests.
 
-Component stories are adjacent (`src/**/*.stories.tsx`); `tests/fixtures/`
-remains a technical harness. Foundation pages document colors, typography,
+Component stories are adjacent (`src/**/*.stories.tsx`). Automated WCAG 2 A/AA
+checks cover Button examples, Foundations and Docs pages in light and dark.
+Foundation pages document colors, typography,
 spacing, geometry and themes. Storybook loads distributed CSS and offers light,
 dark and system themes; its commands build the package.
 

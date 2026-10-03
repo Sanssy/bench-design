@@ -5,6 +5,8 @@ import { Button } from "./Button";
 
 export default {
   title: "Tests/Button",
+  // Harness for browser and visual tests: reachable by URL, hidden from the sidebar.
+  tags: ["!dev", "!autodocs"],
   component: Button,
   args: { children: "Activer" },
   parameters: {

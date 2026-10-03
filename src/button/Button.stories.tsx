@@ -12,6 +12,11 @@ type Story = StoryObj<typeof Button>;
 export const Primary: Story = { args: { variant: "primary" } };
 export const Secondary: Story = { args: { variant: "secondary" } };
 
+export const Disabled: Story = {
+  name: "Désactivé",
+  args: { isDisabled: true },
+};
+
 export const Variants: Story = {
   name: "Variantes",
   render: () => (

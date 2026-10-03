@@ -1,3 +1,4 @@
+import { fileURLToPath } from "node:url";
 import { defineConfig, devices } from "@playwright/test";
 
 const browsers = [
@@ -16,7 +17,7 @@ export default defineConfig({
   testDir: ".",
   testMatch: ["tests/browser/**/*.spec.ts", "src/**/*.browser.spec.ts"],
   // Local agent worktrees live under .claude/ and carry their own specs.
-  testIgnore: ["**/.claude/**"],
+  testIgnore: [`${fileURLToPath(new URL(".claude/", import.meta.url))}**`],
   // CI runners have 4 vCPUs; local runs keep one worker (memory policy, B3).
   workers: process.env.CI ? 4 : 1,
   forbidOnly: !!process.env.CI,

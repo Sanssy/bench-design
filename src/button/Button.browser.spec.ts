@@ -2,7 +2,7 @@ import { expect, test } from "@playwright/test";
 
 for (const theme of ["light", "dark"]) {
   test(`disabled Button is inert and unfocusable in ${theme}`, {
-    tag: `@theme:${theme}`,
+    tag: [`@theme:${theme}`, "@component:button"],
   }, async ({ page }) => {
     await page.goto(
       `/iframe.html?id=form-button--disabled&viewMode=story&globals=theme:${theme}`,
@@ -35,7 +35,7 @@ for (const theme of ["light", "dark"]) {
 
 for (const theme of ["light", "dark"]) {
   test(`keyboard focus uses the focus token, mouse hides it in ${theme}`, {
-    tag: `@theme:${theme}`,
+    tag: [`@theme:${theme}`, "@component:button"],
   }, async ({ page }) => {
     await page.goto(
       `/iframe.html?id=form-button--primary&viewMode=story&globals=theme:${theme}`,
@@ -84,7 +84,7 @@ for (const theme of ["light", "dark"]) {
 
   for (const scale of [1, 2]) {
     test(`long content remains reachable in short viewport, ${theme}, scale ${scale}`, {
-      tag: [`@theme:${theme}`, "@viewport:short"],
+      tag: [`@theme:${theme}`, "@viewport:short", "@component:button"],
     }, async ({ page }) => {
       await page.setViewportSize({ width: 320, height: 240 });
       await page.goto(
@@ -123,7 +123,7 @@ for (const theme of ["light", "dark"]) {
   for (const variant of ["primary", "secondary"]) {
     for (const state of ["rest", "hover", "pressed", "focus", "disabled"]) {
       test(`${variant} ${state} visual tokens in ${theme}`, {
-        tag: `@theme:${theme}`,
+        tag: [`@theme:${theme}`, "@component:button"],
       }, async ({ page, browserName }) => {
         // Chromium is covered pixel-exactly by tests/visual captures.
         test.skip(browserName === "chromium", "covered by visual captures");

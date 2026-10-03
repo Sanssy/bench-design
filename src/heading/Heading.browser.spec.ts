@@ -8,7 +8,7 @@ for (const theme of ["light", "dark"]) {
     ["detail", "ui"],
   ] as const) {
     test(`Heading ${size} typography in ${theme}`, {
-      tag: `@theme:${theme}`,
+      tag: [`@theme:${theme}`, "@component:heading"],
     }, async ({ page }) => {
       await page.goto(
         `/iframe.html?id=typography-heading--${story}&viewMode=story&globals=theme:${theme}`,
@@ -56,7 +56,7 @@ for (const theme of ["light", "dark"]) {
 // The rendered tag does not depend on the theme: check it once.
 for (const level of [1, 2, 3, 4, 5, 6]) {
   test(`Heading level ${level} uses its native tag`, {
-    tag: "@theme:light",
+    tag: ["@theme:light", "@component:heading"],
   }, async ({ page }) => {
     await page.goto(
       `/iframe.html?id=typography-heading--article&viewMode=story&globals=theme:light&args=level:${level}`,

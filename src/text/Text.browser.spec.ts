@@ -11,7 +11,7 @@ for (const theme of ["light", "dark"]) {
     ["muted", "ui", "default", "muted", "P"],
   ] as const) {
     test(`Text ${story} typography in ${theme}`, {
-      tag: `@theme:${theme}`,
+      tag: [`@theme:${theme}`, "@component:text"],
     }, async ({ page }) => {
       await page.goto(
         `/iframe.html?id=typography-text--${story}&viewMode=story&globals=theme:${theme}`,

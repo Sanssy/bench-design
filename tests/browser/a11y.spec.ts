@@ -31,7 +31,10 @@ const pages = [
 for (const theme of ["light", "dark"] as const) {
   for (const [id, role, name] of pages) {
     test(`WCAG 2 A/AA: ${id} in ${theme}`, {
-      tag: `@theme:${theme}`,
+      tag: [
+        `@theme:${theme}`,
+        `@component:${id.split("--")[0]?.split("-").at(-1)}`,
+      ],
     }, async ({ page }) => {
       await page.emulateMedia({
         colorScheme: theme === "light" ? "dark" : "light",

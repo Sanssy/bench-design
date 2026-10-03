@@ -9,3 +9,6 @@ storybook-static/
 coverage/
 test-results/
 playwright-report/
+
+# Per-run verification snapshots and evidence
+.verification/

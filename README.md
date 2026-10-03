@@ -8,6 +8,13 @@ Preparation stage: no component implementation or runnable toolchain yet.
 The local private corpus carries the approved decisions, proposed Button pilot
 and execution workflow. Repository CI must not depend on private local links.
 
+## Repository decisions
+
+The [foundation decision](docs/decisions/0001-design-system.md) records the stack,
+boundaries, distribution and versioning. [Contributing](CONTRIBUTING.md) lists the
+planned quality gates and their current availability. Both are readable in a fresh
+clone; private plans and skills remain local.
+
 ## Local preparation
 
 After installing the private ecosystem with `eco install`, open

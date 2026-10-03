@@ -10,13 +10,13 @@ Déclenche une action avec un libellé visible. Importer `Button` depuis
 
 ## Aperçu
 
-<Canvas of={ButtonStories.ShortContent} />
+<Canvas of={ButtonStories.Variants} />
 
 ## Quand l’utiliser
 
 Pour déclencher une action ; `primary` désigne l’action principale et
-`secondary` une action secondaire (valeur par défaut). Leur apparence finale
-sera livrée en S4. Pour naviguer vers une destination, utiliser un lien.
+`secondary` une action secondaire (valeur par défaut). Un seul `primary` par
+zone d’action. Pour naviguer vers une destination, utiliser un lien.
 Éviter les libellés ambigus et les boutons sans texte visible.
 
 ## API TypeScript
@@ -30,13 +30,26 @@ Table générée depuis le composant TypeScript, sans liste parallèle de props.
 
 ## Exemples
 
-<Canvas of={ButtonStories.Activation} />
+<Canvas of={ButtonStories.Primary} />
+<Canvas of={ButtonStories.Secondary} />
 <Canvas of={ButtonStories.Disabled} />
-<Canvas of={ButtonStories.LongContent} />
-<Canvas of={ButtonStories.AccessibleName} />
-<Canvas of={ButtonStories.RestoreFocus} />
 
 Le sélecteur de thème permet de parcourir les exemples en clair et sombre.
+
+Restaurer le focus avec la ref :
+
+```tsx
+const ref = useRef<HTMLButtonElement>(null);
+<Button ref={ref}>Enregistrer</Button>
+<Button onPress={() => ref.current?.focus()}>Rendre le focus</Button>
+```
+
+Compléter le nom accessible sans masquer le texte visible :
+
+```tsx
+<span id="save-label">Enregistrer le document</span>
+<Button aria-labelledby="save-label">Enregistrer</Button>
+```
 
 ## Clavier et ARIA
 
@@ -50,8 +63,8 @@ Le contenu donne le nom accessible. `aria-labelledby` a priorité sur
 nom calculé : « Enregistrer le document » complète « Enregistrer » ;
 « Valider » le remplace et viole WCAG 2.5.3. Le DS ne réécrit pas les noms.
 
-## Ce qui reste à livrer
+## Hors du périmètre
 
-Styles des variantes, états visuels finaux et baselines approuvées : S4.
-Loading, toggle, icon-only et routing sont exclus de ce pilote.
-Les règles métier et workflows de formulaire appartiennent aux produits.
+Ghost, danger, taille compacte, icône, chargement, bascule et routage ne sont
+pas livrés. Les règles métier et workflows de formulaire appartiennent aux
+produits.

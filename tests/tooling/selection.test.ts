@@ -151,7 +151,7 @@ test("CLI validates before loading dependencies and explains missing dependencie
       [["--", "--help"], 0, /Usage:/],
       [["--workers", "0"], 2, /positive safe integer/],
       [["--target", "fonts", "--theme", "dark"], 2, /Empty browser selection/],
-      [[], 2, /pnpm install/],
+      [[], 2, /Missing dependencies: run `pnpm install` before verify:local\./],
     ] as const) {
       const result = spawnSync(
         process.execPath,

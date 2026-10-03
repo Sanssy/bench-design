@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "type": "module",
-  "description": "Shared React design system \u2014 executable bootstrap, no components yet",
+  "description": "Shared React design system — executable bootstrap, no components yet",
   "packageManager": "pnpm@12.8.1",
   "engines": {
     "node": ">=24.21.0"
@@ -18,21 +18,24 @@
     },
     "./tokens.css": "./dist/tokens.css",
     "./styles.css": "./dist/styles.css",
-    "./theme-init.js": "./dist/theme-init.js"
+    "./theme-init.js": "./dist/theme-init.js",
+    "./tokens.json": "./dist/tokens.json"
   },
   "sideEffects": [
     "**/*.css"
   ],
   "scripts": {
-    "build": "vite build && tsc -p tsconfig.build.json && node scripts/build-foundations.ts",
+    "build": "pnpm tokens:check && vite build && tsc -p tsconfig.build.json && node scripts/build-foundations.ts && node scripts/build-agent-docs.ts",
     "test:package": "node scripts/check-package.ts",
     "storybook": "pnpm build && storybook dev --port 6006 --host 127.0.0.1 --no-open --disable-telemetry",
-    "build-storybook": "pnpm build && storybook build --disable-telemetry",
-    "check": "biome check . && tsc --noEmit && node scripts/check-boundaries.ts && node scripts/check-javascript.ts && node scripts/check-stories.ts",
+    "build-storybook": "pnpm build && storybook build --disable-telemetry && node scripts/build-agent-docs.ts --site=storybook-static",
+    "check": "biome check . && tsc --noEmit && node scripts/check-boundaries.ts && node scripts/check-javascript.ts && node scripts/check-stories.ts && pnpm tokens:check",
     "test": "vitest run && node --test tests/tooling/*.test.ts",
     "test:browser": "playwright test",
     "verify": "node scripts/verify.ts",
-    "check:visual-values": "node scripts/check-visual-values.ts"
+    "check:visual-values": "node scripts/check-visual-values.ts",
+    "tokens:generate": "node scripts/generate-tokens.ts",
+    "tokens:check": "node scripts/generate-tokens.ts --check"
   },
   "peerDependencies": {
     "react": "^19.3.0",

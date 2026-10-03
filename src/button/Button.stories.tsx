@@ -8,6 +8,7 @@ export default {
   component: Button,
   args: { children: "Activer" },
   parameters: {
+    layout: "centered",
     docs: {
       description: {
         component:
@@ -138,6 +139,8 @@ const visualStory = (
   variant: "primary" | "secondary",
   state: "rest" | "hover" | "pressed" | "focus" | "disabled",
 ): Story => ({
+  // Approved visual references were captured with the padded layout.
+  parameters: { layout: "padded" },
   args: { variant, children: "Enregistrer", isDisabled: state === "disabled" },
   play: async ({ canvasElement }) => {
     const button = canvasElement.querySelector("button");

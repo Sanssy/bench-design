@@ -85,7 +85,7 @@ try {
   );
   writeFileSync(
     join(consumer, "index.tsx"),
-    `import { Button, type ButtonProps } from "bench-design";
+    `import { Button, type ButtonProps, Heading, type HeadingProps } from "bench-design";
 import { createRef } from "react";
 const props: ButtonProps = { children: "Save", type: "submit", variant: "primary", ref: createRef<HTMLButtonElement>(), onPress: () => {}, isDisabled: false, "aria-label": "Save document", "aria-labelledby": "save-label" };
 const button = <Button {...props} />;
@@ -99,7 +99,13 @@ const link = <Button href="/">Save</Button>;
 const variant = <Button variant="tertiary">Save</Button>;
 // @ts-expect-error unapproved type
 const type = <Button type="link">Save</Button>;
-void [button, missingContent, click, link, variant, type];
+const headingProps: HeadingProps = { level: 2, size: "ui", children: "Details" };
+const heading = <Heading {...headingProps} />;
+// @ts-expect-error level is required
+const missingLevel = <Heading>Details</Heading>;
+// @ts-expect-error unapproved size
+const headingSize = <Heading level={2} size="hero">Details</Heading>;
+void [button, missingContent, click, link, variant, type, heading, missingLevel, headingSize];
 `,
   );
   run("pnpm", ["install", "--ignore-scripts", "--strict-peer-dependencies"]);
@@ -119,7 +125,7 @@ void [button, missingContent, click, link, variant, type];
   run("node", [
     "--input-type=module",
     "-e",
-    'import assert from "node:assert/strict"; import * as ds from "bench-design"; assert.deepEqual(Object.keys(ds), ["Button"]); assert.equal(typeof ds.Button, "function");',
+    'import assert from "node:assert/strict"; import * as ds from "bench-design"; assert.deepEqual(Object.keys(ds), ["Button", "Heading"]); assert.equal(typeof ds.Button, "function"); assert.equal(typeof ds.Heading, "function");',
   ]);
   run("node", [
     "--input-type=module",
@@ -139,7 +145,7 @@ void [button, missingContent, click, link, variant, type];
     pathToFileURL(join(consumer, "node_modules/bench-design/dist/styles.css")),
   );
   console.log(
-    "Distribution PASS: isolated tarball ESM/types, Button public API, no private files",
+    "Distribution PASS: isolated tarball ESM/types, Button and Heading public API, no private files",
   );
 } finally {
   rmSync(consumer, { recursive: true, force: true });

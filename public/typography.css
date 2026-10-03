@@ -1,0 +1,29 @@
+.bd-heading {
+  font-family: var(--bd-font-editorial);
+  font-weight: var(--bd-weight-editorial);
+  font-variation-settings:
+    "SOFT" var(--bd-editorial-soft),
+    "WONK" var(--bd-editorial-wonk),
+    "opsz" var(--bd-editorial-opsz);
+  letter-spacing: var(--bd-tracking-tight);
+  line-height: var(--bd-line-tight);
+}
+.bd-heading[data-size="ui"] {
+  font-family: var(--bd-font-ui);
+  font-weight: var(--bd-weight-semibold);
+  font-variation-settings: normal;
+  letter-spacing: normal;
+  line-height: var(--bd-line-normal);
+}
+.bd-heading[data-size="display"] {
+  font-size: var(--bd-size-display);
+}
+.bd-heading[data-size="heading"] {
+  font-size: var(--bd-size-heading);
+}
+.bd-heading[data-size="lead"] {
+  font-size: var(--bd-size-lead);
+}
+.bd-heading[data-size="ui"] {
+  font-size: var(--bd-size-ui);
+}

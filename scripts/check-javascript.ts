@@ -11,6 +11,7 @@ const excludedDirectories = new Set([
   "test-results",
   "playwright-report",
   ".verification",
+  ".claude",
 ]);
 const files: string[] = [];
 function collect(directory: string) {

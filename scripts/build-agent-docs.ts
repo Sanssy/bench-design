@@ -1,32 +1,32 @@
 import { copyFileSync, mkdirSync, writeFileSync } from "node:fs";
 import tokens from "../src/tokens.json" with { type: "json" };
 
-const guide = `# bench-design — intégration
+const guide = `# bench-design — integration
 
-Fondations disponibles : tokens, CSS, polices locales et thèmes. Button expose son API S1 (activation et types natifs), sans styles finaux.
-Manifeste components.json et serveur MCP non livrés. Package privé ;
-aucune publication npm disponible.
+Available foundations: tokens, CSS, local fonts and themes. Button exposes its S1 API (activation and native types), without final styles.
+The components.json manifest and MCP server are not available. The package is private;
+no npm release is available.
 
-## Imports autorisés
+## Supported imports
 
-- Choisir bench-design/styles.css (tokens et polices) ou bench-design/tokens.css.
-- Button et ButtonProps : import depuis bench-design ; children obligatoire,
-  onPress pour les actions, type button par défaut, submit/reset natifs.
-  API : isDisabled, variant primary/secondary (secondary par défaut), ref DOM,
-  aria-label et aria-labelledby. Aucun passthrough HTML général.
-- Catalogue : bench-design/tokens.json ; sous Node, utiliser with { type: "json" }.
-  Les bundlers n’exigent pas cet attribut.
-- Servir bench-design/theme-init.js depuis l’origine de l’application : script
-  classique bloquant dans head avant CSS et React, sans async ni defer.
-- Servir les ressources fonts/ relatives aux styles, licences comprises.
-- Ne pas importer src/, les fichiers internes ou des composants non exportés.
+- Choose bench-design/styles.css (tokens and fonts) or bench-design/tokens.css.
+- Import Button and ButtonProps from bench-design; children is required,
+  use onPress for actions, type defaults to button, with native submit/reset.
+  API: isDisabled, primary/secondary variants (secondary by default), DOM ref,
+  aria-label and aria-labelledby. No general HTML attribute passthrough.
+- Catalog: bench-design/tokens.json; in Node, use with { type: "json" }.
+  Bundlers do not require this attribute.
+- Serve bench-design/theme-init.js from the application origin as a
+  blocking classic script in head before CSS and React, without async or defer.
+- Serve fonts/ assets relative to the styles, including their licenses.
+- Do not import src/, internal files or components that are not exported.
 
-## Règles
+## Rules
 
-Utiliser les rôles sémantiques --bd-* ; jamais les palettes --bd-color-* dans
-les composants, ni de valeur visuelle en dur. Les usages ci-dessous viennent de
-tokens.json et sont régénérés à chaque build. Les règles métier restent dans
-l’application ; les corrections visuelles partagées appartiennent aux primitives.
+Use semantic --bd-* roles; never use --bd-color-* palettes in components
+or hardcoded visual values. The guidance below comes from tokens.json
+and is regenerated on every build. Business rules belong in the application;
+shared visual fixes belong in the primitives.
 
 ${Object.entries(tokens)
   .filter(([name]) => ["base", "light", "dark"].includes(name))
@@ -43,20 +43,20 @@ ${Object.entries(tokens)
   )
   .join("\n\n")}
 
-## Thèmes et accessibilité
+## Themes and accessibility
 
-Sur html, data-theme="light" ou "dark" fixe le thème ; sans attribut, le système
-choisit. theme-init.js lit localStorage["bench-design-theme"] et préserve un
-attribut serveur existant. Choix système, absent ou invalide et stockage
-inaccessible : aucun attribut ajouté. Pour changer le choix ensuite, modifier
-l’attribut (le retirer pour system) et persister le choix si possible.
+On html, data-theme="light" or "dark" sets the theme; without the attribute,
+the system chooses. theme-init.js reads localStorage["bench-design-theme"] and
+preserves an existing server attribute. For system, missing or invalid choices,
+or inaccessible storage, no attribute is added. To change the choice later,
+update the attribute (remove it for system) and persist the choice if possible.
 
-Conserver HTML sémantique, noms accessibles, clavier et focus visible. Vérifier
-l’ordre du focus, le contraste du texte courant (4,5:1), des contours nécessaires
-aux contrôles et du focus (3:1), dans le contexte réel. Button encapsule React Aria ; focus, noms explicites, disabled et styles
-restent à valider dans les tranches suivantes.
-Séparateur décoratif sombre, rôle d’erreur et thème impression sont différés :
-ne pas inventer ces valeurs. Attendre document.fonts.ready avant les captures.
+Keep semantic HTML, accessible names, keyboard support and visible focus. Check
+focus order, body text contrast (4.5:1), required control borders and focus
+contrast (3:1) in the actual context. Button wraps React Aria; focus, explicit
+names, disabled states and styles still need validation in later slices.
+A dark decorative divider, error role and print theme are deferred:
+do not invent these values. Wait for document.fonts.ready before screenshots.
 `;
 
 mkdirSync("dist", { recursive: true });
@@ -66,13 +66,13 @@ const site = process.argv.find((arg) => arg.startsWith("--site="))?.slice(7);
 if (site) {
   mkdirSync(site, { recursive: true });
   const pages = [
-    ["Démarrer", "documentation-démarrer--page"],
-    ["Principes", "documentation-principes--page"],
-    ["Thèmes", "documentation-thèmes--page"],
+    ["Getting started", "documentation-démarrer--page"],
+    ["Principles", "documentation-principes--page"],
+    ["Themes", "documentation-thèmes--page"],
   ] as const;
   writeFileSync(
     `${site}/llms.txt`,
-    `# bench-design\n\n> Design system React : fondations, tokens DTCG, polices locales et thèmes.\n\nPackage privé : API Button S1 disponible, styles finaux et publication npm différés.\n\n## Documentation\n\n${pages.map(([label, id]) => `- [${label}](./?path=/story/${encodeURIComponent(id)})`).join("\n")}\n- [Tokens DTCG](./tokens.json): valeurs, descriptions et règles d’usage.\n`,
+    `# bench-design\n\n> React design system: foundations, DTCG tokens, local fonts and themes.\n\nPrivate package: Button S1 API available; final styles and npm release deferred.\n\n## Documentation\n\n${pages.map(([label, id]) => `- [${label}](./?path=/story/${encodeURIComponent(id)})`).join("\n")}\n- [DTCG tokens](./tokens.json): values, descriptions and usage rules.\n`,
   );
   copyFileSync("src/tokens.json", `${site}/tokens.json`);
 }

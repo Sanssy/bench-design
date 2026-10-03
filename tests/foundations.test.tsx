@@ -7,7 +7,7 @@ describe("foundation documentation", () => {
     render(<Palette theme="light" />);
     expect(screen.getByRole("heading", { name: "Surfaces" })).toBeVisible();
     expect(
-      screen.getByRole("heading", { name: "Focus et sélection" }),
+      screen.getByRole("heading", { name: "Focus and selection" }),
     ).toBeVisible();
   });
   it("provides a readable type scale", () => {

@@ -4,10 +4,7 @@ import { expect, test } from "@playwright/test";
 
 type Story = { id: string; type: string };
 const index = JSON.parse(
-  readFileSync(
-    process.env.BD_STORY_INDEX ?? "storybook-static/index.json",
-    "utf8",
-  ),
+  readFileSync("storybook-static/index.json", "utf8"),
 ) as { entries: Record<string, Story> };
 
 for (const { id, type } of Object.values(index.entries)) {

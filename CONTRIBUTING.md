@@ -50,10 +50,10 @@ style cases without dropping assertions. Chromium state tests already covered by
 visual captures carry `@covered-by-captures`, which the Chromium project skips;
 Firefox and WebKit still run them.
 
-The tooling budget test lists Chromium tests without starting a browser. It
-creates a fresh Storybook index in a temporary directory, so it also works before
-a build. Normal browser runs read `storybook-static/index.json`; build Storybook
-first. Adding stories consumes budget automatically. A budget failure points here.
+The tooling budget test lists the Chromium component tests in `src/` without
+starting a browser or needing a build. The axe spec reads
+`storybook-static/index.json`, so build Storybook before browser runs. A budget
+failure points here.
 
 ## Optional Linux verification
 

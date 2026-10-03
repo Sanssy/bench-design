@@ -6,7 +6,7 @@ export default defineConfig({
     lib: { entry: "src/index.ts", formats: ["es"], fileName: () => "index.js" },
     emptyOutDir: true,
     rolldownOptions: {
-      external: ["react", "react-dom", "react-aria-components"],
+      external: [/^(react|react-dom|react-aria-components)(\/|$)/],
     },
   },
 });

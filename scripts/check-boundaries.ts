@@ -77,7 +77,9 @@ if (
   resolve(process.argv[1]) === fileURLToPath(import.meta.url)
 ) {
   const errors = globSync("src/**/*.{ts,tsx}")
-    .filter((file) => !file.endsWith(".stories.tsx"))
+    .filter(
+      (file) => !/\.(?:stories\.tsx|test\.tsx|browser\.spec\.ts)$/.test(file),
+    )
     .flatMap((file) => violations(readFileSync(file, "utf8"), resolve(file)));
   for (const error of errors) console.error(error);
   if (errors.length) process.exitCode = 1;

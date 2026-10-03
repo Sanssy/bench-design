@@ -1,9 +1,54 @@
-import { copyFileSync, mkdirSync, writeFileSync } from "node:fs";
+import { copyFileSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
+import manifest from "../components.json" with { type: "json" };
 import tokens from "../src/tokens.json" with { type: "json" };
+
+const components = manifest.components.map((component) => {
+  const prefixes = component.stories.map((story) => {
+    const path = new URL(
+      story.href,
+      "https://storybook.local",
+    ).searchParams.get("path");
+    const match = path?.match(/^\/story\/(.+)--[^/]+$/);
+    if (!match)
+      throw new Error(
+        `Invalid story href for ${component.name}: ${story.href}`,
+      );
+    return match[1];
+  });
+  if (!prefixes.length || new Set(prefixes).size !== 1) {
+    throw new Error(`Expected one story title prefix for ${component.name}`);
+  }
+  return { ...component, docsId: `${prefixes[0]}--docs` };
+});
+const code = (value: string) => `\`${value.replaceAll("|", "\\|")}\``;
+const componentGuide = components
+  .map(
+    (component) =>
+      `### ${component.name}\n\n${code(component.import)}\n\n${component.description}\n\n` +
+      "| Prop | Type | Required | Default |\n| --- | --- | --- | --- |\n" +
+      component.props
+        .map(
+          (prop) =>
+            `| ${code(prop.name)} | ${code(prop.type)} | ${prop.required ? "Yes" : "No"} | ${"default" in prop ? code(prop.default) : "—"} |`,
+        )
+        .join("\n"),
+  )
+  .join("\n\n");
+const site = process.argv.find((arg) => arg.startsWith("--site="))?.slice(7);
+if (site) {
+  const index = JSON.parse(readFileSync(`${site}/index.json`, "utf8")) as {
+    entries: Record<string, unknown>;
+  };
+  for (const component of components) {
+    if (!Object.hasOwn(index.entries, component.docsId)) {
+      throw new Error(`Missing Storybook Docs page: ${component.docsId}`);
+    }
+  }
+}
 
 const guide = `# bench-design — integration
 
-Available foundations: tokens, CSS, local fonts and themes. Button provides primary and secondary variants, disabled states, React Aria activation and native button types.
+Available foundations: tokens, CSS, local fonts and themes. Exported components provide reusable structure and accessible semantics.
 The generated API manifest is available at [components.json](./components.json).
 The MCP server is deferred. The package is private;
 no npm release is available.
@@ -11,16 +56,17 @@ no npm release is available.
 ## Supported imports
 
 - Choose bench-design/styles.css (tokens and fonts) or bench-design/tokens.css.
-- Import Button and ButtonProps from bench-design; children is required,
-  use onPress for actions, type defaults to button, with native submit/reset.
-  API: isDisabled, primary/secondary variants (secondary by default), DOM ref,
-  aria-label and aria-labelledby. No general HTML attribute passthrough.
+- Import exported components from bench-design using the manifest below.
 - Catalog: bench-design/tokens.json; in Node, use with { type: "json" }.
   Bundlers do not require this attribute.
 - Serve bench-design/theme-init.js from the application origin as a
   blocking classic script in head before CSS and React, without async or defer.
 - Serve fonts/ assets relative to the styles, including their licenses.
 - Do not import src/, internal files or components that are not exported.
+
+## Components
+
+${componentGuide}
 
 ## Rules
 
@@ -54,8 +100,7 @@ update the attribute (remove it for system) and persist the choice if possible.
 
 Keep semantic HTML, accessible names, keyboard support and visible focus. Check
 focus order, body text contrast (4.5:1), required control borders and focus
-contrast (3:1) in the actual context. Button wraps React Aria. Prefer visible content for its accessible name; explicit
-names must include the visible label. Use the DOM ref to restore focus.
+contrast (3:1) in the actual context. Follow each component’s documented semantics and accessible naming guidance.
 A dark decorative divider, error role and print theme are deferred:
 do not invent these values. Wait for document.fonts.ready before screenshots.
 `;
@@ -64,7 +109,6 @@ mkdirSync("dist", { recursive: true });
 writeFileSync("dist/AGENTS.md", guide);
 copyFileSync("src/tokens.json", "dist/tokens.json");
 copyFileSync("components.json", "dist/components.json");
-const site = process.argv.find((arg) => arg.startsWith("--site="))?.slice(7);
 if (site) {
   mkdirSync(site, { recursive: true });
   const pages = [
@@ -74,7 +118,7 @@ if (site) {
   ] as const;
   writeFileSync(
     `${site}/llms.txt`,
-    `# bench-design\n\n> React design system: foundations, DTCG tokens, local fonts and themes.\n\nPrivate package: Button with primary and secondary variants available; npm release deferred.\n\n## Documentation\n\n${pages.map(([label, id]) => `- [${label}](./?path=/story/${encodeURIComponent(id)})`).join("\n")}\n- [Component API manifest](./components.json): imports, props, defaults and stories.\n- [DTCG tokens](./tokens.json): values, descriptions and usage rules.\n`,
+    `# bench-design\n\n> React design system: foundations, DTCG tokens, local fonts and themes.\n\nPrivate package: exported components are described in the API manifest; npm release deferred.\n\n## Documentation\n\n${pages.map(([label, id]) => `- [${label}](./?path=/story/${encodeURIComponent(id)})`).join("\n")}\n\n## Components\n\n${components.map((component) => `- [${component.name}](./?path=/docs/${encodeURIComponent(component.docsId)})`).join("\n")}\n\n- [Component API manifest](./components.json): imports, props, defaults and stories.\n- [DTCG tokens](./tokens.json): values, descriptions and usage rules.\n`,
   );
   copyFileSync("src/tokens.json", `${site}/tokens.json`);
   copyFileSync("components.json", `${site}/components.json`);

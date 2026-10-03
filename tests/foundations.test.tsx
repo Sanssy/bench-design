@@ -12,15 +12,13 @@ describe("foundation documentation", () => {
   });
   it("provides a readable type scale", () => {
     render(<Typography />);
-    expect(
-      screen.getByRole("table", { name: "Échelle typographique" }),
-    ).toBeVisible();
+    expect(screen.getByRole("table", { name: "Type scale" })).toBeVisible();
     expect(screen.getByText(/SOFT 35/)).toBeVisible();
   });
   it("makes the scrolling type scale keyboard accessible", () => {
     render(<Typography />);
     const region = screen.getByRole("region", {
-      name: "Échelle typographique",
+      name: "Type scale",
     });
     expect(region).toHaveAttribute("tabindex", "0");
     region.focus();
@@ -28,8 +26,6 @@ describe("foundation documentation", () => {
   });
   it("provides a keyboard focus target", () => {
     render(<Geometry />);
-    expect(
-      screen.getByRole("button", { name: "Explorer le focus" }),
-    ).toBeVisible();
+    expect(screen.getByRole("button", { name: "Explore focus" })).toBeVisible();
   });
 });

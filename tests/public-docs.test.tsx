@@ -12,5 +12,5 @@ it("restricts the editorial font to editorial content", () => {
 });
 it("documents the theme storage contract", () => {
   render(<Themes />);
-  expect(screen.getByText(/Le script lit localStorage/)).toBeVisible();
+  expect(screen.getByText(/The script reads localStorage/)).toBeVisible();
 });

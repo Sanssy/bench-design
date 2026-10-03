@@ -29,9 +29,9 @@ test("static documentation index links to pages and serves the catalog", () => {
     const index = readFileSync(join(directory, "llms.txt"), "utf8");
     assert.match(index, /^# bench-design\n/);
     for (const id of [
-      "documentation-démarrer--page",
-      "documentation-principes--page",
-      "documentation-thèmes--page",
+      "docs-getting-started--page",
+      "docs-principles--page",
+      "docs-themes--page",
     ]) {
       assert.ok(index.includes(`./?path=/story/${encodeURIComponent(id)}`));
     }

@@ -45,8 +45,8 @@ export function Palette({ theme }: { theme: string }) {
   ];
   return (
     <Foundation
-      title="Couleurs"
-      intro="Le papier, l’encre et le citron composent notre palette. Explorez les rôles et leurs contrastes dans le thème actif."
+      title="Colors"
+      intro="Paper, ink and lemon form our palette. Explore semantic roles and their contrast in the active theme."
     >
       {groups.map((title) => (
         <section key={title}>
@@ -75,18 +75,18 @@ export function Palette({ theme }: { theme: string }) {
                   role,
                 );
                 const badge = decorative
-                  ? "Décoratif"
+                  ? "Decorative"
                   : ratio === undefined
                     ? "—"
                     : graphical
                       ? ratio >= 3
-                        ? "AA · non textuel"
-                        : "Sous le seuil 3:1"
+                        ? "AA · non-text"
+                        : "Below 3:1"
                       : ratio >= 7
-                        ? "AAA · texte"
+                        ? "AAA · text"
                         : ratio >= 4.5
-                          ? "AA · texte"
-                          : "Sous le seuil 4,5:1";
+                          ? "AA · text"
+                          : "Below 4.5:1";
                 return (
                   <article key={role} data-role={role} className="color-card">
                     <div
@@ -103,7 +103,7 @@ export function Palette({ theme }: { theme: string }) {
                         }
                       </p>
                       <code>--bd-{role}</code>
-                      <p className="metadata">{value || "Non ratifié"}</p>
+                      <p className="metadata">{value || "Not ratified"}</p>
                       <span className="contrast-badge">{badge}</span>
                       <p data-contrast className="metadata">
                         {ratio?.toFixed(2) ?? "—"} / {against}
@@ -131,7 +131,7 @@ function Foundation({
   return (
     <main className="foundation">
       <header>
-        <p className="eyebrow">Fondations</p>
+        <p className="eyebrow">Foundations</p>
         <h1>{title}</h1>
         <p className="introduction">{intro}</p>
       </header>
@@ -166,48 +166,47 @@ const spaces = Object.entries(tokens.base).flatMap(([name, token]) =>
 export function Typography() {
   return (
     <Foundation
-      title="Typographie"
-      intro="Trois voix donnent du rythme à la lecture. Fraunces raconte, Manrope accompagne et IBM Plex Mono précise."
+      title="Typography"
+      intro="Three voices set the reading rhythm. Fraunces tells the story, Manrope guides and IBM Plex Mono adds precision."
     >
       <section>
-        <h2>Trois voix, quatre usages</h2>
+        <h2>Three voices, four uses</h2>
         <h3 data-family="editorial" className="editorial specimen-title">
-          Les idées prennent forme.
+          Ideas take shape.
         </h3>
         <p data-family="ui" className="specimen-body">
-          Un paragraphe de lecture laisse de l’espace aux idées. La voix Manrope
-          accompagne les contenus avec un rythme régulier et une présence
-          discrète.
+          A reading paragraph gives ideas room to breathe. Manrope supports the
+          content with a steady rhythm and a quiet presence.
         </p>
-        <p className="interface-label">Ouvrir la collection</p>
+        <p className="interface-label">Open the collection</p>
         <p data-family="metadata" className="metadata">
-          ÉDITION 01 · BENCH DESIGN · 0123456789
+          EDITION 01 · BENCH DESIGN · 0123456789
         </p>
         <p className="metadata">
-          Fraunces : wght {tokens.base["weight-editorial"].$value} · SOFT{" "}
+          Fraunces: wght {tokens.base["weight-editorial"].$value} · SOFT{" "}
           {tokens.base["editorial-soft"].$value} · WONK{" "}
           {tokens.base["editorial-wonk"].$value} · opsz{" "}
           {tokens.base["editorial-opsz"].$value}
         </p>
       </section>
       <section>
-        <h2>Échelle typographique</h2>
+        <h2>Type scale</h2>
         {/* biome-ignore lint/a11y/useSemanticElements: A nested section would add an unrelated section landmark; this region names the scrolling viewport. */}
         <div
           className="scale-scroll"
           // biome-ignore lint/a11y/noNoninteractiveTabindex: Keyboard users must focus this viewport to scroll the table.
           tabIndex={0}
           role="region"
-          aria-label="Échelle typographique"
+          aria-label="Type scale"
         >
-          <table aria-label="Échelle typographique">
+          <table aria-label="Type scale">
             <thead>
               <tr>
-                <th scope="col">Rôle / token</th>
+                <th scope="col">Role / token</th>
                 <th scope="col">rem</th>
                 <th scope="col">px</th>
-                <th scope="col">Interlignage</th>
-                <th scope="col">Spécimen</th>
+                <th scope="col">Line height</th>
+                <th scope="col">Sample</th>
               </tr>
             </thead>
             <tbody>
@@ -245,11 +244,11 @@ export function Typography() {
 export function Geometry() {
   return (
     <Foundation
-      title="Espacements et géométrie"
-      intro="L’espace structure les contenus et les angles restent vifs. Les filets, le relief et le focus rendent les limites perceptibles."
+      title="Spacing & geometry"
+      intro="Space organizes content and corners stay sharp. Borders, depth and focus make boundaries clear."
     >
       <section>
-        <h2>Le rythme de l’espace</h2>
+        <h2>Spacing rhythm</h2>
         <ul className="space-scale">
           {spaces.map((space) => (
             <li key={space}>
@@ -267,23 +266,23 @@ export function Geometry() {
         </ul>
       </section>
       <section>
-        <h2>Contours et relief</h2>
+        <h2>Borders and depth</h2>
         <div className="foundation-grid">
           <div className="geometry-card">
-            <h3>Le filet d’encre</h3>
+            <h3>Ink hairline</h3>
             <p>
-              Contour {tokens.base.hair.$value.value} px ·{" "}
-              <code>--bd-hair</code>
+              Border {tokens.base.hair.$value.value} px · <code>--bd-hair</code>
             </p>
             <p>
-              Angle vif · <code>--bd-radius</code> : {tokens.base.radius.$value}
+              Sharp corner · <code>--bd-radius</code>:{" "}
+              {tokens.base.radius.$value}
             </p>
           </div>
           <div className="relief" data-geometry>
-            <h3>Le citron en relief</h3>
+            <h3>Lemon with depth</h3>
             <p>
-              Contour {tokens.base.hair.$value.value} px · rayon{" "}
-              {tokens.base.radius.$value} · ombre décalée{" "}
+              Border {tokens.base.hair.$value.value} px · radius{" "}
+              {tokens.base.radius.$value} · offset shadow{" "}
               {tokens.base.offset.$value.value} px
             </p>
             <code>--bd-offset / --bd-shadow</code>
@@ -291,12 +290,10 @@ export function Geometry() {
         </div>
       </section>
       <section>
-        <h2>Le focus au clavier</h2>
-        <p>
-          Appuyez sur Tab pour atteindre la cible et voir l’anneau de focus.
-        </p>
+        <h2>Keyboard focus</h2>
+        <p>Press Tab to reach the target and see the focus ring.</p>
         <button type="button" className="focus-sample">
-          Explorer le focus
+          Explore focus
         </button>
         <p className="metadata">--bd-focus · --bd-stroke · --bd-offset</p>
       </section>

@@ -55,20 +55,26 @@ test("DTCG hex fallback agrees with every sRGB color", () => {
   }
 });
 
-test("usage metadata is sourced guidance rather than a repeated label", () => {
+test("usage metadata is guidance rather than a repeated label", () => {
   const tokens = JSON.parse(readFileSync("src/tokens.json", "utf8"));
   for (const group of ["base", "light", "dark"]) {
     for (const token of Object.values(tokens[group]) as {
       $description: string;
       $extensions: {
-        "org.bench-design": { usage: string; usageSource: string };
+        "org.bench-design": { usage: string; usageSource?: string };
       };
     }[]) {
       const metadata = token.$extensions["org.bench-design"];
       assert.notEqual(metadata.usage, token.$description);
-      assert.match(metadata.usageSource, /B2-TOKENS-PROPOSAL.*§7/);
+      // Published metadata must not point to private design documents.
+      assert.equal(metadata.usageSource, undefined);
     }
   }
+});
+
+test("published tokens cite no private design documents", () => {
+  const source = readFileSync("src/tokens.json", "utf8");
+  assert.doesNotMatch(source, /B2-TOKENS-PROPOSAL|Atelier|trame-core|Parcours/);
 });
 
 test("Button hover accent is ratified in both themes", () => {
@@ -79,6 +85,5 @@ test("Button hover accent is ratified in both themes", () => {
     assert.equal(token.$value.hex, "#e5f593");
     assert.equal(token.$type, "color");
     assert.match(token.$extensions["org.bench-design"].usage, /--bd-on-accent/);
-    assert.match(token.$extensions["org.bench-design"].usageSource, /§8/);
   }
 });

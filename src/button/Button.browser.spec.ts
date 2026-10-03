@@ -37,3 +37,37 @@ test("reset restores the native field", async ({ page }) => {
     "Initial",
   );
 });
+
+for (const theme of ["light", "dark"]) {
+  for (const name of ["Activer", "Envoyer", "Réinitialiser"]) {
+    for (const action of ["pointer", "Enter", "Space"] as const) {
+      test(`disabled ${name} ${action} has no effect in ${theme}`, async ({
+        page,
+      }) => {
+        await page.goto(
+          `/iframe.html?id=components-button--disabled&viewMode=story&globals=theme:${theme}`,
+        );
+        const button = page.getByRole("button", { name, exact: true });
+        await expect(button).toBeVisible();
+        const input = page.getByRole("textbox", { name: "Nom" });
+        await input.fill("Modifié");
+        if (action === "pointer") {
+          // Real pointer input: locator.click waits for enabled controls.
+          const box = await button.boundingBox();
+          if (!box) throw new Error("Rendered Button has no pointer target");
+          await page.mouse.click(box.x + box.width / 2, box.y + box.height / 2);
+        } else {
+          await input.evaluate((element) => element.blur());
+          // A disabled native button rejects focus; the mutant accepts it.
+          await button.evaluate((element) => element.focus());
+          await page.keyboard.press(action);
+        }
+        await expect(page.getByRole("status")).toHaveText(
+          "Activations: 0; Soumissions: 0; Réinitialisations: 0",
+        );
+        await expect(input).toHaveValue("Modifié");
+        await expect(button).toBeDisabled();
+      });
+    }
+  }
+}

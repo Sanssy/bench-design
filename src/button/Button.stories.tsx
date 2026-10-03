@@ -10,7 +10,7 @@ export default {
     docs: {
       description: {
         component:
-          "S1 : activation et types natifs. Styles, états et documentation complète différés à S3/S4.",
+          "S1/S2 : activation, types natifs et désactivation. Styles et documentation complète différés à S3/S4.",
       },
     },
   },
@@ -48,6 +48,47 @@ export const Form: Story = {
           <Button type="reset">Réinitialiser</Button>
         </form>
         <p role="status">Soumissions: {submissions}</p>
+      </main>
+    );
+  },
+};
+
+export const Disabled: Story = {
+  name: "Désactivé",
+  render: function Disabled() {
+    const [activations, setActivations] = useState(0);
+    const [submissions, setSubmissions] = useState(0);
+    const [resets, setResets] = useState(0);
+    return (
+      <main>
+        <form
+          onSubmit={(event) => {
+            event.preventDefault();
+            setSubmissions((value) => value + 1);
+          }}
+          onReset={() => setResets((value) => value + 1)}
+        >
+          <label>
+            Nom
+            <input defaultValue="Initial" />
+          </label>
+          <Button
+            isDisabled
+            onPress={() => setActivations((value) => value + 1)}
+          >
+            Activer
+          </Button>
+          <Button isDisabled type="submit">
+            Envoyer
+          </Button>
+          <Button isDisabled type="reset">
+            Réinitialiser
+          </Button>
+        </form>
+        <p role="status">
+          Activations: {activations}; Soumissions: {submissions};
+          Réinitialisations: {resets}
+        </p>
       </main>
     );
   },

@@ -2,9 +2,7 @@ import { expect, test } from "@playwright/test";
 
 for (const action of ["pointer", "Enter", "Space"] as const) {
   test(`${action} activates Button once`, async ({ page }) => {
-    await page.goto(
-      "/iframe.html?id=components-button--activation&viewMode=story",
-    );
+    await page.goto("/iframe.html?id=tests-button--activation&viewMode=story");
     const button = page.getByRole("button", { name: "Activer", exact: true });
     if (action === "pointer") await button.click();
     else {
@@ -18,17 +16,17 @@ for (const action of ["pointer", "Enter", "Space"] as const) {
 }
 
 test("default button leaves form unsubmitted", async ({ page }) => {
-  await page.goto("/iframe.html?id=components-button--form&viewMode=story");
+  await page.goto("/iframe.html?id=tests-button--form&viewMode=story");
   await page.getByRole("button", { name: "Action", exact: true }).click();
   await expect(page.getByRole("status")).toHaveText("Soumissions: 0");
 });
 test("submit button submits form once", async ({ page }) => {
-  await page.goto("/iframe.html?id=components-button--form&viewMode=story");
+  await page.goto("/iframe.html?id=tests-button--form&viewMode=story");
   await page.getByRole("button", { name: "Envoyer", exact: true }).click();
   await expect(page.getByRole("status")).toHaveText("Soumissions: 1");
 });
 test("reset restores the native field", async ({ page }) => {
-  await page.goto("/iframe.html?id=components-button--form&viewMode=story");
+  await page.goto("/iframe.html?id=tests-button--form&viewMode=story");
   await page.getByRole("textbox", { name: "Nom" }).fill("Modifié");
   await page
     .getByRole("button", { name: "Réinitialiser", exact: true })
@@ -45,7 +43,7 @@ for (const theme of ["light", "dark"]) {
         tag: `@theme:${theme}`,
       }, async ({ page }) => {
         await page.goto(
-          `/iframe.html?id=components-button--disabled&viewMode=story&globals=theme:${theme}`,
+          `/iframe.html?id=tests-button--disabled&viewMode=story&globals=theme:${theme}`,
         );
         const button = page.getByRole("button", { name, exact: true });
         await expect(button).toBeVisible();
@@ -77,7 +75,7 @@ for (const theme of ["light", "dark"]) {
     tag: `@theme:${theme}`,
   }, async ({ page }) => {
     await page.goto(
-      `/iframe.html?id=components-button--short-content&viewMode=story&globals=theme:${theme}`,
+      `/iframe.html?id=tests-button--short-content&viewMode=story&globals=theme:${theme}`,
     );
     const button = page.getByRole("button", {
       name: "Enregistrer",
@@ -127,7 +125,7 @@ for (const theme of ["light", "dark"]) {
     }, async ({ page }) => {
       await page.setViewportSize({ width: 320, height: 240 });
       await page.goto(
-        `/iframe.html?id=components-button--long-content&viewMode=story&globals=theme:${theme}`,
+        `/iframe.html?id=tests-button--long-content&viewMode=story&globals=theme:${theme}`,
       );
       // CSS magnification exercises reflow; browser zoom still needs manual proof.
       await page.locator("body").evaluate((element, value) => {
@@ -162,7 +160,7 @@ for (const theme of ["light", "dark"]) {
         tag: `@theme:${theme}`,
       }, async ({ page }) => {
         await page.goto(
-          `/iframe.html?id=components-button--${variant}-${state}&viewMode=story&globals=theme:${theme}`,
+          `/iframe.html?id=tests-button--${variant}-${state}&viewMode=story&globals=theme:${theme}`,
         );
         const button = page.getByRole("button", {
           name: "Enregistrer",

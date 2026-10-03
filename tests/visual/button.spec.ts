@@ -17,7 +17,7 @@ for (const theme of ["light", "dark"] as const) {
         async ({ page }, testInfo) => {
           // Disable story play so the test owns the same real interactions.
           await page.goto(
-            `/iframe.html?id=components-button--${variant}-${state}&viewMode=story&globals=theme:${theme}&embed=true`,
+            `/iframe.html?id=tests-button--${variant}-${state}&viewMode=story&globals=theme:${theme}&embed=true`,
           );
           const button = page.getByRole("button", {
             name: "Enregistrer",

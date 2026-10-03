@@ -6,7 +6,7 @@
   "description": "Shared React design system \u2014 executable bootstrap, no components yet",
   "packageManager": "pnpm@12.8.1",
   "engines": {
-    "node": "24.21.0"
+    "node": ">=24.21.0"
   },
   "files": [
     "dist"
@@ -26,11 +26,11 @@
     "check": "biome check . && tsc --noEmit && node scripts/check-boundaries.mjs",
     "test": "vitest run && node --test tests/tooling/*.test.mjs",
     "test:browser": "playwright test",
-    "verify": "pnpm check && pnpm test && pnpm build && pnpm build-storybook && pnpm test:package && pnpm test:browser"
+    "verify": "node scripts/verify.mjs"
   },
   "peerDependencies": {
-    "react": "19.3.0",
-    "react-dom": "19.3.0"
+    "react": "^19.3.0",
+    "react-dom": "^19.3.0"
   },
   "dependencies": {
     "react-aria-components": "1.21.1"

@@ -27,3 +27,14 @@ test("package permits local modules and encapsulated React imports", () => {
     [],
   );
 });
+
+for (const suffix of ["stories", "test", "spec"]) {
+  for (const extension of ["", ".tsx"]) {
+    test(`package rejects .${suffix}${extension} imports inside src`, () => {
+      assert.equal(
+        violations(`import "./X.${suffix}${extension}";`, file).length,
+        1,
+      );
+    });
+  }
+}

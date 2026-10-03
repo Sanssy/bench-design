@@ -18,7 +18,7 @@ export function violations(source, file) {
       const target = resolve(dirname(file), name);
       if (
         !target.startsWith(`${root}${sep}`) ||
-        /(?:\.stories|\.test)\./.test(target)
+        /\.(?:stories|test|spec)(?:\.|$)/.test(target)
       ) {
         errors.push(`${file}: private/test/story import ${name}`);
       }

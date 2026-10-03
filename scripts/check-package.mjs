@@ -49,7 +49,9 @@ try {
       packageManager: pkg.packageManager,
       dependencies: {
         "bench-design": `file:${tarball}`,
-        ...pkg.peerDependencies,
+        // Explicit tested lower bound, independent of the package peer ranges.
+        react: "19.3.0",
+        "react-dom": "19.3.0",
       },
       devDependencies: { typescript: pkg.devDependencies.typescript },
     }),

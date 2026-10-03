@@ -24,7 +24,9 @@
     "storybook": "storybook dev --port 6006 --host 127.0.0.1 --no-open --disable-telemetry",
     "build-storybook": "storybook build --disable-telemetry",
     "check": "biome check . && tsc --noEmit && node scripts/check-boundaries.mjs",
-    "test": "vitest run && node --test tests/tooling/*.test.mjs"
+    "test": "vitest run && node --test tests/tooling/*.test.mjs",
+    "test:browser": "playwright test",
+    "verify": "pnpm check && pnpm test && pnpm build && pnpm build-storybook && pnpm test:package && pnpm test:browser"
   },
   "peerDependencies": {
     "react": "19.3.0",

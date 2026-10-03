@@ -35,7 +35,7 @@ test("static documentation index links to pages and serves the catalog", () => {
     ]) {
       assert.ok(index.includes(`./?path=/story/${encodeURIComponent(id)}`));
     }
-    assert.match(index, /\[Tokens DTCG\]\(.\/tokens.json\)/);
+    assert.match(index, /\[DTCG tokens\]\(.\/tokens.json\)/);
     assert.equal(
       readFileSync(join(directory, "tokens.json"), "utf8"),
       readFileSync("src/tokens.json", "utf8"),

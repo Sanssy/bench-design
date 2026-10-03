@@ -8,7 +8,7 @@ it("documents the delivered CSS import", () => {
 });
 it("restricts the editorial font to editorial content", () => {
   render(<Principles />);
-  expect(screen.getByText(/exclue des contrôles/)).toBeVisible();
+  expect(screen.getByText(/exclude controls/)).toBeVisible();
 });
 it("documents the theme storage contract", () => {
   render(<Themes />);

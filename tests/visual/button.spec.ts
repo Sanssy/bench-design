@@ -15,9 +15,8 @@ for (const theme of ["light", "dark"] as const) {
           tag: [`@theme:${theme}`, "@viewport:desktop"],
         },
         async ({ page }, testInfo) => {
-          // Disable story play so the test owns the same real interactions.
           await page.goto(
-            `/iframe.html?id=tests-button--${variant}-${state}&viewMode=story&globals=theme:${theme}&embed=true`,
+            `/iframe.html?id=components-button--${state === "disabled" ? "disabled" : variant}&viewMode=story&globals=theme:${theme}&args=variant:${variant}&embed=true`,
           );
           const button = page.getByRole("button", {
             name: "Enregistrer",
@@ -29,7 +28,7 @@ for (const theme of ["light", "dark"] as const) {
             theme,
           );
           await page.evaluate(() => document.fonts.ready);
-          await page.mouse.move(390, 150);
+          await page.mouse.move(0, 0);
           if (state === "hover") {
             await button.hover();
             await expect(button).toHaveAttribute("data-hovered", "true");

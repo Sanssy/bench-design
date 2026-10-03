@@ -39,6 +39,22 @@ tests and captures in the slim image from `ci/Containerfile.chromium`.
 The image job builds and publishes that image to GHCR only when the recipe
 or toolchain installer changes.
 
+## Browser test budget
+
+Each component has at most eight executed Chromium tests. The axe test of each
+usage story (light and dark) does not count: stories are curated examples. Browser tests must require a real
+engine: computed styles, keyboard interaction or accessibility analysis. Tags,
+attributes and props belong in render/interact/assert unit tests. Check typography
+once when it is theme-independent; check colors in both themes. Group related
+style cases without dropping assertions. Chromium state tests already covered by
+visual captures carry `@covered-by-captures`, which the Chromium project skips;
+Firefox and WebKit still run them.
+
+The tooling budget test lists Chromium tests without starting a browser. It
+creates a fresh Storybook index in a temporary directory, so it also works before
+a build. Normal browser runs read `storybook-static/index.json`; build Storybook
+first. Adding stories consumes budget automatically. A budget failure points here.
+
 ## Optional Linux verification
 
 `pnpm verify:local` runs checks in the Playwright image pinned by version and

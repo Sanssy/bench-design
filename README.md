@@ -23,7 +23,7 @@ Browser tests require the pinned Linux image. See [Contributing](CONTRIBUTING.md
 The [foundation decision](docs/decisions/0001-design-system.md) records boundaries
 and versioning. CI and package distribution require no private ecosystem links.
 
-B2 foundations (visual-value enforcement still pending): import
+B2 foundations: import
 `bench-design/styles.css` once, or `bench-design/tokens.css` for tokens alone.
 Component CSS uses semantic roles (`--bd-surface`, `--bd-text`, `--bd-border`,
 `--bd-border-strong`, `--bd-accent`, `--bd-on-accent`, `--bd-focus`, etc.).
@@ -49,3 +49,13 @@ The distributed `fonts/` directory includes original OFL licenses and
 `provenance.json` with source URLs and SHA-256 hashes. Fonts were copied
 unchanged from the approved trame-core reference. Await `document.fonts.ready`
 before captures.
+
+The visual-value check (`node scripts/check-visual-values.mjs`, after build)
+examines declarations in distributed `dist/**/*.css` using a CSS parser.
+Only `dist/tokens.css` and `dist/fonts.css` are exempt definition files;
+other exceptions require an exact file, selector, property, value and reason.
+The check rejects raw colors and lengths, including variable fallbacks.
+Unitless numbers such as `line-height: 1.5` and `font-weight: 500`, media query
+conditions and unparsed `Raw` values are outside its current coverage.
+Percentages, `auto`, `currentColor` and `transparent` are accepted.
+Unitless zero is accepted for absent spacing or borders without a token.

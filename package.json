@@ -31,7 +31,8 @@
     "check": "biome check . && tsc --noEmit && node scripts/check-boundaries.mjs",
     "test": "vitest run && node --test tests/tooling/*.test.mjs",
     "test:browser": "playwright test",
-    "verify": "node scripts/verify.mjs"
+    "verify": "node scripts/verify.mjs",
+    "check:visual-values": "node scripts/check-visual-values.mjs"
   },
   "peerDependencies": {
     "react": "^19.3.0",
@@ -61,6 +62,7 @@
     "storybook": "10.6.1",
     "typescript": "7.0.2",
     "vite": "8.3.2",
-    "vitest": "5.0.3"
+    "vitest": "5.0.3",
+    "css-tree": "3.2.1"
   }
 }

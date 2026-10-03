@@ -7,6 +7,7 @@ for (const gate of [
   "check",
   "test",
   "build",
+  "check:visual-values",
   "build-storybook",
   "test:package",
   "test:browser",

@@ -111,6 +111,72 @@
           "href": "./?path=/story/typography-heading--display"
         }
       ]
+    },
+    {
+      "name": "Text",
+      "import": "import { Text } from \"bench-design\";",
+      "description": "A paragraph or inline text. Label and mono variants always use meta size.",
+      "props": [
+        {
+          "name": "size",
+          "type": "\"meta\" | \"ui\" | \"body\" | \"lead\"",
+          "required": false,
+          "default": "\"ui\""
+        },
+        {
+          "name": "tone",
+          "type": "\"default\" | \"muted\"",
+          "required": false,
+          "default": "\"default\""
+        },
+        {
+          "name": "variant",
+          "type": "\"default\" | \"label\" | \"mono\"",
+          "required": false,
+          "default": "\"default\""
+        },
+        {
+          "name": "as",
+          "type": "\"p\" | \"span\"",
+          "required": false,
+          "default": "\"p\""
+        },
+        {
+          "name": "children",
+          "type": "ReactNode",
+          "required": true
+        }
+      ],
+      "stories": [
+        {
+          "name": "Paragraph",
+          "href": "./?path=/story/typography-text--paragraph"
+        },
+        {
+          "name": "Metadata",
+          "href": "./?path=/story/typography-text--metadata"
+        },
+        {
+          "name": "Body",
+          "href": "./?path=/story/typography-text--body"
+        },
+        {
+          "name": "Lead",
+          "href": "./?path=/story/typography-text--lead"
+        },
+        {
+          "name": "Muted",
+          "href": "./?path=/story/typography-text--muted"
+        },
+        {
+          "name": "Label",
+          "href": "./?path=/story/typography-text--label"
+        },
+        {
+          "name": "Mono",
+          "href": "./?path=/story/typography-text--mono"
+        }
+      ]
     }
   ]
 }

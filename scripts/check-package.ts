@@ -85,7 +85,7 @@ try {
   );
   writeFileSync(
     join(consumer, "index.tsx"),
-    `import { Button, type ButtonProps, Heading, type HeadingProps } from "bench-design";
+    `import { Button, type ButtonProps, Heading, type HeadingProps, Text, type TextProps } from "bench-design";
 import { createRef } from "react";
 const props: ButtonProps = { children: "Save", type: "submit", variant: "primary", ref: createRef<HTMLButtonElement>(), onPress: () => {}, isDisabled: false, "aria-label": "Save document", "aria-labelledby": "save-label" };
 const button = <Button {...props} />;
@@ -105,6 +105,21 @@ const heading = <Heading {...headingProps} />;
 const missingLevel = <Heading>Details</Heading>;
 // @ts-expect-error unapproved size
 const headingSize = <Heading level={2} size="hero">Details</Heading>;
+const textProps: TextProps = { size: "body", tone: "muted", variant: "default", as: "span", children: "Read" };
+const text = <Text {...textProps} />;
+// @ts-expect-error content is required
+const missingText = <Text />;
+// @ts-expect-error unapproved size
+const textSize = <Text size="display">Read</Text>;
+// @ts-expect-error unapproved tone
+const textTone = <Text tone="danger">Read</Text>;
+// @ts-expect-error unapproved variant
+const textVariant = <Text variant="caption">Read</Text>;
+// @ts-expect-error unapproved element
+const textTag = <Text as="div">Read</Text>;
+// @ts-expect-error general HTML passthrough is excluded
+const textClass = <Text className="custom">Read</Text>;
+void [text, missingText, textSize, textTone, textVariant, textTag, textClass];
 void [button, missingContent, click, link, variant, type, heading, missingLevel, headingSize];
 `,
   );
@@ -125,7 +140,7 @@ void [button, missingContent, click, link, variant, type, heading, missingLevel,
   run("node", [
     "--input-type=module",
     "-e",
-    'import assert from "node:assert/strict"; import * as ds from "bench-design"; assert.deepEqual(Object.keys(ds), ["Button", "Heading"]); assert.equal(typeof ds.Button, "function"); assert.equal(typeof ds.Heading, "function");',
+    'import assert from "node:assert/strict"; import * as ds from "bench-design"; assert.deepEqual(Object.keys(ds), ["Button", "Heading", "Text"]); assert.equal(typeof ds.Button, "function"); assert.equal(typeof ds.Heading, "function"); assert.equal(typeof ds.Text, "function");',
   ]);
   run("node", [
     "--input-type=module",
@@ -145,7 +160,7 @@ void [button, missingContent, click, link, variant, type, heading, missingLevel,
     pathToFileURL(join(consumer, "node_modules/bench-design/dist/styles.css")),
   );
   console.log(
-    "Distribution PASS: isolated tarball ESM/types, Button and Heading public API, no private files",
+    "Distribution PASS: isolated tarball ESM/types, Button, Heading and Text public API, no private files",
   );
 } finally {
   rmSync(consumer, { recursive: true, force: true });

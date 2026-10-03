@@ -5,7 +5,7 @@ for (const [source, name] of [
   ["public/styles.css", "styles.css"],
   ["public/fonts.css", "fonts.css"],
   ["public/theme-init.js", "theme-init.js"],
-]) {
+] as const) {
   copyFileSync(source, `dist/${name}`);
 }
 

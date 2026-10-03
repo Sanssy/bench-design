@@ -13,17 +13,17 @@ test("initialization can load without window on the server", () => {
   });
   assert.doesNotThrow(() => runInNewContext(script(), context));
 });
-const initialize = (stored, existing) => {
+const initialize = (stored: string | null, existing?: string) => {
   const attrs = new Map(existing ? [["data-theme", existing]] : []);
   runInNewContext(script(), {
     document: {
       documentElement: {
-        hasAttribute: (name) => attrs.has(name),
-        setAttribute: (name, value) => attrs.set(name, value),
+        hasAttribute: (name: string) => attrs.has(name),
+        setAttribute: (name: string, value: string) => attrs.set(name, value),
       },
     },
     localStorage: {
-      getItem: (key) => {
+      getItem: (key: string) => {
         assert.equal(key, "bench-design-theme");
         return stored;
       },
@@ -38,12 +38,12 @@ test("saved explicit choices initialize before render and system stays implicit"
   assert.equal(initialize("dark", "light"), "light");
 });
 test("blocked storage leaves system mode intact", () => {
-  const attrs = new Map();
+  const attrs = new Map<string, string>();
   const context = {
     document: {
       documentElement: {
-        hasAttribute: (name) => attrs.has(name),
-        setAttribute: (name, value) => attrs.set(name, value),
+        hasAttribute: (name: string) => attrs.has(name),
+        setAttribute: (name: string, value: string) => attrs.set(name, value),
       },
     },
   };

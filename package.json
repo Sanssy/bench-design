@@ -24,15 +24,15 @@
     "**/*.css"
   ],
   "scripts": {
-    "build": "vite build && tsc -p tsconfig.build.json && node scripts/build-foundations.mjs",
-    "test:package": "node scripts/check-package.mjs",
+    "build": "vite build && tsc -p tsconfig.build.json && node scripts/build-foundations.ts",
+    "test:package": "node scripts/check-package.ts",
     "storybook": "storybook dev --port 6006 --host 127.0.0.1 --no-open --disable-telemetry",
     "build-storybook": "storybook build --disable-telemetry",
-    "check": "biome check . && tsc --noEmit && node scripts/check-boundaries.mjs",
-    "test": "vitest run && node --test tests/tooling/*.test.mjs",
+    "check": "biome check . && tsc --noEmit && node scripts/check-boundaries.ts && node scripts/check-javascript.ts",
+    "test": "vitest run && node --test tests/tooling/*.test.ts",
     "test:browser": "playwright test",
-    "verify": "node scripts/verify.mjs",
-    "check:visual-values": "node scripts/check-visual-values.mjs"
+    "verify": "node scripts/verify.ts",
+    "check:visual-values": "node scripts/check-visual-values.ts"
   },
   "peerDependencies": {
     "react": "^19.3.0",

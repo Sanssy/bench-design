@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
-import { violations } from "../../scripts/check-boundaries.mjs";
+import { violations } from "../../scripts/check-boundaries.ts";
 
 const file = `${process.cwd()}/src/index.ts`;
 test("package rejects product dependencies", () => {

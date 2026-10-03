@@ -1,3 +1,4 @@
+// @ts-check
 (() => {
   if (typeof document === "undefined") return;
   const root = document.documentElement;

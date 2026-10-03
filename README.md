@@ -50,7 +50,7 @@ The distributed `fonts/` directory includes original OFL licenses and
 unchanged from the approved trame-core reference. Await `document.fonts.ready`
 before captures.
 
-The visual-value check (`node scripts/check-visual-values.mjs`, after build)
+The visual-value check (`node scripts/check-visual-values.ts`, after build)
 examines declarations in distributed `dist/**/*.css` using a CSS parser.
 Only `dist/tokens.css` and `dist/fonts.css` are exempt definition files;
 other exceptions require an exact file, selector, property, value and reason.

@@ -5,14 +5,14 @@ import { parse } from "@babel/parser";
 
 const root = resolve("src");
 const allowed = new Set(["react", "react-dom", "react-aria-components"]);
-export function violations(source, file) {
-  const errors = [];
+export function violations(source: string, file: string) {
+  const errors: string[] = [];
   const tree = parse(source, {
     sourceType: "module",
     plugins: ["typescript", "jsx"],
     createImportExpressions: true,
   });
-  function check(specifier, reexport) {
+  function check(specifier: { value: string }, reexport: boolean) {
     const name = specifier.value;
     if (name.startsWith(".")) {
       const target = resolve(dirname(file), name);
@@ -25,7 +25,7 @@ export function violations(source, file) {
     } else {
       const pkg = name.startsWith("@")
         ? name.split("/").slice(0, 2).join("/")
-        : name.split("/")[0];
+        : (name.split("/")[0] ?? "");
       if (!allowed.has(pkg) || (reexport && pkg === "react-aria-components")) {
         errors.push(`${file}: forbidden dependency/re-export ${name}`);
       }
@@ -34,30 +34,36 @@ export function violations(source, file) {
       }
     }
   }
-  function visit(node) {
-    if (!node || typeof node !== "object") return;
+  function visit(value: unknown) {
+    if (!value || typeof value !== "object") return;
+    const node = value as {
+      type?: string;
+      source?: { type?: string; value: string };
+      callee?: { type?: string; name?: string };
+      arguments?: { type?: string; value: string }[];
+    };
     if (
       [
         "ImportDeclaration",
         "ExportNamedDeclaration",
         "ExportAllDeclaration",
-      ].includes(node.type) &&
+      ].includes(node.type ?? "") &&
       node.source
     ) {
       check(node.source, node.type !== "ImportDeclaration");
     }
     if (
       node.type === "ImportExpression" &&
-      node.source.type === "StringLiteral"
+      node.source?.type === "StringLiteral"
     )
       check(node.source, false);
     if (
       node.type === "CallExpression" &&
-      node.callee.type === "Identifier" &&
+      node.callee?.type === "Identifier" &&
       node.callee.name === "require" &&
-      node.arguments[0]?.type === "StringLiteral"
+      node.arguments?.[0]?.type === "StringLiteral"
     )
-      check(node.arguments[0], false);
+      check(node.arguments?.[0], false);
     for (const value of Object.values(node)) {
       if (Array.isArray(value)) value.forEach(visit);
       else if (value && typeof value === "object") visit(value);

@@ -51,22 +51,23 @@ for (const theme of ["light", "dark"]) {
       expect(values.actual).toEqual(values.expected);
     });
   }
+}
 
-  for (const level of [1, 2, 3, 4, 5, 6]) {
-    test(`Heading level ${level} uses its native tag in ${theme}`, {
-      tag: `@theme:${theme}`,
-    }, async ({ page }) => {
-      await page.goto(
-        `/iframe.html?id=typography-heading--article&viewMode=story&globals=theme:${theme}&args=level:${level}`,
-      );
-      const heading = page.getByRole("heading", {
-        level,
-        name: "A new perspective",
-      });
-      await expect(heading).toBeVisible();
-      expect(await heading.evaluate((element) => element.tagName)).toBe(
-        `H${level}`,
-      );
+// The rendered tag does not depend on the theme: check it once.
+for (const level of [1, 2, 3, 4, 5, 6]) {
+  test(`Heading level ${level} uses its native tag`, {
+    tag: "@theme:light",
+  }, async ({ page }) => {
+    await page.goto(
+      `/iframe.html?id=typography-heading--article&viewMode=story&globals=theme:light&args=level:${level}`,
+    );
+    const heading = page.getByRole("heading", {
+      level,
+      name: "A new perspective",
     });
-  }
+    await expect(heading).toBeVisible();
+    expect(await heading.evaluate((element) => element.tagName)).toBe(
+      `H${level}`,
+    );
+  });
 }

@@ -124,7 +124,9 @@ for (const theme of ["light", "dark"]) {
     for (const state of ["rest", "hover", "pressed", "focus", "disabled"]) {
       test(`${variant} ${state} visual tokens in ${theme}`, {
         tag: `@theme:${theme}`,
-      }, async ({ page }) => {
+      }, async ({ page, browserName }) => {
+        // Chromium is covered pixel-exactly by tests/visual captures.
+        test.skip(browserName === "chromium", "covered by visual captures");
         await page.goto(
           `/iframe.html?id=form-button--${state === "disabled" ? "disabled" : variant}&viewMode=story&globals=theme:${theme}&args=variant:${variant}`,
         );

@@ -4,7 +4,8 @@ export default defineConfig({
   testMatch: ["tests/browser/**/*.spec.ts", "src/**/*.browser.spec.ts"],
   // Local agent worktrees live under .claude/ and carry their own specs.
   testIgnore: ["**/.claude/**"],
-  workers: 1,
+  // CI runners have 4 vCPUs; local runs keep one worker (memory policy, B3).
+  workers: process.env.CI ? 4 : 1,
   forbidOnly: !!process.env.CI,
   retries: 0,
   reporter: [["list"], ["html", { open: "never" }]],

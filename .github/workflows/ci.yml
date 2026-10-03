@@ -1,0 +1,52 @@
+name: CI
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+env:
+  CI: "true"
+  STORYBOOK_DISABLE_TELEMETRY: "1"
+  # Firefox refuses to run as root with a HOME owned by another user.
+  HOME: /root
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    # Same pinned base image as ci/Containerfile, used directly: no image build.
+    container:
+      image: mcr.microsoft.com/playwright:v1.63.0-noble@sha256:eff16c30e6f3f4af0a03fa4b706120d5e9b0891c344a27d64559aff5900a4a27
+      options: --init --shm-size=1g
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+      - name: Install pinned Node and pnpm
+        run: sh ci/install-toolchain.sh
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm verify
+  visual:
+    runs-on: ubuntu-latest
+    container:
+      image: mcr.microsoft.com/playwright:v1.63.0-noble@sha256:eff16c30e6f3f4af0a03fa4b706120d5e9b0891c344a27d64559aff5900a4a27
+      options: --init --shm-size=1g
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+      - name: Install pinned Node and pnpm
+        run: sh ci/install-toolchain.sh
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm build-storybook
+      - name: Compare approved references and retain candidates
+        run: pnpm exec playwright test --config playwright.visual.config.ts
+      - name: Upload candidates, diffs and reports even on failure
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: button-visual-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            test-results/visual/
+            playwright-report/
+          if-no-files-found: warn
+          retention-days: 14

@@ -55,10 +55,10 @@ ne touche que les ressources du run.
 ## Captures de référence
 
 L'environnement canonique des captures est la CI GitHub (Linux x64, même image
-épinglée). Le workflow `Button visual candidates` compare les vingt scénarios
+épinglée). Le job `visual` du workflow `CI` compare les vingt scénarios
 Button (deux variantes, cinq états, deux thèmes) dans les trois navigateurs.
 La commande est `pnpm exec playwright test --config playwright.visual.config.ts`
-après `pnpm build-storybook`, dans l'image `ci/Containerfile` en Linux x64.
+après `pnpm build-storybook`, dans l'image Playwright épinglée de `ci/Containerfile` (même digest, Node et pnpm via `ci/install-toolchain.sh`), en Linux x64.
 Les références sont dans `tests/visual/baselines/<navigateur>/`.
 
 Le viewport est 400 × 160, DPR 1 ; les polices locales sont attendues via

@@ -1,35 +1,58 @@
 # Contribuer à bench-design
 
-Le dépôt est en préparation : aucune toolchain, commande ci-dessous ou composant
-n'est encore exécutable. Voir les [décisions du socle](docs/decisions/0001-design-system.md).
+## Socle B1
 
-## Commandes à fournir au bootstrap
+Node 24.21.0 et pnpm 12.8.1 sont épinglés. Installer avec
+`pnpm install --frozen-lockfile`. Le point d'entrée public est vide ; le harnais
+natif de Storybook sert uniquement à vérifier l'outillage.
 
-| Commande prévue | Responsabilité |
+| Commande disponible | Responsabilité |
 | --- | --- |
-| `pnpm check` | Formatage, types et frontières de dépendances |
-| `pnpm test` | Tests unitaires et interactions des composants |
-| `pnpm build` | Package ESM, types et assets |
-| `pnpm build-storybook` | Documentation des composants réels |
-| `pnpm test:browser` | Comportement navigateur et accessibilité |
-| `pnpm verify:local` | Playwright isolé par run dans Podman, avec parallélisme |
-| `pnpm verify` | Tous les contrôles CI applicables et test de distribution |
+| `pnpm check` | Formatage, types stricts et frontières des imports |
+| `pnpm test` | Rendu, interaction et contrôles de frontières |
+| `pnpm build` | Package ESM et déclarations TypeScript |
+| `pnpm build-storybook` | Construction de la story technique |
+| `pnpm test:package` | Tarball importé et typé depuis un consommateur isolé |
+| `pnpm test:browser` | Chromium, Firefox, WebKit et axe sur le harnais |
+| `pnpm verify` | Tous les contrôles B1 ci-dessus |
 
-Ces noms sont un contrat de commandes, pas des scripts déjà présents. Chaque
-commande sera documentée avec ses options et son résultat réel lors de sa livraison.
-Les tests et la CI doivent fonctionner depuis un clone neuf sans liens privés.
-Une sélection vide, une infrastructure absente ou un test non exécuté ne vaut
-jamais succès. Les baselines approuvées appartiennent au dépôt ; traces et captures
-de run sont des résultats temporaires attribuables à leur invocation.
+## Environnement navigateur canonique
+
+L'image Playwright est épinglée par version et digest dans `ci/Containerfile`.
+Elle installe aussi les versions exactes de Node et pnpm. Sur macOS, transférer
+le Containerfile à la VM évite le montage partagé du contexte de construction :
+
+```sh
+podman machine ssh 'task_context=$(mktemp -d); cat > "$task_context/Containerfile"; podman build -t bench-design-verify "$task_context"; result=$?; rm -rf "$task_context"; exit "$result"' < ci/Containerfile
+git archive HEAD | podman run --rm -i --init --shm-size=1g bench-design-verify \
+  sh -c 'tar -xf - -C /workspace && pnpm install --frozen-lockfile && pnpm verify'
+```
+
+Cette commande teste uniquement le commit HEAD : committer les changements à
+vérifier avant de la lancer. Aucun checkout, corpus ou node_modules hôte n'est
+monté ; installation et résultats restent dans le conteneur temporaire.
+Les résultats sont affichés dans le terminal. La CI utilise la même image.
+Le runner isolé et parallèle avec rapports persistants `verify:local` sera livré
+à B3 ; il n'est pas encore disponible. Une sélection vide ou un test non exécuté
+ne vaut jamais succès. Aucune baseline visuelle n'existe à B1.
+
+## Compatibilité et portée
+
+La toolchain de développement et CI reste Node 24.21.0, pnpm 12.8.1 et
+React/React DOM 19.3.0 exactement. Le package accepte React/React DOM `^19.3.0`
+et Node `>=24.21.0`. Le consommateur isolé teste explicitement les bornes basses ;
+les versions futures admises par ces plages ne sont pas présentées comme testées.
+`pnpm verify` annonce ses contrôles techniques B1. Son succès ne clôt pas la
+revue indépendante et ne valide pas le socle complet : B2/B3 restent à livrer.
 
 ## Règles de contribution
 
-- Utiliser les tokens sémantiques et primitives partagés pour les besoins génériques.
-- Encapsuler React Aria sans exposer toutes ses props par simple passthrough.
 - Garder code métier, règles produit et contenus hors du package.
-- Tester le comportement observable et le package distribué, pas seulement Storybook.
+- Encapsuler React Aria sans exposer toutes ses props par passthrough.
+- Utiliser les tokens et primitives partagés lorsqu'ils seront livrés à B2.
+- Tester le comportement observable et le package distribué.
 - Ne pas modifier du code généré manuellement ni approuver une baseline soi-même.
 - Décrire l'impact consommateur de chaque changement de contrat public.
 
-Le workflow local des agents est décrit dans leurs instructions privées.
-Les commandes produit et la CI fonctionnent indépendamment de cet environnement.
+Les plans, skills et preuves privés restent dans l'écosystème local.
+Les commandes produit et la CI fonctionnent depuis un clone sans ces liens.

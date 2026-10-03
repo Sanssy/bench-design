@@ -4,7 +4,8 @@ import tokens from "../src/tokens.json" with { type: "json" };
 const guide = `# bench-design — integration
 
 Available foundations: tokens, CSS, local fonts and themes. Button provides primary and secondary variants, disabled states, React Aria activation and native button types.
-The components.json manifest and MCP server are not available. The package is private;
+The generated API manifest is available at [components.json](./components.json).
+The MCP server is deferred. The package is private;
 no npm release is available.
 
 ## Supported imports
@@ -62,6 +63,7 @@ do not invent these values. Wait for document.fonts.ready before screenshots.
 mkdirSync("dist", { recursive: true });
 writeFileSync("dist/AGENTS.md", guide);
 copyFileSync("src/tokens.json", "dist/tokens.json");
+copyFileSync("components.json", "dist/components.json");
 const site = process.argv.find((arg) => arg.startsWith("--site="))?.slice(7);
 if (site) {
   mkdirSync(site, { recursive: true });
@@ -72,7 +74,8 @@ if (site) {
   ] as const;
   writeFileSync(
     `${site}/llms.txt`,
-    `# bench-design\n\n> React design system: foundations, DTCG tokens, local fonts and themes.\n\nPrivate package: Button with primary and secondary variants available; npm release deferred.\n\n## Documentation\n\n${pages.map(([label, id]) => `- [${label}](./?path=/story/${encodeURIComponent(id)})`).join("\n")}\n- [DTCG tokens](./tokens.json): values, descriptions and usage rules.\n`,
+    `# bench-design\n\n> React design system: foundations, DTCG tokens, local fonts and themes.\n\nPrivate package: Button with primary and secondary variants available; npm release deferred.\n\n## Documentation\n\n${pages.map(([label, id]) => `- [${label}](./?path=/story/${encodeURIComponent(id)})`).join("\n")}\n- [Component API manifest](./components.json): imports, props, defaults and stories.\n- [DTCG tokens](./tokens.json): values, descriptions and usage rules.\n`,
   );
   copyFileSync("src/tokens.json", `${site}/tokens.json`);
+  copyFileSync("components.json", `${site}/components.json`);
 }

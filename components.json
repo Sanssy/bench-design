@@ -1,0 +1,72 @@
+{
+  "components": [
+    {
+      "name": "Button",
+      "import": "import { Button } from \"bench-design\";",
+      "description": "A visible-label action with React Aria activation and native button semantics. Defaults to the secondary variant and type=\"button\"; submit and reset are native. Use the DOM ref to restore focus. Explicit accessible names must include the visible label; prefer children alone when no additional context is needed.",
+      "props": [
+        {
+          "name": "children",
+          "type": "ReactNode",
+          "required": true
+        },
+        {
+          "name": "onPress",
+          "type": "() => void",
+          "required": false
+        },
+        {
+          "name": "isDisabled",
+          "type": "boolean",
+          "required": false,
+          "default": "false"
+        },
+        {
+          "name": "variant",
+          "type": "\"primary\" | \"secondary\"",
+          "required": false,
+          "default": "\"secondary\""
+        },
+        {
+          "name": "type",
+          "type": "\"button\" | \"submit\" | \"reset\"",
+          "required": false,
+          "default": "\"button\""
+        },
+        {
+          "name": "ref",
+          "type": "Ref<HTMLButtonElement>",
+          "required": false
+        },
+        {
+          "name": "aria-label",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "aria-labelledby",
+          "type": "string",
+          "required": false
+        }
+      ],
+      "stories": [
+        {
+          "name": "Primary",
+          "href": "./?path=/story/form-button--primary"
+        },
+        {
+          "name": "Secondary",
+          "href": "./?path=/story/form-button--secondary"
+        },
+        {
+          "name": "Disabled",
+          "href": "./?path=/story/form-button--disabled"
+        },
+        {
+          "name": "Variants",
+          "href": "./?path=/story/form-button--variants"
+        }
+      ]
+    }
+  ]
+}

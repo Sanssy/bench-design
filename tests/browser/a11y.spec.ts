@@ -2,6 +2,11 @@ import AxeBuilder from "@axe-core/playwright";
 import { expect, test } from "@playwright/test";
 
 const pages = [
+  ["typography-heading--article", "heading", "A new perspective"],
+  ["typography-heading--section", "heading", "A new perspective"],
+  ["typography-heading--subsection", "heading", "A new perspective"],
+  ["typography-heading--detail", "heading", "A new perspective"],
+  ["typography-heading--display", "heading", "A new perspective"],
   ["form-button--primary", "button", "Save"],
   ["form-button--secondary", "button", "Save"],
   ["form-button--disabled", "button", "Save"],

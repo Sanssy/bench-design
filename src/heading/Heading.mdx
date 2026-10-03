@@ -1,0 +1,35 @@
+import { Meta, Canvas, ArgTypes } from '@storybook/addon-docs/blocks';
+import * as Stories from './Heading.stories';
+
+<Meta of={Stories} />
+
+# Heading
+
+Import `Heading` from `bench-design` and load `bench-design/styles.css` once.
+
+## Usage
+
+Choose `level` for document structure; override `size` for visual emphasis.
+Levels 1, 2, 3 default to display, heading, lead; levels 4–6 use ui.
+
+- Do follow a logical heading hierarchy.
+- Avoid choosing a level only for its appearance.
+
+## API
+
+<ArgTypes of={Stories} />
+
+## Examples
+
+<Canvas of={Stories.Article} />
+<Canvas of={Stories.Section} />
+<Canvas of={Stories.Subsection} />
+<Canvas of={Stories.Detail} />
+<Canvas of={Stories.Display} />
+
+Use the theme selector to inspect light and dark themes.
+
+## Accessibility
+
+Native h1–h6 semantics expose the chosen level to assistive technology.
+Do not skip levels to adjust visual size. Headings are not interactive.

@@ -67,6 +67,50 @@
           "href": "./?path=/story/form-button--variants"
         }
       ]
+    },
+    {
+      "name": "Heading",
+      "import": "import { Heading } from \"bench-design\";",
+      "description": "A native heading. Choose level for document structure and size for emphasis.",
+      "props": [
+        {
+          "name": "level",
+          "type": "1 | 2 | 3 | 4 | 5 | 6",
+          "required": true
+        },
+        {
+          "name": "size",
+          "type": "\"display\" | \"heading\" | \"lead\" | \"ui\"",
+          "required": false
+        },
+        {
+          "name": "children",
+          "type": "ReactNode",
+          "required": true
+        }
+      ],
+      "stories": [
+        {
+          "name": "Article",
+          "href": "./?path=/story/typography-heading--article"
+        },
+        {
+          "name": "Section",
+          "href": "./?path=/story/typography-heading--section"
+        },
+        {
+          "name": "Subsection",
+          "href": "./?path=/story/typography-heading--subsection"
+        },
+        {
+          "name": "Detail",
+          "href": "./?path=/story/typography-heading--detail"
+        },
+        {
+          "name": "Display",
+          "href": "./?path=/story/typography-heading--display"
+        }
+      ]
     }
   ]
 }

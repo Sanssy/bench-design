@@ -47,6 +47,7 @@
   --bd-color-light-border-strong: #18201c;
   --bd-color-light-divider: #d6d8ce;
   --bd-color-light-accent: #d8ed69;
+  --bd-color-light-accent-hover: #e5f593;
   --bd-color-light-on-accent: #18201c;
   --bd-color-light-focus: #2355ba;
   --bd-color-light-shadow: #18201c;
@@ -61,6 +62,7 @@
   --bd-border-strong: var(--bd-color-light-border-strong);
   --bd-divider: var(--bd-color-light-divider);
   --bd-accent: var(--bd-color-light-accent);
+  --bd-accent-hover: var(--bd-color-light-accent-hover);
   --bd-on-accent: var(--bd-color-light-on-accent);
   --bd-focus: var(--bd-color-light-focus);
   --bd-shadow: var(--bd-color-light-shadow);
@@ -74,6 +76,7 @@
   --bd-color-dark-border: #69786e;
   --bd-color-dark-border-strong: #86968a;
   --bd-color-dark-accent: #d8ed69;
+  --bd-color-dark-accent-hover: #e5f593;
   --bd-color-dark-on-accent: #18201c;
   --bd-color-dark-focus: #a9c0fb;
   --bd-color-dark-shadow: #080d0a;
@@ -92,6 +95,7 @@
     --bd-border: var(--bd-color-dark-border);
     --bd-border-strong: var(--bd-color-dark-border-strong);
     --bd-accent: var(--bd-color-dark-accent);
+    --bd-accent-hover: var(--bd-color-dark-accent-hover);
     --bd-on-accent: var(--bd-color-dark-on-accent);
     --bd-focus: var(--bd-color-dark-focus);
     --bd-shadow: var(--bd-color-dark-shadow);
@@ -111,6 +115,7 @@
   --bd-border: var(--bd-color-dark-border);
   --bd-border-strong: var(--bd-color-dark-border-strong);
   --bd-accent: var(--bd-color-dark-accent);
+  --bd-accent-hover: var(--bd-color-dark-accent-hover);
   --bd-on-accent: var(--bd-color-dark-on-accent);
   --bd-focus: var(--bd-color-dark-focus);
   --bd-shadow: var(--bd-color-dark-shadow);

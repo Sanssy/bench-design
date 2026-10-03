@@ -4,6 +4,7 @@ for (const [source, name] of [
   ["src/tokens.css", "tokens.css"],
   ["src/tokens.json", "tokens.json"],
   ["public/styles.css", "styles.css"],
+  ["public/button.css", "button.css"],
   ["public/fonts.css", "fonts.css"],
   ["public/theme-init.js", "theme-init.js"],
 ] as const) {

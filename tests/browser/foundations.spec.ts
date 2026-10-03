@@ -1,4 +1,5 @@
 import { expect, test } from "@playwright/test";
+import tokens from "../../src/tokens.json" with { type: "json" };
 
 for (const theme of ["light", "dark"] as const) {
   test(`foundations render in explicit ${theme}`, {
@@ -12,7 +13,9 @@ for (const theme of ["light", "dark"] as const) {
     );
     await expect(page.locator("html")).toHaveAttribute("data-theme", theme);
     await expect(page.getByRole("heading", { name: "Couleurs" })).toBeVisible();
-    await expect(page.locator("[data-role]")).toHaveCount(14);
+    await expect(page.locator("[data-role]")).toHaveCount(
+      new Set([...Object.keys(tokens.light), ...Object.keys(tokens.dark)]).size,
+    );
     const text = page.locator('[data-role="text"]');
     await expect(text).toContainText(theme === "light" ? "#18201c" : "#e9e8e0");
     await expect(text.locator("[data-contrast]")).toContainText(

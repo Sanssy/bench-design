@@ -11,7 +11,16 @@ export interface VisualException {
   value: string;
   reason: string;
 }
-export const exceptions: VisualException[] = [];
+export const exceptions: VisualException[] = [
+  {
+    file: "dist/link.css",
+    selector: ".bd-link",
+    property: "text-underline-offset",
+    value: "0.2em",
+    reason:
+      "Ratified Link underline offset is relative to the surrounding font size.",
+  },
+];
 
 export function visualViolations(
   source: string,

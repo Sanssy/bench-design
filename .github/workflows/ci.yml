@@ -1,7 +1,7 @@
 name: CI
 # PRs run Chromium only; the full three-browser run happens locally with
 # `pnpm verify` before every push. main is not re-run after a squash merge.
-# Firefox and WebKit captures run on demand (Actions > CI > Run workflow).
+# Captures are Chromium-only; Run workflow re-runs browser tests on all three.
 on:
   pull_request:
   workflow_dispatch:
@@ -35,6 +35,8 @@ jobs:
       - run: pnpm verify
   visual:
     runs-on: ubuntu-latest
+    env:
+      BD_BROWSERS: chromium
     container:
       image: mcr.microsoft.com/playwright:v1.63.0-noble@sha256:eff16c30e6f3f4af0a03fa4b706120d5e9b0891c344a27d64559aff5900a4a27
       options: --init --shm-size=1g

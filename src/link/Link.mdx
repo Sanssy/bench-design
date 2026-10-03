@@ -1,0 +1,36 @@
+import { Meta, Canvas, ArgTypes } from '@storybook/addon-docs/blocks';
+import * as Stories from './Link.stories';
+
+<Meta of={Stories} />
+
+# Link
+
+Import `Link` from `bench-design` and load `bench-design/styles.css` once.
+
+## Usage
+
+Use Link for navigation and Button for actions. Link inherits the surrounding
+text color and remains underlined. Set `external` when opening a new tab.
+
+- Do use meaningful link text describing the destination.
+- Avoid “click here” and unexpected new tabs.
+- Application routing, disabled links and distinct visited styles are outside this API.
+
+## API
+
+<ArgTypes of={Stories} />
+
+## Examples
+
+<Canvas of={Stories.Paragraph} />
+<Canvas of={Stories.External} />
+
+Use the theme selector to inspect light and dark themes.
+
+## Accessibility
+
+Tab focuses the link; Enter follows its destination. React Aria owns interaction
+and keyboard focus visibility. External links use `noopener noreferrer` and
+announce “(opens in a new tab)” to screen readers without displaying it.
+An explicit `aria-label` should include the visible text; the external announcement
+is appended to that name. Use `ref` to restore focus to the anchor.

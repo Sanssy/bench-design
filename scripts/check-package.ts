@@ -51,6 +51,7 @@ try {
     "tokens.json",
     "AGENTS.md",
     "styles.css",
+    "link.css",
     "theme-init.js",
   ]) {
     assert(entries.includes(`package/dist/${name}`), `packed ${name} missing`);
@@ -85,7 +86,7 @@ try {
   );
   writeFileSync(
     join(consumer, "index.tsx"),
-    `import { Button, type ButtonProps, Heading, type HeadingProps, Text, type TextProps } from "bench-design";
+    `import { Button, type ButtonProps, Heading, type HeadingProps, Text, type TextProps, Link, type LinkProps } from "bench-design";
 import { createRef } from "react";
 const props: ButtonProps = { children: "Save", type: "submit", variant: "primary", ref: createRef<HTMLButtonElement>(), onPress: () => {}, isDisabled: false, "aria-label": "Save document", "aria-labelledby": "save-label" };
 const button = <Button {...props} />;
@@ -119,6 +120,19 @@ const textVariant = <Text variant="caption">Read</Text>;
 const textTag = <Text as="div">Read</Text>;
 // @ts-expect-error general HTML passthrough is excluded
 const textClass = <Text className="custom">Read</Text>;
+const linkProps: LinkProps = { href: "/chapter", children: "Read", external: true, ref: createRef<HTMLAnchorElement>(), "aria-label": "Read chapter" };
+const navigation = <Link {...linkProps} />;
+// @ts-expect-error href is required
+const missingHref = <Link>Read</Link>;
+// @ts-expect-error children are required
+const missingLinkContent = <Link href="/" />;
+// @ts-expect-error disabled links are excluded
+const disabledLink = <Link href="/" isDisabled>Read</Link>;
+// @ts-expect-error target is owned by external
+const linkTarget = <Link href="/" target="_blank">Read</Link>;
+// @ts-expect-error general HTML passthrough is excluded
+const linkClass = <Link href="/" className="custom">Read</Link>;
+void [navigation, missingHref, missingLinkContent, disabledLink, linkTarget, linkClass];
 void [text, missingText, textSize, textTone, textVariant, textTag, textClass];
 void [button, missingContent, click, link, variant, type, heading, missingLevel, headingSize];
 `,
@@ -140,7 +154,7 @@ void [button, missingContent, click, link, variant, type, heading, missingLevel,
   run("node", [
     "--input-type=module",
     "-e",
-    'import assert from "node:assert/strict"; import * as ds from "bench-design"; assert.deepEqual(Object.keys(ds), ["Button", "Heading", "Text"]); assert.equal(typeof ds.Button, "function"); assert.equal(typeof ds.Heading, "function"); assert.equal(typeof ds.Text, "function");',
+    'import assert from "node:assert/strict"; import * as ds from "bench-design"; assert.deepEqual(Object.keys(ds), ["Button", "Heading", "Link", "Text"]); assert.equal(typeof ds.Button, "function"); assert.equal(typeof ds.Heading, "function"); assert.equal(typeof ds.Text, "function"); assert.equal(typeof ds.Link, "function");',
   ]);
   run("node", [
     "--input-type=module",
@@ -160,7 +174,7 @@ void [button, missingContent, click, link, variant, type, heading, missingLevel,
     pathToFileURL(join(consumer, "node_modules/bench-design/dist/styles.css")),
   );
   console.log(
-    "Distribution PASS: isolated tarball ESM/types, Button, Heading and Text public API, no private files",
+    "Distribution PASS: isolated tarball ESM/types, Button, Heading, Text and Link public API, no private files",
   );
 } finally {
   rmSync(consumer, { recursive: true, force: true });

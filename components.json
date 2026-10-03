@@ -113,6 +113,49 @@
       ]
     },
     {
+      "name": "Link",
+      "import": "import { Link } from \"bench-design\";",
+      "description": "An inline link inheriting the surrounding text color. External links announce their new tab, including with an explicit name. Accessible names should include the visible label; prefer children alone.",
+      "props": [
+        {
+          "name": "href",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "children",
+          "type": "ReactNode",
+          "required": true
+        },
+        {
+          "name": "external",
+          "type": "boolean",
+          "required": false,
+          "default": "false"
+        },
+        {
+          "name": "ref",
+          "type": "Ref<HTMLAnchorElement>",
+          "required": false
+        },
+        {
+          "name": "aria-label",
+          "type": "string",
+          "required": false
+        }
+      ],
+      "stories": [
+        {
+          "name": "Paragraph",
+          "href": "./?path=/story/typography-link--paragraph"
+        },
+        {
+          "name": "External",
+          "href": "./?path=/story/typography-link--external"
+        }
+      ]
+    },
+    {
       "name": "Text",
       "import": "import { Text } from \"bench-design\";",
       "description": "A paragraph or inline text. Label and mono variants always use meta size.",

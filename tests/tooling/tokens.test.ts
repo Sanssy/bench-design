@@ -101,3 +101,23 @@ test("spacing types are generated from the public token source", () => {
     ),
   );
 });
+
+test("status tokens match ratification in both themes", () => {
+  const tokens = JSON.parse(readFileSync("src/tokens.json", "utf8"));
+  const expected = {
+    light: ["#626f41", "#eaecd7", "#935e34", "#f7e1c7", "#943f36", "#f3e7de"],
+    dark: ["#91a464", "#2a3225", "#c38657", "#322d23", "#cd7f76", "#332c28"],
+  };
+  for (const theme of ["light", "dark"] as const) {
+    [
+      "success",
+      "success-subtle",
+      "warning",
+      "warning-subtle",
+      "danger",
+      "danger-subtle",
+    ].forEach((name, i) => {
+      assert.equal(tokens[theme][name]?.$value.hex, expected[theme][i]);
+    });
+  }
+});

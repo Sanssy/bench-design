@@ -71,9 +71,14 @@ export function Palette({ theme }: { theme: string }) {
                 const decorative = ["divider", "shadow", "accent"].includes(
                   role,
                 );
-                const graphical = ["border", "border-strong", "focus"].includes(
-                  role,
-                );
+                const graphical = [
+                  "border",
+                  "border-strong",
+                  "focus",
+                  "success",
+                  "warning",
+                  "danger",
+                ].includes(role);
                 const badge = decorative
                   ? "Decorative"
                   : ratio === undefined

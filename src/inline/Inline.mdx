@@ -1,0 +1,36 @@
+import { Meta, Canvas, ArgTypes, Controls } from '@storybook/addon-docs/blocks';
+import * as Stories from './Inline.stories';
+
+<Meta of={Stories} />
+
+# Inline
+
+Import `Inline` from `bench-design` and load `bench-design/styles.css` once.
+
+## Usage
+
+Use for action rows and short groups. Items wrap when space runs out; align and justify preserve native defaults when omitted.
+
+- Do choose spacing from the approved token scale; omitting gap adds no spacing.
+- Avoid visual overrides or using layout to change reading order.
+- For ul/ol, supply li children; section content should have an appropriate heading.
+
+## API
+
+<ArgTypes of={Stories} />
+
+## Try the props
+
+<Controls of={Stories.Actions} />
+
+## Examples
+
+<Canvas of={Stories.Actions} />
+<Canvas of={Stories.Labels} />
+
+Use the theme selector to inspect light and dark themes.
+
+## Accessibility
+
+Native document order is preserved. Layout has no keyboard interaction.
+The as prop supports div, section, ul and ol. Provide valid children for the chosen element.

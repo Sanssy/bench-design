@@ -1,4 +1,5 @@
-.bd-stack {
+.bd-stack,
+.bd-inline {
   margin: 0;
   padding: 0;
   list-style: none;
@@ -12,6 +13,14 @@
   flex-direction: column;
   --bd-align: stretch;
   align-items: var(--bd-align);
+}
+.bd-inline {
+  display: flex;
+  flex-wrap: wrap;
+  --bd-align: normal;
+  --bd-justify: normal;
+  align-items: var(--bd-align);
+  justify-content: var(--bd-justify);
 }
 .bd-divider {
   margin: 0;

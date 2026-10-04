@@ -9,6 +9,8 @@ export { Icon } from "./icon/Icon.js";
 export type { IconName } from "./icon/icons.js";
 export type { IconButtonProps } from "./icon-button/IconButton.js";
 export { IconButton } from "./icon-button/IconButton.js";
+export type { InlineProps } from "./inline/Inline.js";
+export { Inline } from "./inline/Inline.js";
 export type { LinkProps } from "./link/Link.js";
 export { Link } from "./link/Link.js";
 export type { StackProps } from "./stack/Stack.js";

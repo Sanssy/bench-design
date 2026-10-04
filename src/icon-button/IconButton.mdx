@@ -1,0 +1,39 @@
+import { Meta, Canvas, ArgTypes } from '@storybook/addon-docs/blocks';
+import * as Stories from './IconButton.stories';
+
+<Meta of={Stories} />
+
+# IconButton
+
+An icon-only action in a 48 × 48px square. Import `IconButton` from
+`bench-design` and load `bench-design/styles.css` once.
+
+## Usage
+
+- Supply a clear action name through the required `label`; it provides the
+  accessible name and native `title` tooltip.
+- Use familiar icons. Prefer `Button` with visible text when meaning is unclear.
+- Use `primary` for the main action and `secondary` (the default) for supporting actions.
+- Use a link for navigation. Keep business permissions in the consuming product.
+
+## TypeScript API
+
+<ArgTypes of={Stories} />
+
+`icon` and `label` are required. `type` defaults to `button`; `submit` and
+`reset` retain native semantics. `onPress` has no arguments. The DOM `ref`
+can restore focus. General HTML attribute passthrough is not supported.
+
+## Examples
+
+<Canvas of={Stories.Primary} />
+<Canvas of={Stories.Secondary} />
+<Canvas of={Stories.Disabled} />
+
+Use the theme selector to view light and dark examples.
+
+## Keyboard and ARIA
+
+Tab reaches enabled actions with visible focus. Enter and Space activate once.
+Disabled actions cannot receive focus or activate. The SVG is decorative;
+`label` names the button. The native tooltip supplements its accessible name.

@@ -57,3 +57,26 @@
   outline: var(--bd-strong) solid var(--bd-focus);
   outline-offset: var(--bd-space-4);
 }
+
+.bd-button--with-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--bd-space-8);
+}
+
+.bd-button--with-icon > svg {
+  flex-shrink: 0;
+}
+
+.bd-icon-button {
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  inline-size: var(--bd-space-48);
+  block-size: var(--bd-space-48);
+  min-inline-size: var(--bd-space-48);
+  padding: 0;
+  flex-shrink: 0;
+}

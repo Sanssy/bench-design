@@ -11,6 +11,11 @@
           "required": true
         },
         {
+          "name": "icon",
+          "type": "IconName",
+          "required": false
+        },
+        {
           "name": "onPress",
           "type": "() => void",
           "required": false
@@ -65,6 +70,10 @@
         {
           "name": "Variants",
           "href": "./?path=/story/form-button--variants"
+        },
+        {
+          "name": "WithIcon",
+          "href": "./?path=/story/form-button--with-icon"
         }
       ]
     },
@@ -142,6 +151,37 @@
         {
           "name": "Sizes",
           "href": "./?path=/story/media-icon--sizes"
+        }
+      ]
+    },
+    {
+      "name": "IconButton",
+      "import": "import { IconButton } from \"bench-design\";",
+      "description": "A 48px square action; label supplies its accessible name and native tooltip.",
+      "props": [
+        {
+          "name": "icon",
+          "type": "IconName",
+          "required": true
+        },
+        {
+          "name": "label",
+          "type": "string",
+          "required": true
+        }
+      ],
+      "stories": [
+        {
+          "name": "Primary",
+          "href": "./?path=/story/form-iconbutton--primary"
+        },
+        {
+          "name": "Secondary",
+          "href": "./?path=/story/form-iconbutton--secondary"
+        },
+        {
+          "name": "Disabled",
+          "href": "./?path=/story/form-iconbutton--disabled"
         }
       ]
     },

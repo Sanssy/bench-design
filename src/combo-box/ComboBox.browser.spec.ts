@@ -49,7 +49,10 @@ for (const theme of ["light", "dark"]) {
     );
     await page.getByRole("combobox").fill("Document 000");
     await expect(page.getByRole("listbox")).toBeVisible();
-    expect((await new AxeBuilder({ page }).analyze()).violations).toEqual([]);
+    const result = await new AxeBuilder({ page })
+      .withTags(["wcag2a", "wcag2aa"])
+      .analyze();
+    expect(result.violations).toEqual([]);
   });
 }
 

@@ -59,6 +59,27 @@ export function componentImporters(root = "src") {
   return importers;
 }
 
+// CI runs the browser job as N shards. The full suite is split by
+// Playwright; a scoped selection is small and runs whole on shard 1 only.
+// Visual captures are compared once, on shard 1.
+export function shardPlan(
+  plan: ReturnType<typeof selectBrowserTests>,
+  shard: string | undefined,
+) {
+  const match = /^(\d+)\/(\d+)$/.exec(shard ?? "");
+  if (!match) return plan;
+  const first = match[1] === "1";
+  if (plan.mode === "full")
+    return {
+      ...plan,
+      args: [...plan.args, `--shard=${shard}`],
+      visual: first && plan.visual,
+    };
+  if (plan.mode === "scoped" && !first)
+    return { mode: "empty", args: [] as string[], visual: false };
+  return plan;
+}
+
 export function selectionFromBase(base: string | undefined) {
   if (!base) return selectBrowserTests(null);
   const diff = spawnSync(
@@ -78,8 +99,12 @@ if (
   resolve(process.argv[1]) === fileURLToPath(import.meta.url)
 ) {
   const base = process.argv[process.argv.indexOf("--base") + 1];
-  const plan = selectionFromBase(
-    process.argv.includes("--base") ? base : undefined,
+  const shard = process.argv.includes("--shard")
+    ? process.argv[process.argv.indexOf("--shard") + 1]
+    : undefined;
+  const plan = shardPlan(
+    selectionFromBase(process.argv.includes("--base") ? base : undefined),
+    shard,
   );
   console.log(JSON.stringify(plan));
   if (process.env.GITHUB_OUTPUT)

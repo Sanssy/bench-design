@@ -186,3 +186,22 @@ test("a11y replaces bootstrap and supports only explicit themes", () => {
     /Empty/,
   );
 });
+
+test("component and browser options reproduce PR CI for one component", () => {
+  const args = browserArgs(
+    selection(["--component", "app-shell", "--browser", "chromium"]),
+  );
+  assert(args.includes("--project=chromium"));
+  const grep = new RegExp(args[args.indexOf("--grep") + 1] ?? "");
+  assert(grep.test("AppShell scrolls @component:app-shell @theme:light"));
+  assert(!grep.test("Tabs keys @component:tabs"));
+  assert(!grep.test("Shell @component:app-shell-extra"));
+  // Without filters the whole suite runs: no file list, no grep.
+  assert.deepEqual(browserArgs(selection([])), ["--workers=1"]);
+  for (const bad of [
+    ["--component", "App Shell"],
+    ["--component", "button", "--target", "button"],
+    ["--browser", "edge"],
+  ])
+    assert.throws(() => selection(bad));
+});

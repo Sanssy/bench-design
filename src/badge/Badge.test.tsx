@@ -14,3 +14,12 @@ test("Badge defaults to outline and accepts a count", () => {
   render(<Badge>{12}</Badge>);
   expect(screen.getByText("12")).toHaveAttribute("data-variant", "outline");
 });
+
+test("Badge defaults to neutral and exposes status tones", () => {
+  const { rerender } = render(<Badge>Ready</Badge>);
+  expect(screen.getByText("Ready")).toHaveAttribute("data-tone", "neutral");
+  for (const tone of ["success", "warning", "danger"] as const) {
+    rerender(<Badge tone={tone}>Ready</Badge>);
+    expect(screen.getByText("Ready")).toHaveAttribute("data-tone", tone);
+  }
+});

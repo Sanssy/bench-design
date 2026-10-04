@@ -6,6 +6,12 @@ export default {
   title: "Feedback/Badge",
   component: Badge,
   parameters: { layout: "centered" },
+  argTypes: {
+    tone: {
+      control: "select",
+      options: ["neutral", "success", "warning", "danger"],
+    },
+  },
 } satisfies Meta<typeof Badge>;
 type Story = StoryObj<typeof Badge>;
 export const DocumentCount: Story = {
@@ -17,12 +23,16 @@ export const DocumentCount: Story = {
     </Inline>
   ),
 };
-export const ExportFormat: Story = {
-  args: { children: "SVG", variant: "solid" },
-  render: (args) => (
+export const PublicationStates: Story = {
+  args: { children: "Published", tone: "success" },
+  render: () => (
     <Inline gap={8} align="center">
-      <Badge {...args} />
-      <Text as="span">Vector download</Text>
+      <Badge tone="success" variant="solid">
+        Published
+      </Badge>
+      <Badge tone="warning">Draft</Badge>
+      <Badge tone="danger">Blocked</Badge>
+      <Badge variant="solid">SVG</Badge>
     </Inline>
   ),
 };

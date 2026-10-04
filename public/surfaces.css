@@ -43,3 +43,63 @@
   background: var(--bd-text);
   color: var(--bd-surface);
 }
+
+/* Reset semantic component variables on each root, including nested feedback. */
+.bd-status,
+.bd-notice,
+.bd-badge {
+  --bd-feedback-color: var(--bd-text);
+  --bd-feedback-subtle: var(--bd-surface-subtle);
+}
+.bd-status[data-tone="success"],
+.bd-notice[data-tone="success"],
+.bd-badge[data-tone="success"] {
+  --bd-feedback-color: var(--bd-success);
+  --bd-feedback-subtle: var(--bd-success-subtle);
+}
+.bd-status[data-tone="warning"],
+.bd-notice[data-tone="warning"],
+.bd-badge[data-tone="warning"] {
+  --bd-feedback-color: var(--bd-warning);
+  --bd-feedback-subtle: var(--bd-warning-subtle);
+}
+.bd-status[data-tone="danger"],
+.bd-notice[data-tone="danger"],
+.bd-badge[data-tone="danger"] {
+  --bd-feedback-color: var(--bd-danger);
+  --bd-feedback-subtle: var(--bd-danger-subtle);
+}
+.bd-badge[data-tone]:not([data-tone="neutral"]) {
+  color: var(--bd-text);
+  border-color: var(--bd-feedback-color);
+}
+.bd-badge[data-tone]:not([data-tone="neutral"])[data-variant="solid"] {
+  background: var(--bd-feedback-subtle);
+}
+.bd-status,
+.bd-notice {
+  display: flex;
+  align-items: start;
+  gap: var(--bd-space-8);
+  color: var(--bd-text);
+  font: var(--bd-size-ui) / var(--bd-line-normal) var(--bd-font-ui);
+}
+.bd-status {
+  display: inline-flex;
+  align-items: center;
+}
+.bd-status > svg,
+.bd-notice > svg {
+  color: var(--bd-feedback-color);
+  flex-shrink: 0;
+}
+.bd-notice {
+  padding: var(--bd-space-16);
+  border-left: var(--bd-strong) solid var(--bd-feedback-color);
+  background: var(--bd-feedback-subtle);
+}
+.bd-notice__title {
+  display: block;
+  font-weight: var(--bd-weight-semibold);
+  margin-bottom: var(--bd-space-4);
+}

@@ -3,12 +3,18 @@
     {
       "name": "Badge",
       "import": "import { Badge } from \"bench-design\";",
-      "description": "Label a count or format with monospaced text, without status semantics.",
+      "description": "Label a count or format with monospaced text, with a meaningful label.",
       "props": [
         {
           "name": "children",
           "type": "string | number",
           "required": true
+        },
+        {
+          "name": "tone",
+          "type": "\"neutral\" | \"success\" | \"warning\" | \"danger\"",
+          "required": false,
+          "default": "\"neutral\""
         },
         {
           "name": "variant",
@@ -23,8 +29,8 @@
           "href": "./?path=/story/feedback-badge--document-count"
         },
         {
-          "name": "ExportFormat",
-          "href": "./?path=/story/feedback-badge--export-format"
+          "name": "PublicationStates",
+          "href": "./?path=/story/feedback-badge--publication-states"
         }
       ]
     },
@@ -474,6 +480,33 @@
         {
           "name": "ReadingList",
           "href": "./?path=/story/layout-stack--reading-list"
+        }
+      ]
+    },
+    {
+      "name": "Status",
+      "import": "import { Status } from \"bench-design\";",
+      "description": "Present labeled, noninteractive feedback.",
+      "props": [
+        {
+          "name": "tone",
+          "type": "\"success\" | \"warning\" | \"danger\"",
+          "required": true
+        },
+        {
+          "name": "label",
+          "type": "string",
+          "required": true
+        }
+      ],
+      "stories": [
+        {
+          "name": "UploadComplete",
+          "href": "./?path=/story/feedback-status--upload-complete"
+        },
+        {
+          "name": "UploadResults",
+          "href": "./?path=/story/feedback-status--upload-results"
         }
       ]
     },

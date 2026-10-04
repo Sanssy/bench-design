@@ -26,6 +26,8 @@ export { MetaList } from "./meta-list/MetaList.js";
 export type { SpaceToken } from "./space-tokens.js";
 export type { StackProps } from "./stack/Stack.js";
 export { Stack } from "./stack/Stack.js";
+export type { StatusProps } from "./status/Status.js";
+export { Status } from "./status/Status.js";
 export type { SurfaceProps } from "./surface/Surface.js";
 export { Surface } from "./surface/Surface.js";
 export type { TabsProps } from "./tabs/Tabs.js";

@@ -44,7 +44,7 @@ for (const theme of ["light", "dark"] as const) {
     tag: ["@component:badge", `@theme:${theme}`],
   }, async ({ page }) => {
     await page.goto(
-      `/iframe.html?id=feedback-badge--export-format&args=variant:solid&viewMode=story&globals=a11y.manual:!true;theme:${theme}`,
+      `/iframe.html?id=feedback-badge--document-count&args=variant:solid&viewMode=story&globals=a11y.manual:!true;theme:${theme}`,
     );
     await expect(page.locator("html")).toHaveAttribute("data-theme", theme);
     const component = page.locator(".bd-badge");
@@ -111,3 +111,48 @@ test("Badge geometry uses spacing and typography tokens", {
     await component.evaluate((element) => getComputedStyle(element).fontFamily),
   ).toContain("Bench Plex");
 });
+
+for (const theme of ["light", "dark"] as const) {
+  test(`Badge semantic colors ${theme}`, {
+    tag: ["@component:badge", `@theme:${theme}`],
+  }, async ({ page }) => {
+    for (const tone of ["success", "warning", "danger"] as const) {
+      for (const variant of ["outline", "solid"] as const) {
+        await page.goto(
+          `/iframe.html?id=feedback-badge--document-count&args=tone:${tone};variant:${variant}&viewMode=story&globals=a11y.manual:!true;theme:${theme}`,
+        );
+        await expect(page.locator("html")).toHaveAttribute("data-theme", theme);
+        const root = page.locator(".bd-badge");
+        await expect(root).toHaveAttribute("data-tone", tone);
+        const result = await root.evaluate((element, tone) => {
+          const actual = getComputedStyle(element);
+          const probe = document.createElement("span");
+          probe.style.color = "var(--bd-text)";
+          probe.style.backgroundColor = `var(--bd-${tone}-subtle)`;
+          probe.style.borderLeft = `var(--bd-strong) solid var(--bd-${tone})`;
+          element.append(probe);
+          const expected = getComputedStyle(probe);
+          const result = {
+            text: actual.color,
+            expectedText: expected.color,
+            icon: getComputedStyle(element.querySelector("svg") ?? element)
+              .color,
+            expectedTone: expected.borderLeftColor,
+            background: actual.backgroundColor,
+            expectedBackground: expected.backgroundColor,
+            border: actual.borderTopColor,
+            width: actual.borderLeftWidth,
+            expectedWidth: expected.borderLeftWidth,
+          };
+          probe.remove();
+          return result;
+        }, tone);
+        expect(result.text).toBe(result.expectedText);
+        expect(result.border).toBe(result.expectedTone);
+        expect(result.background).toBe(
+          variant === "solid" ? result.expectedBackground : "rgba(0, 0, 0, 0)",
+        );
+      }
+    }
+  });
+}

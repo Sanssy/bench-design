@@ -13,6 +13,35 @@ export function createArgs(id: string, image: string): string[] {
     `${ownerLabel}=${id}`,
   ].concat(["--init", "--shm-size=1g", image, "sleep", "infinity"]);
 }
+/** Files that define a verification image: same contents, same image. */
+export const imageInputs = [
+  "ci/Containerfile",
+  "ci/install-toolchain.sh",
+  "package.json",
+  "pnpm-lock.yaml",
+  "pnpm-workspace.yaml",
+];
+export const imageLabel = "bench-design.verify-image";
+export function imageTag(root: string) {
+  const hash = createHash("sha256");
+  for (const file of imageInputs)
+    hash
+      .update(file)
+      .update("\0")
+      .update(fs.readFileSync(join(root, file)));
+  return `bench-design-verify:${hash.digest("hex").slice(0, 16)}`;
+}
+/** The CI recipe plus the locked dependencies, fetched once into the image store. */
+export function imageRecipe(root: string) {
+  return `${fs.readFileSync(join(root, "ci/Containerfile"), "utf8").trimEnd()}
+COPY package.json pnpm-lock.yaml pnpm-workspace.yaml /deps/
+RUN cd /deps && pnpm fetch && rm -rf /deps
+`;
+}
+/** Half the Podman VM CPUs, at most the 4 workers CI uses. */
+export function defaultWorkers(cpus: number) {
+  return Math.max(1, Math.min(4, Math.floor(cpus / 2)));
+}
 export function owned(labels: Record<string, string>, id: string) {
   return labels[ownerLabel] === id;
 }

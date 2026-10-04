@@ -9,5 +9,7 @@ export type { IconButtonProps } from "./icon-button/IconButton.js";
 export { IconButton } from "./icon-button/IconButton.js";
 export type { LinkProps } from "./link/Link.js";
 export { Link } from "./link/Link.js";
+export type { StackProps } from "./stack/Stack.js";
+export { Stack } from "./stack/Stack.js";
 export type { TextProps } from "./text/Text.js";
 export { Text } from "./text/Text.js";

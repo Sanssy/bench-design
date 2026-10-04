@@ -5,6 +5,8 @@ export { Heading } from "./heading/Heading.js";
 export type { IconProps } from "./icon/Icon.js";
 export { Icon } from "./icon/Icon.js";
 export type { IconName } from "./icon/icons.js";
+export type { IconButtonProps } from "./icon-button/IconButton.js";
+export { IconButton } from "./icon-button/IconButton.js";
 export type { LinkProps } from "./link/Link.js";
 export { Link } from "./link/Link.js";
 export type { TextProps } from "./text/Text.js";

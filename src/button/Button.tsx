@@ -1,9 +1,14 @@
 import type { ReactNode, Ref } from "react";
 import { Button as AriaButton } from "react-aria-components";
 
+import { Icon } from "../icon/Icon.js";
+import type { IconName } from "../icon/icons.js";
+
 /** Explicit public API; interaction is delegated to React Aria. */
 export interface ButtonProps {
   children: ReactNode;
+  /** Decorative icon before the visible label. */
+  icon?: IconName;
   onPress?: () => void;
   isDisabled?: boolean;
   variant?: "primary" | "secondary";
@@ -21,6 +26,7 @@ export interface ButtonProps {
  */
 export function Button({
   children,
+  icon,
   onPress,
   isDisabled = false,
   variant = "secondary",
@@ -31,7 +37,9 @@ export function Button({
 }: ButtonProps) {
   return (
     <AriaButton
-      className="bd-button"
+      className={
+        icon === undefined ? "bd-button" : "bd-button bd-button--with-icon"
+      }
       ref={ref}
       type={type}
       {...(onPress === undefined ? {} : { onPress })}
@@ -42,6 +50,7 @@ export function Button({
         ? {}
         : { "aria-labelledby": ariaLabelledby })}
     >
+      {icon === undefined ? null : <Icon name={icon} size={20} />}
       {children}
     </AriaButton>
   );

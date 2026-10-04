@@ -86,10 +86,17 @@ try {
   );
   writeFileSync(
     join(consumer, "index.tsx"),
-    `import { Button, type ButtonProps, Heading, type HeadingProps, Text, type TextProps, Link, type LinkProps, Icon, type IconProps, type IconName } from "bench-design";
+    `import { Button, type ButtonProps, Heading, type HeadingProps, Text, type TextProps, Link, type LinkProps, Icon, type IconProps, type IconName, IconButton, type IconButtonProps } from "bench-design";
 import { createRef } from "react";
 const props: ButtonProps = { children: "Save", type: "submit", variant: "primary", ref: createRef<HTMLButtonElement>(), onPress: () => {}, isDisabled: false, "aria-label": "Save document", "aria-labelledby": "save-label" };
-const button = <Button {...props} />;
+const button = <Button {...props} icon="plus" />;
+const iconButtonProps: IconButtonProps = { icon: "search", label: "Search", ref: createRef<HTMLButtonElement>(), variant: "primary", type: "submit", onPress: () => {}, isDisabled: false };
+const iconButton = <IconButton {...iconButtonProps} />;
+// @ts-expect-error label is required
+const missingIconButtonLabel = <IconButton icon="search" />;
+// @ts-expect-error icon is required
+const missingIconButtonIcon = <IconButton label="Search" />;
+void [iconButton, missingIconButtonLabel, missingIconButtonIcon];
 // @ts-expect-error content is required
 const missingContent = <Button />;
 // @ts-expect-error general HTML passthrough is excluded
@@ -170,7 +177,7 @@ void [button, missingContent, click, link, variant, type, heading, missingLevel,
   run("node", [
     "--input-type=module",
     "-e",
-    'import assert from "node:assert/strict"; import * as ds from "bench-design"; assert.deepEqual(Object.keys(ds), ["Button", "Heading", "Icon", "Link", "Text"]); assert.equal(typeof ds.Button, "function"); assert.equal(typeof ds.Heading, "function"); assert.equal(typeof ds.Text, "function"); assert.equal(typeof ds.Link, "function"); assert.equal(typeof ds.Icon, "function");',
+    'import assert from "node:assert/strict"; import * as ds from "bench-design"; assert.deepEqual(Object.keys(ds), ["Button", "Heading", "Icon", "IconButton", "Link", "Text"]); assert.equal(typeof ds.Button, "function"); assert.equal(typeof ds.Heading, "function"); assert.equal(typeof ds.Text, "function"); assert.equal(typeof ds.Link, "function"); assert.equal(typeof ds.Icon, "function"); assert.equal(typeof ds.IconButton, "function");',
   ]);
   run("node", [
     "--input-type=module",
@@ -190,7 +197,7 @@ void [button, missingContent, click, link, variant, type, heading, missingLevel,
     pathToFileURL(join(consumer, "node_modules/bench-design/dist/styles.css")),
   );
   console.log(
-    "Distribution PASS: isolated tarball ESM/types, Button, Heading, Text, Link and Icon public API, no private files",
+    "Distribution PASS: isolated tarball ESM/types, Button, Heading, Text, Link, Icon and IconButton public API, no private files",
   );
 } finally {
   rmSync(consumer, { recursive: true, force: true });

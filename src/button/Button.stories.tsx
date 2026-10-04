@@ -34,3 +34,8 @@ export const Variants: Story = {
     </div>
   ),
 };
+
+export const WithIcon: Story = {
+  name: "With icon",
+  args: { icon: "plus", children: "Add item" },
+};

@@ -19,6 +19,8 @@ export interface FieldOption {
   id: string;
   /** Visible accessible name of the option. */
   label: string;
+  /** Optional supporting text displayed on a second line in searchable lists. */
+  description?: string;
   /** Prevent this option from being selected. */
   isDisabled?: boolean;
 }

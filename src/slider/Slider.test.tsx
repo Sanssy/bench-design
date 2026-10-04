@@ -59,3 +59,13 @@ test("Slider follows controlled values and disables editing", () => {
   expect(screen.getByRole("slider")).toHaveValue("30");
   expect(screen.getByRole("slider")).toBeDisabled();
 });
+
+test("submits its value under name", () => {
+  const { container } = render(
+    <form>
+      <Slider label="Zoom" name="zoom" defaultValue={40} />
+    </form>,
+  );
+  const form = container.querySelector("form") as HTMLFormElement;
+  expect(new FormData(form).get("zoom")).toBe("40");
+});

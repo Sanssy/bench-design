@@ -51,7 +51,6 @@ export function Slider({
   return (
     <AriaSlider
       className="bd-field bd-slider"
-      {...(name === undefined ? {} : { name })}
       {...(value === undefined ? {} : { value })}
       {...(defaultValue === undefined ? {} : { defaultValue })}
       {...(onChange === undefined ? {} : { onChange })}
@@ -73,6 +72,10 @@ export function Slider({
               className="bd-slider-fill"
               style={{ width: `${state.getThumbPercent(0) * 100}%` }}
             />
+            {/* React Aria's Slider renders no form input; submit the value. */}
+            {name !== undefined && (
+              <input type="hidden" name={name} value={state.values[0]} />
+            )}
             <SliderThumb
               className="bd-slider-thumb"
               {...(describedBy ? { "aria-describedby": describedBy } : {})}

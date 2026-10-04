@@ -42,7 +42,7 @@ test("announces the exact filtered count", async () => {
   const user = userEvent.setup();
   render(<ComboBox label="Collection" options={options} />);
   await user.type(screen.getByRole("combobox"), "Read");
-  expect(screen.getByRole("status")).toHaveTextContent("1 results");
+  expect(screen.getByRole("status")).toHaveTextContent(/^1 result$/);
 });
 test("offers a hint when no option matches", async () => {
   const user = userEvent.setup();

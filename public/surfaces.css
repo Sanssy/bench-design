@@ -14,3 +14,15 @@
   background: var(--bd-surface-raised);
   color: var(--bd-text);
 }
+.bd-empty-state {
+  border: var(--bd-hair) dashed var(--bd-border);
+  padding: var(--bd-space-24) var(--bd-space-16);
+  background: var(--bd-surface-subtle);
+  color: var(--bd-text);
+}
+.bd-empty-state > .bd-heading {
+  margin-bottom: var(--bd-space-8);
+}
+.bd-empty-state__action {
+  margin-top: var(--bd-space-16);
+}

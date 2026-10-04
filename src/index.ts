@@ -4,6 +4,8 @@ export type { CardProps } from "./card/Card.js";
 export { Card } from "./card/Card.js";
 export type { DividerProps } from "./divider/Divider.js";
 export { Divider } from "./divider/Divider.js";
+export type { EmptyStateProps } from "./empty-state/EmptyState.js";
+export { EmptyState } from "./empty-state/EmptyState.js";
 export type { GridProps } from "./grid/Grid.js";
 export { Grid } from "./grid/Grid.js";
 export type { HeadingProps } from "./heading/Heading.js";

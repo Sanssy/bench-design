@@ -29,6 +29,7 @@ test("a component edit also selects the components that import it", () => {
   assert.deepEqual(componentImporters().text?.sort(), [
     "card",
     "divider",
+    "empty-state",
     "grid",
     "inline",
     "link",

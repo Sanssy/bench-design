@@ -122,9 +122,18 @@
 .bd-checkbox .bd-choice-box {
   border-radius: var(--bd-radius);
 }
+.bd-radio .bd-choice-box {
+  border-radius: 50%;
+}
 .bd-choice-box svg,
 .bd-radio-dot {
   visibility: hidden;
+}
+.bd-radio-dot {
+  inline-size: var(--bd-space-8);
+  block-size: var(--bd-space-8);
+  border-radius: 50%;
+  background: var(--bd-on-accent);
 }
 [data-selected] > .bd-choice-box {
   background: var(--bd-accent);

@@ -23,7 +23,14 @@ export function selection(args: string[]) {
     const value = input[index + 1];
     if (
       !input[index]?.startsWith("--") ||
-      !["target", "theme", "viewport", "workers"].includes(key) ||
+      ![
+        "target",
+        "component",
+        "browser",
+        "theme",
+        "viewport",
+        "workers",
+      ].includes(key) ||
       key in options ||
       !value ||
       value.startsWith("--")
@@ -46,6 +53,17 @@ export function selection(args: string[]) {
     throw new Error("workers must be a positive safe integer");
   if (options.target && !Object.hasOwn(targets, options.target))
     throw new Error(`Unknown target: ${options.target}`);
+  if (options.target && options.component)
+    throw new Error("Use either --target or --component");
+  if (options.component && !/^[a-z][a-z0-9-]*$/.test(options.component))
+    throw new Error(`Invalid component: ${options.component}`);
+  if (
+    options.browser &&
+    !["chromium", "firefox", "webkit"].includes(options.browser)
+  )
+    throw new Error(`Invalid browser: ${options.browser}`);
+  // A component selects its own specs and axe stories by tag, across files.
+  if (options.component) return { workers, targets: [], filters: options };
   const selected = (Object.keys(targets) as Target[]).filter(
     (target) =>
       (!options.target || options.target === target) &&
@@ -64,11 +82,16 @@ export function selection(args: string[]) {
 export function browserArgs(plan: ReturnType<typeof selection>): string[] {
   return [
     `--workers=${plan.workers}`,
-    ...plan.targets.map((target) => targets[target].file),
-    ...(plan.filters.theme || plan.filters.viewport
+    // Without --target the whole suite runs, including every component spec.
+    ...(plan.filters.target ? [targets[plan.targets[0] as Target].file] : []),
+    ...(plan.filters.browser ? [`--project=${plan.filters.browser}`] : []),
+    ...(plan.filters.theme || plan.filters.viewport || plan.filters.component
       ? [
           "--grep",
           `^${[
+            plan.filters.component
+              ? `(?=.*@component:${plan.filters.component}(?:\\s|$))`
+              : "",
             plan.filters.theme
               ? `(?=.*@theme:${plan.filters.theme}(?:\\s|$))`
               : "",

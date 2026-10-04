@@ -17,7 +17,7 @@ const input = process.argv.slice(2);
 const normalized = input[0] === "--" ? input.slice(1) : input;
 if (normalized.length === 1 && normalized[0] === "--help") {
   console.log(
-    "Usage: pnpm verify:local -- [--target a11y|fonts|foundations|themes|button] [--theme light|dark|system] [--viewport desktop|mobile|short] [--workers <positive integer>]\nDefaults: all scenarios, one worker. mobile has no scenarios; short covers Button. desktop excludes short. --parallel is not available yet.",
+    "Usage: pnpm verify:local -- [--target a11y|fonts|foundations|themes|button | --component <src directory>] [--browser chromium|firefox|webkit] [--theme light|dark|system] [--viewport desktop|mobile|short] [--workers <positive integer>]\nDefaults: the whole suite on all three browsers, one worker. --component selects a component's specs and axe stories (e.g. app-shell); --browser chromium reproduces PR CI. mobile has no scenarios; short covers Button. desktop excludes short.",
   );
   process.exit(0);
 }

@@ -64,14 +64,20 @@ digest (`ci/Containerfile`), using Podman with an active VM. It verifies a snaps
 of the current checkout, including uncommitted files; the checkout, `.git` and
 `node_modules` are never mounted.
 
+Use it when a test passes on macOS but fails in CI: Linux has classic scrollbars
+that take layout space, unlike macOS overlay scrollbars.
+
 ```sh
 pnpm verify:local -- --help
+pnpm verify:local -- --component app-shell --browser chromium
 pnpm verify:local -- --target button --theme dark --workers 2
 ```
 
-Filters: `--target` (a11y, fonts, foundations, themes, button), `--theme`
-(light, dark, system), `--viewport` (desktop, short; mobile has no scenarios yet),
-and `--workers`. Filters intersect; invalid options and empty selections are
+Without filters the whole suite runs on the three browsers. Filters:
+`--component` (a `src/` directory: its specs and axe stories, by tag),
+`--browser` (chromium reproduces PR CI), `--target` (a11y, fonts, foundations,
+themes, button), `--theme` (light, dark, system), `--viewport` (desktop, short;
+mobile has no scenarios yet), and `--workers`. Filters intersect; invalid options and empty selections are
 rejected before startup. Reports remain in `.verification/runs/<uuid>/`, with
 `manifest.json` recording the snapshot, selection, commands, result and cleanup.
 Exit codes: 0 success, 1 assertion failure, 2 infrastructure, 130 interruption.

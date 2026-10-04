@@ -86,7 +86,7 @@ try {
   );
   writeFileSync(
     join(consumer, "index.tsx"),
-    `import { Button, type ButtonProps, Heading, type HeadingProps, Text, type TextProps, Link, type LinkProps } from "bench-design";
+    `import { Button, type ButtonProps, Heading, type HeadingProps, Text, type TextProps, Link, type LinkProps, Icon, type IconProps, type IconName } from "bench-design";
 import { createRef } from "react";
 const props: ButtonProps = { children: "Save", type: "submit", variant: "primary", ref: createRef<HTMLButtonElement>(), onPress: () => {}, isDisabled: false, "aria-label": "Save document", "aria-labelledby": "save-label" };
 const button = <Button {...props} />;
@@ -132,6 +132,22 @@ const disabledLink = <Link href="/" isDisabled>Read</Link>;
 const linkTarget = <Link href="/" target="_blank">Read</Link>;
 // @ts-expect-error general HTML passthrough is excluded
 const linkClass = <Link href="/" className="custom">Read</Link>;
+const iconName: IconName = "search";
+const iconProps: IconProps = { name: iconName, size: 20, label: "Search" };
+const icon = <Icon {...iconProps} />;
+// @ts-expect-error name is required
+const missingIconName = <Icon />;
+// @ts-expect-error unknown icon
+const unknownIcon = <Icon name="missing" />;
+// @ts-expect-error unapproved size
+const iconSize = <Icon name="search" size={32} />;
+// @ts-expect-error color is inherited
+const iconColor = <Icon name="search" color="red" />;
+// @ts-expect-error className passthrough is excluded
+const iconClass = <Icon name="search" className="custom" />;
+// @ts-expect-error style passthrough is excluded
+const iconStyle = <Icon name="search" style={{ color: "red" }} />;
+void [icon, missingIconName, unknownIcon, iconSize, iconColor, iconClass, iconStyle];
 void [navigation, missingHref, missingLinkContent, disabledLink, linkTarget, linkClass];
 void [text, missingText, textSize, textTone, textVariant, textTag, textClass];
 void [button, missingContent, click, link, variant, type, heading, missingLevel, headingSize];
@@ -154,7 +170,7 @@ void [button, missingContent, click, link, variant, type, heading, missingLevel,
   run("node", [
     "--input-type=module",
     "-e",
-    'import assert from "node:assert/strict"; import * as ds from "bench-design"; assert.deepEqual(Object.keys(ds), ["Button", "Heading", "Link", "Text"]); assert.equal(typeof ds.Button, "function"); assert.equal(typeof ds.Heading, "function"); assert.equal(typeof ds.Text, "function"); assert.equal(typeof ds.Link, "function");',
+    'import assert from "node:assert/strict"; import * as ds from "bench-design"; assert.deepEqual(Object.keys(ds), ["Button", "Heading", "Icon", "Link", "Text"]); assert.equal(typeof ds.Button, "function"); assert.equal(typeof ds.Heading, "function"); assert.equal(typeof ds.Text, "function"); assert.equal(typeof ds.Link, "function"); assert.equal(typeof ds.Icon, "function");',
   ]);
   run("node", [
     "--input-type=module",
@@ -174,7 +190,7 @@ void [button, missingContent, click, link, variant, type, heading, missingLevel,
     pathToFileURL(join(consumer, "node_modules/bench-design/dist/styles.css")),
   );
   console.log(
-    "Distribution PASS: isolated tarball ESM/types, Button, Heading, Text and Link public API, no private files",
+    "Distribution PASS: isolated tarball ESM/types, Button, Heading, Text, Link and Icon public API, no private files",
   );
 } finally {
   rmSync(consumer, { recursive: true, force: true });

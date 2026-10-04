@@ -113,6 +113,39 @@
       ]
     },
     {
+      "name": "Icon",
+      "import": "import { Icon } from \"bench-design\";",
+      "description": "Render an inline SVG; omit label when surrounding content provides meaning.",
+      "props": [
+        {
+          "name": "name",
+          "type": "\"arrow-left\" | \"arrow-right\" | \"bin\" | \"calendar\" | \"check\" | \"chevron-down\" | \"download\" | \"info\" | \"menu\" | \"pen\" | \"plus\" | \"search\" | \"settings\" | \"triangle-alert\" | \"user\" | \"x\"",
+          "required": true
+        },
+        {
+          "name": "size",
+          "type": "16 | 20 | 24",
+          "required": false,
+          "default": "24"
+        },
+        {
+          "name": "label",
+          "type": "string",
+          "required": false
+        }
+      ],
+      "stories": [
+        {
+          "name": "Gallery",
+          "href": "./?path=/story/media-icon--gallery"
+        },
+        {
+          "name": "Sizes",
+          "href": "./?path=/story/media-icon--sizes"
+        }
+      ]
+    },
+    {
       "name": "Link",
       "import": "import { Link } from \"bench-design\";",
       "description": "An inline link inheriting the surrounding text color. External links announce their new tab, including with an explicit name. Accessible names should include the visible label; prefer children alone.",

@@ -1,13 +1,23 @@
 import assert from "node:assert/strict";
 import { execFileSync } from "node:child_process";
-import { mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
+import {
+  mkdirSync,
+  mkdtempSync,
+  readFileSync,
+  rmSync,
+  writeFileSync,
+} from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import test from "node:test";
 import {
   classify,
   createArgs,
+  defaultWorkers,
   exitCode,
+  imageInputs,
+  imageRecipe,
+  imageTag,
   owned,
   snapshot,
 } from "../../scripts/verification.ts";
@@ -72,4 +82,23 @@ test("interruption takes precedence over gate and infrastructure results", () =>
       reason === "SIGINT" ? 130 : 2,
     );
   }
+});
+
+test("verification image tag follows the recipe and the lockfile", () => {
+  const root = mkdtempSync(join(tmpdir(), "bd-image-"));
+  try {
+    mkdirSync(join(root, "ci"));
+    for (const file of imageInputs) writeFileSync(join(root, file), file);
+    const first = imageTag(root);
+    assert.match(first, /^bench-design-verify:[0-9a-f]{16}$/);
+    assert.equal(imageTag(root), first);
+    writeFileSync(join(root, "pnpm-lock.yaml"), "changed");
+    assert.notEqual(imageTag(root), first);
+    assert.match(imageRecipe(root), /pnpm fetch --frozen-lockfile/);
+  } finally {
+    rmSync(root, { recursive: true, force: true });
+  }
+});
+test("default workers use half the VM CPUs, between 1 and 4", () => {
+  assert.deepEqual([1, 2, 4, 8, 16].map(defaultWorkers), [1, 1, 2, 4, 4]);
 });

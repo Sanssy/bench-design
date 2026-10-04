@@ -1,12 +1,23 @@
 import { spawn } from "node:child_process";
 import { randomUUID } from "node:crypto";
-import { mkdirSync, mkdtempSync, rmSync, writeFileSync } from "node:fs";
+import {
+  copyFileSync,
+  mkdirSync,
+  mkdtempSync,
+  rmSync,
+  writeFileSync,
+} from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import {
   classify,
   createArgs,
+  defaultWorkers,
   exitCode,
+  imageInputs,
+  imageLabel,
+  imageRecipe,
+  imageTag,
   owned,
   snapshot,
 } from "./verification.ts";
@@ -17,7 +28,7 @@ const input = process.argv.slice(2);
 const normalized = input[0] === "--" ? input.slice(1) : input;
 if (normalized.length === 1 && normalized[0] === "--help") {
   console.log(
-    "Usage: pnpm verify:local -- [--target a11y|fonts|foundations|themes|button | --component <src directory>] [--browser chromium|firefox|webkit] [--theme light|dark|system] [--viewport desktop|mobile|short] [--workers <positive integer>]\nDefaults: the whole suite on all three browsers, one worker. --component selects a component's specs and axe stories (e.g. app-shell); --browser chromium reproduces PR CI. mobile has no scenarios; short covers Button. desktop excludes short.",
+    "Usage: pnpm verify:local -- [--target a11y|fonts|foundations|themes|button | --component <src directory>] [--browser chromium|firefox|webkit] [--theme light|dark|system] [--viewport desktop|mobile|short] [--workers <positive integer>]\nDefaults: the whole suite on all three browsers, with half the Podman VM CPUs as workers (at most 4). The image, with the locked dependencies, is reused while ci/ and the lockfile are unchanged. --component selects a component's specs and axe stories (e.g. app-shell); --browser chromium reproduces PR CI. mobile has no scenarios; short covers Button. desktop excludes short.",
   );
   process.exit(0);
 }
@@ -45,7 +56,6 @@ try {
 }
 const id = randomUUID();
 const name = `bench-design-${id}`;
-const image = `bench-design-verify:${id}`;
 const reports = join(process.cwd(), ".verification/runs", id);
 mkdirSync(reports, { recursive: true });
 const scratch = mkdtempSync(join(tmpdir(), `bench-design-${id}-`));
@@ -116,27 +126,59 @@ async function requireOk(args: string[]) {
   return result.output;
 }
 let hasContainer = false;
-let hasImage = false;
 try {
-  manifest.candidate = snapshot(process.cwd(), join(scratch, "candidate"));
+  const candidate = join(scratch, "candidate");
+  manifest.candidate = snapshot(process.cwd(), candidate);
   save();
+  let info: string;
   try {
-    manifest.podman = await requireOk(["info", "--format", "json"]);
+    info = await requireOk(["info", "--format", "json"]);
   } catch (error) {
     throw new Error(`Podman absent or VM unavailable: ${String(error)}`);
   }
+  manifest.podman = info;
+  if (!normalized.some((arg) => arg.startsWith("--workers"))) {
+    plan.workers = defaultWorkers(Number(JSON.parse(info).host?.cpus) || 1);
+    manifest.workers = plan.workers;
+  }
+  const image = imageTag(candidate);
   manifest.image = image;
-  hasImage = true;
-  await requireOk([
-    "build",
-    "--label",
-    `bench-design.run=${id}`,
-    "-f",
-    join(scratch, "candidate/ci/Containerfile"),
-    "-t",
-    image,
-    join(scratch, "candidate/ci"),
-  ]);
+  manifest.imageReused = (await podman(["image", "exists", image])).code === 0;
+  if (!manifest.imageReused) {
+    const context = join(scratch, "image");
+    mkdirSync(context);
+    for (const file of imageInputs)
+      copyFileSync(
+        join(candidate, file),
+        join(context, file.replace("ci/", "")),
+      );
+    writeFileSync(join(context, "Containerfile"), imageRecipe(candidate));
+    await requireOk([
+      "build",
+      "--label",
+      `${imageLabel}=1`,
+      "-f",
+      join(context, "Containerfile"),
+      "-t",
+      image,
+      context,
+    ]);
+    // Keep one verification image: drop those built from older recipes.
+    const listed = await podman(
+      [
+        "images",
+        "--filter",
+        `label=${imageLabel}`,
+        "--format",
+        "{{.Repository}}:{{.Tag}}",
+      ],
+      true,
+    );
+    for (const stale of listed.output
+      .split("\n")
+      .filter((tag) => tag.includes(":") && tag !== image))
+      await podman(["image", "rm", stale], true);
+  }
   hasContainer = true;
   await requireOk(createArgs(id, image));
   await requireOk([
@@ -150,7 +192,7 @@ try {
     name,
     "sh",
     "-c",
-    "chmod -R u+w /workspace && pnpm install --frozen-lockfile",
+    "chmod -R u+w /workspace && pnpm install --frozen-lockfile --prefer-offline",
   ]);
   const gates =
     "check test build check:visual-values build-storybook test:package test:browser".split(
@@ -206,17 +248,16 @@ async function cleanup() {
       for (const path of ["playwright-report", "test-results"])
         await podman(["cp", `${name}:/workspace/${path}`, reports], true);
     }
-    for (const kind of ["container", "image"]) {
-      if (kind === "container" ? !hasContainer : !hasImage) continue;
-      const resourceName = kind === "image" ? image : name;
-      const inspected = await podman([kind, "inspect", resourceName], true);
+    // The image is kept for the next run; only this run's container goes.
+    if (hasContainer) {
+      const inspected = await podman(["container", "inspect", name], true);
       if (inspected.code !== 0)
-        throw new Error(`Cleanup inspection failed: ${kind}`);
+        throw new Error("Cleanup inspection failed: container");
       const resource = JSON.parse(inspected.output)[0];
-      if (!owned(resource.Config?.Labels ?? resource.Labels ?? {}, id))
+      if (!owned(resource.Config?.Labels ?? {}, id))
         throw new Error("Owner label mismatch; refusing cleanup");
-      const removed = await podman([kind, "rm", "--force", resourceName], true);
-      if (removed.code !== 0) throw new Error(`Cleanup failed: ${kind}`);
+      const removed = await podman(["container", "rm", "--force", name], true);
+      if (removed.code !== 0) throw new Error("Cleanup failed: container");
     }
     manifest.cleanup = "complete";
   } catch (error) {

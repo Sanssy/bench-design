@@ -37,6 +37,29 @@ test("manifest follows exported API, defaults, TSDoc and story metadata", () => 
   }
 });
 
+test("manifest expands a sibling string-literal alias into its values", () => {
+  const root = mkdtempSync(join(tmpdir(), "bd-alias-"));
+  const entry = join(root, "index.ts");
+  try {
+    writeFileSync(entry, 'export { Action } from "./Action.js";');
+    writeFileSync(join(root, "names.ts"), 'export type Name = "a" | "b";');
+    writeFileSync(
+      join(root, "Action.tsx"),
+      'import type { Name } from "./names";\n/** Fixture. */\nexport interface Props { name: Name; other: Other }\n/** Fixture. */\nexport function Action({ name }: Props) { return null; }',
+    );
+    writeFileSync(
+      join(root, "Action.stories.tsx"),
+      'export default { title: "Form/Action" }; export const Primary = {};',
+    );
+    const [name, other] = JSON.parse(generateComponents(entry)).components[0]
+      .props;
+    assert.equal(name.type, '"a" | "b"');
+    assert.equal(other.type, "Other");
+  } finally {
+    rmSync(root, { recursive: true, force: true });
+  }
+});
+
 test("an export the generator cannot describe fails instead of vanishing", () => {
   const root = mkdtempSync(join(tmpdir(), "bd-unsupported-"));
   const entry = join(root, "index.ts");

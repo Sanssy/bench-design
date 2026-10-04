@@ -78,6 +78,34 @@
       ]
     },
     {
+      "name": "Card",
+      "import": "import { Card } from \"bench-design\";",
+      "description": "Group related content inside a raised, bordered article by default.",
+      "props": [
+        {
+          "name": "children",
+          "type": "ReactNode",
+          "required": true
+        },
+        {
+          "name": "as",
+          "type": "\"article\" | \"section\" | \"div\"",
+          "required": false,
+          "default": "\"article\""
+        }
+      ],
+      "stories": [
+        {
+          "name": "SavedCollection",
+          "href": "./?path=/story/surfaces-card--saved-collection"
+        },
+        {
+          "name": "CollectionSummary",
+          "href": "./?path=/story/surfaces-card--collection-summary"
+        }
+      ]
+    },
+    {
       "name": "Divider",
       "import": "import { Divider } from \"bench-design\";",
       "description": "A decorative hairline excluded from the accessibility tree.",

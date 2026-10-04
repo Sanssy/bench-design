@@ -8,3 +8,9 @@
 .bd-surface[data-tone="subtle"] {
   background: var(--bd-surface-subtle);
 }
+.bd-card {
+  border: var(--bd-hair) solid var(--bd-divider);
+  padding: var(--bd-space-12);
+  background: var(--bd-surface-raised);
+  color: var(--bd-text);
+}

@@ -1,5 +1,7 @@
 export type { ButtonProps } from "./button/Button.js";
 export { Button } from "./button/Button.js";
+export type { CardProps } from "./card/Card.js";
+export { Card } from "./card/Card.js";
 export type { DividerProps } from "./divider/Divider.js";
 export { Divider } from "./divider/Divider.js";
 export type { GridProps } from "./grid/Grid.js";

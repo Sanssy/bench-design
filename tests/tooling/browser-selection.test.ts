@@ -32,6 +32,7 @@ test("a component edit also selects the components that import it", () => {
     "inline",
     "link",
     "stack",
+    "surface",
     "value",
   ]);
 });

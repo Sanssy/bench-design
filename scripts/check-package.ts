@@ -54,6 +54,7 @@ try {
     "link.css",
     "layout.css",
     "data.css",
+    "surfaces.css",
     "theme-init.js",
   ]) {
     assert(entries.includes(`package/dist/${name}`), `packed ${name} missing`);
@@ -88,7 +89,12 @@ try {
   );
   writeFileSync(
     join(consumer, "index.tsx"),
-    `import { Button, type ButtonProps, Heading, type HeadingProps, Text, type TextProps, Link, type LinkProps, Icon, type IconProps, type IconName, IconButton, type IconButtonProps, Stack, type StackProps, Inline, type InlineProps, Grid, type GridProps, Divider, type DividerProps, Value, type ValueProps, MetaList, type MetaListProps } from "bench-design";
+    `import { Button, type ButtonProps, Heading, type HeadingProps, Text, type TextProps, Link, type LinkProps, Icon, type IconProps, type IconName, IconButton, type IconButtonProps, Stack, type StackProps, Inline, type InlineProps, Grid, type GridProps, Divider, type DividerProps, Value, type ValueProps, MetaList, type MetaListProps, Surface, type SurfaceProps } from "bench-design";
+const surfaceProps: SurfaceProps = { children: "Workspace", tone: "subtle", padding: 24, as: "aside" };
+void [<Surface {...surfaceProps} />];
+// @ts-expect-error padding must use the spacing scale
+const invalidPadding = <Surface padding={13}>Workspace</Surface>;
+void [invalidPadding];
 const valueProps: ValueProps = { value: 7, total: 10, mode: "hero" };
 const value = <Value {...valueProps} />;
 const metaProps: MetaListProps = { items: [{ term: "Source", details: "Archive" }], label: "Source details" };
@@ -223,7 +229,7 @@ void [button, missingContent, click, link, variant, type, heading, missingLevel,
   run("node", [
     "--input-type=module",
     "-e",
-    'import assert from "node:assert/strict"; import * as ds from "bench-design"; assert.deepEqual(Object.keys(ds), ["Button", "Divider", "Grid", "Heading", "Icon", "IconButton", "Inline", "Link", "MetaList", "Stack", "Text", "Value"]); assert.equal(typeof ds.Button, "function"); assert.equal(typeof ds.Heading, "function"); assert.equal(typeof ds.Text, "function"); assert.equal(typeof ds.Link, "function"); assert.equal(typeof ds.Icon, "function"); assert.equal(typeof ds.IconButton, "function"); for (const name of ["Stack", "Inline", "Grid", "Divider", "Value", "MetaList"]) assert.equal(typeof ds[name], "function");',
+    'import assert from "node:assert/strict"; import * as ds from "bench-design"; assert.deepEqual(Object.keys(ds), ["Button", "Divider", "Grid", "Heading", "Icon", "IconButton", "Inline", "Link", "MetaList", "Stack", "Surface", "Text", "Value"]); assert.equal(typeof ds.Button, "function"); assert.equal(typeof ds.Heading, "function"); assert.equal(typeof ds.Text, "function"); assert.equal(typeof ds.Link, "function"); assert.equal(typeof ds.Icon, "function"); assert.equal(typeof ds.IconButton, "function"); for (const name of ["Stack", "Inline", "Grid", "Divider", "Value", "MetaList", "Surface"]) assert.equal(typeof ds[name], "function");',
   ]);
   run("node", [
     "--input-type=module",
@@ -237,6 +243,9 @@ void [button, missingContent, click, link, variant, type, heading, missingLevel,
     assert(styles.includes('@import "./tokens.css"'));
     assert(styles.includes('@import "./layout.css"'));
     assert(styles.includes('@import "./data.css"'));
+    assert(styles.includes('@import "./surfaces.css"'));
+    const surfaces = readFileSync(new URL("./surfaces.css", import.meta.resolve("bench-design/styles.css")), "utf8");
+    for (const selector of [".bd-surface"]) assert(surfaces.includes(selector));
     const data = readFileSync(new URL("./data.css", import.meta.resolve("bench-design/styles.css")), "utf8");
     assert(data.includes(".bd-value"));
     assert(data.includes(".bd-meta-list"));

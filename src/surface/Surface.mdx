@@ -1,0 +1,31 @@
+import { Meta, Canvas, ArgTypes, Controls } from '@storybook/addon-docs/blocks';
+import * as Stories from './Surface.stories';
+
+<Meta of={Stories} />
+
+# Surface
+
+Import `Surface` from `bench-design` and load `bench-design/styles.css` once.
+
+## Usage
+
+Use raised for a content region and subtle for a supporting note. Choose padding from the shared spacing scale. A Surface has no border; compose headings and controls inside it. Avoid using a background tone to communicate success or failure.
+
+## API
+
+<ArgTypes of={Stories} />
+
+## Try the props
+
+<Controls of={Stories.Workspace} />
+
+## Examples
+
+<Canvas of={Stories.Workspace} />
+<Canvas of={Stories.Notice} />
+
+Use the theme selector to inspect light and dark themes.
+
+## Accessibility
+
+This component has no keyboard interaction or added ARIA role. The as prop selects the native element; choose it for the surrounding document structure. Descendant controls keep their own keyboard behavior.

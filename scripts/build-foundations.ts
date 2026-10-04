@@ -9,6 +9,7 @@ for (const [source, name] of [
   ["public/link.css", "link.css"],
   ["public/layout.css", "layout.css"],
   ["public/data.css", "data.css"],
+  ["public/surfaces.css", "surfaces.css"],
   ["public/fonts.css", "fonts.css"],
   ["public/theme-init.js", "theme-init.js"],
 ] as const) {

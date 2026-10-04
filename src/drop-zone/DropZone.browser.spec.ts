@@ -30,7 +30,9 @@ test("picker refusal is visible and keyboard reachable", {
     mimeType: "image/png",
     buffer: Buffer.from("image"),
   });
-  await expect(page.getByRole("alert")).toContainText("File type not accepted");
+  await expect(page.getByRole("alert")).toContainText(
+    "photo.png: this format is not accepted",
+  );
   await page.keyboard.press("Tab");
   await expect(
     page.getByRole("button", { name: "Drop documents here", exact: true }),

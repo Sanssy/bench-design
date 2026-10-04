@@ -34,7 +34,9 @@ export function selectBrowserTests(
   }
   for (const component of components)
     patterns.add(`@component:${escapeRegex(component)}(?:\\s|$)`);
-  const visual = components.has("button");
+  // Components with visual captures (tests/visual); Icon reaches them as an
+  // import of both.
+  const visual = ["button", "icon-button"].some((name) => components.has(name));
   return patterns.size
     ? { mode: "scoped", args: ["--grep", [...patterns].join("|")], visual }
     : { mode: "empty", args: [], visual: false };

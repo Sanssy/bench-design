@@ -28,7 +28,10 @@ for (const { id, type, importPath } of Object.values(index.entries)) {
       );
       await expect(page.locator("html")).toHaveAttribute("data-theme", theme);
       // An icon-only control renders no text, so wait for an element instead.
-      await expect(page.locator("#storybook-root > *").first()).toBeVisible();
+      // React Aria collections add a hidden builder node: wait for a visible child.
+      await expect(
+        page.locator("#storybook-root > *").filter({ visible: true }).first(),
+      ).toBeVisible();
       await page.evaluate(() => document.fonts.ready);
       const result = await new AxeBuilder({ page })
         .withTags(["wcag2a", "wcag2aa"])

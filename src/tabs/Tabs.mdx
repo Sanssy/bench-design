@@ -1,0 +1,26 @@
+import { Meta, Canvas, ArgTypes } from '@storybook/addon-docs/blocks';
+import * as Stories from './Tabs.stories';
+
+<Meta of={Stories} />
+
+# Tabs
+
+A named list of tabs and their associated content panels. Import `Tabs` from `bench-design` and load `bench-design/styles.css` once.
+
+## Usage
+
+Supply unique stable item identifiers, short titles and panel content. Use `defaultSelectedKey` for an initial selection. Keep routing and business state in the consumer. Do not use tabs for unrelated destinations. General `className` and `style` overrides are excluded.
+
+## TypeScript API
+
+<ArgTypes of={Stories} />
+
+## Example
+
+<Canvas of={Stories.LibrarySections} />
+
+Use the theme selector to view light and dark examples.
+
+## Keyboard and ARIA
+
+Tab enters the selected tab. Left and Right arrows select adjacent tabs; Home and End reach the first and last. React Aria connects tablist, tab and tabpanel roles, names and selection states. Keyboard focus uses the shared visible focus treatment.

@@ -267,3 +267,21 @@ test("does not offer stale options after a different server search fails", async
     screen.queryByRole("option", { name: /Reading/ }),
   ).not.toBeInTheDocument();
 });
+test("ComboBox shows every option when opened with the button after a choice", async () => {
+  const user = userEvent.setup();
+  render(
+    <ComboBox
+      label="City"
+      options={[
+        { id: "a", label: "Paris" },
+        { id: "b", label: "Lyon" },
+        { id: "c", label: "Nice" },
+      ]}
+    />,
+  );
+  await user.type(screen.getByRole("combobox"), "Ly");
+  await user.click(screen.getByRole("option", { name: "Lyon" }));
+  expect(screen.getByRole("combobox")).toHaveValue("Lyon");
+  await user.click(screen.getByRole("button", { name: /City/ }));
+  expect(screen.getAllByRole("option")).toHaveLength(3);
+});

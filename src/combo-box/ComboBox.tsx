@@ -13,6 +13,7 @@ import {
   useFilter,
   Virtualizer,
 } from "react-aria-components";
+import { Button as DesignButton } from "../button/Button.js";
 import { FieldLabel, FieldMessages } from "../forms/FieldContent.js";
 import type { FieldOption, FieldProps } from "../forms/FieldProps.js";
 import { Icon } from "../icon/Icon.js";
@@ -144,6 +145,12 @@ export function ComboBox({
         setQuery(value);
         if (loadItems) remote.setQuery(value);
       }}
+      // Opening with the button or arrow shows every option, not the typed text.
+      onOpenChange={(isOpen, trigger) => {
+        if (!isOpen || trigger !== "manual" || query === "") return;
+        setQuery("");
+        if (loadItems) remote.setQuery("");
+      }}
       onSelectionChange={(key) =>
         onSelectionChange?.(key == null ? null : String(key))
       }
@@ -182,7 +189,9 @@ export function ComboBox({
         {hasError && (
           <div className="bd-list-message">
             Could not load results.{" "}
-            <Button onPress={remote.retry}>Try again</Button>
+            <DesignButton variant="secondary" onPress={remote.retry}>
+              Try again
+            </DesignButton>
           </div>
         )}
         {items.length >= 100 ? (

@@ -1,8 +1,10 @@
 /** A numeric display with an accessible name, optional total, sign and unit. */
 export interface ValueProps {
+  /** Empty strings use a fallback accessible name when no label is supplied. */
   value: string | number;
   total?: string | number;
   unit?: string;
+  /** Applies to a positive magnitude; do not include a sign in value. */
   sign?: "+" | "-" | "±";
   mode?: "hero" | "indexed" | "dense" | "plain";
   /** Overrides the generated English accessible name. */
@@ -23,7 +25,7 @@ export function Value({
       className="bd-value"
       data-mode={mode}
       role="img"
-      aria-label={label ?? name}
+      aria-label={label?.trim() ? label : name.trim() || "No value"}
     >
       {sign && <span className="bd-value__sign">{sign}</span>}
       <span className="bd-value__number">{value}</span>

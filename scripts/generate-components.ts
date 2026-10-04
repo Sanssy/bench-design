@@ -40,15 +40,19 @@ export function generateComponents(entry = "src/index.ts") {
       const fn = node.declaration;
       const parameter = fn.params[0];
       if (
-        parameter?.type !== "ObjectPattern" ||
-        parameter.typeAnnotation?.type !== "TSTypeAnnotation" ||
-        parameter.typeAnnotation.typeAnnotation.type !== "TSTypeReference"
+        parameter &&
+        (parameter.type !== "ObjectPattern" ||
+          parameter.typeAnnotation?.type !== "TSTypeAnnotation" ||
+          parameter.typeAnnotation.typeAnnotation.type !== "TSTypeReference")
       )
         throw new Error(`Unsupported API: ${name}`);
-      const propsName = source.slice(
-        parameter.typeAnnotation.typeAnnotation.start ?? 0,
-        parameter.typeAnnotation.typeAnnotation.end ?? 0,
-      );
+      const propsName =
+        parameter?.typeAnnotation?.type === "TSTypeAnnotation"
+          ? source.slice(
+              parameter.typeAnnotation.typeAnnotation.start ?? 0,
+              parameter.typeAnnotation.typeAnnotation.end ?? 0,
+            )
+          : "";
       const api = code.program.body.find(
         (node) =>
           node.type === "ExportNamedDeclaration" &&
@@ -56,12 +60,13 @@ export function generateComponents(entry = "src/index.ts") {
           node.declaration.id.name === propsName,
       );
       if (
-        api?.type !== "ExportNamedDeclaration" ||
-        api.declaration?.type !== "TSInterfaceDeclaration"
+        parameter &&
+        (api?.type !== "ExportNamedDeclaration" ||
+          api.declaration?.type !== "TSInterfaceDeclaration")
       )
         throw new Error(`Missing props: ${name}`);
       const defaults = new Map<string, string>();
-      for (const prop of parameter.properties) {
+      for (const prop of parameter?.properties ?? []) {
         if (
           prop.type === "ObjectProperty" &&
           prop.value.type === "AssignmentPattern"
@@ -76,13 +81,12 @@ export function generateComponents(entry = "src/index.ts") {
             ),
           );
       }
-      // Expand a type imported from a sibling module when it is a union of
-      // string literals (e.g. IconName), so the manifest lists valid values.
+      // Expand relative literal aliases so the manifest lists valid values.
       const resolveAlias = (text: string) => {
         const imported = ast(source).program.body.find(
           (node) =>
             node.type === "ImportDeclaration" &&
-            node.source.value.startsWith("./") &&
+            node.source.value.startsWith(".") &&
             node.specifiers.some((specifier) => specifier.local.name === text),
         );
         if (imported?.type !== "ImportDeclaration") return text;
@@ -106,19 +110,26 @@ export function generateComponents(entry = "src/index.ts") {
         return members.every(
           (member) =>
             member.type === "TSLiteralType" &&
-            member.literal.type === "StringLiteral",
+            (member.literal.type === "StringLiteral" ||
+              member.literal.type === "NumericLiteral"),
         )
           ? members
               .map((member) =>
                 member.type === "TSLiteralType" &&
-                member.literal.type === "StringLiteral"
+                (member.literal.type === "StringLiteral" ||
+                  member.literal.type === "NumericLiteral")
                   ? JSON.stringify(member.literal.value)
                   : "",
               )
               .join(" | ")
           : text;
       };
-      const props = api.declaration.body.body.map((prop) => {
+      const props = (
+        api?.type === "ExportNamedDeclaration" &&
+        api.declaration?.type === "TSInterfaceDeclaration"
+          ? api.declaration.body.body
+          : []
+      ).map((prop) => {
         if (prop.type !== "TSPropertySignature" || !prop.typeAnnotation)
           throw new Error(`Unsupported prop: ${name}`);
         const key =

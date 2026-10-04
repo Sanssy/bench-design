@@ -80,8 +80,7 @@
 }
 .bd-meta-list {
   display: grid;
-  grid-auto-flow: column;
-  grid-auto-columns: minmax(0, 1fr);
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: var(--bd-space-32);
   margin: 0;
 }
@@ -109,5 +108,9 @@
   }
   .bd-meta-list dt {
     margin: 0;
+  }
+  .bd-meta-list dd {
+    font-size: var(--bd-size-meta);
+    line-height: var(--bd-line-reading);
   }
 }

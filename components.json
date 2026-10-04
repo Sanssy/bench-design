@@ -40,7 +40,7 @@
         },
         {
           "name": "icon",
-          "type": "IconName",
+          "type": "\"arrow-left\" | \"arrow-right\" | \"bin\" | \"calendar\" | \"check\" | \"chevron-down\" | \"download\" | \"info\" | \"menu\" | \"pen\" | \"plus\" | \"search\" | \"settings\" | \"triangle-alert\" | \"user\" | \"x\"",
           "required": false
         },
         {
@@ -305,7 +305,7 @@
       "props": [
         {
           "name": "icon",
-          "type": "IconName",
+          "type": "\"arrow-left\" | \"arrow-right\" | \"bin\" | \"calendar\" | \"check\" | \"chevron-down\" | \"download\" | \"info\" | \"menu\" | \"pen\" | \"plus\" | \"search\" | \"settings\" | \"triangle-alert\" | \"user\" | \"x\"",
           "required": true
         },
         {

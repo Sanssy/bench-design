@@ -47,15 +47,31 @@ const css = `:root {\n${indent(
   ],
   2,
 )}\n}\n\n@media (prefers-color-scheme: dark) {\n  :root:not([data-theme]) {\n${indent(dark, 4)}\n  }\n}\n\n:root[data-theme="dark"] {\n${indent(dark, 2)}\n}\n`;
+const types = `/** Generated from tokens.json; run pnpm tokens:generate. */
+/** Ratified spacing scale used by layout gaps and surface padding. */
+export type SpaceToken = ${Object.keys(tokens.base)
+  .filter((name) => name.startsWith("space-"))
+  .map((name) => name.slice(6))
+  .join(" | ")};
+`;
+const typesPath =
+  process.argv.find((arg) => arg.startsWith("--types="))?.slice(8) ??
+  "src/space-tokens.ts";
 const path =
   process.argv.find((arg) => arg.startsWith("--css="))?.slice(6) ??
   "src/tokens.css";
 if (process.argv.includes("--stdout")) process.stdout.write(css);
 else if (process.argv.includes("--check")) {
-  if (readFileSync(path, "utf8") !== css) {
+  if (
+    readFileSync(path, "utf8") !== css ||
+    readFileSync(typesPath, "utf8") !== types
+  ) {
     console.error(
-      "tokens.css diverges from tokens.json; run pnpm tokens:generate",
+      "Generated tokens diverge from tokens.json; run pnpm tokens:generate",
     );
     process.exitCode = 1;
   }
-} else writeFileSync(path, css);
+} else {
+  writeFileSync(path, css);
+  writeFileSync(typesPath, types);
+}

@@ -1,8 +1,9 @@
 import type { CSSProperties, ReactNode } from "react";
+import type { SpaceToken } from "../space-tokens.js";
 /** Approved structural layout options; visual overrides are excluded. */
 export interface InlineProps {
   children: ReactNode;
-  gap?: 4 | 8 | 12 | 16 | 24 | 32 | 48 | 64 | 96;
+  gap?: SpaceToken;
   as?: "div" | "section" | "ul" | "ol";
   align?: "start" | "center" | "end" | "stretch";
   justify?:

@@ -1,9 +1,10 @@
 import type { CSSProperties, ReactNode } from "react";
+import type { SpaceToken } from "../space-tokens.js";
 /** A background block with spacing from the shared scale. */
 export interface SurfaceProps {
   children: ReactNode;
   tone?: "raised" | "subtle";
-  padding?: 4 | 8 | 12 | 16 | 24 | 32 | 48 | 64 | 96;
+  padding?: SpaceToken;
   as?: "div" | "section" | "article" | "aside";
 }
 /** Group content on a raised or subtle background without a border. */

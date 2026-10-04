@@ -30,7 +30,7 @@ test("token check rejects divergent CSS without rewriting it", () => {
       { encoding: "utf8" },
     );
     assert.equal(result.status, 1, "divergence must fail");
-    assert.match(result.stderr, /diverges from tokens.json/);
+    assert.match(result.stderr, /diverge from tokens.json/);
     assert.equal(readFileSync(path, "utf8"), divergent);
   } finally {
     rmSync(directory, { recursive: true, force: true });
@@ -87,4 +87,17 @@ test("Button hover accent is ratified in both themes", () => {
     assert.equal(token.$type, "color");
     assert.match(token.$extensions["org.bench-design"].usage, /--bd-on-accent/);
   }
+});
+
+test("spacing types are generated from the public token source", () => {
+  const tokens = JSON.parse(readFileSync("src/tokens.json", "utf8"));
+  const scale = Object.keys(tokens.base)
+    .filter((name) => name.startsWith("space-"))
+    .map((name) => name.slice(6))
+    .join(" | ");
+  assert.ok(
+    readFileSync("src/space-tokens.ts", "utf8").includes(
+      `export type SpaceToken = ${scale};`,
+    ),
+  );
 });

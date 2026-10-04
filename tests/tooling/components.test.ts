@@ -89,3 +89,54 @@ test("drift check rejects modified generated output", () => {
     rmSync(root, { recursive: true, force: true });
   }
 });
+
+test("manifest describes a component without a props parameter", () => {
+  const root = mkdtempSync(join(tmpdir(), "bd-no-props-"));
+  try {
+    writeFileSync(join(root, "index.ts"), 'export { Rule } from "./Rule.js";');
+    writeFileSync(
+      join(root, "Rule.tsx"),
+      "/** Decorative rule. */ export function Rule() { return null; }",
+    );
+    writeFileSync(
+      join(root, "Rule.stories.tsx"),
+      'export default { title: "Layout/Rule" }; export const Default = {};',
+    );
+    assert.deepEqual(
+      JSON.parse(generateComponents(join(root, "index.ts"))).components[0]
+        .props,
+      [],
+    );
+  } finally {
+    rmSync(root, { recursive: true, force: true });
+  }
+});
+
+test("manifest expands relative numeric spacing aliases", () => {
+  const root = mkdtempSync(join(tmpdir(), "bd-space-alias-"));
+  try {
+    writeFileSync(
+      join(root, "index.ts"),
+      'export { Action } from "./Action.js";',
+    );
+    writeFileSync(
+      join(root, "spaces.ts"),
+      "export type SpaceToken = 4 | 8 | 96;",
+    );
+    writeFileSync(
+      join(root, "Action.tsx"),
+      'import type { SpaceToken } from "./spaces.js"; export interface Props { gap?: SpaceToken } export function Action({ gap }: Props) { return null; }',
+    );
+    writeFileSync(
+      join(root, "Action.stories.tsx"),
+      'export default { title: "Layout/Action" }; export const Default = {};',
+    );
+    assert.equal(
+      JSON.parse(generateComponents(join(root, "index.ts"))).components[0]
+        .props[0].type,
+      "4 | 8 | 96",
+    );
+  } finally {
+    rmSync(root, { recursive: true, force: true });
+  }
+});

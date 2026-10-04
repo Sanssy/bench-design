@@ -23,6 +23,7 @@ export type { LinkProps } from "./link/Link.js";
 export { Link } from "./link/Link.js";
 export type { MetaListProps } from "./meta-list/MetaList.js";
 export { MetaList } from "./meta-list/MetaList.js";
+export type { SpaceToken } from "./space-tokens.js";
 export type { StackProps } from "./stack/Stack.js";
 export { Stack } from "./stack/Stack.js";
 export type { SurfaceProps } from "./surface/Surface.js";

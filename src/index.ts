@@ -32,6 +32,8 @@ export type { NoticeProps } from "./notice/Notice.js";
 export { Notice } from "./notice/Notice.js";
 export type { PopoverProps } from "./popover/Popover.js";
 export { Popover } from "./popover/Popover.js";
+export type { SearchFieldProps } from "./search-field/SearchField.js";
+export { SearchField } from "./search-field/SearchField.js";
 export type { SidePanelProps } from "./side-panel/SidePanel.js";
 export { SidePanel } from "./side-panel/SidePanel.js";
 export type { SpaceToken } from "./space-tokens.js";

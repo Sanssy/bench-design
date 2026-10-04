@@ -90,7 +90,12 @@ export function SegmentedControl({
                 key={option.id}
                 id={option.id}
                 className="bd-segment"
-                aria-label={option.label}
+                // The visible count is part of the name, e.g. "Housing, 5".
+                aria-label={
+                  option.count === undefined
+                    ? option.label
+                    : `${option.label}, ${option.count}`
+                }
                 isDisabled={option.isDisabled ?? false}
               >
                 {option.icon ? (

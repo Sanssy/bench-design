@@ -97,3 +97,16 @@ test("SegmentedControl follows controlled IDs and names icon choices", () => {
     "true",
   );
 });
+
+test("includes the visible count in the accessible name", () => {
+  render(
+    <SegmentedControl
+      label="Category"
+      options={[
+        { id: "all", label: "All", count: 12 },
+        { id: "housing", label: "Housing", count: 5 },
+      ]}
+    />,
+  );
+  expect(screen.getByRole("radio", { name: "Housing, 5" })).toBeVisible();
+});

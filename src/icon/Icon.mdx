@@ -1,0 +1,40 @@
+import { Meta, Canvas, ArgTypes } from '@storybook/addon-docs/blocks';
+import * as Stories from './Icon.stories';
+
+<Meta of={Stories} />
+
+# Icon
+
+Import `Icon`, `IconProps` and `IconName` from `bench-design`.
+Load `bench-design/styles.css` once for the shared theme.
+
+## Usage
+
+`<Icon name="search" size={20} />` adds a decorative icon beside a text label.
+Use `<Icon name="search" label="Search" />` when the image conveys meaning alone.
+Names come from the SVG catalogue; the default size is 24 px.
+
+- Do inherit color from the parent: the SVG uses `currentColor`.
+- Do choose 16, 20 or 24 px to match the surrounding content.
+- Avoid repeating adjacent text in an accessible label.
+- Avoid using Icon as an interactive control.
+
+## API
+
+<ArgTypes of={Stories} />
+
+There are no `color`, `className` or `style` props.
+
+## Examples
+
+<Canvas of={Stories.Gallery} />
+<Canvas of={Stories.Sizes} />
+
+Use the theme selector to inspect light and dark themes.
+The sharp Keyline artwork uses a 24 px grid and a 2 px stroke.
+
+## Accessibility
+
+Without `label`, the SVG is hidden from assistive technology and has no role.
+With a nonempty `label`, it has `role="img"` and that accessible name.
+Icons are not focusable and have no keyboard interaction.

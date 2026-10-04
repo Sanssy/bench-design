@@ -14,10 +14,48 @@ export interface VisualException {
 export const exceptions: VisualException[] = [
   {
     file: "dist/layout.css",
+    selector: "@media",
+    property: "condition",
+    value: "(width>=960px)",
+    reason:
+      "Ratified AppShell wide breakpoint; CSS variables cannot define media conditions.",
+  },
+  {
+    file: "dist/layout.css",
+    selector: "@media",
+    property: "condition",
+    value: "(width<960px)",
+    reason: "Ratified AppShell mobile selector below the wide breakpoint.",
+  },
+  {
+    file: "dist/layout.css",
+    selector: "@media",
+    property: "condition",
+    value: "(width>=960px) and (height>=560px)",
+    reason:
+      "Ratified AppShell bounded workspace only at wide and sufficiently tall viewports.",
+  },
+  {
+    file: "dist/layout.css",
+    selector: ".bd-app-shell-start,.bd-app-shell-end",
+    property: "min-inline-size",
+    value: "240px",
+    reason: "Ratified minimum width of AppShell side panels.",
+  },
+  {
+    file: "dist/layout.css",
     selector: ".bd-side-panel",
     property: "min-inline-size",
     value: "240px",
     reason: "Ratified minimum SidePanel width.",
+  },
+  {
+    file: "dist/layout.css",
+    selector: ".bd-app-shell",
+    property: "block-size",
+    value: "100dvh",
+    reason:
+      "Ratified viewport height for bounded AppShell at wide and tall viewports.",
   },
   {
     file: "dist/overlays.css",

@@ -1,0 +1,34 @@
+import { Meta, Canvas, ArgTypes, Controls } from '@storybook/addon-docs/blocks';
+import * as Stories from './AppShell.stories';
+
+<Meta of={Stories} />
+
+# AppShell
+
+Import `AppShell` from `bench-design` and load `bench-design/styles.css` once.
+
+## Usage
+
+Use for an application header, main content, optional side panels and footer. At widths of at least 960px and heights of at least 560px, the shell fills the viewport and each content zone scrolls independently. Shorter or narrower windows use natural page scrolling.
+
+- Do use shared tokens and components for content inside each zone.
+- Avoid overriding the scroll boundaries or nesting viewport shells.
+
+## API
+
+<ArgTypes of={Stories} />
+
+## Try the props
+
+<Controls of={Stories.Workspace} />
+
+## Examples
+
+<Canvas of={Stories.Workspace} />
+<Canvas of={Stories.Reading} />
+
+Use the theme selector to inspect light and dark themes.
+
+## Accessibility
+
+Below 960px, main comes first, followed by a sticky single-selection panel selector and the selected panel. React Aria manages radio-group keyboard navigation and selection; each control points to its named aside with aria-controls. Supply start and end as optional objects with a meaningful label and content. Both panels remain mounted when switching selection or resizing; CSS hides the inactive panel on small screens. Use only one AppShell per page; supply headings in main and the header.

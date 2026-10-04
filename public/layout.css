@@ -37,6 +37,53 @@
   border: 0;
   border-top: var(--bd-hair) solid var(--bd-divider);
 }
+
+.bd-app-shell {
+  display: flex;
+  flex-direction: column;
+  min-inline-size: 0;
+  color: var(--bd-text);
+  background: var(--bd-surface);
+}
+.bd-app-shell-header,
+.bd-app-shell-footer {
+  flex: none;
+  padding: var(--bd-space-24);
+}
+.bd-app-shell-header {
+  border-block-end: var(--bd-hair) solid var(--bd-border-strong);
+}
+.bd-app-shell-footer {
+  border-block-start: var(--bd-hair) solid var(--bd-border-strong);
+}
+.bd-app-shell-workspace {
+  display: flex;
+  flex-direction: column;
+  min-inline-size: 0;
+}
+.bd-app-shell-main {
+  min-inline-size: 0;
+  padding: var(--bd-space-24);
+  background: var(--bd-surface-subtle);
+}
+.bd-app-shell-start,
+.bd-app-shell-end {
+  display: flex;
+  flex: none;
+  min-inline-size: 240px;
+}
+.bd-app-shell-start {
+  border-inline-end: var(--bd-hair) solid var(--bd-border-strong);
+}
+.bd-app-shell-end {
+  border-inline-start: var(--bd-hair) solid var(--bd-border-strong);
+}
+.bd-app-shell-selector {
+  position: sticky;
+  inset-block-start: 0;
+  z-index: 1;
+  background: var(--bd-surface);
+}
 .bd-side-panel {
   box-sizing: border-box;
   inline-size: var(--bd-panel-width);
@@ -51,4 +98,58 @@
 }
 .bd-side-panel > * {
   flex-shrink: 0;
+}
+@media (width >= 960px) {
+  .bd-app-shell-workspace {
+    flex-direction: row;
+  }
+  /* Raised specificity: navigation.css (.bd-tab-list) loads after this file. */
+  .bd-app-shell .bd-app-shell-selector {
+    display: none;
+  }
+  .bd-app-shell-start {
+    order: -1;
+  }
+  .bd-app-shell-start,
+  .bd-app-shell-end {
+    flex: 0 0 var(--bd-panel-width);
+  }
+  .bd-app-shell-main {
+    flex: 1;
+  }
+}
+@media (width < 960px) {
+  .bd-app-shell-start,
+  .bd-app-shell-end {
+    border-inline: 0;
+  }
+  .bd-app-shell-start > .bd-side-panel,
+  .bd-app-shell-end > .bd-side-panel {
+    inline-size: 100%;
+  }
+  .bd-app-shell[data-active-panel="start"] .bd-app-shell-end,
+  .bd-app-shell[data-active-panel="end"] .bd-app-shell-start {
+    display: none;
+  }
+}
+@media (width >= 960px) and (height >= 560px) {
+  .bd-app-shell {
+    block-size: 100dvh;
+    min-block-size: 0;
+    overflow: hidden;
+  }
+  .bd-app-shell-workspace {
+    flex: 1 1 0%;
+    min-block-size: 0;
+    overflow: hidden;
+  }
+  /* Each zone is its own scroller (focusable, see AppShell.tsx); SidePanel never scrolls. */
+  .bd-app-shell-main,
+  .bd-app-shell-start,
+  .bd-app-shell-end {
+    min-block-size: 0;
+    overflow: auto;
+    overscroll-behavior: contain;
+    scrollbar-gutter: stable;
+  }
 }

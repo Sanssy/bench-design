@@ -1,6 +1,48 @@
 {
   "components": [
     {
+      "name": "AppShell",
+      "import": "import { AppShell } from \"bench-design\";",
+      "description": "A viewport workspace on large screens and a natural document on small screens.",
+      "props": [
+        {
+          "name": "header",
+          "type": "ReactNode",
+          "required": true
+        },
+        {
+          "name": "start",
+          "type": "{ label: string; content: ReactNode }",
+          "required": false
+        },
+        {
+          "name": "children",
+          "type": "ReactNode",
+          "required": true
+        },
+        {
+          "name": "end",
+          "type": "{ label: string; content: ReactNode }",
+          "required": false
+        },
+        {
+          "name": "footer",
+          "type": "ReactNode",
+          "required": false
+        }
+      ],
+      "stories": [
+        {
+          "name": "Workspace",
+          "href": "./?path=/story/layout-appshell--workspace"
+        },
+        {
+          "name": "Reading",
+          "href": "./?path=/story/layout-appshell--reading"
+        }
+      ]
+    },
+    {
       "name": "Badge",
       "import": "import { Badge } from \"bench-design\";",
       "description": "Label a count or format with monospaced text, with a meaningful label.",

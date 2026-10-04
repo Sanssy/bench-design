@@ -1,0 +1,28 @@
+import { Meta, Canvas, ArgTypes, Controls } from '@storybook/addon-docs/blocks';
+import * as Stories from './Status.stories';
+
+<Meta of={Stories} />
+
+# Status
+
+Import `Status` from `bench-design` and load `bench-design/styles.css` once.
+
+## Usage
+
+Use for success, warning or danger feedback with a meaningful label. Never convey meaning through color alone. Neutral information uses text and a subtle surface; there is no info tone. Avoid interactive behavior in feedback labels.
+
+## API
+
+<ArgTypes of={Stories} />
+<Controls of={Stories.UploadComplete} />
+
+## Examples
+
+<Canvas of={Stories.UploadComplete} />
+<Canvas of={Stories.UploadFailed} />
+
+Use the tone control and theme selector to inspect all tones in light and dark themes.
+
+## Accessibility
+
+The icon is decorative; the label conveys meaning. This component adds no live region and has no keyboard interaction.

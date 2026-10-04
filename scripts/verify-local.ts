@@ -147,7 +147,10 @@ try {
   if (!manifest.imageReused) {
     const context = join(scratch, "image");
     mkdirSync(context);
-    for (const file of imageInputs)
+    // The recipe replaces ci/Containerfile; snapshot copies are read-only.
+    for (const file of imageInputs.filter(
+      (item) => item !== "ci/Containerfile",
+    ))
       copyFileSync(
         join(candidate, file),
         join(context, file.replace("ci/", "")),

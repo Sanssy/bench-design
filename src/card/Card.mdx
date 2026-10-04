@@ -1,4 +1,5 @@
-import { Meta, Canvas, ArgTypes, Controls } from '@storybook/addon-docs/blocks';
+import { Meta, Canvas, Controls } from '@storybook/addon-docs/blocks';
+import { ManifestProps } from "../../.storybook/ManifestProps";
 import * as Stories from './Card.stories';
 
 <Meta of={Stories} />
@@ -13,7 +14,7 @@ Use for a static group of related content. Put actions inside the card rather th
 
 ## API
 
-<ArgTypes of={Stories} />
+<ManifestProps component="Card" />
 
 ## Try the props
 

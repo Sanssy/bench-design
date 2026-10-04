@@ -18,6 +18,9 @@ for (const theme of ["light", "dark"] as const) {
       .evaluate((overlay) => {
         const modal = overlay.querySelector(".bd-modal");
         if (!modal) throw new Error("Modal missing");
+        const header = modal.querySelector(".bd-dialog-header");
+        const actions = modal.querySelector(".bd-dialog-actions");
+        if (!header || !actions) throw new Error("Dialog separators missing");
         const probe = document.createElement("div");
         Object.assign(probe.style, {
           background: "var(--bd-veil)",
@@ -39,6 +42,16 @@ for (const theme of ["light", "dark"] as const) {
           [actual.borderColor, expected.borderColor],
           [actual.backgroundColor, expected.color],
           [actual.width, expected.width],
+          [getComputedStyle(header).borderBlockEndColor, expected.borderColor],
+          [getComputedStyle(header).borderBlockEndWidth, expected.borderWidth],
+          [
+            getComputedStyle(actions).borderBlockStartColor,
+            expected.borderColor,
+          ],
+          [
+            getComputedStyle(actions).borderBlockStartWidth,
+            expected.borderWidth,
+          ],
         ];
         probe.remove();
         return pairs;

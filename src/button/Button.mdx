@@ -1,4 +1,5 @@
-import { Meta, Canvas, ArgTypes } from '@storybook/addon-docs/blocks';
+import { Meta, Canvas } from '@storybook/addon-docs/blocks';
+import { ManifestProps } from "../../.storybook/ManifestProps";
 import * as ButtonStories from './Button.stories';
 
 <Meta of={ButtonStories} />
@@ -26,7 +27,7 @@ Use `primary` for the main action and `secondary` for supporting actions
 
 The table is generated from the TypeScript component, without a separate prop list.
 
-<ArgTypes of={ButtonStories} />
+<ManifestProps component="Button" />
 
 `type` defaults to `button`; `submit` and `reset` retain native form semantics.
 `onPress` is a callback without arguments. General HTML attribute passthrough

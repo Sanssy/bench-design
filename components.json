@@ -8,27 +8,32 @@
         {
           "name": "header",
           "type": "ReactNode",
-          "required": true
+          "required": true,
+          "description": "Content of the application header."
         },
         {
           "name": "start",
           "type": "{ label: string; content: ReactNode }",
-          "required": false
+          "required": false,
+          "description": "Optional start panel with its accessible name and selector label."
         },
         {
           "name": "children",
           "type": "ReactNode",
-          "required": true
+          "required": true,
+          "description": "Primary application content."
         },
         {
           "name": "end",
           "type": "{ label: string; content: ReactNode }",
-          "required": false
+          "required": false,
+          "description": "Optional end panel with its accessible name and selector label."
         },
         {
           "name": "footer",
           "type": "ReactNode",
-          "required": false
+          "required": false,
+          "description": "Optional application footer."
         }
       ],
       "stories": [
@@ -56,6 +61,7 @@
           "name": "tone",
           "type": "\"neutral\" | \"success\" | \"warning\" | \"danger\"",
           "required": false,
+          "description": "Semantic tone; include a meaningful label.",
           "default": "\"neutral\""
         },
         {
@@ -89,7 +95,8 @@
         {
           "name": "icon",
           "type": "\"arrow-left\" | \"arrow-right\" | \"bin\" | \"calendar\" | \"check\" | \"chevron-down\" | \"download\" | \"info\" | \"menu\" | \"pen\" | \"plus\" | \"search\" | \"settings\" | \"triangle-alert\" | \"user\" | \"x\"",
-          "required": false
+          "required": false,
+          "description": "Decorative icon before the visible label."
         },
         {
           "name": "onPress",
@@ -189,27 +196,32 @@
         {
           "name": "trigger",
           "type": "ReactNode",
-          "required": true
+          "required": true,
+          "description": "A React Aria compatible action, usually a DS Button."
         },
         {
           "name": "title",
           "type": "string",
-          "required": true
+          "required": true,
+          "description": "Visible editorial heading and accessible dialog name."
         },
         {
           "name": "eyebrow",
           "type": "string",
-          "required": false
+          "required": false,
+          "description": "Optional metadata above the title."
         },
         {
           "name": "children",
           "type": "ReactNode",
-          "required": true
+          "required": true,
+          "description": "Content in the internally scrolling body."
         },
         {
           "name": "actions",
           "type": "ReactNode",
-          "required": false
+          "required": false,
+          "description": "Optional actions kept visible below the body."
         }
       ],
       "stories": [
@@ -254,7 +266,8 @@
         {
           "name": "children",
           "type": "string",
-          "required": true
+          "required": true,
+          "description": "Plain description text; it renders inside a paragraph."
         },
         {
           "name": "action",
@@ -363,18 +376,21 @@
         {
           "name": "name",
           "type": "\"arrow-left\" | \"arrow-right\" | \"bin\" | \"calendar\" | \"check\" | \"chevron-down\" | \"download\" | \"info\" | \"menu\" | \"pen\" | \"plus\" | \"search\" | \"settings\" | \"triangle-alert\" | \"user\" | \"x\"",
-          "required": true
+          "required": true,
+          "description": "Name from the generated SVG catalogue."
         },
         {
           "name": "size",
           "type": "16 | 20 | 24",
           "required": false,
+          "description": "Rendered width and height in pixels. Defaults to 24.",
           "default": "24"
         },
         {
           "name": "label",
           "type": "string",
-          "required": false
+          "required": false,
+          "description": "Accessible image name; omit for a decorative icon."
         }
       ],
       "stories": [
@@ -396,12 +412,14 @@
         {
           "name": "icon",
           "type": "\"arrow-left\" | \"arrow-right\" | \"bin\" | \"calendar\" | \"check\" | \"chevron-down\" | \"download\" | \"info\" | \"menu\" | \"pen\" | \"plus\" | \"search\" | \"settings\" | \"triangle-alert\" | \"user\" | \"x\"",
-          "required": true
+          "required": true,
+          "description": "Decorative icon from the shared catalogue."
         },
         {
           "name": "label",
           "type": "string",
-          "required": true
+          "required": true,
+          "description": "Required action name, used for aria-label and the native title."
         }
       ],
       "stories": [
@@ -518,7 +536,8 @@
         {
           "name": "label",
           "type": "string",
-          "required": false
+          "required": false,
+          "description": "Accessible name of the description list."
         }
       ],
       "stories": [
@@ -568,12 +587,14 @@
         {
           "name": "trigger",
           "type": "ReactNode",
-          "required": true
+          "required": true,
+          "description": "A React Aria compatible action, usually a DS Button."
         },
         {
           "name": "label",
           "type": "string",
-          "required": true
+          "required": true,
+          "description": "Required accessible name for the content dialog."
         },
         {
           "name": "children",
@@ -584,6 +605,7 @@
           "name": "placement",
           "type": "| \"top\"\n    | \"top start\"\n    | \"top end\"\n    | \"bottom\"\n    | \"bottom start\"\n    | \"bottom end\"\n    | \"left\"\n    | \"left top\"\n    | \"left bottom\"\n    | \"right\"\n    | \"right top\"\n    | \"right bottom\"\n    | \"start\"\n    | \"start top\"\n    | \"start bottom\"\n    | \"end\"\n    | \"end top\"\n    | \"end bottom\"",
           "required": false,
+          "description": "Preferred anchor placement; React Aria repositions near viewport edges.",
           "default": "\"bottom start\""
         }
       ],
@@ -606,12 +628,14 @@
         {
           "name": "title",
           "type": "string",
-          "required": false
+          "required": false,
+          "description": "Optional visible heading; the parent provides the panel's accessible name."
         },
         {
           "name": "children",
           "type": "ReactNode",
-          "required": true
+          "required": true,
+          "description": "Panel content supplied by the consuming application."
         }
       ],
       "stories": [
@@ -738,17 +762,20 @@
         {
           "name": "label",
           "type": "string",
-          "required": true
+          "required": true,
+          "description": "Accessible name of the tab list."
         },
         {
           "name": "items",
           "type": "readonly { id: string; title: string; content: ReactNode }[]",
-          "required": true
+          "required": true,
+          "description": "Ordered tabs with unique stable identifiers and their panel content."
         },
         {
           "name": "defaultSelectedKey",
           "type": "string",
-          "required": false
+          "required": false,
+          "description": "Initially selected identifier; defaults to the first item."
         }
       ],
       "stories": [
@@ -832,12 +859,14 @@
         {
           "name": "label",
           "type": "string",
-          "required": true
+          "required": true,
+          "description": "Required accessible name of the toolbar."
         },
         {
           "name": "children",
           "type": "ReactNode",
-          "required": true
+          "required": true,
+          "description": "Button and IconButton actions."
         }
       ],
       "stories": [
@@ -855,7 +884,8 @@
         {
           "name": "value",
           "type": "string | number",
-          "required": true
+          "required": true,
+          "description": "Empty strings use a fallback accessible name when no label is supplied."
         },
         {
           "name": "total",
@@ -870,7 +900,8 @@
         {
           "name": "sign",
           "type": "\"+\" | \"-\" | \"±\"",
-          "required": false
+          "required": false,
+          "description": "Applies to a positive magnitude; do not include a sign in value."
         },
         {
           "name": "mode",
@@ -881,7 +912,8 @@
         {
           "name": "label",
           "type": "string",
-          "required": false
+          "required": false,
+          "description": "Overrides the generated English accessible name."
         }
       ],
       "stories": [

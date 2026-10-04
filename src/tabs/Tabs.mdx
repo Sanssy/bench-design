@@ -1,4 +1,5 @@
-import { Meta, Canvas, ArgTypes } from '@storybook/addon-docs/blocks';
+import { Meta, Canvas } from '@storybook/addon-docs/blocks';
+import { ManifestProps } from "../../.storybook/ManifestProps";
 import * as Stories from './Tabs.stories';
 
 <Meta of={Stories} />
@@ -13,7 +14,7 @@ Supply unique stable item identifiers, short titles and panel content. Use `defa
 
 ## TypeScript API
 
-<ArgTypes of={Stories} />
+<ManifestProps component="Tabs" />
 
 ## Example
 

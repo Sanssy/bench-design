@@ -1,4 +1,5 @@
-import { Meta, Canvas, ArgTypes, Controls } from '@storybook/addon-docs/blocks';
+import { Meta, Canvas, Controls } from '@storybook/addon-docs/blocks';
+import { ManifestProps } from "../../.storybook/ManifestProps";
 import * as Stories from './Value.stories';
 
 <Meta of={Stories} />
@@ -19,7 +20,7 @@ Use for a score, rank or inline statistic. Plain inherits the surrounding text s
 
 ## API
 
-<ArgTypes of={Stories} />
+<ManifestProps component="Value" />
 
 ## Try the props
 

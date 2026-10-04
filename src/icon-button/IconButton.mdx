@@ -1,4 +1,5 @@
-import { Meta, Canvas, ArgTypes } from '@storybook/addon-docs/blocks';
+import { Meta, Canvas } from '@storybook/addon-docs/blocks';
+import { ManifestProps } from "../../.storybook/ManifestProps";
 import * as Stories from './IconButton.stories';
 
 <Meta of={Stories} />
@@ -18,7 +19,7 @@ An icon-only action in a 48 × 48px square. Import `IconButton` from
 
 ## TypeScript API
 
-<ArgTypes of={Stories} />
+<ManifestProps component="IconButton" />
 
 `icon` and `label` are required. `type` defaults to `button`; `submit` and
 `reset` retain native semantics. `onPress` has no arguments. The DOM `ref`

@@ -13,6 +13,7 @@ for (const [source, name] of [
   ["public/navigation.css", "navigation.css"],
   ["public/overlays.css", "overlays.css"],
   ["public/forms.css", "forms.css"],
+  ["public/filters.css", "filters.css"],
   ["public/fonts.css", "fonts.css"],
   ["public/theme-init.js", "theme-init.js"],
 ] as const) {

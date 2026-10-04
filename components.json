@@ -561,6 +561,106 @@
       ]
     },
     {
+      "name": "FilterChip",
+      "import": "import { FilterChip } from \"bench-design\";",
+      "description": "A compact toggle; the application owns filtering and result counts.",
+      "props": [
+        {
+          "name": "label",
+          "type": "string",
+          "required": true,
+          "description": "Visible accessible label."
+        },
+        {
+          "name": "isSelected",
+          "type": "boolean",
+          "required": false,
+          "description": "Controlled active state."
+        },
+        {
+          "name": "defaultSelected",
+          "type": "boolean",
+          "required": false,
+          "description": "Initial uncontrolled active state."
+        },
+        {
+          "name": "onChange",
+          "type": "(selected: boolean) => void",
+          "required": false,
+          "description": "Called immediately when the user toggles the filter."
+        },
+        {
+          "name": "isDisabled",
+          "type": "boolean",
+          "required": false,
+          "description": "Prevent interaction."
+        }
+      ],
+      "stories": [
+        {
+          "name": "Default",
+          "href": "./?path=/story/form-filterchip--default"
+        },
+        {
+          "name": "Active",
+          "href": "./?path=/story/form-filterchip--active"
+        }
+      ]
+    },
+    {
+      "name": "FilterMenu",
+      "import": "import { FilterMenu } from \"bench-design\";",
+      "description": "Opens a searchable draft; dismissal leaves the applied filter unchanged.",
+      "props": [
+        {
+          "name": "label",
+          "type": "string",
+          "required": true,
+          "description": "Visible label for the chip and selection dialog."
+        },
+        {
+          "name": "options",
+          "type": "readonly FieldOption[]",
+          "required": false,
+          "description": "Local choices."
+        },
+        {
+          "name": "loadItems",
+          "type": "MultiComboBoxProps[\"loadItems\"]",
+          "required": false,
+          "description": "Server search using the shared abortable, paginated search contract."
+        },
+        {
+          "name": "value",
+          "type": "readonly FieldOption[]",
+          "required": false,
+          "description": "Controlled applied choices, including saved labels."
+        },
+        {
+          "name": "defaultValue",
+          "type": "readonly FieldOption[]",
+          "required": false,
+          "description": "Initial uncontrolled applied choices."
+        },
+        {
+          "name": "onApply",
+          "type": "(options: FieldOption[]) => void",
+          "required": false,
+          "description": "Called only by Apply or Clear, never by dismissal or draft edits."
+        }
+      ],
+      "stories": [
+        {
+          "name": "Default",
+          "href": "./?path=/story/form-filtermenu--default"
+        },
+        {
+          "name": "Active",
+          "href": "./?path=/story/form-filtermenu--active"
+        }
+      ]
+    },
+    {
       "name": "Grid",
       "import": "import { Grid } from \"bench-design\";",
       "description": "Arrange content in equal columns, collapsing below 640px.",

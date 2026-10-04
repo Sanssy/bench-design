@@ -1,0 +1,32 @@
+import { Meta, Canvas, Controls } from '@storybook/addon-docs/blocks';
+import { ManifestProps } from "../../.storybook/ManifestProps";
+import * as Stories from './FilterChip.stories';
+
+<Meta of={Stories} />
+
+# FilterChip
+
+Import `FilterChip` from `bench-design` and load `bench-design/styles.css` once.
+
+## Usage
+
+Use for an immediate boolean filter. Use controlled state when the application owns the selection. Avoid using a toggle for a filter with several values.
+
+## API
+
+<ManifestProps component="FilterChip" />
+
+## Try the props
+
+<Controls of={Stories.Default} />
+
+## Examples
+
+<Canvas of={Stories.Default} />
+<Canvas of={Stories.Active} />
+
+Use the theme selector to inspect light and dark themes.
+
+## Accessibility
+
+Tab focuses the chip; Space or Enter toggles it. aria-pressed communicates selection; disabled chips do not activate.

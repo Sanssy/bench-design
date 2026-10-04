@@ -384,6 +384,45 @@
       ]
     },
     {
+      "name": "Surface",
+      "import": "import { Surface } from \"bench-design\";",
+      "description": "Group content on a raised or subtle background without a border.",
+      "props": [
+        {
+          "name": "children",
+          "type": "ReactNode",
+          "required": true
+        },
+        {
+          "name": "tone",
+          "type": "\"raised\" | \"subtle\"",
+          "required": false,
+          "default": "\"raised\""
+        },
+        {
+          "name": "padding",
+          "type": "4 | 8 | 12 | 16 | 24 | 32 | 48 | 64 | 96",
+          "required": false
+        },
+        {
+          "name": "as",
+          "type": "\"div\" | \"section\" | \"article\" | \"aside\"",
+          "required": false,
+          "default": "\"div\""
+        }
+      ],
+      "stories": [
+        {
+          "name": "Workspace",
+          "href": "./?path=/story/surfaces-surface--workspace"
+        },
+        {
+          "name": "Notice",
+          "href": "./?path=/story/surfaces-surface--notice"
+        }
+      ]
+    },
+    {
       "name": "Text",
       "import": "import { Text } from \"bench-design\";",
       "description": "A paragraph or inline text. Label and mono variants always use meta size.",

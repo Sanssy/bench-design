@@ -13,6 +13,13 @@ export interface VisualException {
 }
 export const exceptions: VisualException[] = [
   {
+    file: "dist/layout.css",
+    selector: ".bd-side-panel",
+    property: "min-inline-size",
+    value: "240px",
+    reason: "Ratified minimum SidePanel width.",
+  },
+  {
     file: "dist/overlays.css",
     selector: ".bd-modal",
     property: "max-block-size",

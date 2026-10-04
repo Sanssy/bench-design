@@ -29,6 +29,8 @@ export type { NoticeProps } from "./notice/Notice.js";
 export { Notice } from "./notice/Notice.js";
 export type { PopoverProps } from "./popover/Popover.js";
 export { Popover } from "./popover/Popover.js";
+export type { SidePanelProps } from "./side-panel/SidePanel.js";
+export { SidePanel } from "./side-panel/SidePanel.js";
 export type { SpaceToken } from "./space-tokens.js";
 export type { StackProps } from "./stack/Stack.js";
 export { Stack } from "./stack/Stack.js";

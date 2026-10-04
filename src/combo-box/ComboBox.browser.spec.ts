@@ -5,6 +5,8 @@ for (const theme of ["light", "dark"]) {
   test(`ComboBox field and seven-row geometry in ${theme}`, {
     tag: [`@theme:${theme}`, "@component:combo-box"],
   }, async ({ page }) => {
+    // Room for seven rows below the centered field; with less, the list shrinks.
+    await page.setViewportSize({ width: 1280, height: 900 });
     await page.goto(
       `/iframe.html?id=form-combobox--default&viewMode=story&globals=theme:${theme}`,
     );

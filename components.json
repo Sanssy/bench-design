@@ -322,6 +322,29 @@
       ]
     },
     {
+      "name": "MetaList",
+      "import": "import { MetaList } from \"bench-design\";",
+      "description": "A native description list with caller-provided terms and rich details.",
+      "props": [
+        {
+          "name": "items",
+          "type": "{ term: string; details: ReactNode }[]",
+          "required": true
+        },
+        {
+          "name": "label",
+          "type": "string",
+          "required": false
+        }
+      ],
+      "stories": [
+        {
+          "name": "SourceDetails",
+          "href": "./?path=/story/data-metalist--source-details"
+        }
+      ]
+    },
+    {
       "name": "Stack",
       "import": "import { Stack } from \"bench-design\";",
       "description": "Arrange content vertically with spacing tokens.",

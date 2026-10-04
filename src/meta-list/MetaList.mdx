@@ -1,0 +1,34 @@
+import { Meta, Canvas, ArgTypes, Controls } from '@storybook/addon-docs/blocks';
+import * as Stories from './MetaList.stories';
+
+<Meta of={Stories} />
+
+# MetaList
+
+Import `MetaList` from `bench-design` and load `bench-design/styles.css` once.
+
+## Usage
+
+Use for related term/detail pairs such as source information. Items share equal columns; below 640px they stack, with terms and details in a 1:2 row.
+
+- Do provide concise terms and caller-owned details, including rich React content.
+- Avoid using metadata pairs for unrelated prose or interactive menus.
+- Compose with Divider when the surrounding section needs rules.
+
+## API
+
+<ArgTypes of={Stories} />
+
+## Try the props
+
+<Controls of={Stories.SourceDetails} />
+
+## Example
+
+<Canvas of={Stories.SourceDetails} />
+
+Use the theme selector to inspect light and dark themes.
+
+## Accessibility
+
+A native description list groups each dt/dd pair. The optional label names the list. Document order is preserved at every viewport. The list has no keyboard interaction; interactive details retain their native behavior.

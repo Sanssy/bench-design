@@ -88,9 +88,11 @@ try {
   );
   writeFileSync(
     join(consumer, "index.tsx"),
-    `import { Button, type ButtonProps, Heading, type HeadingProps, Text, type TextProps, Link, type LinkProps, Icon, type IconProps, type IconName, IconButton, type IconButtonProps, Stack, type StackProps, Inline, type InlineProps, Grid, type GridProps, Divider, type DividerProps, Value, type ValueProps } from "bench-design";
+    `import { Button, type ButtonProps, Heading, type HeadingProps, Text, type TextProps, Link, type LinkProps, Icon, type IconProps, type IconName, IconButton, type IconButtonProps, Stack, type StackProps, Inline, type InlineProps, Grid, type GridProps, Divider, type DividerProps, Value, type ValueProps, MetaList, type MetaListProps } from "bench-design";
 const valueProps: ValueProps = { value: 7, total: 10, mode: "hero" };
 const value = <Value {...valueProps} />;
+const metaProps: MetaListProps = { items: [{ term: "Source", details: "Archive" }], label: "Source details" };
+const metaList = <MetaList {...metaProps} />;
 // @ts-expect-error value is required
 const missingValue = <Value />;
 // @ts-expect-error unsupported mode
@@ -101,7 +103,15 @@ const valueSign = <Value value={1} sign="*" />;
 const valueClass = <Value value={1} className="custom" />;
 // @ts-expect-error style passthrough is excluded
 const valueStyle = <Value value={1} style={{ color: "red" }} />;
-void [value, missingValue, valueMode, valueSign, valueClass, valueStyle];
+// @ts-expect-error items are required
+const missingItems = <MetaList />;
+// @ts-expect-error details are required
+const missingDetails = <MetaList items={[{ term: "Source" }]} />;
+// @ts-expect-error className passthrough is excluded
+const metaClass = <MetaList items={[]} className="custom" />;
+// @ts-expect-error style passthrough is excluded
+const metaStyle = <MetaList items={[]} style={{ color: "red" }} />;
+void [value, metaList, missingValue, valueMode, valueSign, valueClass, valueStyle, missingItems, missingDetails, metaClass, metaStyle];
 
 import { createRef } from "react";
 const stackProps: StackProps = { as: "section", gap: 24, align: "stretch", children: "Details" };
@@ -213,7 +223,7 @@ void [button, missingContent, click, link, variant, type, heading, missingLevel,
   run("node", [
     "--input-type=module",
     "-e",
-    'import assert from "node:assert/strict"; import * as ds from "bench-design"; assert.deepEqual(Object.keys(ds), ["Button", "Divider", "Grid", "Heading", "Icon", "IconButton", "Inline", "Link", "Stack", "Text", "Value"]); assert.equal(typeof ds.Button, "function"); assert.equal(typeof ds.Heading, "function"); assert.equal(typeof ds.Text, "function"); assert.equal(typeof ds.Link, "function"); assert.equal(typeof ds.Icon, "function"); assert.equal(typeof ds.IconButton, "function"); for (const name of ["Stack", "Inline", "Grid", "Divider", "Value"]) assert.equal(typeof ds[name], "function");',
+    'import assert from "node:assert/strict"; import * as ds from "bench-design"; assert.deepEqual(Object.keys(ds), ["Button", "Divider", "Grid", "Heading", "Icon", "IconButton", "Inline", "Link", "MetaList", "Stack", "Text", "Value"]); assert.equal(typeof ds.Button, "function"); assert.equal(typeof ds.Heading, "function"); assert.equal(typeof ds.Text, "function"); assert.equal(typeof ds.Link, "function"); assert.equal(typeof ds.Icon, "function"); assert.equal(typeof ds.IconButton, "function"); for (const name of ["Stack", "Inline", "Grid", "Divider", "Value", "MetaList"]) assert.equal(typeof ds[name], "function");',
   ]);
   run("node", [
     "--input-type=module",
@@ -229,6 +239,7 @@ void [button, missingContent, click, link, variant, type, heading, missingLevel,
     assert(styles.includes('@import "./data.css"'));
     const data = readFileSync(new URL("./data.css", import.meta.resolve("bench-design/styles.css")), "utf8");
     assert(data.includes(".bd-value"));
+    assert(data.includes(".bd-meta-list"));
     const init = await import("bench-design/theme-init.js");
     assert.deepEqual(Object.keys(init), []);
   `,

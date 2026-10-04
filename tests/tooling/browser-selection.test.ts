@@ -27,9 +27,10 @@ test("a component edit also selects the components that import it", () => {
   assert(grep.test("Link @component:link"));
   assert(grep.test("Card @component:card"));
   assert(!grep.test("Button @component:button"));
-  assert.deepEqual(componentImporters().text?.sort(), [
+  assert.deepEqual([...new Set(componentImporters().text)].sort(), [
     "badge",
     "card",
+    "dialog",
     "divider",
     "empty-state",
     "grid",

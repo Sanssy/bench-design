@@ -140,6 +140,48 @@
       ]
     },
     {
+      "name": "Dialog",
+      "import": "import { Dialog } from \"bench-design\";",
+      "description": "A named modal with React Aria focus containment, Escape and focus restoration.",
+      "props": [
+        {
+          "name": "trigger",
+          "type": "ReactNode",
+          "required": true
+        },
+        {
+          "name": "title",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "eyebrow",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "children",
+          "type": "ReactNode",
+          "required": true
+        },
+        {
+          "name": "actions",
+          "type": "ReactNode",
+          "required": false
+        }
+      ],
+      "stories": [
+        {
+          "name": "DocumentDetails",
+          "href": "./?path=/story/overlays-dialog--document-details"
+        },
+        {
+          "name": "ReadingGuide",
+          "href": "./?path=/story/overlays-dialog--reading-guide"
+        }
+      ]
+    },
+    {
       "name": "Divider",
       "import": "import { Divider } from \"bench-design\";",
       "description": "A decorative hairline excluded from the accessibility tree.",

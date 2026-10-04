@@ -37,6 +37,13 @@ declare module "css-tree" {
       ): void;
     },
   ): void;
+  export function walk(
+    node: CssNode,
+    options: {
+      visit: "Atrule";
+      enter(node: CssNode & { prelude: CssNode | null }): void;
+    },
+  ): void;
   export const lexer: {
     matchType(type: string, node: CssNode): { matched: object | null };
   };

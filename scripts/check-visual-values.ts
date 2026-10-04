@@ -13,6 +13,14 @@ export interface VisualException {
 }
 export const exceptions: VisualException[] = [
   {
+    file: "dist/layout.css",
+    selector: "@media",
+    property: "condition",
+    value: "(width<640px)",
+    reason:
+      "Ratified Grid collapses below 640px; CSS variables cannot define media query thresholds.",
+  },
+  {
     file: "dist/link.css",
     selector: ".bd-link",
     property: "text-underline-offset",
@@ -30,6 +38,35 @@ export function visualViolations(
   if (definitions.has(file)) return [];
   const errors: string[] = [];
   const tree = parse(source, { positions: true, parseCustomProperty: true });
+  walk(tree, {
+    visit: "Atrule",
+    enter(rule) {
+      if (rule.name !== "media" || !rule.prelude) return;
+      const value = generate(rule.prelude);
+      let rawLength = false;
+      walk(rule.prelude, (node) => {
+        if (
+          node.type === "Dimension" &&
+          lexer.matchType("length", node).matched
+        )
+          rawLength = true;
+      });
+      if (
+        rawLength &&
+        !registry.some(
+          (entry) =>
+            entry.file === file &&
+            entry.selector === "@media" &&
+            entry.property === "condition" &&
+            entry.value === value &&
+            entry.reason.trim(),
+        )
+      )
+        errors.push(
+          `${file}:${rule.loc?.start.line}: @media ${value} requires an explicit breakpoint exception`,
+        );
+    },
+  });
   walk(tree, {
     visit: "Declaration",
     enter(declaration) {

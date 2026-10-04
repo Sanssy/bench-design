@@ -87,23 +87,28 @@ try {
   );
   writeFileSync(
     join(consumer, "index.tsx"),
-    `import { Button, type ButtonProps, Heading, type HeadingProps, Text, type TextProps, Link, type LinkProps, Icon, type IconProps, type IconName, IconButton, type IconButtonProps, Stack, type StackProps, Inline, type InlineProps, Divider, type DividerProps } from "bench-design";
+    `import { Button, type ButtonProps, Heading, type HeadingProps, Text, type TextProps, Link, type LinkProps, Icon, type IconProps, type IconName, IconButton, type IconButtonProps, Stack, type StackProps, Inline, type InlineProps, Grid, type GridProps, Divider, type DividerProps } from "bench-design";
 import { createRef } from "react";
 const stackProps: StackProps = { as: "section", gap: 24, align: "stretch", children: "Details" };
 const inlineProps: InlineProps = { as: "div", gap: 8, align: "center", justify: "space-between", children: "Actions" };
+const gridProps: GridProps = { as: "ul", gap: 16, columns: 3, children: <li>Reading</li> };
 const dividerProps: DividerProps = {};
-const layouts = [<Stack {...stackProps} />, <Inline {...inlineProps} />, <Divider {...dividerProps} />];
+const layouts = [<Stack {...stackProps} />, <Inline {...inlineProps} />, <Grid {...gridProps} />, <Divider {...dividerProps} />];
 // @ts-expect-error arbitrary gaps are excluded
 const invalidGap = <Stack gap={10}>Details</Stack>;
 // @ts-expect-error arbitrary tags are excluded
 const invalidTag = <Inline as="span">Actions</Inline>;
+// @ts-expect-error columns are required
+const missingColumns = <Grid>Reading</Grid>;
+// @ts-expect-error arbitrary column counts are excluded
+const invalidColumns = <Grid columns={5}>Reading</Grid>;
 // @ts-expect-error className overrides are excluded
 const layoutClass = <Stack className="custom">Details</Stack>;
 // @ts-expect-error style overrides are excluded
 const layoutStyle = <Inline style={{ gap: 1 }}>Actions</Inline>;
 // @ts-expect-error divider has no visual overrides
 const dividerStyle = <Divider style={{ color: "red" }} />;
-void [layouts, invalidGap, invalidTag, layoutClass, layoutStyle, dividerStyle];
+void [layouts, invalidGap, invalidTag, missingColumns, invalidColumns, layoutClass, layoutStyle, dividerStyle];
 const props: ButtonProps = { children: "Save", type: "submit", variant: "primary", ref: createRef<HTMLButtonElement>(), onPress: () => {}, isDisabled: false, "aria-label": "Save document", "aria-labelledby": "save-label" };
 const button = <Button {...props} icon="plus" />;
 const iconButtonProps: IconButtonProps = { icon: "search", label: "Search", ref: createRef<HTMLButtonElement>(), variant: "primary", type: "submit", onPress: () => {}, isDisabled: false };
@@ -193,7 +198,7 @@ void [button, missingContent, click, link, variant, type, heading, missingLevel,
   run("node", [
     "--input-type=module",
     "-e",
-    'import assert from "node:assert/strict"; import * as ds from "bench-design"; assert.deepEqual(Object.keys(ds), ["Button", "Divider", "Heading", "Icon", "IconButton", "Inline", "Link", "Stack", "Text"]); assert.equal(typeof ds.Button, "function"); assert.equal(typeof ds.Heading, "function"); assert.equal(typeof ds.Text, "function"); assert.equal(typeof ds.Link, "function"); assert.equal(typeof ds.Icon, "function"); assert.equal(typeof ds.IconButton, "function"); for (const name of ["Stack", "Inline", "Divider"]) assert.equal(typeof ds[name], "function");',
+    'import assert from "node:assert/strict"; import * as ds from "bench-design"; assert.deepEqual(Object.keys(ds), ["Button", "Divider", "Grid", "Heading", "Icon", "IconButton", "Inline", "Link", "Stack", "Text"]); assert.equal(typeof ds.Button, "function"); assert.equal(typeof ds.Heading, "function"); assert.equal(typeof ds.Text, "function"); assert.equal(typeof ds.Link, "function"); assert.equal(typeof ds.Icon, "function"); assert.equal(typeof ds.IconButton, "function"); for (const name of ["Stack", "Inline", "Grid", "Divider"]) assert.equal(typeof ds[name], "function");',
   ]);
   run("node", [
     "--input-type=module",

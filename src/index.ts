@@ -2,6 +2,8 @@ export type { ButtonProps } from "./button/Button.js";
 export { Button } from "./button/Button.js";
 export type { DividerProps } from "./divider/Divider.js";
 export { Divider } from "./divider/Divider.js";
+export type { GridProps } from "./grid/Grid.js";
+export { Grid } from "./grid/Grid.js";
 export type { HeadingProps } from "./heading/Heading.js";
 export { Heading } from "./heading/Heading.js";
 export type { IconProps } from "./icon/Icon.js";

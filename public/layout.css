@@ -1,5 +1,6 @@
 .bd-stack,
-.bd-inline {
+.bd-inline,
+.bd-grid {
   margin: 0;
   padding: 0;
   list-style: none;
@@ -21,6 +22,15 @@
   --bd-justify: normal;
   align-items: var(--bd-align);
   justify-content: var(--bd-justify);
+}
+.bd-grid {
+  display: grid;
+  grid-template-columns: repeat(var(--bd-columns), minmax(0, 1fr));
+}
+@media (width < 640px) {
+  .bd-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
 }
 .bd-divider {
   margin: 0;

@@ -1,0 +1,157 @@
+import AxeBuilder from "@axe-core/playwright";
+import { expect, test } from "@playwright/test";
+
+for (const theme of ["light", "dark"] as const) {
+  test(`Dialog veil and elevation ${theme}`, {
+    tag: ["@component:dialog", `@theme:${theme}`],
+  }, async ({ page }) => {
+    await page.goto(
+      `/iframe.html?id=overlays-dialog--document-details&viewMode=story&globals=a11y.manual:!true;theme:${theme}`,
+    );
+    await expect(page.locator("html")).toHaveAttribute("data-theme", theme);
+    await page.getByRole("button", { name: "View details" }).click();
+    await expect(
+      page.getByRole("dialog", { name: "Document details" }),
+    ).toBeVisible();
+    const pairs = await page
+      .locator(".bd-modal-overlay")
+      .evaluate((overlay) => {
+        const modal = overlay.querySelector(".bd-modal");
+        if (!modal) throw new Error("Modal missing");
+        const probe = document.createElement("div");
+        Object.assign(probe.style, {
+          background: "var(--bd-veil)",
+          backdropFilter: "blur(var(--bd-veil-blur))",
+          boxShadow: "var(--bd-elevation-dialog)",
+          border: "var(--bd-hair) solid var(--bd-border-strong)",
+          color: "var(--bd-surface)",
+          width: "var(--bd-measure)",
+        });
+        overlay.append(probe);
+        const actual = getComputedStyle(modal),
+          veil = getComputedStyle(overlay),
+          expected = getComputedStyle(probe);
+        const pairs = [
+          [veil.backgroundColor, expected.backgroundColor],
+          [veil.backdropFilter, expected.backdropFilter],
+          [actual.boxShadow, expected.boxShadow],
+          [actual.borderWidth, expected.borderWidth],
+          [actual.borderColor, expected.borderColor],
+          [actual.backgroundColor, expected.color],
+          [actual.width, expected.width],
+        ];
+        probe.remove();
+        return pairs;
+      });
+    for (const [actual, expected] of pairs) expect(actual).toBe(expected);
+  });
+}
+
+test("Dialog contains focus, Escape closes and restores the trigger", {
+  tag: ["@component:dialog", "@theme:light"],
+}, async ({ page }) => {
+  await page.goto(
+    "/iframe.html?id=overlays-dialog--document-details&viewMode=story&globals=a11y.manual:!true;theme:light",
+  );
+  const trigger = page.getByRole("button", { name: "View details" });
+  await trigger.focus();
+  await page.keyboard.press("Enter");
+  const dialog = page.getByRole("dialog", { name: "Document details" });
+  await expect(dialog).toBeVisible();
+  // React Aria makes the page behind inert: out of the accessibility tree
+  // and unreachable by pointer or keyboard.
+  expect(
+    await page.evaluate(
+      () => (document.querySelector("#storybook-root") as HTMLElement).inert,
+    ),
+  ).toBe(true);
+  await expect(dialog).toBeFocused();
+  await page.keyboard.press("Tab");
+  await expect(dialog.getByRole("button", { name: "Close" })).toBeFocused();
+  await page.keyboard.press("Shift+Tab");
+  await expect(dialog.getByRole("button", { name: "Download" })).toBeFocused();
+  await page.keyboard.press("Tab");
+  await expect(dialog.getByRole("button", { name: "Close" })).toBeFocused();
+  await page.keyboard.press("Escape");
+  await expect(dialog).toHaveCount(0);
+  await expect(trigger).toBeFocused();
+});
+
+test("Dialog body scrolls while its footer stays visible at desktop and short mobile sizes", {
+  tag: ["@component:dialog", "@theme:light"],
+}, async ({ page }) => {
+  for (const viewport of [
+    { width: 1000, height: 720 },
+    { width: 360, height: 480 },
+  ]) {
+    await page.setViewportSize(viewport);
+    await page.goto(
+      "/iframe.html?id=overlays-dialog--reading-guide&viewMode=story&globals=a11y.manual:!true;theme:light",
+    );
+    await page.getByRole("button", { name: "Read guide" }).click();
+    const body = page.locator(".bd-dialog-body"),
+      footer = page.locator(".bd-dialog-actions");
+    await expect(footer).toBeVisible();
+    const before = await footer.boundingBox();
+    const scroll = await body.evaluate((element) => {
+      element.scrollTop = element.scrollHeight;
+      return {
+        overflow: getComputedStyle(element).overflowY,
+        height: element.clientHeight,
+        total: element.scrollHeight,
+        top: element.scrollTop,
+      };
+    });
+    expect(scroll.overflow).toBe("auto");
+    expect(scroll.total).toBeGreaterThan(scroll.height);
+    expect(scroll.top).toBeGreaterThan(0);
+    await body.evaluate((element) => {
+      element.scrollTop = 0;
+    });
+    await body.focus();
+    await page.keyboard.press("End");
+    await expect
+      .poll(() => body.evaluate((element) => element.scrollTop))
+      .toBeGreaterThan(0);
+    expect(await footer.boundingBox()).toEqual(before);
+    const modal = await page.locator(".bd-modal").boundingBox();
+    expect(modal).not.toBeNull();
+    expect(modal?.height).toBeLessThanOrEqual(viewport.height * 0.88 + 1);
+    const sideMargin = await page.evaluate(
+      () =>
+        Number.parseFloat(
+          getComputedStyle(document.documentElement).getPropertyValue(
+            "--bd-space-32",
+          ),
+        ) / 2,
+    );
+    expect(modal?.x).toBeGreaterThanOrEqual(sideMargin);
+    expect((modal?.x ?? 0) + (modal?.width ?? 0)).toBeLessThanOrEqual(
+      viewport.width - sideMargin,
+    );
+    expect((before?.y ?? 0) + (before?.height ?? 0)).toBeLessThan(
+      viewport.height,
+    );
+  }
+});
+
+test("Open Dialog passes automated axe in both themes", {
+  tag: ["@component:dialog", "@theme:light", "@theme:dark"],
+}, async ({ page }) => {
+  for (const theme of ["light", "dark"]) {
+    for (const [story, trigger, title] of [
+      ["document-details", "View details", "Document details"],
+      ["reading-guide", "Read guide", "Reading guide"],
+    ] as const) {
+      await page.goto(
+        `/iframe.html?id=overlays-dialog--${story}&viewMode=story&globals=a11y.manual:!true;theme:${theme}`,
+      );
+      await page.getByRole("button", { name: trigger }).click();
+      await expect(page.getByRole("dialog", { name: title })).toBeVisible();
+      const result = await new AxeBuilder({ page })
+        .withTags(["wcag2a", "wcag2aa"])
+        .analyze();
+      expect(result.violations).toEqual([]);
+    }
+  }
+});

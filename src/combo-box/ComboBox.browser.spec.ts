@@ -8,7 +8,7 @@ for (const theme of ["light", "dark"]) {
     // Room for seven rows below the centered field; with less, the list shrinks.
     await page.setViewportSize({ width: 1280, height: 900 });
     await page.goto(
-      `/iframe.html?id=form-combobox--default&viewMode=story&globals=theme:${theme}`,
+      `/iframe.html?id=form-combobox--default&viewMode=story&globals=a11y.manual:!true;theme:${theme}`,
     );
     await expect(page.locator("html")).toHaveAttribute("data-theme", theme);
     const input = page.getByRole("combobox");
@@ -47,7 +47,7 @@ for (const theme of ["light", "dark"]) {
     tag: [`@theme:${theme}`, "@component:combo-box"],
   }, async ({ page }) => {
     await page.goto(
-      `/iframe.html?id=form-combobox--default&viewMode=story&globals=theme:${theme}`,
+      `/iframe.html?id=form-combobox--default&viewMode=story&globals=a11y.manual:!true;theme:${theme}`,
     );
     await page.getByRole("combobox").fill("Document 000");
     await expect(page.getByRole("listbox")).toBeVisible();
@@ -100,6 +100,8 @@ test("ComboBox scrolls a virtualized collection of 10 000 options", {
 test("ComboBox server pages load at the end with reduced motion", {
   tag: ["@component:combo-box"],
 }, async ({ page }) => {
+  // Timers held so the loading state cannot end before it is checked.
+  await page.clock.install();
   await page.goto(
     "/iframe.html?id=form-combobox--server-search&viewMode=story",
   );
@@ -109,6 +111,7 @@ test("ComboBox server pages load at the end with reduced motion", {
     "animation-name",
     "none",
   );
+  await page.clock.resume();
   await expect(page.getByRole("option").first()).toBeVisible();
   const list = page.getByRole("listbox");
   await list.evaluate((element) => {

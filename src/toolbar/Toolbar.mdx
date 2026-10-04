@@ -1,0 +1,26 @@
+import { Meta, Canvas, ArgTypes } from '@storybook/addon-docs/blocks';
+import * as Stories from './Toolbar.stories';
+
+<Meta of={Stories} />
+
+# Toolbar
+
+A named horizontal group of related actions. Import `Toolbar` from `bench-design` and load `bench-design/styles.css` once.
+
+## Usage
+
+Supply a descriptive required `label` and Button or IconButton children. Name every icon action. Prefer a simple Inline for unrelated controls. Do not add custom keyboard handlers. General `className` and `style` overrides are excluded.
+
+## TypeScript API
+
+<ArgTypes of={Stories} />
+
+## Example
+
+<Canvas of={Stories.CanvasTools} />
+
+Use the theme selector to view light and dark examples.
+
+## Keyboard and ARIA
+
+Tab enters the action group; Left and Right arrows move between enabled actions. Home and End reach its boundaries. Enter and Space activate buttons. React Aria owns the toolbar role and keyboard behavior. Keyboard focus uses the shared visible focus treatment.

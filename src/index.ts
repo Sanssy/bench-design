@@ -31,5 +31,7 @@ export type { TabsProps } from "./tabs/Tabs.js";
 export { Tabs } from "./tabs/Tabs.js";
 export type { TextProps } from "./text/Text.js";
 export { Text } from "./text/Text.js";
+export type { ToolbarProps } from "./toolbar/Toolbar.js";
+export { Toolbar } from "./toolbar/Toolbar.js";
 export type { ValueProps } from "./value/Value.js";
 export { Value } from "./value/Value.js";

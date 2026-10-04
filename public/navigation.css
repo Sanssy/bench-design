@@ -44,3 +44,9 @@
   outline: var(--bd-strong) solid var(--bd-focus);
   outline-offset: var(--bd-space-4);
 }
+
+.bd-toolbar {
+  display: flex;
+  align-items: center;
+  gap: var(--bd-space-8);
+}

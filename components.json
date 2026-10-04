@@ -189,6 +189,89 @@
       ]
     },
     {
+      "name": "Checkbox",
+      "import": "import { Checkbox } from \"bench-design\";",
+      "description": "A boolean control with an integrated description and error.",
+      "props": [
+        {
+          "name": "label",
+          "type": "string",
+          "required": true,
+          "description": "Visible accessible name of the control."
+        },
+        {
+          "name": "description",
+          "type": "string",
+          "required": false,
+          "description": "Supporting text connected to the control."
+        },
+        {
+          "name": "errorMessage",
+          "type": "string",
+          "required": false,
+          "description": "Message displayed when validation fails; otherwise React Aria supplies it."
+        },
+        {
+          "name": "isRequired",
+          "type": "boolean",
+          "required": false,
+          "description": "Require a value using React Aria native form validation."
+        },
+        {
+          "name": "isDisabled",
+          "type": "boolean",
+          "required": false,
+          "description": "Prevent editing, activation and keyboard focus."
+        },
+        {
+          "name": "isInvalid",
+          "type": "boolean",
+          "required": false,
+          "description": "Display an externally determined validation error."
+        },
+        {
+          "name": "name",
+          "type": "string",
+          "required": false,
+          "description": "Form submission name."
+        },
+        {
+          "name": "value",
+          "type": "string",
+          "required": false,
+          "description": "Submitted value when selected."
+        },
+        {
+          "name": "isSelected",
+          "type": "boolean",
+          "required": false,
+          "description": "Controlled selected state."
+        },
+        {
+          "name": "defaultSelected",
+          "type": "boolean",
+          "required": false,
+          "description": "Initial uncontrolled selected state."
+        },
+        {
+          "name": "onChange",
+          "type": "(selected: boolean) => void",
+          "required": false,
+          "description": "Called with the new selected state."
+        }
+      ],
+      "stories": [
+        {
+          "name": "Default",
+          "href": "./?path=/story/form-checkbox--default"
+        },
+        {
+          "name": "Review",
+          "href": "./?path=/story/form-checkbox--review"
+        }
+      ]
+    },
+    {
       "name": "Dialog",
       "import": "import { Dialog } from \"bench-design\";",
       "description": "A named modal with React Aria focus containment, Escape and focus restoration.",

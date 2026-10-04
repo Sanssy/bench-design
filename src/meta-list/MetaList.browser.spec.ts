@@ -1,6 +1,6 @@
 import { expect, test } from "@playwright/test";
 
-test("MetaList equal columns become term/detail rows below 640px", {
+test("MetaList at most three columns become term/detail rows below 640px", {
   tag: ["@component:meta-list", "@theme:light"],
 }, async ({ page }) => {
   await page.goto(
@@ -9,12 +9,25 @@ test("MetaList equal columns become term/detail rows below 640px", {
   await expect(page.locator("html")).toHaveAttribute("data-theme", "light");
   const list = page.locator(".bd-meta-list");
   await expect(list).toBeVisible();
+  await expect(list.locator(":scope > div")).toHaveCount(4);
   for (const width of [640, 639]) {
     await page.setViewportSize({ width, height: 800 });
     const styles = await list.evaluate((element) => {
       const style = getComputedStyle(element);
       const row = getComputedStyle(element.children[0] as Element);
+      const detail = getComputedStyle(element.querySelector("dd") as Element);
+      const probe = document.createElement("span");
+      probe.style.fontSize = "var(--bd-size-meta)";
+      probe.style.lineHeight = "var(--bd-line-reading)";
+      element.append(probe);
+      const expected = getComputedStyle(probe);
+      const detailStyles = {
+        actual: [detail.fontSize, detail.lineHeight],
+        expected: [expected.fontSize, expected.lineHeight],
+      };
+      probe.remove();
       return {
+        detailStyles,
         columns: style.gridTemplateColumns.split(" ").map(Number.parseFloat),
         gap: style.gap,
         rowDisplay: row.display,
@@ -27,6 +40,7 @@ test("MetaList equal columns become term/detail rows below 640px", {
     if (width === 640)
       expect(styles.columns[0] ?? 0).toBeCloseTo(styles.columns[2] ?? 0, 1);
     else {
+      expect(styles.detailStyles.actual).toEqual(styles.detailStyles.expected);
       expect(styles.rowDisplay).toBe("grid");
       expect(styles.rowGap).toBe("8px");
       expect(

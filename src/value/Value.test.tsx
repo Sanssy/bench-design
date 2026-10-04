@@ -41,3 +41,16 @@ test("a standalone value is named", () => {
   render(<Value value="07" />);
   expect(screen.getByRole("img", { name: "07" })).toHaveTextContent("07");
 });
+
+for (const value of ["", "   "]) {
+  test("an empty value without a label has a fallback name", () => {
+    render(<Value value={value} />);
+    expect(screen.getByRole("img", { name: "No value" })).toBeInTheDocument();
+  });
+}
+test("an empty value may be named explicitly", () => {
+  render(<Value value="" label="Not available" />);
+  expect(
+    screen.getByRole("img", { name: "Not available" }),
+  ).toBeInTheDocument();
+});

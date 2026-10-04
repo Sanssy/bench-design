@@ -1,5 +1,5 @@
 import { useRef, useState } from "react";
-import { type AsyncListData, useAsyncList } from "react-aria-components";
+import { useAsyncList } from "react-aria-components";
 import type { FieldOption } from "../forms/FieldProps.js";
 import type { ComboBoxProps } from "./ComboBox.js";
 
@@ -18,8 +18,13 @@ function waitForSearch(signal: AbortSignal) {
   });
 }
 
-interface ComboBoxItems extends AsyncListData<FieldOption> {
+// Own shape, so the published declaration does not expose React Aria types.
+interface ComboBoxItems {
+  items: FieldOption[];
+  isLoading: boolean;
+  loadingState: string;
   hasMore: boolean;
+  loadMore(): void;
   setQuery(query: string): void;
   retry(): void;
 }
@@ -54,7 +59,9 @@ export function useComboBoxItems(
     },
   });
   return {
-    ...list,
+    isLoading: list.isLoading,
+    loadingState: list.loadingState,
+    loadMore: list.loadMore,
     items: list.filterText === completedQuery ? list.items : [],
     hasMore,
     setQuery(query: string) {

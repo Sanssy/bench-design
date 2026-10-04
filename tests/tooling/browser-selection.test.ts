@@ -28,6 +28,7 @@ test("a component edit also selects the components that import it", () => {
   assert(!grep.test("Button @component:button"));
   assert.deepEqual(componentImporters().text?.sort(), [
     "divider",
+    "inline",
     "link",
     "stack",
   ]);

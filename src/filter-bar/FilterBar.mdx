@@ -1,0 +1,30 @@
+import { Meta, Canvas } from '@storybook/addon-docs/blocks';
+import { ManifestProps } from "../../.storybook/ManifestProps";
+import * as Stories from './FilterBar.stories';
+
+<Meta of={Stories} />
+
+# FilterBar
+
+Import `FilterBar` from `bench-design` and load `bench-design/styles.css` once.
+
+## Usage
+
+Compose a search control and FilterChip or FilterMenu children. The application computes resultCount and activeCount and clears its state through onClearFilters. Keep search and selections controlled: controls remount when crossing the 640 px breakpoint or reopening the mobile sheet.
+
+Do use application state for applied filters. Avoid computing business filtering inside the design system.
+
+## API
+
+<ManifestProps component="FilterBar" />
+
+## Examples
+
+<Canvas of={Stories.Default} />
+<Canvas of={Stories.Mobile} />
+
+Use the theme selector for light and dark. Resize below 640 px to open the full-screen sheet.
+
+## Accessibility
+
+Results are announced by a status region. Tab visits available controls; Enter and Space activate actions. The mobile Dialog contains focus; Escape, Close, and Show N results dismiss it and return focus to Filters N. Only one set of filter controls is mounted.

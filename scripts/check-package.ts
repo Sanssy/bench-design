@@ -91,7 +91,7 @@ try {
   );
   writeFileSync(
     join(consumer, "index.tsx"),
-    `import { Button, type ButtonProps, Heading, type HeadingProps, Text, type TextProps, Link, type LinkProps, Icon, type IconProps, type IconName, IconButton, type IconButtonProps, Stack, type StackProps, Inline, type InlineProps, Grid, type GridProps, Divider, type DividerProps, Value, type ValueProps, MetaList, type MetaListProps, Surface, type SurfaceProps, Card, type CardProps, EmptyState, type EmptyStateProps, Badge, type BadgeProps, Tabs, type TabsProps, Toolbar, type ToolbarProps } from "bench-design";
+    `import { SidePanel, type SidePanelProps, Button, type ButtonProps, Heading, type HeadingProps, Text, type TextProps, Link, type LinkProps, Icon, type IconProps, type IconName, IconButton, type IconButtonProps, Stack, type StackProps, Inline, type InlineProps, Grid, type GridProps, Divider, type DividerProps, Value, type ValueProps, MetaList, type MetaListProps, Surface, type SurfaceProps, Card, type CardProps, EmptyState, type EmptyStateProps, Badge, type BadgeProps, Tabs, type TabsProps, Toolbar, type ToolbarProps } from "bench-design";
 const tabsProps: TabsProps = { label: "Library", items: [{ id: "assets", title: "Assets", content: "Collection" }], defaultSelectedKey: "assets" };
 const toolbarProps: ToolbarProps = { label: "Canvas tools", children: <Button>Fit canvas</Button> };
 void [<Tabs {...tabsProps} />, <Toolbar {...toolbarProps} />];
@@ -145,6 +145,11 @@ const metaStyle = <MetaList items={[]} style={{ color: "red" }} />;
 void [value, metaList, missingValue, valueMode, valueSign, valueClass, valueStyle, missingItems, missingDetails, metaClass, metaStyle];
 
 import { createRef } from "react";
+const sidePanelProps: SidePanelProps = { title: "Library", children: "Assets" };
+void [<SidePanel {...sidePanelProps} />, <SidePanel>Notes</SidePanel>];
+// @ts-expect-error visual overrides are excluded
+const styledPanel = <SidePanel style={{ width: 300 }}>Assets</SidePanel>;
+void [styledPanel];
 const stackProps: StackProps = { as: "section", gap: 24, align: "stretch", children: "Details" };
 const inlineProps: InlineProps = { as: "div", gap: 8, align: "center", justify: "space-between", children: "Actions" };
 const gridProps: GridProps = { as: "ul", gap: 16, columns: 3, children: <li>Reading</li> };

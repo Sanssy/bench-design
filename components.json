@@ -557,6 +557,33 @@
       ]
     },
     {
+      "name": "SidePanel",
+      "import": "import { SidePanel } from \"bench-design\";",
+      "description": "A padded side panel using the shared panel width and workspace scroll rules.",
+      "props": [
+        {
+          "name": "title",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "children",
+          "type": "ReactNode",
+          "required": true
+        }
+      ],
+      "stories": [
+        {
+          "name": "Library",
+          "href": "./?path=/story/layout-sidepanel--library"
+        },
+        {
+          "name": "Notes",
+          "href": "./?path=/story/layout-sidepanel--notes"
+        }
+      ]
+    },
+    {
       "name": "Stack",
       "import": "import { Stack } from \"bench-design\";",
       "description": "Arrange content vertically with spacing tokens.",

@@ -1,0 +1,34 @@
+import { Meta, Canvas, ArgTypes, Controls } from '@storybook/addon-docs/blocks';
+import * as Stories from './SidePanel.stories';
+
+<Meta of={Stories} />
+
+# SidePanel
+
+Import `SidePanel` from `bench-design` and load `bench-design/styles.css` once.
+
+## Usage
+
+Use inside an AppShell side zone, or as a standalone content panel. Its preferred width is the panel-width token (288px), with a 240px minimum and space-24 padding. Inside a bounded AppShell it scrolls independently. In a narrow AppShell it fills the selected tab panel.
+
+- Do use shared tokens and components for content inside each zone.
+- Avoid overriding the scroll boundaries or nesting viewport shells.
+
+## API
+
+<ArgTypes of={Stories} />
+
+## Try the props
+
+<Controls of={Stories.Library} />
+
+## Examples
+
+<Canvas of={Stories.Library} />
+<Canvas of={Stories.Notes} />
+
+Use the theme selector to inspect light and dark themes.
+
+## Accessibility
+
+The optional title is a second-level heading. AppShell supplies the named landmark or tab panel; standalone panels should be placed in an appropriately named section by the consumer.

@@ -1,0 +1,24 @@
+import { Meta, Canvas } from '@storybook/addon-docs/blocks';
+import { ManifestProps } from "../../.storybook/ManifestProps";
+import * as Stories from './FileTrigger.stories';
+
+<Meta of={Stories} />
+
+# FileTrigger
+
+Import `FileTrigger` from `bench-design` and load `bench-design/styles.css` once.
+
+## Usage and accessibility
+
+Native file selection from a visible Button. Use acceptedFileTypes to guide the picker; validate application constraints before processing files. Keyboard activation follows Button. Cancellation does not call onSelect.
+
+## API
+
+<ManifestProps component="FileTrigger" />
+
+## Examples
+
+<Canvas of={Stories.SelectDocument} />
+<Canvas of={Stories.SelectImages} />
+
+Use the theme selector to inspect both examples in light and dark themes.

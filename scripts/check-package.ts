@@ -93,7 +93,8 @@ try {
   );
   writeFileSync(
     join(consumer, "index.tsx"),
-    `import { ${(JSON.parse(readFileSync("components.json", "utf8")) as { components: { name: string }[] }).components.map(({ name }) => `${name}, type ${name}Props`).join(", ")}, type IconName } from "bench-design";
+    // A props type is imported only where the entry exports one (hooks and prop-less regions do not).
+    `import { ${(JSON.parse(readFileSync("components.json", "utf8")) as { components: { name: string }[] }).components.map(({ name }) => (readFileSync("src/index.ts", "utf8").includes(`${name}Props`) ? `${name}, type ${name}Props` : name)).join(", ")}, type IconName } from "bench-design";
 const sidePanelProps: SidePanelProps = { title: "Library", children: "Assets" };
 const appShellProps: AppShellProps = { header: "Workspace", start: { label: "Library", content: <SidePanel {...sidePanelProps} /> }, children: "Document" };
 void [<AppShell {...appShellProps} />, <SidePanel>Notes</SidePanel>];

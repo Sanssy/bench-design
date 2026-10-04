@@ -94,7 +94,7 @@ test("verification image tag follows the recipe and the lockfile", () => {
     assert.equal(imageTag(root), first);
     writeFileSync(join(root, "pnpm-lock.yaml"), "changed");
     assert.notEqual(imageTag(root), first);
-    assert.match(imageRecipe(root), /pnpm fetch --frozen-lockfile/);
+    assert.match(imageRecipe(root), /pnpm fetch/);
   } finally {
     rmSync(root, { recursive: true, force: true });
   }

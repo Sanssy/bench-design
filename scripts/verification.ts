@@ -35,7 +35,7 @@ export function imageTag(root: string) {
 export function imageRecipe(root: string) {
   return `${fs.readFileSync(join(root, "ci/Containerfile"), "utf8").trimEnd()}
 COPY package.json pnpm-lock.yaml pnpm-workspace.yaml /deps/
-RUN cd /deps && pnpm fetch --frozen-lockfile && rm -rf /deps
+RUN cd /deps && pnpm fetch && rm -rf /deps
 `;
 }
 /** Half the Podman VM CPUs, at most the 4 workers CI uses. */

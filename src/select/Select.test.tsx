@@ -107,9 +107,10 @@ test("Select opens, selects and reports a choice", async () => {
   );
   await user.click(screen.getByRole("option", { name: "One" }));
   expect(onSelectionChange).toHaveBeenCalledWith("one");
-  expect(screen.getByRole("button", { name: /Collection/ })).toHaveTextContent(
-    "One",
-  );
+  const trigger = screen.getByRole("button", { name: /Collection/ });
+  expect(trigger).toHaveTextContent("One");
+  // The trigger shows the option text only, never its check icon.
+  expect(trigger.querySelectorAll("svg")).toHaveLength(1);
 });
 
 test("Select displays custom selection validation", async () => {

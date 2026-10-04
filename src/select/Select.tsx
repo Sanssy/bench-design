@@ -66,7 +66,12 @@ export function Select({
         {...(isRequired === undefined ? {} : { isRequired })}
       />
       <Button className="bd-field-control bd-select-trigger">
-        <SelectValue />
+        {/* Text only: the option's check icon belongs to the list. */}
+        <SelectValue>
+          {({ defaultChildren, isPlaceholder, selectedText }) =>
+            isPlaceholder ? defaultChildren : selectedText
+          }
+        </SelectValue>
         <Icon name="chevron-down" size={20} />
       </Button>
       <Popover

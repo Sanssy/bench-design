@@ -77,6 +77,12 @@
   color: inherit;
   font: inherit;
 }
+.bd-search-input::-webkit-search-cancel-button,
+.bd-search-input::-webkit-search-decoration {
+  /* SearchField draws its own clear button. */
+  appearance: none;
+  display: none;
+}
 .bd-search-clear {
   display: flex;
   align-items: center;

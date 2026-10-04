@@ -688,6 +688,72 @@
       ]
     },
     {
+      "name": "DropZone",
+      "import": "import { DropZone } from \"bench-design\";",
+      "description": "Validate picker and dragged files with the same acceptance policy.",
+      "props": [
+        {
+          "name": "label",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "description",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "acceptedFileTypes",
+          "type": "string[]",
+          "required": false,
+          "default": "[]"
+        },
+        {
+          "name": "maxSize",
+          "type": "number",
+          "required": false
+        },
+        {
+          "name": "allowsMultiple",
+          "type": "boolean",
+          "required": false,
+          "default": "false"
+        },
+        {
+          "name": "onDrop",
+          "type": "(files: File[]) => void",
+          "required": true
+        },
+        {
+          "name": "onReject",
+          "type": "(rejections: FileRejection[]) => void",
+          "required": false
+        },
+        {
+          "name": "isDisabled",
+          "type": "boolean",
+          "required": false,
+          "default": "false"
+        },
+        {
+          "name": "buttonLabel",
+          "type": "string",
+          "required": false,
+          "default": "\"Add files\""
+        }
+      ],
+      "stories": [
+        {
+          "name": "UploadDocuments",
+          "href": "./?path=/story/import-dropzone--upload-documents"
+        },
+        {
+          "name": "Unavailable",
+          "href": "./?path=/story/import-dropzone--unavailable"
+        }
+      ]
+    },
+    {
       "name": "EmptyState",
       "import": "import { EmptyState } from \"bench-design\";",
       "description": "An empty collection message with a semantic heading and muted description.",
@@ -723,6 +789,43 @@
         {
           "name": "NoResults",
           "href": "./?path=/story/surfaces-emptystate--no-results"
+        }
+      ]
+    },
+    {
+      "name": "FileTrigger",
+      "import": "import { FileTrigger } from \"bench-design\";",
+      "description": "Select local files without exposing React Aria types to consumers.",
+      "props": [
+        {
+          "name": "acceptedFileTypes",
+          "type": "string[]",
+          "required": false
+        },
+        {
+          "name": "allowsMultiple",
+          "type": "boolean",
+          "required": false
+        },
+        {
+          "name": "onSelect",
+          "type": "(files: File[]) => void",
+          "required": true
+        },
+        {
+          "name": "children",
+          "type": "ReactElement<ButtonProps>",
+          "required": true
+        }
+      ],
+      "stories": [
+        {
+          "name": "SelectDocument",
+          "href": "./?path=/story/import-filetrigger--select-document"
+        },
+        {
+          "name": "SelectImages",
+          "href": "./?path=/story/import-filetrigger--select-images"
         }
       ]
     },

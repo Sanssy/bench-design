@@ -1,0 +1,24 @@
+import { Meta, Canvas } from '@storybook/addon-docs/blocks';
+import { ManifestProps } from "../../.storybook/ManifestProps";
+import * as Stories from './DropZone.stories';
+
+<Meta of={Stories} />
+
+# DropZone
+
+Import `DropZone` from `bench-design` and load `bench-design/styles.css` once.
+
+## Usage and accessibility
+
+Use for local file import. maxSize uses bytes. MIME types, wildcard MIME types and filename extensions are supported. Type refusals precede size refusals; valid files are delivered alongside refusals. A new selection clears old feedback. For a single-file zone only the first accepted file is delivered. Never use color as the only refusal signal. The visible message includes the filename and reason.
+
+## API
+
+<ManifestProps component="DropZone" />
+
+## Examples
+
+<Canvas of={Stories.UploadDocuments} />
+<Canvas of={Stories.Unavailable} />
+
+Use the theme selector to inspect both examples in light and dark themes.

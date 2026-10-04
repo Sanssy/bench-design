@@ -121,3 +121,17 @@ test("status tokens match ratification in both themes", () => {
     });
   }
 });
+
+test("overlay tokens preserve alpha, depth and motion", () => {
+  const css = readFileSync("src/tokens.css", "utf8");
+  assert.match(css, /--bd-color-light-veil: rgba\(24, 32, 28, 0\.38\)/);
+  assert.match(css, /--bd-color-dark-veil: rgba\(8, 13, 10, 0\.6\)/);
+  assert.match(
+    css,
+    /--bd-elevation-dialog: 8px 8px 0px 0px var\(--bd-shadow\)/,
+  );
+  assert.match(css, /--bd-duration-fast: 150ms/);
+  assert.match(css, /--bd-ease-out: cubic-bezier\(0, 0, 0\.58, 1\)/);
+  assert.match(css, /--bd-veil-blur: 3px/);
+  assert.match(css, /--bd-veil-blur: 0px/);
+});

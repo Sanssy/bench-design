@@ -67,3 +67,31 @@
 .bd-field-error svg {
   flex-shrink: 0;
 }
+.bd-search-input {
+  min-inline-size: 0;
+  inline-size: 100%;
+  border: none;
+  outline: none;
+  padding: 0;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+}
+.bd-search-clear {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  border: none;
+  background: transparent;
+  color: inherit;
+  padding: 0;
+  cursor: pointer;
+}
+.bd-field[data-empty] .bd-search-clear {
+  visibility: hidden;
+}
+.bd-search-clear[data-focus-visible] {
+  outline: var(--bd-strong) solid var(--bd-focus);
+  outline-offset: var(--bd-space-4);
+}

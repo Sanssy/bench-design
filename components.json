@@ -649,6 +649,107 @@
       ]
     },
     {
+      "name": "SearchField",
+      "import": "import { SearchField } from \"bench-design\";",
+      "description": "A React Aria input retaining native form validation.",
+      "props": [
+        {
+          "name": "label",
+          "type": "string",
+          "required": true,
+          "description": "Visible accessible name of the control."
+        },
+        {
+          "name": "description",
+          "type": "string",
+          "required": false,
+          "description": "Supporting text connected to the control."
+        },
+        {
+          "name": "errorMessage",
+          "type": "string",
+          "required": false,
+          "description": "Message displayed when validation fails; otherwise React Aria supplies it."
+        },
+        {
+          "name": "isRequired",
+          "type": "boolean",
+          "required": false,
+          "description": "Require a value using React Aria native form validation."
+        },
+        {
+          "name": "isDisabled",
+          "type": "boolean",
+          "required": false,
+          "description": "Prevent editing, activation and keyboard focus."
+        },
+        {
+          "name": "isInvalid",
+          "type": "boolean",
+          "required": false,
+          "description": "Display an externally determined validation error."
+        },
+        {
+          "name": "name",
+          "type": "string",
+          "required": false,
+          "description": "Form submission name."
+        },
+        {
+          "name": "value",
+          "type": "string",
+          "required": false,
+          "description": "Current controlled value."
+        },
+        {
+          "name": "defaultValue",
+          "type": "string",
+          "required": false,
+          "description": "Initial uncontrolled value."
+        },
+        {
+          "name": "onChange",
+          "type": "(value: string) => void",
+          "required": false,
+          "description": "Called with the edited value."
+        },
+        {
+          "name": "placeholder",
+          "type": "string",
+          "required": false,
+          "description": "Short input hint; never replaces the label."
+        },
+        {
+          "name": "validate",
+          "type": "(value: string) => string | null",
+          "required": false,
+          "description": "Custom validation message; return null for a valid value."
+        },
+        {
+          "name": "onSubmit",
+          "type": "(value: string) => void",
+          "required": false,
+          "description": "Called when the user submits a search."
+        },
+        {
+          "name": "onClear",
+          "type": "() => void",
+          "required": false,
+          "description": "Called when the user clears the search."
+        }
+      ],
+      "stories": [
+        {
+          "name": "Default",
+          "href": "./?path=/story/form-searchfield--default"
+        },
+        {
+          "name": "Review",
+          "href": "./?path=/story/form-searchfield--review"
+        }
+      ]
+    },
+    {
       "name": "SidePanel",
       "import": "import { SidePanel } from \"bench-design\";",
       "description": "A padded side panel using the shared panel width and workspace scroll rules.",

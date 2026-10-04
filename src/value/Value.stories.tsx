@@ -3,6 +3,7 @@ import { Text } from "../text/Text";
 import { Value } from "./Value";
 export default {
   title: "Data/Value",
+  parameters: { layout: "centered" },
   component: Value,
   argTypes: {
     mode: { control: "select", options: ["hero", "indexed", "dense", "plain"] },

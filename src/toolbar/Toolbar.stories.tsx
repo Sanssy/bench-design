@@ -4,6 +4,7 @@ import { IconButton } from "../icon-button/IconButton.js";
 import { Toolbar } from "./Toolbar.js";
 export default {
   title: "Navigation/Toolbar",
+  parameters: { layout: "centered" },
   component: Toolbar,
   args: {
     label: "Canvas tools",

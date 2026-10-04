@@ -55,6 +55,7 @@ try {
     "layout.css",
     "data.css",
     "surfaces.css",
+    "navigation.css",
     "theme-init.js",
   ]) {
     assert(entries.includes(`package/dist/${name}`), `packed ${name} missing`);
@@ -89,7 +90,14 @@ try {
   );
   writeFileSync(
     join(consumer, "index.tsx"),
-    `import { Button, type ButtonProps, Heading, type HeadingProps, Text, type TextProps, Link, type LinkProps, Icon, type IconProps, type IconName, IconButton, type IconButtonProps, Stack, type StackProps, Inline, type InlineProps, Grid, type GridProps, Divider, type DividerProps, Value, type ValueProps, MetaList, type MetaListProps, Surface, type SurfaceProps, Card, type CardProps, EmptyState, type EmptyStateProps, Badge, type BadgeProps } from "bench-design";
+    `import { Button, type ButtonProps, Heading, type HeadingProps, Text, type TextProps, Link, type LinkProps, Icon, type IconProps, type IconName, IconButton, type IconButtonProps, Stack, type StackProps, Inline, type InlineProps, Grid, type GridProps, Divider, type DividerProps, Value, type ValueProps, MetaList, type MetaListProps, Surface, type SurfaceProps, Card, type CardProps, EmptyState, type EmptyStateProps, Badge, type BadgeProps, Tabs, type TabsProps } from "bench-design";
+const tabsProps: TabsProps = { label: "Library", items: [{ id: "assets", title: "Assets", content: "Collection" }], defaultSelectedKey: "assets" };
+void [<Tabs {...tabsProps} />];
+// @ts-expect-error tabs label is required
+const unnamedTabs = <Tabs items={[]} />;
+// @ts-expect-error visual overrides are excluded
+const styledTabs = <Tabs {...tabsProps} style={{ color: "red" }} />;
+void [unnamedTabs, styledTabs];
 const surfaceProps: SurfaceProps = { children: "Workspace", tone: "subtle", padding: 24, as: "aside" };
 const cardProps: CardProps = { children: "Collection", as: "section" };
 const emptyProps: EmptyStateProps = { title: "No documents", children: "Import documents", level: 2, action: <Button>Import</Button> };
@@ -240,7 +248,7 @@ void [button, missingContent, click, link, variant, type, heading, missingLevel,
   run("node", [
     "--input-type=module",
     "-e",
-    'import assert from "node:assert/strict"; import * as ds from "bench-design"; assert.deepEqual(Object.keys(ds), ["Badge", "Button", "Card", "Divider", "EmptyState", "Grid", "Heading", "Icon", "IconButton", "Inline", "Link", "MetaList", "Stack", "Surface", "Text", "Value"]); assert.equal(typeof ds.Button, "function"); assert.equal(typeof ds.Heading, "function"); assert.equal(typeof ds.Text, "function"); assert.equal(typeof ds.Link, "function"); assert.equal(typeof ds.Icon, "function"); assert.equal(typeof ds.IconButton, "function"); for (const name of ["Stack", "Inline", "Grid", "Divider", "Value", "MetaList", "Surface", "Card", "EmptyState", "Badge"]) assert.equal(typeof ds[name], "function");',
+    'import assert from "node:assert/strict"; import * as ds from "bench-design"; assert.deepEqual(Object.keys(ds), ["Badge", "Button", "Card", "Divider", "EmptyState", "Grid", "Heading", "Icon", "IconButton", "Inline", "Link", "MetaList", "Stack", "Surface", "Tabs", "Text", "Value"]); assert.equal(typeof ds.Button, "function"); assert.equal(typeof ds.Heading, "function"); assert.equal(typeof ds.Text, "function"); assert.equal(typeof ds.Link, "function"); assert.equal(typeof ds.Icon, "function"); assert.equal(typeof ds.IconButton, "function"); for (const name of ["Stack", "Inline", "Grid", "Divider", "Value", "MetaList", "Surface", "Card", "EmptyState", "Badge", "Tabs"]) assert.equal(typeof ds[name], "function");',
   ]);
   run("node", [
     "--input-type=module",

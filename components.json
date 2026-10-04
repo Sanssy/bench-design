@@ -517,6 +517,34 @@
       ]
     },
     {
+      "name": "Tabs",
+      "import": "import { Tabs } from \"bench-design\";",
+      "description": "Tab navigation and panels managed together by React Aria.",
+      "props": [
+        {
+          "name": "label",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "items",
+          "type": "readonly { id: string; title: string; content: ReactNode }[]",
+          "required": true
+        },
+        {
+          "name": "defaultSelectedKey",
+          "type": "string",
+          "required": false
+        }
+      ],
+      "stories": [
+        {
+          "name": "LibrarySections",
+          "href": "./?path=/story/navigation-tabs--library-sections"
+        }
+      ]
+    },
+    {
       "name": "Text",
       "import": "import { Text } from \"bench-design\";",
       "description": "A paragraph or inline text. Label and mono variants always use meta size.",

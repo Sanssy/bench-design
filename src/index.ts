@@ -27,6 +27,8 @@ export type { StackProps } from "./stack/Stack.js";
 export { Stack } from "./stack/Stack.js";
 export type { SurfaceProps } from "./surface/Surface.js";
 export { Surface } from "./surface/Surface.js";
+export type { TabsProps } from "./tabs/Tabs.js";
+export { Tabs } from "./tabs/Tabs.js";
 export type { TextProps } from "./text/Text.js";
 export { Text } from "./text/Text.js";
 export type { ValueProps } from "./value/Value.js";

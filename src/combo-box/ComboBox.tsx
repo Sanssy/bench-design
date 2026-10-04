@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import { ComboBox as AriaComboBox, Button, Input } from "react-aria-components";
 import { FieldLabel, FieldMessages } from "../forms/FieldContent.js";
 import type { FieldOption, FieldProps } from "../forms/FieldProps.js";
@@ -17,12 +18,12 @@ export interface ComboBoxProps extends FieldProps {
   }) => Promise<{ items: readonly FieldOption[]; cursor?: string }>;
   /** Form submission name. */
   name?: string;
-  /** Controlled selected identifier; null clears selection. */
-  selectedKey?: string | null;
-  /** Initial uncontrolled selected identifier. */
-  defaultSelectedKey?: string;
-  /** Called with the selected identifier, or null when cleared. */
-  onSelectionChange?: (key: string | null) => void;
+  /** Controlled selected option, including its saved label; null clears selection. */
+  selectedOption?: FieldOption | null;
+  /** Initial uncontrolled selected option, including its saved label. */
+  defaultSelectedOption?: FieldOption;
+  /** Called with the selected option, or null when cleared. */
+  onSelectionChange?: (option: FieldOption | null) => void;
   /** Hint displayed until the user types or chooses an option. */
   placeholder?: string;
   /** Custom validation message; return null for a valid selection. */
@@ -40,12 +41,22 @@ export function ComboBox({
   options = [],
   loadItems,
   name,
-  selectedKey,
-  defaultSelectedKey,
+  selectedOption,
+  defaultSelectedOption,
   onSelectionChange,
   placeholder,
   validate,
 }: ComboBoxProps) {
+  const [uncontrolledOption, setUncontrolledOption] =
+    useState<FieldOption | null>(defaultSelectedOption ?? null);
+  const selected =
+    selectedOption === undefined ? uncontrolledOption : selectedOption;
+  const [inputValue, setInputValue] = useState(selected?.label ?? "");
+  // Keyed on content: an equal inline option must not reset typed text.
+  const selectedLabel = selected?.label ?? "";
+  useEffect(() => {
+    setInputValue(selectedLabel);
+  }, [selectedLabel]);
   const search = useComboBoxSearch(options, loadItems);
   const { items } = search;
   return (
@@ -54,17 +65,37 @@ export function ComboBox({
       items={items}
       allowsEmptyCollection
       {...(name === undefined ? {} : { name })}
-      {...(selectedKey === undefined ? {} : { selectedKey })}
-      {...(defaultSelectedKey === undefined ? {} : { defaultSelectedKey })}
+      value={selected?.id ?? null}
+      inputValue={inputValue}
       {...(isRequired === undefined ? {} : { isRequired })}
       {...(isDisabled === undefined ? {} : { isDisabled })}
       {...(isInvalid === undefined ? {} : { isInvalid })}
-      onInputChange={search.onInputChange}
-      onOpenChange={search.onOpenChange}
-      onSelectionChange={(key) =>
-        onSelectionChange?.(key == null ? null : String(key))
+      onInputChange={(value) => {
+        setInputValue(value);
+        search.onInputChange(value);
+        if (value === "" && selected) {
+          setUncontrolledOption(null);
+          onSelectionChange?.(null);
+        }
+      }}
+      onOpenChange={(isOpen, trigger) => {
+        search.onOpenChange(isOpen, trigger);
+        if (!isOpen) setInputValue(selected?.label ?? "");
+      }}
+      onChange={(key) => {
+        const next =
+          key == null
+            ? null
+            : (items.find((item) => item.id === String(key)) ?? selected);
+        setUncontrolledOption(next);
+        setInputValue(
+          (selectedOption === undefined ? next : selectedOption)?.label ?? "",
+        );
+        onSelectionChange?.(next);
+      }}
+      validate={({ value }) =>
+        validate?.(value == null ? null : String(value)) ?? null
       }
-      validate={(key) => validate?.(key == null ? null : String(key)) ?? null}
       disabledKeys={items
         .filter((option) => option.isDisabled)
         .map((option) => option.id)}

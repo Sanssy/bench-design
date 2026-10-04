@@ -421,22 +421,22 @@
           "description": "Form submission name."
         },
         {
-          "name": "selectedKey",
-          "type": "string | null",
+          "name": "selectedOption",
+          "type": "FieldOption | null",
           "required": false,
-          "description": "Controlled selected identifier; null clears selection."
+          "description": "Controlled selected option, including its saved label; null clears selection."
         },
         {
-          "name": "defaultSelectedKey",
-          "type": "string",
+          "name": "defaultSelectedOption",
+          "type": "FieldOption",
           "required": false,
-          "description": "Initial uncontrolled selected identifier."
+          "description": "Initial uncontrolled selected option, including its saved label."
         },
         {
           "name": "onSelectionChange",
-          "type": "(key: string | null) => void",
+          "type": "(option: FieldOption | null) => void",
           "required": false,
-          "description": "Called with the selected identifier, or null when cleared."
+          "description": "Called with the selected option, or null when cleared."
         },
         {
           "name": "placeholder",

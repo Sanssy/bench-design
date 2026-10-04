@@ -611,6 +611,29 @@
       ]
     },
     {
+      "name": "Toolbar",
+      "import": "import { Toolbar } from \"bench-design\";",
+      "description": "A horizontal action group with React Aria arrow-key navigation.",
+      "props": [
+        {
+          "name": "label",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "children",
+          "type": "ReactNode",
+          "required": true
+        }
+      ],
+      "stories": [
+        {
+          "name": "CanvasTools",
+          "href": "./?path=/story/navigation-toolbar--canvas-tools"
+        }
+      ]
+    },
+    {
       "name": "Value",
       "import": "import { Value } from \"bench-design\";",
       "description": "Displays a value as one named image; defaults to surrounding text size.",

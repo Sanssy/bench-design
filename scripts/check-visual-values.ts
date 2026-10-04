@@ -13,6 +13,22 @@ export interface VisualException {
 }
 export const exceptions: VisualException[] = [
   {
+    file: "dist/overlays.css",
+    selector: ".bd-modal",
+    property: "max-block-size",
+    value: "88dvh",
+    reason:
+      "Ratified Dialog height is bounded at 88% of the viewport, including mobile browser chrome.",
+  },
+  {
+    file: "dist/overlays.css",
+    selector: ".bd-popover",
+    property: "max-inline-size",
+    value: "min(var(--bd-measure),calc(100vw - var(--bd-space-32)))",
+    reason:
+      "An anchored popover must fit the viewport; its containing block is controlled by React Aria.",
+  },
+  {
     file: "dist/data.css",
     selector: "@media",
     property: "condition",

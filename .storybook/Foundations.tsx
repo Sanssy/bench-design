@@ -63,14 +63,17 @@ export function Palette({ theme }: { theme: string }) {
                 const value = values[role];
                 const background = values[against];
                 const ratio =
-                  value && background
+                  value?.startsWith("#") && background?.startsWith("#")
                     ? (Math.max(luminance(value), luminance(background)) +
                         0.05) /
                       (Math.min(luminance(value), luminance(background)) + 0.05)
                     : undefined;
-                const decorative = ["divider", "shadow", "accent"].includes(
-                  role,
-                );
+                const decorative = [
+                  "divider",
+                  "shadow",
+                  "accent",
+                  "veil",
+                ].includes(role);
                 const graphical = [
                   "border",
                   "border-strong",
@@ -147,7 +150,8 @@ function Foundation({
 
 const scale = Object.entries(tokens.base).flatMap(([name, token]) =>
   "line" in token.$extensions["org.bench-design"] &&
-  typeof token.$value === "object"
+  typeof token.$value === "object" &&
+  "value" in token.$value
     ? [
         [
           name.slice(5),
@@ -163,7 +167,9 @@ const lines = Object.fromEntries(
     .map(([name, token]) => [name.slice(5), token.$value]),
 );
 const spaces = Object.entries(tokens.base).flatMap(([name, token]) =>
-  name.startsWith("space-") && typeof token.$value === "object"
+  name.startsWith("space-") &&
+  typeof token.$value === "object" &&
+  "value" in token.$value
     ? [token.$value.value]
     : [],
 );
@@ -293,6 +299,26 @@ export function Geometry() {
             <code>--bd-offset / --bd-shadow</code>
           </div>
         </div>
+      </section>
+      <section>
+        <h2>Overlays and motion</h2>
+        <p>
+          {
+            tokens.base["elevation-dialog"].$extensions["org.bench-design"]
+              .usage
+          }
+        </p>
+        <code>--bd-elevation-dialog · --bd-shadow</code>
+        <p>{tokens.base["veil-blur"].$extensions["org.bench-design"].usage}</p>
+        <code>--bd-veil · --bd-veil-blur</code>
+        <p>
+          {tokens.base["duration-fast"].$extensions["org.bench-design"].usage}
+        </p>
+        <code>
+          --bd-duration-fast · {tokens.base["duration-fast"].$value.value}
+          {tokens.base["duration-fast"].$value.unit} · --bd-ease-out ·{" "}
+          {tokens.base["ease-out"].$value.join(", ")}
+        </code>
       </section>
       <section>
         <h2>Keyboard focus</h2>

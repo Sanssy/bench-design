@@ -1,0 +1,93 @@
+.bd-modal-overlay {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bd-veil);
+  backdrop-filter: blur(var(--bd-veil-blur));
+}
+.bd-modal {
+  box-sizing: border-box;
+  inline-size: min(var(--bd-measure), calc(100% - var(--bd-space-32)));
+  max-block-size: 88dvh;
+  display: flex;
+  background: var(--bd-surface);
+  border: var(--bd-hair) solid var(--bd-border-strong);
+  border-radius: var(--bd-radius);
+  box-shadow: var(--bd-elevation-dialog);
+  color: var(--bd-text);
+}
+.bd-dialog {
+  display: flex;
+  flex-direction: column;
+  inline-size: 100%;
+  min-block-size: 0;
+  outline: none;
+  font-family: var(--bd-font-ui);
+}
+.bd-dialog-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--bd-space-16);
+  padding: var(--bd-space-24);
+  border-block-end: var(--bd-hair) solid var(--bd-divider);
+  flex-shrink: 0;
+}
+.bd-dialog-header > div {
+  min-inline-size: 0;
+  overflow-wrap: anywhere;
+}
+.bd-dialog-header .bd-heading,
+.bd-dialog-header .bd-text {
+  margin: 0;
+}
+.bd-dialog-body {
+  min-block-size: 0;
+  overflow: auto;
+  overflow-wrap: anywhere;
+  padding: var(--bd-space-24);
+}
+.bd-dialog-body:focus-visible {
+  outline: var(--bd-strong) solid var(--bd-focus);
+  outline-offset: calc(-1 * var(--bd-strong));
+}
+.bd-dialog-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: var(--bd-space-12);
+  padding: var(--bd-space-16) var(--bd-space-24);
+  border-block-start: var(--bd-hair) solid var(--bd-divider);
+  flex-shrink: 0;
+}
+.bd-popover {
+  box-sizing: border-box;
+  max-inline-size: min(var(--bd-measure), calc(100vw - var(--bd-space-32)));
+  background: var(--bd-surface-raised);
+  color: var(--bd-text);
+  border: var(--bd-hair) solid var(--bd-border-strong);
+  border-radius: var(--bd-radius);
+  box-shadow: var(--bd-offset) var(--bd-offset) 0 var(--bd-shadow);
+  overflow: auto;
+}
+.bd-popover-dialog {
+  padding: var(--bd-space-16);
+  outline: none;
+  font-family: var(--bd-font-ui);
+}
+@media (prefers-reduced-motion: no-preference) {
+  .bd-modal-overlay[data-entering],
+  .bd-popover[data-entering] {
+    animation: bd-overlay-appear var(--bd-duration-fast) var(--bd-ease-out);
+  }
+}
+@keyframes bd-overlay-appear {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}

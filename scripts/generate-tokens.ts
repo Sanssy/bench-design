@@ -4,7 +4,25 @@ import tokens from "../src/tokens.json" with { type: "json" };
 type BaseToken = (typeof tokens.base)[keyof typeof tokens.base];
 function baseValue(token: BaseToken) {
   const value = token.$value;
-  if (typeof value === "object") return `${value.value}${value.unit}`;
+  if (Array.isArray(value)) return `cubic-bezier(${value.join(", ")})`;
+  if (typeof value === "object") {
+    if ("offsetX" in value) {
+      const dimension = (part: { value: number; unit: string }) =>
+        `${part.value}${part.unit}`;
+      const color = value.color.replace(
+        /^\{(?:light|dark)\.(.+)\}$/,
+        "var(--bd-$1)",
+      );
+      return [
+        dimension(value.offsetX),
+        dimension(value.offsetY),
+        dimension(value.blur),
+        dimension(value.spread),
+        color,
+      ].join(" ");
+    }
+    return `${value.value}${value.unit}`;
+  }
   const metadata = token.$extensions["org.bench-design"];
   return `${value}${"cssUnit" in metadata ? metadata.cssUnit : ""}`;
 }
@@ -13,6 +31,12 @@ const declarations = (theme: "light" | "dark") =>
     (name) => `--bd-${name}: var(--bd-color-${theme}-${name});`,
   );
 const dark = [
+  ...Object.entries(tokens.base).flatMap(([name, token]) => {
+    const metadata = token.$extensions["org.bench-design"];
+    return "darkValue" in metadata
+      ? [`--bd-${name}: ${metadata.darkValue.value}${metadata.darkValue.unit};`]
+      : [];
+  }),
   ...declarations("dark"),
   ...Object.keys(tokens.light)
     .filter((name) => !(name in tokens.dark))
@@ -22,19 +46,16 @@ const dark = [
 const indent = (lines: string[], spaces: number) =>
   lines.map((line) => `${" ".repeat(spaces)}${line}`).join("\n");
 const palette = (theme: "light" | "dark") =>
-  Object.entries(tokens[theme]).map(
-    ([name, token]) =>
-      `--bd-color-${theme}-${name}: ${
-        "#" +
-        token.$value.components
-          .map((channel) =>
-            Math.round(channel * 255)
-              .toString(16)
-              .padStart(2, "0"),
-          )
-          .join("")
-      };`,
-  );
+  Object.entries(tokens[theme]).map(([name, token]) => {
+    const channels = token.$value.components.map((channel) =>
+      Math.round(channel * 255),
+    );
+    const value =
+      token.$value.alpha === 1
+        ? `#${channels.map((channel) => channel.toString(16).padStart(2, "0")).join("")}`
+        : `rgba(${channels.join(", ")}, ${token.$value.alpha})`;
+    return `--bd-color-${theme}-${name}: ${value};`;
+  });
 const css = `:root {\n${indent(
   [
     ...Object.entries(tokens.base).map(

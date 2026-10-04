@@ -179,7 +179,8 @@ try {
     );
     for (const stale of listed.output
       .split("\n")
-      .filter((tag) => tag.includes(":") && tag !== image))
+      // Podman lists local images as localhost/<name>:<tag>.
+      .filter((tag) => tag.includes(":") && !tag.endsWith(image)))
       await podman(["image", "rm", stale], true);
   }
   hasContainer = true;

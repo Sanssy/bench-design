@@ -129,3 +129,17 @@ Development and CI use exactly Node 24.21.0, pnpm 12.8.1 and React/React DOM
 The isolated consumer explicitly tests the lower bounds; later versions allowed
 by those ranges are not claimed to be tested. Product commands and CI work from
 a standalone clone.
+
+## Icons
+
+Icons use a 24 × 24 viewBox, a 2 px stroke with butt caps (sharp style) and
+`currentColor`. Only `svg`,
+`path`, `circle`, `rect`, `line`, `polyline` and `polygon` are accepted.
+`pnpm check` validates every SVG in `src/icon/svg/`.
+
+For Keyline icons, copy only the used sharp SVG from the reference version
+`@keyline-icons/react` 1.5.0, keeping its kebab-case name and the MIT licence
+in `src/icon/svg/LICENSE`. No npm dependency is required.
+
+Custom icons drawn in Inkscape follow the same grid; an Inkscape normalizer
+is added separately.

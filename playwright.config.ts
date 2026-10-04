@@ -25,6 +25,9 @@ export default defineConfig({
   testIgnore: [`${fileURLToPath(new URL(".claude/", import.meta.url))}**`],
   // CI runners have 4 vCPUs; local runs keep one worker (memory policy, B3).
   workers: process.env.CI ? 4 : 1,
+  // Tests are independent (one page each), so shards and workers can split
+  // them individually rather than by file.
+  fullyParallel: true,
   forbidOnly: !!process.env.CI,
   retries: 0,
   reporter: [["list"], ["html", { open: "never" }]],

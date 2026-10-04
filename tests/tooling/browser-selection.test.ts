@@ -4,6 +4,7 @@ import {
   componentImporters,
   selectBrowserTests,
   selectionFromBase,
+  shardPlan,
 } from "../../scripts/select-browser-tests.ts";
 
 test("component edits include its browser and axe scenarios only", () => {
@@ -90,4 +91,22 @@ test("missing or unresolvable Git base conservatively runs everything", () => {
   assert.equal(selectBrowserTests(null).mode, "full");
   assert.equal(selectionFromBase(undefined).mode, "full");
   assert.equal(selectionFromBase("nonexistent-4c1-base").mode, "full");
+});
+
+test("shards split the full suite and run a scoped selection once", () => {
+  const full = selectBrowserTests(null);
+  assert.deepEqual(shardPlan(full, "1/2"), {
+    mode: "full",
+    args: ["--shard=1/2"],
+    visual: true,
+  });
+  assert.deepEqual(shardPlan(full, "2/2"), {
+    mode: "full",
+    args: ["--shard=2/2"],
+    visual: false,
+  });
+  const scoped = selectBrowserTests(["src/link/Link.tsx"]);
+  assert.deepEqual(shardPlan(scoped, "1/2"), scoped);
+  assert.equal(shardPlan(scoped, "2/2").mode, "empty");
+  assert.deepEqual(shardPlan(scoped, undefined), scoped);
 });

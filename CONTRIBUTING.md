@@ -31,7 +31,9 @@ PR CI runs Chromium only (`BD_BROWSERS=chromium`), selecting changed components
 and their axe stories against the PR base. Tooling tests, decision docs and root
 Markdown need no browser tests; shared or unknown paths and unavailable bases
 run the full suite. Button or shared changes also run visual comparisons.
-Manual CI dispatch runs the full Chromium suite. Nightly CI runs all three
+Manual CI dispatch runs the full Chromium suite. The browser job runs as two
+parallel shards: the full suite is split test by test; a scoped selection runs
+once, on the first shard, which also compares captures. Nightly CI runs all three
 browsers on `main` using the cached full image from `ci/Containerfile`.
 `pnpm verify` always runs the complete suite before every push. The `static` job runs checks, unit tests, build, visual-value
 validation and package tests without a container. The `browser` job runs browser

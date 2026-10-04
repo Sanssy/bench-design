@@ -519,6 +519,44 @@
       ]
     },
     {
+      "name": "Popover",
+      "import": "import { Popover } from \"bench-design\";",
+      "description": "An anchored dialog without a veil; Escape and outside interaction dismiss it.",
+      "props": [
+        {
+          "name": "trigger",
+          "type": "ReactNode",
+          "required": true
+        },
+        {
+          "name": "label",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "children",
+          "type": "ReactNode",
+          "required": true
+        },
+        {
+          "name": "placement",
+          "type": "| \"top\"\n    | \"top start\"\n    | \"top end\"\n    | \"bottom\"\n    | \"bottom start\"\n    | \"bottom end\"\n    | \"left\"\n    | \"left top\"\n    | \"left bottom\"\n    | \"right\"\n    | \"right top\"\n    | \"right bottom\"\n    | \"start\"\n    | \"start top\"\n    | \"start bottom\"\n    | \"end\"\n    | \"end top\"\n    | \"end bottom\"",
+          "required": false,
+          "default": "\"bottom start\""
+        }
+      ],
+      "stories": [
+        {
+          "name": "ExportHelp",
+          "href": "./?path=/story/overlays-popover--export-help"
+        },
+        {
+          "name": "SharingHelp",
+          "href": "./?path=/story/overlays-popover--sharing-help"
+        }
+      ]
+    },
+    {
       "name": "Stack",
       "import": "import { Stack } from \"bench-design\";",
       "description": "Arrange content vertically with spacing tokens.",

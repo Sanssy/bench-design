@@ -135,6 +135,55 @@ test("Dialog body scrolls while its footer stays visible at desktop and short mo
   }
 });
 
+test("Dialog appearance follows motion tokens and respects reduced motion", {
+  tag: ["@component:dialog", "@theme:light"],
+}, async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: "no-preference" });
+  await page.goto(
+    "/iframe.html?id=overlays-dialog--document-details&viewMode=story&globals=a11y.manual:!true;theme:light",
+  );
+  await page.evaluate(() => {
+    document.addEventListener("animationstart", (event) => {
+      const target = event.target;
+      if (
+        !(target instanceof HTMLElement) ||
+        !target.matches(".bd-modal-overlay")
+      )
+        return;
+      const style = getComputedStyle(target);
+      target.dataset.observedDuration = style.animationDuration;
+      target.dataset.observedEase = style.animationTimingFunction;
+    });
+  });
+  await page.getByRole("button", { name: "View details" }).click();
+  const overlay = page.locator(".bd-modal-overlay");
+  await expect(overlay).toHaveAttribute("data-observed-duration");
+  const values = await overlay.evaluate((element) => {
+    const probe = document.createElement("div");
+    probe.style.animationDuration = "var(--bd-duration-fast)";
+    probe.style.animationTimingFunction = "var(--bd-ease-out)";
+    element.append(probe);
+    const expected = getComputedStyle(probe);
+    const values = [
+      [
+        element.getAttribute("data-observed-duration"),
+        expected.animationDuration,
+      ],
+      [
+        element.getAttribute("data-observed-ease"),
+        expected.animationTimingFunction,
+      ],
+    ];
+    probe.remove();
+    return values;
+  });
+  for (const [actual, expected] of values) expect(actual).toBe(expected);
+  await page.keyboard.press("Escape");
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  await page.getByRole("button", { name: "View details" }).click();
+  await expect(overlay).toHaveCSS("animation-name", "none");
+});
+
 test("Open Dialog passes automated axe in both themes", {
   tag: ["@component:dialog", "@theme:light", "@theme:dark"],
 }, async ({ page }) => {

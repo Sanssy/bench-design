@@ -76,6 +76,48 @@ export function generateComponents(entry = "src/index.ts") {
             ),
           );
       }
+      // Expand a type imported from a sibling module when it is a union of
+      // string literals (e.g. IconName), so the manifest lists valid values.
+      const resolveAlias = (text: string) => {
+        const imported = ast(source).program.body.find(
+          (node) =>
+            node.type === "ImportDeclaration" &&
+            node.source.value.startsWith("./") &&
+            node.specifiers.some((specifier) => specifier.local.name === text),
+        );
+        if (imported?.type !== "ImportDeclaration") return text;
+        const target = resolve(
+          dirname(file),
+          `${imported.source.value.replace(/\.js$/, "")}.ts`,
+        );
+        const alias = ast(readFileSync(target, "utf8")).program.body.find(
+          (node) =>
+            node.type === "ExportNamedDeclaration" &&
+            node.declaration?.type === "TSTypeAliasDeclaration" &&
+            node.declaration.id.name === text,
+        );
+        if (
+          alias?.type !== "ExportNamedDeclaration" ||
+          alias.declaration?.type !== "TSTypeAliasDeclaration"
+        )
+          return text;
+        const union = alias.declaration.typeAnnotation;
+        const members = union.type === "TSUnionType" ? union.types : [union];
+        return members.every(
+          (member) =>
+            member.type === "TSLiteralType" &&
+            member.literal.type === "StringLiteral",
+        )
+          ? members
+              .map((member) =>
+                member.type === "TSLiteralType" &&
+                member.literal.type === "StringLiteral"
+                  ? JSON.stringify(member.literal.value)
+                  : "",
+              )
+              .join(" | ")
+          : text;
+      };
       const props = api.declaration.body.body.map((prop) => {
         if (prop.type !== "TSPropertySignature" || !prop.typeAnnotation)
           throw new Error(`Unsupported prop: ${name}`);
@@ -88,7 +130,7 @@ export function generateComponents(entry = "src/index.ts") {
         const type = prop.typeAnnotation.typeAnnotation;
         return {
           name: key,
-          type: source.slice(type.start ?? 0, type.end ?? 0),
+          type: resolveAlias(source.slice(type.start ?? 0, type.end ?? 0)),
           required: !prop.optional,
           ...(defaults.has(key) ? { default: defaults.get(key) } : {}),
         };

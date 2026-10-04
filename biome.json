@@ -41,6 +41,12 @@
           }
         }
       }
+    },
+    {
+      "includes": ["src/icon/icons.ts"],
+      "formatter": {
+        "enabled": false
+      }
     }
   ]
 }

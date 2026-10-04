@@ -1,2 +1,3 @@
 public/fonts/*.ttf binary
 public/fonts/*-OFL.txt -text
+src/icon/icons.ts linguist-generated=true

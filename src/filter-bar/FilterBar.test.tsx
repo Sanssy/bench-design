@@ -106,3 +106,12 @@ test("crossing the breakpoint while open leaves one desktop set of controls", as
     vi.unstubAllGlobals();
   }
 });
+
+test("uses the singular for a single result", () => {
+  render(
+    <FilterBar resultCount={1} activeCount={0} onClearFilters={() => {}}>
+      <span>chip</span>
+    </FilterBar>,
+  );
+  expect(screen.getByRole("status")).toHaveTextContent(/^1 result$/);
+});

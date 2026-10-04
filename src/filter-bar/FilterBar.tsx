@@ -33,10 +33,13 @@ function ShowResults({ count }: { count: number }) {
   const dialog = useContext(OverlayTriggerStateContext);
   return (
     <Button variant="primary" onPress={() => dialog?.close()}>
-      Show {count} results
+      Show {results(count)}
     </Button>
   );
 }
+const results = (count: number) =>
+  `${count} ${count === 1 ? "result" : "results"}`;
+
 /** A live result summary and one set of controls, moved into a mobile Dialog. */
 export function FilterBar({
   resultCount,
@@ -54,7 +57,7 @@ export function FilterBar({
   );
   const summary = (
     <div className="bd-filter-bar-summary">
-      <span role="status">{resultCount} results</span>
+      <span role="status">{results(resultCount)}</span>
       {activeCount > 0 ? (
         <Button onPress={onClearFilters}>Clear filters</Button>
       ) : null}

@@ -75,6 +75,7 @@
   --bd-color-dark-text-muted: #abb5ad;
   --bd-color-dark-border: #69786e;
   --bd-color-dark-border-strong: #86968a;
+  --bd-color-dark-divider: #303b33;
   --bd-color-dark-accent: #d8ed69;
   --bd-color-dark-accent-hover: #e5f593;
   --bd-color-dark-on-accent: #18201c;
@@ -94,6 +95,7 @@
     --bd-text-muted: var(--bd-color-dark-text-muted);
     --bd-border: var(--bd-color-dark-border);
     --bd-border-strong: var(--bd-color-dark-border-strong);
+    --bd-divider: var(--bd-color-dark-divider);
     --bd-accent: var(--bd-color-dark-accent);
     --bd-accent-hover: var(--bd-color-dark-accent-hover);
     --bd-on-accent: var(--bd-color-dark-on-accent);
@@ -101,7 +103,6 @@
     --bd-shadow: var(--bd-color-dark-shadow);
     --bd-selection: var(--bd-color-dark-selection);
     --bd-on-selection: var(--bd-color-dark-on-selection);
-    --bd-divider: initial;
     color-scheme: dark;
   }
 }
@@ -114,6 +115,7 @@
   --bd-text-muted: var(--bd-color-dark-text-muted);
   --bd-border: var(--bd-color-dark-border);
   --bd-border-strong: var(--bd-color-dark-border-strong);
+  --bd-divider: var(--bd-color-dark-divider);
   --bd-accent: var(--bd-color-dark-accent);
   --bd-accent-hover: var(--bd-color-dark-accent-hover);
   --bd-on-accent: var(--bd-color-dark-on-accent);
@@ -121,6 +123,5 @@
   --bd-shadow: var(--bd-color-dark-shadow);
   --bd-selection: var(--bd-color-dark-selection);
   --bd-on-selection: var(--bd-color-dark-on-selection);
-  --bd-divider: initial;
   color-scheme: dark;
 }

@@ -1,0 +1,31 @@
+import { Meta, Canvas, ArgTypes } from '@storybook/addon-docs/blocks';
+import * as Stories from './Divider.stories';
+
+<Meta of={Stories} />
+
+# Divider
+
+Import `Divider` from `bench-design` and load `bench-design/styles.css` once.
+
+## Usage
+
+Use to decorate adjacent sections without announcing a semantic separator.
+
+- Do use Stack to space a divider between content blocks.
+- Avoid visual overrides or using layout to change reading order.
+- Do use headings to communicate meaningful section boundaries.
+
+## API
+
+<ArgTypes of={Stories} />
+
+## Examples
+
+<Canvas of={Stories.ReadingSections} />
+
+Use the theme selector to inspect light and dark themes.
+
+## Accessibility
+
+Native document order is preserved. Layout has no keyboard interaction.
+Divider is hidden from assistive technology. Use semantic structure and headings to communicate section boundaries.

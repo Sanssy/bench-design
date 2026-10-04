@@ -87,15 +87,18 @@ try {
   );
   writeFileSync(
     join(consumer, "index.tsx"),
-    `import { Button, type ButtonProps, Heading, type HeadingProps, Text, type TextProps, Link, type LinkProps, Icon, type IconProps, type IconName, IconButton, type IconButtonProps, Stack, type StackProps } from "bench-design";
+    `import { Button, type ButtonProps, Heading, type HeadingProps, Text, type TextProps, Link, type LinkProps, Icon, type IconProps, type IconName, IconButton, type IconButtonProps, Stack, type StackProps, Divider, type DividerProps } from "bench-design";
 import { createRef } from "react";
 const stackProps: StackProps = { as: "section", gap: 24, align: "stretch", children: "Details" };
-const layouts = [<Stack {...stackProps} />];
+const dividerProps: DividerProps = {};
+const layouts = [<Stack {...stackProps} />, <Divider {...dividerProps} />];
 // @ts-expect-error arbitrary gaps are excluded
 const invalidGap = <Stack gap={10}>Details</Stack>;
 // @ts-expect-error className overrides are excluded
 const layoutClass = <Stack className="custom">Details</Stack>;
-void [layouts, invalidGap, layoutClass];
+// @ts-expect-error divider has no visual overrides
+const dividerStyle = <Divider style={{ color: "red" }} />;
+void [layouts, invalidGap, layoutClass, dividerStyle];
 const props: ButtonProps = { children: "Save", type: "submit", variant: "primary", ref: createRef<HTMLButtonElement>(), onPress: () => {}, isDisabled: false, "aria-label": "Save document", "aria-labelledby": "save-label" };
 const button = <Button {...props} icon="plus" />;
 const iconButtonProps: IconButtonProps = { icon: "search", label: "Search", ref: createRef<HTMLButtonElement>(), variant: "primary", type: "submit", onPress: () => {}, isDisabled: false };
@@ -185,7 +188,7 @@ void [button, missingContent, click, link, variant, type, heading, missingLevel,
   run("node", [
     "--input-type=module",
     "-e",
-    'import assert from "node:assert/strict"; import * as ds from "bench-design"; assert.deepEqual(Object.keys(ds), ["Button", "Heading", "Icon", "IconButton", "Link", "Stack", "Text"]); assert.equal(typeof ds.Button, "function"); assert.equal(typeof ds.Heading, "function"); assert.equal(typeof ds.Text, "function"); assert.equal(typeof ds.Link, "function"); assert.equal(typeof ds.Icon, "function"); assert.equal(typeof ds.IconButton, "function"); for (const name of ["Stack"]) assert.equal(typeof ds[name], "function");',
+    'import assert from "node:assert/strict"; import * as ds from "bench-design"; assert.deepEqual(Object.keys(ds), ["Button", "Divider", "Heading", "Icon", "IconButton", "Link", "Stack", "Text"]); assert.equal(typeof ds.Button, "function"); assert.equal(typeof ds.Heading, "function"); assert.equal(typeof ds.Text, "function"); assert.equal(typeof ds.Link, "function"); assert.equal(typeof ds.Icon, "function"); assert.equal(typeof ds.IconButton, "function"); for (const name of ["Stack", "Divider"]) assert.equal(typeof ds[name], "function");',
   ]);
   run("node", [
     "--input-type=module",

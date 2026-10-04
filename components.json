@@ -78,6 +78,18 @@
       ]
     },
     {
+      "name": "Divider",
+      "import": "import { Divider } from \"bench-design\";",
+      "description": "A decorative hairline excluded from the accessibility tree.",
+      "props": [],
+      "stories": [
+        {
+          "name": "ReadingSections",
+          "href": "./?path=/story/layout-divider--reading-sections"
+        }
+      ]
+    },
+    {
       "name": "Heading",
       "import": "import { Heading } from \"bench-design\";",
       "description": "A native heading. Choose level for document structure and size for emphasis.",

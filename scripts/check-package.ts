@@ -253,7 +253,16 @@ void [button, missingContent, click, link, variant, type, heading, missingLevel,
   run("node", [
     "--input-type=module",
     "-e",
-    'import assert from "node:assert/strict"; import * as ds from "bench-design"; assert.deepEqual(Object.keys(ds), ["Badge", "Button", "Card", "Divider", "EmptyState", "Grid", "Heading", "Icon", "IconButton", "Inline", "Link", "MetaList", "Stack", "Surface", "Tabs", "Text", "Toolbar", "Value"]); assert.equal(typeof ds.Button, "function"); assert.equal(typeof ds.Heading, "function"); assert.equal(typeof ds.Text, "function"); assert.equal(typeof ds.Link, "function"); assert.equal(typeof ds.Icon, "function"); assert.equal(typeof ds.IconButton, "function"); for (const name of ["Stack", "Inline", "Grid", "Divider", "Value", "MetaList", "Surface", "Card", "EmptyState", "Badge", "Tabs", "Toolbar"]) assert.equal(typeof ds[name], "function");',
+    // Runtime exports must be exactly the components of the generated manifest.
+    `import assert from "node:assert/strict"; import * as ds from "bench-design"; const expected = ${JSON.stringify(
+      (
+        JSON.parse(readFileSync("components.json", "utf8")) as {
+          components: { name: string }[];
+        }
+      ).components
+        .map(({ name }) => name)
+        .sort(),
+    )}; assert.deepEqual(Object.keys(ds), expected); for (const name of expected) assert.equal(typeof ds[name], "function");`,
   ]);
   run("node", [
     "--input-type=module",
@@ -281,7 +290,7 @@ void [button, missingContent, click, link, variant, type, heading, missingLevel,
     pathToFileURL(join(consumer, "node_modules/bench-design/dist/styles.css")),
   );
   console.log(
-    "Distribution PASS: isolated tarball ESM/types, Button, Heading, Text, Link, Icon and IconButton public API, no private files",
+    "Distribution PASS: isolated tarball ESM/types, public API of every manifest component, no private files",
   );
 } finally {
   rmSync(consumer, { recursive: true, force: true });

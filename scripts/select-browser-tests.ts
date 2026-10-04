@@ -44,8 +44,11 @@ export function componentImporters(root = "src") {
   const importers: Record<string, string[]> = {};
   for (const entry of readdirSync(root, { withFileTypes: true })) {
     if (!entry.isDirectory()) continue;
-    for (const file of readdirSync(`${root}/${entry.name}`)) {
-      const source = readFileSync(`${root}/${entry.name}/${file}`, "utf8");
+    for (const file of readdirSync(`${root}/${entry.name}`, {
+      withFileTypes: true,
+    })) {
+      if (!file.isFile()) continue;
+      const source = readFileSync(`${root}/${entry.name}/${file.name}`, "utf8");
       for (const [, imported] of source.matchAll(/from "\.\.\/([^/"]+)\//g))
         if (imported && imported !== entry.name)
           importers[imported] = [...(importers[imported] ?? []), entry.name];

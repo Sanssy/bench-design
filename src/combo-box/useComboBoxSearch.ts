@@ -22,7 +22,7 @@ export function useComboBoxSearch(
     ? "Loading results…"
     : hasError
       ? "Could not load results."
-      : `${items.length} ${loadItems && remote.hasMore ? "loaded" : "results"}`;
+      : `${items.length} ${loadItems && remote.hasMore ? "loaded" : items.length === 1 ? "result" : "results"}`;
   return {
     items,
     query,

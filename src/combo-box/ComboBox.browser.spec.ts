@@ -71,7 +71,7 @@ test("ComboBox keyboard selection, search highlight and dismissal", {
   await expect(page.getByRole("option").locator("u")).toHaveText(
     "Document 09999",
   );
-  await expect(page.getByRole("status")).toContainText("1 results");
+  await expect(page.getByRole("status")).toHaveText("1 result");
   await input.press("ArrowDown");
   await input.press("Enter");
   await expect(input).toHaveValue("Document 09999");

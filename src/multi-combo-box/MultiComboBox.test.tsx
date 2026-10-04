@@ -202,7 +202,7 @@ test("keeps selected tags while searching a different local result", async () =>
   expect(screen.getByRole("option").querySelector("u")).toHaveTextContent(
     "Research",
   );
-  expect(screen.getByRole("status")).toHaveTextContent("1 results");
+  expect(screen.getByRole("status")).toHaveTextContent(/^1 result$/);
   await user.keyboard("{Escape}");
   expect(screen.getByRole("row", { name: "Reading" })).toBeInTheDocument();
 });

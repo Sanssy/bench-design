@@ -166,7 +166,7 @@ export function ComboBox({
         </Button>
       </div>
       <Popover
-        className="bd-popover bd-choice-popover"
+        className="bd-popover bd-choice-popover bd-data-popover"
         placement="bottom start"
       >
         <span className="bd-field-description" role="status" aria-live="polite">

@@ -218,6 +218,20 @@
   overflow: auto;
   padding: 0;
 }
+/* Only the list scrolls; status and messages stay in view and the popover
+   never becomes a second, unfocusable scroll region. */
+.bd-data-popover {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+.bd-data-popover > * {
+  flex: none;
+}
+.bd-data-popover > .bd-data-list {
+  flex-shrink: 1;
+  min-block-size: var(--bd-option-height);
+}
 .bd-data-list-virtual {
   block-size: calc(7 * var(--bd-option-height));
 }

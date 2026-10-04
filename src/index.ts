@@ -1,3 +1,5 @@
+export type { AppShellProps } from "./app-shell/AppShell.js";
+export { AppShell } from "./app-shell/AppShell.js";
 export type { BadgeProps } from "./badge/Badge.js";
 export { Badge } from "./badge/Badge.js";
 export type { ButtonProps } from "./button/Button.js";

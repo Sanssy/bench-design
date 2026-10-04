@@ -91,7 +91,7 @@ try {
   );
   writeFileSync(
     join(consumer, "index.tsx"),
-    `import { AppShell, type AppShellProps, SidePanel, type SidePanelProps, Button, type ButtonProps, Heading, type HeadingProps, Text, type TextProps, Link, type LinkProps, Icon, type IconProps, type IconName, IconButton, type IconButtonProps, Stack, type StackProps, Inline, type InlineProps, Grid, type GridProps, Divider, type DividerProps, Value, type ValueProps, MetaList, type MetaListProps, Surface, type SurfaceProps, Card, type CardProps, EmptyState, type EmptyStateProps, Badge, type BadgeProps, Tabs, type TabsProps, Toolbar, type ToolbarProps } from "bench-design";
+    `import { ${(JSON.parse(readFileSync("components.json", "utf8")) as { components: { name: string }[] }).components.map(({ name }) => `${name}, type ${name}Props`).join(", ")}, type IconName } from "bench-design";
 const sidePanelProps: SidePanelProps = { title: "Library", children: "Assets" };
 const appShellProps: AppShellProps = { header: "Workspace", start: { label: "Library", content: <SidePanel {...sidePanelProps} /> }, children: "Document" };
 void [<AppShell {...appShellProps} />, <SidePanel>Notes</SidePanel>];

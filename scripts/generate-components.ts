@@ -1,4 +1,4 @@
-import { readFileSync, writeFileSync } from "node:fs";
+import { existsSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname, resolve } from "node:path";
 import { pathToFileURL } from "node:url";
 import { parse } from "@babel/parser";
@@ -124,40 +124,140 @@ export function generateComponents(entry = "src/index.ts") {
               .join(" | ")
           : text;
       };
-      const props = (
-        api?.type === "ExportNamedDeclaration" &&
-        api.declaration?.type === "TSInterfaceDeclaration"
-          ? api.declaration.body.body
-          : []
-      ).map((prop) => {
-        if (prop.type !== "TSPropertySignature" || !prop.typeAnnotation)
-          throw new Error(`Unsupported prop: ${name}`);
-        const key =
-          prop.key.type === "Identifier"
-            ? prop.key.name
-            : prop.key.type === "StringLiteral"
-              ? prop.key.value
-              : "";
-        const type = prop.typeAnnotation.typeAnnotation;
-        return {
-          name: key,
-          type: resolveAlias(source.slice(type.start ?? 0, type.end ?? 0)),
-          required: !prop.optional,
-          // TSDoc on the prop, so Docs pages and agents see its intent.
-          ...(() => {
-            const doc = prop.leadingComments
-              ?.filter((comment) => comment.type === "CommentBlock")
-              .at(-1)
-              ?.value.replace(/^\*/, "")
-              .split("\n")
-              .map((line) => line.replace(/^\s*\* ?/, "").trim())
-              .filter(Boolean)
-              .join(" ");
-            return doc ? { description: doc } : {};
-          })(),
-          ...(defaults.has(key) ? { default: defaults.get(key) } : {}),
-        };
-      });
+      // Resolve inherited public metadata from relative interface imports.
+      const interfaceProps = (
+        filePath: string,
+        interfaceName: string,
+        visited = new Set<string>(),
+      ): {
+        prop: Extract<
+          Extract<
+            ReturnType<typeof ast>["program"]["body"][number],
+            { type: "TSInterfaceDeclaration" }
+          >["body"]["body"][number],
+          { type: "TSPropertySignature" }
+        >;
+        source: string;
+      }[] => {
+        const key = `${filePath}:${interfaceName}`;
+        if (visited.has(key)) throw new Error(`Cyclic props interface: ${key}`);
+        visited.add(key);
+        const text = readFileSync(filePath, "utf8");
+        const tree = ast(text);
+        const declaration = tree.program.body.find(
+          (item) =>
+            item.type === "ExportNamedDeclaration" &&
+            item.declaration?.type === "TSInterfaceDeclaration" &&
+            item.declaration.id.name === interfaceName,
+        );
+        if (
+          declaration?.type !== "ExportNamedDeclaration" ||
+          declaration.declaration?.type !== "TSInterfaceDeclaration"
+        )
+          throw new Error(`Missing props interface: ${key}`);
+        const inherited = (declaration.declaration.extends ?? []).flatMap(
+          (base) => {
+            if (base.expression.type !== "Identifier")
+              throw new Error(`Unsupported props inheritance: ${key}`);
+            let baseName = base.expression.name;
+            let picked: string[] | undefined;
+            if (baseName === "Pick") {
+              const [target, keys] = base.typeParameters?.params ?? [];
+              if (
+                target?.type !== "TSTypeReference" ||
+                target.typeName.type !== "Identifier" ||
+                !keys
+              )
+                throw new Error(`Unsupported Pick: ${key}`);
+              baseName = target.typeName.name;
+              const members = keys.type === "TSUnionType" ? keys.types : [keys];
+              picked = members.map((member) => {
+                if (
+                  member.type !== "TSLiteralType" ||
+                  member.literal.type !== "StringLiteral"
+                )
+                  throw new Error(`Unsupported Pick keys: ${key}`);
+                return member.literal.value;
+              });
+            }
+            const imported = tree.program.body.find(
+              (item) =>
+                item.type === "ImportDeclaration" &&
+                item.source.value.startsWith(".") &&
+                item.specifiers.some(
+                  (specifier) => specifier.local.name === baseName,
+                ),
+            );
+            let target = filePath;
+            let name = baseName;
+            if (imported?.type === "ImportDeclaration") {
+              const stem = resolve(
+                dirname(filePath),
+                imported.source.value.replace(/\.js$/, ""),
+              );
+              target =
+                [`${stem}.ts`, `${stem}.tsx`].find((candidate) =>
+                  existsSync(candidate),
+                ) ?? stem;
+              const specifier = imported.specifiers.find(
+                (item) => item.local.name === baseName,
+              );
+              if (specifier?.type === "ImportSpecifier")
+                name =
+                  specifier.imported.type === "Identifier"
+                    ? specifier.imported.name
+                    : specifier.imported.value;
+            }
+            const members = interfaceProps(target, name, new Set(visited));
+            return picked
+              ? members.filter(
+                  ({ prop }) =>
+                    prop.key.type === "Identifier" &&
+                    picked.includes(prop.key.name),
+                )
+              : members;
+          },
+        );
+        return [
+          ...inherited,
+          ...declaration.declaration.body.body.map((prop) => {
+            if (prop.type !== "TSPropertySignature")
+              throw new Error(`Unsupported prop: ${key}`);
+            return { prop, source: text };
+          }),
+        ];
+      };
+      const props = (propsName ? interfaceProps(file, propsName) : []).map(
+        ({ prop, source }) => {
+          if (prop.type !== "TSPropertySignature" || !prop.typeAnnotation)
+            throw new Error(`Unsupported prop: ${name}`);
+          const key =
+            prop.key.type === "Identifier"
+              ? prop.key.name
+              : prop.key.type === "StringLiteral"
+                ? prop.key.value
+                : "";
+          const type = prop.typeAnnotation.typeAnnotation;
+          return {
+            name: key,
+            type: resolveAlias(source.slice(type.start ?? 0, type.end ?? 0)),
+            required: !prop.optional,
+            // TSDoc on the prop, so Docs pages and agents see its intent.
+            ...(() => {
+              const doc = prop.leadingComments
+                ?.filter((comment) => comment.type === "CommentBlock")
+                .at(-1)
+                ?.value.replace(/^\*/, "")
+                .split("\n")
+                .map((line) => line.replace(/^\s*\* ?/, "").trim())
+                .filter(Boolean)
+                .join(" ");
+              return doc ? { description: doc } : {};
+            })(),
+            ...(defaults.has(key) ? { default: defaults.get(key) } : {}),
+          };
+        },
+      );
       const storiesSource = readFileSync(
         file.replace(/\.tsx$/, ".stories.tsx"),
         "utf8",

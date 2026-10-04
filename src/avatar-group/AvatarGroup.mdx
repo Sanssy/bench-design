@@ -1,0 +1,24 @@
+import { Meta, Canvas } from '@storybook/addon-docs/blocks';
+import { ManifestProps } from "../../.storybook/ManifestProps";
+import * as Stories from './AvatarGroup.stories';
+
+<Meta of={Stories} />
+
+# AvatarGroup
+
+Import `AvatarGroup` from `bench-design` and load `bench-design/styles.css` once.
+
+## Usage and accessibility
+
+Compose Avatar children and optionally cap the visible avatars with max. The +N indicator exposes the remaining full names to assistive technology. Avoid relying on position to identify a person.
+
+## API
+
+<ManifestProps component="AvatarGroup" />
+
+## Examples
+
+<Canvas of={Stories.Collaborators} />
+<Canvas of={Stories.LimitedCollaborators} />
+
+Use the theme selector to inspect both examples in light and dark themes.

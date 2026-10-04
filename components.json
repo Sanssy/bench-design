@@ -48,6 +48,72 @@
       ]
     },
     {
+      "name": "Avatar",
+      "import": "import { Avatar } from \"bench-design\";",
+      "description": "Present a full accessible name, or hide beside an equivalent visible name.",
+      "props": [
+        {
+          "name": "name",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "src",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "size",
+          "type": "24 | 32 | 40",
+          "required": false,
+          "default": "32"
+        },
+        {
+          "name": "isDecorative",
+          "type": "boolean",
+          "required": false,
+          "default": "false"
+        }
+      ],
+      "stories": [
+        {
+          "name": "Person",
+          "href": "./?path=/story/data-avatar--person"
+        },
+        {
+          "name": "Sizes",
+          "href": "./?path=/story/data-avatar--sizes"
+        }
+      ]
+    },
+    {
+      "name": "AvatarGroup",
+      "import": "import { AvatarGroup } from \"bench-design\";",
+      "description": "Keep overflow names accessible alongside the visible +N indicator.",
+      "props": [
+        {
+          "name": "max",
+          "type": "number",
+          "required": false
+        },
+        {
+          "name": "children",
+          "type": "ReactElement<AvatarProps> | ReactElement<AvatarProps>[]",
+          "required": true
+        }
+      ],
+      "stories": [
+        {
+          "name": "Collaborators",
+          "href": "./?path=/story/data-avatargroup--collaborators"
+        },
+        {
+          "name": "LimitedCollaborators",
+          "href": "./?path=/story/data-avatargroup--limited-collaborators"
+        }
+      ]
+    },
+    {
       "name": "Badge",
       "import": "import { Badge } from \"bench-design\";",
       "description": "Label a count or format with monospaced text, with a meaningful label.",

@@ -195,3 +195,41 @@
     transform: none;
   }
 }
+.bd-avatar {
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  inline-size: var(--bd-space-32);
+  block-size: var(--bd-space-32);
+  border: var(--bd-hair) solid var(--bd-border-strong);
+  border-radius: 50%;
+  overflow: hidden;
+  color: var(--bd-text);
+  background: var(--bd-surface-subtle);
+  font: var(--bd-size-meta) / var(--bd-line-solid) var(--bd-font-mono);
+}
+.bd-avatar[data-size="24"] {
+  inline-size: var(--bd-space-24);
+  block-size: var(--bd-space-24);
+}
+.bd-avatar[data-size="40"] {
+  inline-size: calc(var(--bd-space-32) + var(--bd-space-8));
+  block-size: calc(var(--bd-space-32) + var(--bd-space-8));
+}
+.bd-avatar img {
+  inline-size: 100%;
+  block-size: 100%;
+  object-fit: cover;
+}
+.bd-avatar-group {
+  display: flex;
+  align-items: center;
+  gap: var(--bd-space-4);
+}
+.bd-avatar-group__overflow {
+  min-inline-size: var(--bd-space-32);
+  inline-size: auto;
+  padding-inline: var(--bd-space-4);
+}

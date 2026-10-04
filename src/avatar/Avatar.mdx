@@ -1,0 +1,26 @@
+import { Meta, Canvas } from '@storybook/addon-docs/blocks';
+import { ManifestProps } from "../../.storybook/ManifestProps";
+import * as Stories from './Avatar.stories';
+
+<Meta of={Stories} />
+
+# Avatar
+
+Import `Avatar` from `bench-design` and load `bench-design/styles.css` once.
+
+## Usage and accessibility
+
+The Person example uses an inline portrait illustration and a decorative avatar beside a visible name.
+
+Use a full name for the accessible label. Initials use the first and last name; a failed image falls back to initials. Set isDecorative when an equivalent name is visible beside the avatar. Sizes are 24, 32 and 40 pixels. Avoid initials as the only accessible name.
+
+## API
+
+<ManifestProps component="Avatar" />
+
+## Examples
+
+<Canvas of={Stories.Person} />
+<Canvas of={Stories.Sizes} />
+
+Use the theme selector to inspect both examples in light and dark themes.

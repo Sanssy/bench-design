@@ -1,5 +1,9 @@
 export type { AppShellProps } from "./app-shell/AppShell.js";
 export { AppShell } from "./app-shell/AppShell.js";
+export type { AvatarProps } from "./avatar/Avatar.js";
+export { Avatar } from "./avatar/Avatar.js";
+export type { AvatarGroupProps } from "./avatar-group/AvatarGroup.js";
+export { AvatarGroup } from "./avatar-group/AvatarGroup.js";
 export type { BadgeProps } from "./badge/Badge.js";
 export { Badge } from "./badge/Badge.js";
 export type { ButtonProps } from "./button/Button.js";

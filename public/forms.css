@@ -1,0 +1,69 @@
+/* Field and list primitives are shared by the approved form controls. */
+.bd-field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--bd-space-8);
+  min-inline-size: 0;
+  color: var(--bd-text);
+  font-family: var(--bd-font-ui);
+  font-size: var(--bd-size-ui);
+  line-height: var(--bd-line-reading);
+}
+.bd-field-label {
+  font-size: var(--bd-size-meta);
+  font-weight: var(--bd-weight-semibold);
+}
+.bd-field-optional,
+.bd-field-description {
+  color: var(--bd-text-muted);
+  font-weight: var(--bd-weight-regular);
+  font-size: var(--bd-size-meta);
+}
+.bd-field-control {
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  gap: var(--bd-space-12);
+  block-size: var(--bd-space-48);
+  min-inline-size: 0;
+  inline-size: 100%;
+  padding: var(--bd-space-12) var(--bd-space-16);
+  border: var(--bd-hair) solid var(--bd-border);
+  border-radius: var(--bd-radius);
+  background: var(--bd-surface-raised);
+  color: var(--bd-text);
+  font: inherit;
+}
+.bd-field-control::placeholder,
+.bd-search-input::placeholder,
+.bd-select-trigger [data-placeholder] {
+  color: var(--bd-text-muted);
+}
+.bd-field-control[data-focused],
+.bd-search-control:focus-within {
+  border-color: var(--bd-border-strong);
+}
+.bd-field-control[data-focus-visible],
+.bd-search-control:has(.bd-search-input[data-focus-visible]) {
+  outline: var(--bd-strong) solid var(--bd-focus);
+  outline-offset: var(--bd-space-4);
+}
+.bd-field[data-invalid] .bd-field-control,
+.bd-field-control[data-invalid] {
+  border: var(--bd-stroke) solid var(--bd-danger);
+}
+.bd-field[data-disabled] .bd-field-control,
+.bd-field-control:disabled {
+  background: var(--bd-surface-subtle);
+  color: var(--bd-text-muted);
+}
+.bd-field-error {
+  display: flex;
+  align-items: center;
+  gap: var(--bd-space-4);
+  color: var(--bd-danger);
+  font-size: var(--bd-size-meta);
+}
+.bd-field-error svg {
+  flex-shrink: 0;
+}

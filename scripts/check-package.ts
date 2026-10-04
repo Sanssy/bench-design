@@ -57,6 +57,7 @@ try {
     "surfaces.css",
     "navigation.css",
     "overlays.css",
+    "forms.css",
     "theme-init.js",
   ]) {
     assert(entries.includes(`package/dist/${name}`), `packed ${name} missing`);

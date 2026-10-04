@@ -13,3 +13,8 @@
   --bd-align: stretch;
   align-items: var(--bd-align);
 }
+.bd-divider {
+  margin: 0;
+  border: 0;
+  border-top: var(--bd-hair) solid var(--bd-divider);
+}

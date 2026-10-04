@@ -26,7 +26,11 @@ test("a component edit also selects the components that import it", () => {
   assert(grep.test("Link @component:link"));
   assert(grep.test("Card @component:card"));
   assert(!grep.test("Button @component:button"));
-  assert.deepEqual(componentImporters().text?.sort(), ["link", "stack"]);
+  assert.deepEqual(componentImporters().text?.sort(), [
+    "divider",
+    "link",
+    "stack",
+  ]);
 });
 test("IconButton edits compare visual captures too", () => {
   assert.equal(

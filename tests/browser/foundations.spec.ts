@@ -22,7 +22,7 @@ for (const theme of ["light", "dark"] as const) {
       theme === "light" ? "15.11" : "14.07",
     );
     await expect(page.locator('[data-role="divider"]')).toContainText(
-      theme === "light" ? "#d6d8ce" : "Not ratified",
+      theme === "light" ? "#d6d8ce" : "#303b33",
     );
     await page.goto(
       `/iframe.html?id=foundations-typography--scale&globals=theme:${theme}`,

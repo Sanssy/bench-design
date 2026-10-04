@@ -40,6 +40,8 @@ export type { RadioGroupProps } from "./radio-group/RadioGroup.js";
 export { RadioGroup } from "./radio-group/RadioGroup.js";
 export type { SearchFieldProps } from "./search-field/SearchField.js";
 export { SearchField } from "./search-field/SearchField.js";
+export type { SelectProps } from "./select/Select.js";
+export { Select } from "./select/Select.js";
 export type { SidePanelProps } from "./side-panel/SidePanel.js";
 export { SidePanel } from "./side-panel/SidePanel.js";
 export type { SpaceToken } from "./space-tokens.js";

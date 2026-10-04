@@ -135,6 +135,10 @@
   border-radius: 50%;
   background: var(--bd-on-accent);
 }
+.bd-option svg {
+  visibility: hidden;
+  flex-shrink: 0;
+}
 [data-selected] > .bd-choice-box {
   background: var(--bd-accent);
 }
@@ -155,6 +159,48 @@
 }
 .bd-checkbox[data-disabled],
 .bd-radio[data-disabled] {
+  color: var(--bd-text-muted);
+  cursor: default;
+}
+.bd-select-trigger {
+  justify-content: space-between;
+  cursor: pointer;
+}
+.bd-select-trigger > span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.bd-choice-popover {
+  min-inline-size: var(--trigger-width);
+}
+.bd-option-list {
+  padding: var(--bd-space-4);
+  outline: none;
+  font-family: var(--bd-font-ui);
+  font-size: var(--bd-size-ui);
+}
+.bd-option {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--bd-space-16);
+  padding: var(--bd-space-12) var(--bd-space-16);
+  outline: none;
+  cursor: pointer;
+}
+.bd-option[data-hovered],
+.bd-option[data-focused] {
+  background: var(--bd-surface-subtle);
+}
+.bd-option[data-focus-visible] {
+  outline: var(--bd-stroke) solid var(--bd-focus);
+  outline-offset: calc(-1 * var(--bd-stroke));
+}
+.bd-option[data-selected] svg {
+  visibility: visible;
+}
+.bd-option[data-disabled] {
   color: var(--bd-text-muted);
   cursor: default;
 }

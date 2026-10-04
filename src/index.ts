@@ -6,6 +6,8 @@ export type { ButtonProps } from "./button/Button.js";
 export { Button } from "./button/Button.js";
 export type { CardProps } from "./card/Card.js";
 export { Card } from "./card/Card.js";
+export type { CheckboxProps } from "./checkbox/Checkbox.js";
+export { Checkbox } from "./checkbox/Checkbox.js";
 export type { DialogProps } from "./dialog/Dialog.js";
 export { Dialog } from "./dialog/Dialog.js";
 export type { DividerProps } from "./divider/Divider.js";

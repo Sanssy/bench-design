@@ -1131,6 +1131,113 @@
       ]
     },
     {
+      "name": "NumberField",
+      "import": "import { NumberField } from \"bench-design\";",
+      "description": "Accessible NumberField using React Aria interaction semantics.",
+      "props": [
+        {
+          "name": "label",
+          "type": "string",
+          "required": true,
+          "description": "Visible accessible name of the control."
+        },
+        {
+          "name": "description",
+          "type": "string",
+          "required": false,
+          "description": "Supporting text connected to the control."
+        },
+        {
+          "name": "errorMessage",
+          "type": "string",
+          "required": false,
+          "description": "Message displayed when validation fails; otherwise React Aria supplies it."
+        },
+        {
+          "name": "isRequired",
+          "type": "boolean",
+          "required": false,
+          "description": "Require a value using React Aria native form validation."
+        },
+        {
+          "name": "isDisabled",
+          "type": "boolean",
+          "required": false,
+          "description": "Prevent editing, activation and keyboard focus."
+        },
+        {
+          "name": "isInvalid",
+          "type": "boolean",
+          "required": false,
+          "description": "Display an externally determined validation error."
+        },
+        {
+          "name": "name",
+          "type": "string",
+          "required": false,
+          "description": "Form submission name."
+        },
+        {
+          "name": "value",
+          "type": "number",
+          "required": false,
+          "description": "Controlled value."
+        },
+        {
+          "name": "defaultValue",
+          "type": "number",
+          "required": false,
+          "description": "Initial uncontrolled value."
+        },
+        {
+          "name": "onChange",
+          "type": "(value: number) => void",
+          "required": false,
+          "description": "Called with the edited value."
+        },
+        {
+          "name": "minValue",
+          "type": "number",
+          "required": false,
+          "description": "Lower bound."
+        },
+        {
+          "name": "maxValue",
+          "type": "number",
+          "required": false,
+          "description": "Upper bound."
+        },
+        {
+          "name": "step",
+          "type": "number",
+          "required": false,
+          "description": "Increment size."
+        },
+        {
+          "name": "formatOptions",
+          "type": "Intl.NumberFormatOptions",
+          "required": false,
+          "description": "Locale-aware display format."
+        },
+        {
+          "name": "unit",
+          "type": "string",
+          "required": false,
+          "description": "Optional unit displayed after the input."
+        }
+      ],
+      "stories": [
+        {
+          "name": "Default",
+          "href": "./?path=/story/form-numberfield--default"
+        },
+        {
+          "name": "Review",
+          "href": "./?path=/story/form-numberfield--review"
+        }
+      ]
+    },
+    {
       "name": "Popover",
       "import": "import { Popover } from \"bench-design\";",
       "description": "An anchored dialog without a veil; Escape and outside interaction dismiss it.",
@@ -1486,6 +1593,110 @@
       ]
     },
     {
+      "name": "Slider",
+      "import": "import { Slider } from \"bench-design\";",
+      "description": "Accessible Slider using React Aria interaction semantics.",
+      "props": [
+        {
+          "name": "label",
+          "type": "string",
+          "required": true,
+          "description": "Visible accessible name of the control."
+        },
+        {
+          "name": "description",
+          "type": "string",
+          "required": false,
+          "description": "Supporting text connected to the control."
+        },
+        {
+          "name": "errorMessage",
+          "type": "string",
+          "required": false,
+          "description": "Message displayed when validation fails; otherwise React Aria supplies it."
+        },
+        {
+          "name": "isRequired",
+          "type": "boolean",
+          "required": false,
+          "description": "Require a value using React Aria native form validation."
+        },
+        {
+          "name": "isDisabled",
+          "type": "boolean",
+          "required": false,
+          "description": "Prevent editing, activation and keyboard focus."
+        },
+        {
+          "name": "isInvalid",
+          "type": "boolean",
+          "required": false,
+          "description": "Display an externally determined validation error."
+        },
+        {
+          "name": "name",
+          "type": "string",
+          "required": false,
+          "description": "Form submission name."
+        },
+        {
+          "name": "value",
+          "type": "number",
+          "required": false,
+          "description": "Controlled value."
+        },
+        {
+          "name": "defaultValue",
+          "type": "number",
+          "required": false,
+          "description": "Initial uncontrolled value."
+        },
+        {
+          "name": "onChange",
+          "type": "(value: number) => void",
+          "required": false,
+          "description": "Called with the edited value."
+        },
+        {
+          "name": "minValue",
+          "type": "number",
+          "required": false,
+          "description": "Lower bound.",
+          "default": "0"
+        },
+        {
+          "name": "maxValue",
+          "type": "number",
+          "required": false,
+          "description": "Upper bound.",
+          "default": "100"
+        },
+        {
+          "name": "step",
+          "type": "number",
+          "required": false,
+          "description": "Increment size.",
+          "default": "1"
+        },
+        {
+          "name": "formatOptions",
+          "type": "Intl.NumberFormatOptions",
+          "required": false,
+          "description": "Locale-aware display format."
+        }
+      ],
+      "stories": [
+        {
+          "name": "Default",
+          "href": "./?path=/story/form-slider--default"
+        },
+        {
+          "name": "Review",
+          "href": "./?path=/story/form-slider--review"
+        }
+      ]
+    },
+    {
       "name": "Stack",
       "import": "import { Stack } from \"bench-design\";",
       "description": "Arrange content vertically with spacing tokens.",
@@ -1684,6 +1895,115 @@
         {
           "name": "Mono",
           "href": "./?path=/story/typography-text--mono"
+        }
+      ]
+    },
+    {
+      "name": "TextArea",
+      "import": "import { TextArea } from \"bench-design\";",
+      "description": "React Aria owns editing and validation; measurement only controls geometry.",
+      "props": [
+        {
+          "name": "label",
+          "type": "string",
+          "required": true,
+          "description": "Visible accessible name of the control."
+        },
+        {
+          "name": "description",
+          "type": "string",
+          "required": false,
+          "description": "Supporting text connected to the control."
+        },
+        {
+          "name": "errorMessage",
+          "type": "string",
+          "required": false,
+          "description": "Message displayed when validation fails; otherwise React Aria supplies it."
+        },
+        {
+          "name": "isRequired",
+          "type": "boolean",
+          "required": false,
+          "description": "Require a value using React Aria native form validation."
+        },
+        {
+          "name": "isDisabled",
+          "type": "boolean",
+          "required": false,
+          "description": "Prevent editing, activation and keyboard focus."
+        },
+        {
+          "name": "isInvalid",
+          "type": "boolean",
+          "required": false,
+          "description": "Display an externally determined validation error."
+        },
+        {
+          "name": "name",
+          "type": "string",
+          "required": false,
+          "description": "Form submission name."
+        },
+        {
+          "name": "value",
+          "type": "string",
+          "required": false,
+          "description": "Controlled text."
+        },
+        {
+          "name": "defaultValue",
+          "type": "string",
+          "required": false,
+          "description": "Initial uncontrolled text."
+        },
+        {
+          "name": "onChange",
+          "type": "(value: string) => void",
+          "required": false,
+          "description": "Called with the edited text."
+        },
+        {
+          "name": "placeholder",
+          "type": "string",
+          "required": false,
+          "description": "Short hint, never a replacement for the label."
+        },
+        {
+          "name": "maxLength",
+          "type": "number",
+          "required": false,
+          "description": "Maximum character count; enables the visible counter."
+        },
+        {
+          "name": "rows",
+          "type": "number",
+          "required": false,
+          "description": "Initial number of visible lines.",
+          "default": "3"
+        },
+        {
+          "name": "maxRows",
+          "type": "number",
+          "required": false,
+          "description": "Maximum number of visible lines before scrolling.",
+          "default": "8"
+        },
+        {
+          "name": "validate",
+          "type": "(value: string) => string | null",
+          "required": false,
+          "description": "Return a validation message or null."
+        }
+      ],
+      "stories": [
+        {
+          "name": "Default",
+          "href": "./?path=/story/form-textarea--default"
+        },
+        {
+          "name": "Review",
+          "href": "./?path=/story/form-textarea--review"
         }
       ]
     },

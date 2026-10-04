@@ -1,0 +1,32 @@
+import { Meta, Canvas } from '@storybook/addon-docs/blocks';
+import { ManifestProps } from "../../.storybook/ManifestProps";
+import * as Stories from './NumberField.stories';
+
+<Meta of={Stories} />
+
+# NumberField
+
+Import `NumberField` from `bench-design` and load `bench-design/styles.css` once.
+
+## Usage
+
+Supply bounds and a step when appropriate. The unit is display text; use formatOptions for localized numbers.
+Supply a meaningful label and concise help. Use actionable error messages.
+Do not use color alone to communicate meaning. Choose controlled or uncontrolled
+values for the lifetime of the component. Use the theme selector for light and dark.
+For choice groups and sliders, validation is external via isInvalid and errorMessage;
+isRequired does not introduce a native submit constraint.
+
+## TypeScript API
+
+<ManifestProps component="NumberField" />
+
+## Examples
+
+<Canvas of={Stories.Default} />
+<Canvas of={Stories.Review} />
+
+## Keyboard and ARIA
+
+Type to edit. Up and Down adjust by step. The decrement and increment buttons expose localized accessible names.
+Disabled controls cannot be edited. Help and errors are connected to the control.

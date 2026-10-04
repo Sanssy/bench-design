@@ -1,0 +1,32 @@
+import { Meta, Canvas } from '@storybook/addon-docs/blocks';
+import { ManifestProps } from "../../.storybook/ManifestProps";
+import * as Stories from './Slider.stories';
+
+<Meta of={Stories} />
+
+# Slider
+
+Import `Slider` from `bench-design` and load `bench-design/styles.css` once.
+
+## Usage
+
+Use when approximate selection along a bounded range is appropriate. Defaults are 0 to 100, step 1. The value output uses locale-aware formatting.
+Supply a meaningful label and concise help. Use actionable error messages.
+Do not use color alone to communicate meaning. Choose controlled or uncontrolled
+values for the lifetime of the component. Use the theme selector for light and dark.
+For choice groups and sliders, validation is external via isInvalid and errorMessage;
+isRequired does not introduce a native submit constraint.
+
+## TypeScript API
+
+<ManifestProps component="Slider" />
+
+## Examples
+
+<Canvas of={Stories.Default} />
+<Canvas of={Stories.Review} />
+
+## Keyboard and ARIA
+
+Arrow keys change by step. Home and End reach bounds. The thumb has slider semantics.
+Disabled controls cannot be edited. Help and errors are connected to the control.

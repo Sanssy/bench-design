@@ -1,0 +1,31 @@
+import { Meta, Canvas, ArgTypes, Controls } from '@storybook/addon-docs/blocks';
+import * as Stories from './Card.stories';
+
+<Meta of={Stories} />
+
+# Card
+
+Import `Card` from `bench-design` and load `bench-design/styles.css` once.
+
+## Usage
+
+Use for a static group of related content. Put actions inside the card rather than making the whole card clickable. Choose the semantic element for the document structure. Avoid selected or interactive card behavior; this API does not provide it.
+
+## API
+
+<ArgTypes of={Stories} />
+
+## Try the props
+
+<Controls of={Stories.SavedCollection} />
+
+## Examples
+
+<Canvas of={Stories.SavedCollection} />
+<Canvas of={Stories.CollectionSummary} />
+
+Use the theme selector to inspect light and dark themes.
+
+## Accessibility
+
+This component has no keyboard interaction or added ARIA role. The as prop selects the native element; choose it for the surrounding document structure. Descendant controls keep their own keyboard behavior.

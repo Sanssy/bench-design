@@ -445,6 +445,38 @@
       ]
     },
     {
+      "name": "Notice",
+      "import": "import { Notice } from \"bench-design\";",
+      "description": "Present labeled, noninteractive feedback.",
+      "props": [
+        {
+          "name": "tone",
+          "type": "\"success\" | \"warning\" | \"danger\"",
+          "required": true
+        },
+        {
+          "name": "title",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "children",
+          "type": "ReactNode",
+          "required": true
+        }
+      ],
+      "stories": [
+        {
+          "name": "UploadComplete",
+          "href": "./?path=/story/feedback-notice--upload-complete"
+        },
+        {
+          "name": "StorageMessages",
+          "href": "./?path=/story/feedback-notice--storage-messages"
+        }
+      ]
+    },
+    {
       "name": "Stack",
       "import": "import { Stack } from \"bench-design\";",
       "description": "Arrange content vertically with spacing tokens.",

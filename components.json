@@ -850,6 +850,108 @@
       ]
     },
     {
+      "name": "MultiComboBox",
+      "import": "import { MultiComboBox } from \"bench-design\";",
+      "description": "Multiple searchable choices with removable tags and shared list primitives.",
+      "props": [
+        {
+          "name": "label",
+          "type": "string",
+          "required": true,
+          "description": "Visible accessible name of the control."
+        },
+        {
+          "name": "description",
+          "type": "string",
+          "required": false,
+          "description": "Supporting text connected to the control."
+        },
+        {
+          "name": "errorMessage",
+          "type": "string",
+          "required": false,
+          "description": "Message displayed when validation fails; otherwise React Aria supplies it."
+        },
+        {
+          "name": "isRequired",
+          "type": "boolean",
+          "required": false,
+          "description": "Require a value using React Aria native form validation."
+        },
+        {
+          "name": "isDisabled",
+          "type": "boolean",
+          "required": false,
+          "description": "Prevent editing, activation and keyboard focus."
+        },
+        {
+          "name": "isInvalid",
+          "type": "boolean",
+          "required": false,
+          "description": "Display an externally determined validation error."
+        },
+        {
+          "name": "options",
+          "type": "readonly FieldOption[]",
+          "required": false,
+          "description": "Ordered local choices with unique stable identifiers.",
+          "default": "[]"
+        },
+        {
+          "name": "loadItems",
+          "type": "(request: {\n    query: string;\n    signal: AbortSignal;\n    cursor?: string;\n  }) => Promise<{ items: readonly FieldOption[]; cursor?: string }>",
+          "required": false,
+          "description": "Server search; absent input cursor starts a page, absent output cursor ends it."
+        },
+        {
+          "name": "name",
+          "type": "string",
+          "required": false,
+          "description": "Form submission name."
+        },
+        {
+          "name": "selectedOptions",
+          "type": "readonly FieldOption[]",
+          "required": false,
+          "description": "Controlled selected options, including saved labels; an empty array clears selection."
+        },
+        {
+          "name": "defaultSelectedOptions",
+          "type": "readonly FieldOption[]",
+          "required": false,
+          "description": "Initial uncontrolled selected options, including saved labels."
+        },
+        {
+          "name": "onSelectionChange",
+          "type": "(options: FieldOption[]) => void",
+          "required": false,
+          "description": "Called with every selected option, or an empty array when cleared."
+        },
+        {
+          "name": "placeholder",
+          "type": "string",
+          "required": false,
+          "description": "Hint displayed until the user types or chooses an option."
+        },
+        {
+          "name": "validate",
+          "type": "(keys: string[]) => string | null",
+          "required": false,
+          "description": "Custom validation message; return null for a valid selection."
+        }
+      ],
+      "stories": [
+        {
+          "name": "Default",
+          "href": "./?path=/story/form-multicombobox--default"
+        },
+        {
+          "name": "ServerSearch",
+          "href": "./?path=/story/form-multicombobox--server-search"
+        }
+      ]
+    },
+    {
       "name": "Notice",
       "import": "import { Notice } from \"bench-design\";",
       "description": "Present labeled, noninteractive feedback.",

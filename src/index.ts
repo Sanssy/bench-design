@@ -34,6 +34,8 @@ export type { LinkProps } from "./link/Link.js";
 export { Link } from "./link/Link.js";
 export type { MetaListProps } from "./meta-list/MetaList.js";
 export { MetaList } from "./meta-list/MetaList.js";
+export type { MultiComboBoxProps } from "./multi-combo-box/MultiComboBox.js";
+export { MultiComboBox } from "./multi-combo-box/MultiComboBox.js";
 export type { NoticeProps } from "./notice/Notice.js";
 export { Notice } from "./notice/Notice.js";
 export type { PopoverProps } from "./popover/Popover.js";

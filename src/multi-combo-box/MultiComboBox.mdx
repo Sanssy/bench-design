@@ -1,0 +1,57 @@
+import { Meta, Canvas } from '@storybook/addon-docs/blocks';
+import { ManifestProps } from "../../.storybook/ManifestProps";
+import * as Stories from './MultiComboBox.stories';
+
+<Meta of={Stories} />
+
+# MultiComboBox
+
+Import `MultiComboBox` from `bench-design` and load `bench-design/styles.css` once.
+
+## Usage
+
+Use a visible label for multiple searchable choices. Supply local `options` or
+`loadItems` for server search. Keep product rules and network access in your app.
+Do not use a placeholder as a label or this control for a single choice.
+Optional option descriptions appear on a second line.
+
+Server requests receive `{ query, signal, cursor? }` and return
+`Promise<{ items: readonly FieldOption[]; cursor?: string }>`.
+Search starts 250 ms after the last input; the next input aborts the previous
+signal. Forward it to your network request. No input cursor means the first
+page; no returned cursor means the last page. Use stable unique identifiers
+across pages. The list loads the next cursor as its end approaches.
+The counter shows “N loaded” while more pages exist, then “N results”.
+Local counts are exact. Errors offer “Try again”; empty searches suggest a
+new query. Lists virtualize at 100 options and show at most seven 44 px rows.
+
+## TypeScript API
+
+<ManifestProps component="MultiComboBox" />
+
+## Examples
+
+<Canvas of={Stories.Default} />
+<Canvas of={Stories.ServerSearch} />
+
+Use the theme selector to inspect light and dark, invalid, disabled and optional
+controls. Choose controlled or uncontrolled selection for the control lifetime.
+
+## Keyboard and ARIA
+
+Tab moves through the selected tags and search input. Arrow Left/Right navigates tags;
+Backspace or Delete removes a focused tag. Each tag also has a remove button.
+Tags occupy at most two lines; “+N” counts additional choices. Open the list
+to toggle any selected choice, including a summarized one. “Clear all” in the
+footer removes every choice. Supplying `name` submits one value per key. Type to search; Arrow Down opens and moves through options,
+Enter selects, and Escape dismisses. React Aria owns focus, selection, validation
+and label/help/error connections. Result updates use a polite live region.
+Disabled options cannot be selected. Loading motion stops with reduced motion.
+
+Selection uses `selectedOptions` / `onSelectionChange`, or `defaultSelectedOptions`
+for uncontrolled usage. Keep the selected identifiers stable across searches.
+`validate` receives all selected keys and returns a message or `null`.
+
+Supply full `FieldOption` objects for saved choices, including their labels.
+`onSelectionChange` returns the selected options; form submission sends one
+`id` per choice. Saved choices need no additional server lookup.

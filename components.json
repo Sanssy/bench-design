@@ -1469,6 +1469,96 @@
       ]
     },
     {
+      "name": "SegmentedControl",
+      "import": "import { SegmentedControl } from \"bench-design\";",
+      "description": "Accessible SegmentedControl using React Aria interaction semantics.",
+      "props": [
+        {
+          "name": "label",
+          "type": "string",
+          "required": true,
+          "description": "Visible accessible name of the control."
+        },
+        {
+          "name": "description",
+          "type": "string",
+          "required": false,
+          "description": "Supporting text connected to the control."
+        },
+        {
+          "name": "errorMessage",
+          "type": "string",
+          "required": false,
+          "description": "Message displayed when validation fails; otherwise React Aria supplies it."
+        },
+        {
+          "name": "isRequired",
+          "type": "boolean",
+          "required": false,
+          "description": "Require a value using React Aria native form validation."
+        },
+        {
+          "name": "isDisabled",
+          "type": "boolean",
+          "required": false,
+          "description": "Prevent editing, activation and keyboard focus."
+        },
+        {
+          "name": "isInvalid",
+          "type": "boolean",
+          "required": false,
+          "description": "Display an externally determined validation error."
+        },
+        {
+          "name": "name",
+          "type": "string",
+          "required": false,
+          "description": "Form submission name."
+        },
+        {
+          "name": "options",
+          "type": "readonly {\n    id: string;\n    label: string;\n    icon?: IconName;\n    count?: number;\n    isDisabled?: boolean;\n  }[]",
+          "required": true,
+          "description": "Ordered segments; label is mandatory even when displaying an icon."
+        },
+        {
+          "name": "value",
+          "type": "string",
+          "required": false,
+          "description": "Controlled selection ID."
+        },
+        {
+          "name": "defaultValue",
+          "type": "string",
+          "required": false,
+          "description": "Initial uncontrolled selection ID; defaults to the first enabled option."
+        },
+        {
+          "name": "onChange",
+          "type": "(id: string) => void",
+          "required": false,
+          "description": "Called with the selected ID."
+        },
+        {
+          "name": "hideLabel",
+          "type": "boolean",
+          "required": false,
+          "description": "Visually hide the group label while preserving its accessible name.",
+          "default": "false"
+        }
+      ],
+      "stories": [
+        {
+          "name": "Default",
+          "href": "./?path=/story/form-segmentedcontrol--default"
+        },
+        {
+          "name": "Review",
+          "href": "./?path=/story/form-segmentedcontrol--review"
+        }
+      ]
+    },
+    {
       "name": "Select",
       "import": "import { Select } from \"bench-design\";",
       "description": "A React Aria select using the shared Popover surface and list primitives.",

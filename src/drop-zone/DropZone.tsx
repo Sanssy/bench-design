@@ -33,6 +33,25 @@ function matches(file: File, types: string[]) {
     })
   );
 }
+/** "application/pdf" → "PDF", ".heic" → "HEIC", "image/*" → "Images". */
+function typeLabel(type: string) {
+  if (type.startsWith(".")) return type.slice(1).toUpperCase();
+  const [kind = "", subtype = ""] = type.split("/");
+  if (subtype === "*")
+    return `${kind[0]?.toUpperCase() ?? ""}${kind.slice(1)}s`;
+  return (subtype === "jpeg" ? "jpg" : subtype).toUpperCase();
+}
+/** Decimal units, as file managers show them. */
+function sizeLabel(bytes: number) {
+  const units = ["bytes", "KB", "MB", "GB"];
+  let value = bytes;
+  let unit = 0;
+  while (value >= 1000 && unit < units.length - 1) {
+    value /= 1000;
+    unit += 1;
+  }
+  return `${Number.isInteger(value) ? value : value.toFixed(1)} ${units[unit]}`;
+}
 /** Validate picker and dragged files with the same acceptance policy. */
 export function DropZone({
   label,
@@ -92,19 +111,22 @@ export function DropZone({
       </FileTrigger>
       {(acceptedFileTypes.length > 0 || maxSize !== undefined) && (
         <p className="bd-drop-zone__meta">
-          {acceptedFileTypes.join(", ")}
-          {maxSize !== undefined && ` · ${maxSize} bytes maximum`}
+          {acceptedFileTypes.map(typeLabel).join(", ")}
+          {maxSize !== undefined &&
+            `${acceptedFileTypes.length > 0 ? " · " : ""}${sizeLabel(maxSize)} max.`}
         </p>
       )}
       {rejections.length > 0 && (
-        <div role="alert">
-          {rejections
-            .map(
-              ({ file, reason }) =>
-                `✕ ${file.name}: ${reason === "type" ? "File type not accepted" : "File exceeds maximum size"}`,
-            )
-            .join("\n")}
-        </div>
+        <ul role="alert" className="bd-drop-zone__errors">
+          {rejections.map(({ file, reason }) => (
+            <li key={file.name}>
+              ✕ {file.name}:{" "}
+              {reason === "type"
+                ? `this format is not accepted.${acceptedFileTypes.length > 0 ? ` Use ${acceptedFileTypes.map(typeLabel).join(", ")}.` : ""}`
+                : `this file is larger than ${sizeLabel(maxSize ?? 0)}.`}
+            </li>
+          ))}
+        </ul>
       )}
     </AriaDropZone>
   );

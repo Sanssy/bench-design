@@ -136,6 +136,11 @@
   outline: var(--bd-strong) solid var(--bd-focus);
   outline-offset: var(--bd-space-4);
 }
+.bd-drop-zone__errors {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
 .bd-drop-zone [role="alert"] {
   white-space: pre-line;
   margin-block-start: var(--bd-space-16);

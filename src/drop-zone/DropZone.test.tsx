@@ -1,5 +1,6 @@
 import { readFileSync } from "node:fs";
 import { fireEvent, render, screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { expect, test, vi } from "vitest";
 import { DropZone } from "./DropZone.js";
 
@@ -133,3 +134,30 @@ for (const entry of ["native", "file-fallback", "synthetic-null"] as const)
     }
     expect(drop).not.toHaveBeenCalled();
   });
+
+test("shows formats and size in readable units, one rejection per line", async () => {
+  const { container } = render(
+    <DropZone
+      label="Drop documents"
+      acceptedFileTypes={["application/pdf", "image/png"]}
+      maxSize={20_000_000}
+      allowsMultiple
+      onDrop={() => {}}
+    />,
+  );
+  expect(screen.getByText("PDF, PNG · 20 MB max.")).toBeVisible();
+  const input = container.querySelector("input[type=file]") as HTMLInputElement;
+  await userEvent.upload(
+    input,
+    [
+      new File(["a"], "scan.heic", { type: "image/heic" }),
+      new File(["b"], "notes.txt", { type: "text/plain" }),
+    ],
+    { applyAccept: false },
+  );
+  const items = screen.getAllByRole("listitem");
+  expect(items).toHaveLength(2);
+  expect(items[0]).toHaveTextContent(
+    "✕ scan.heic: this format is not accepted. Use PDF, PNG.",
+  );
+});

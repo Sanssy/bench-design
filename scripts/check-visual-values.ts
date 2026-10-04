@@ -13,6 +13,14 @@ export interface VisualException {
 }
 export const exceptions: VisualException[] = [
   {
+    file: "dist/data.css",
+    selector: "@media",
+    property: "condition",
+    value: "(width<640px)",
+    reason:
+      "Ratified MetaList stacks below 640px; CSS variables cannot define media query thresholds.",
+  },
+  {
     file: "dist/layout.css",
     selector: "@media",
     property: "condition",

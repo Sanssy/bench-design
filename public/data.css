@@ -78,3 +78,36 @@
   font-size: inherit;
   font-weight: inherit;
 }
+.bd-meta-list {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: minmax(0, 1fr);
+  gap: var(--bd-space-32);
+  margin: 0;
+}
+.bd-meta-list dt {
+  margin-bottom: var(--bd-space-4);
+  color: var(--bd-text-muted);
+  font: var(--bd-size-meta) / var(--bd-line-reading) var(--bd-font-mono);
+}
+.bd-meta-list dd {
+  margin: 0;
+  font-family: var(--bd-font-ui);
+  font-size: var(--bd-size-ui);
+  line-height: var(--bd-line-normal);
+}
+@media (width < 640px) {
+  .bd-meta-list {
+    grid-auto-flow: row;
+    grid-template-columns: 1fr;
+    gap: var(--bd-space-8);
+  }
+  .bd-meta-list > div {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: var(--bd-space-8);
+  }
+  .bd-meta-list dt {
+    margin: 0;
+  }
+}

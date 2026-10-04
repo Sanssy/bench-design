@@ -26,3 +26,20 @@
 .bd-empty-state__action {
   margin-top: var(--bd-space-16);
 }
+.bd-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: var(--bd-space-24);
+  min-height: var(--bd-space-24);
+  border: var(--bd-hair) solid var(--bd-divider);
+  padding: var(--bd-space-4);
+  color: var(--bd-text);
+  font: var(--bd-size-meta) / var(--bd-line-normal) var(--bd-font-mono);
+  letter-spacing: var(--bd-tracking-normal);
+}
+.bd-badge[data-variant="solid"] {
+  border-color: var(--bd-text);
+  background: var(--bd-text);
+  color: var(--bd-surface);
+}

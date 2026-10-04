@@ -110,7 +110,22 @@ test("missing Storybook Docs page refuses site generation", () => {
   try {
     writeFileSync(
       join(directory, "index.json"),
-      JSON.stringify({ entries: {} }),
+      JSON.stringify({
+        entries: Object.fromEntries(
+          manifest.components
+            .filter((component) => component.name !== "Button")
+            .map((component) => {
+              const path = new URL(
+                component.stories[0]?.href ?? "",
+                "https://storybook.local",
+              ).searchParams.get("path");
+              return [
+                `${path?.replace(/^\/story\//, "").replace(/--[^/]+$/, "")}--docs`,
+                {},
+              ];
+            }),
+        ),
+      }),
     );
     assert.throws(
       () =>

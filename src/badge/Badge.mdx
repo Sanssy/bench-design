@@ -1,0 +1,31 @@
+import { Meta, Canvas, ArgTypes, Controls } from '@storybook/addon-docs/blocks';
+import * as Stories from './Badge.stories';
+
+<Meta of={Stories} />
+
+# Badge
+
+Import `Badge` from `bench-design` and load `bench-design/styles.css` once.
+
+## Usage
+
+Use for short counts or format labels. Both variants are neutral and noninteractive. Provide any missing context in surrounding text. Avoid long sentences, status meanings, or clickable badges.
+
+## API
+
+<ArgTypes of={Stories} />
+
+## Try the props
+
+<Controls of={Stories.DocumentCount} />
+
+## Examples
+
+<Canvas of={Stories.DocumentCount} />
+<Canvas of={Stories.ExportFormat} />
+
+Use the theme selector to inspect light and dark themes.
+
+## Accessibility
+
+This component has no keyboard interaction or added ARIA role. Its short text is read in the surrounding content; include context for counts and abbreviations.

@@ -1,6 +1,34 @@
 {
   "components": [
     {
+      "name": "Badge",
+      "import": "import { Badge } from \"bench-design\";",
+      "description": "Label a count or format with monospaced text, without status semantics.",
+      "props": [
+        {
+          "name": "children",
+          "type": "string | number",
+          "required": true
+        },
+        {
+          "name": "variant",
+          "type": "\"outline\" | \"solid\"",
+          "required": false,
+          "default": "\"outline\""
+        }
+      ],
+      "stories": [
+        {
+          "name": "DocumentCount",
+          "href": "./?path=/story/feedback-badge--document-count"
+        },
+        {
+          "name": "ExportFormat",
+          "href": "./?path=/story/feedback-badge--export-format"
+        }
+      ]
+    },
+    {
       "name": "Button",
       "import": "import { Button } from \"bench-design\";",
       "description": "A visible-label action with React Aria activation and native button semantics. Defaults to the secondary variant and type=\"button\"; submit and reset are native. Use the DOM ref to restore focus. Explicit accessible names must include the visible label; prefer children alone when no additional context is needed.",

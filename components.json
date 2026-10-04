@@ -676,6 +676,81 @@
       ]
     },
     {
+      "name": "Disclosure",
+      "import": "import { Disclosure } from \"bench-design\";",
+      "description": "React Aria owns trigger keyboard behavior and panel relationships.",
+      "props": [
+        {
+          "name": "title",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "meta",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "isExpanded",
+          "type": "boolean",
+          "required": false
+        },
+        {
+          "name": "defaultExpanded",
+          "type": "boolean",
+          "required": false
+        },
+        {
+          "name": "onExpandedChange",
+          "type": "(isExpanded: boolean) => void",
+          "required": false
+        },
+        {
+          "name": "children",
+          "type": "ReactNode",
+          "required": true
+        }
+      ],
+      "stories": [
+        {
+          "name": "DocumentDetails",
+          "href": "./?path=/story/structure-disclosure--document-details"
+        },
+        {
+          "name": "ExpandedDetails",
+          "href": "./?path=/story/structure-disclosure--expanded-details"
+        }
+      ]
+    },
+    {
+      "name": "DisclosureGroup",
+      "import": "import { DisclosureGroup } from \"bench-design\";",
+      "description": "An accordion with exclusive expansion by default.",
+      "props": [
+        {
+          "name": "allowsMultipleExpanded",
+          "type": "boolean",
+          "required": false,
+          "default": "false"
+        },
+        {
+          "name": "children",
+          "type": "ReactNode",
+          "required": true
+        }
+      ],
+      "stories": [
+        {
+          "name": "DocumentSections",
+          "href": "./?path=/story/structure-disclosuregroup--document-sections"
+        },
+        {
+          "name": "CompareSections",
+          "href": "./?path=/story/structure-disclosuregroup--compare-sections"
+        }
+      ]
+    },
+    {
       "name": "Divider",
       "import": "import { Divider } from \"bench-design\";",
       "description": "A decorative hairline excluded from the accessibility tree.",

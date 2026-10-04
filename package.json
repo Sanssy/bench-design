@@ -30,7 +30,7 @@
     "test:package": "node scripts/check-package.ts",
     "storybook": "pnpm build && storybook dev --port 6006 --host 127.0.0.1 --no-open --disable-telemetry",
     "build-storybook": "pnpm build && storybook build --disable-telemetry && node scripts/build-agent-docs.ts --site=storybook-static",
-    "check": "biome check . && tsc --noEmit && node scripts/check-boundaries.ts && node scripts/check-javascript.ts && node scripts/check-stories.ts && node scripts/check-browser-tags.ts && node --test tests/tooling/browser-budget.test.ts && pnpm tokens:check && pnpm components:check && node scripts/check-icons.ts && pnpm icons:check",
+    "check": "biome check . && tsc --noEmit && node scripts/check-boundaries.ts && node scripts/check-javascript.ts && node scripts/check-stories.ts && node scripts/check-docs.ts && node scripts/check-browser-tags.ts && node --test tests/tooling/browser-budget.test.ts && pnpm tokens:check && pnpm components:check && node scripts/check-icons.ts && pnpm icons:check",
     "test": "vitest run && node --test tests/tooling/*.test.ts",
     "test:browser": "playwright test",
     "verify": "node scripts/verify.ts",

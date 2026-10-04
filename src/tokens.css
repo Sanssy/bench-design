@@ -53,6 +53,12 @@
   --bd-color-light-shadow: #18201c;
   --bd-color-light-selection: #d8ed69;
   --bd-color-light-on-selection: #18201c;
+  --bd-color-light-success: #626f41;
+  --bd-color-light-success-subtle: #eaecd7;
+  --bd-color-light-warning: #935e34;
+  --bd-color-light-warning-subtle: #f7e1c7;
+  --bd-color-light-danger: #943f36;
+  --bd-color-light-danger-subtle: #f3e7de;
   --bd-surface: var(--bd-color-light-surface);
   --bd-surface-raised: var(--bd-color-light-surface-raised);
   --bd-surface-subtle: var(--bd-color-light-surface-subtle);
@@ -68,6 +74,12 @@
   --bd-shadow: var(--bd-color-light-shadow);
   --bd-selection: var(--bd-color-light-selection);
   --bd-on-selection: var(--bd-color-light-on-selection);
+  --bd-success: var(--bd-color-light-success);
+  --bd-success-subtle: var(--bd-color-light-success-subtle);
+  --bd-warning: var(--bd-color-light-warning);
+  --bd-warning-subtle: var(--bd-color-light-warning-subtle);
+  --bd-danger: var(--bd-color-light-danger);
+  --bd-danger-subtle: var(--bd-color-light-danger-subtle);
   --bd-color-dark-surface: #161c19;
   --bd-color-dark-surface-raised: #202923;
   --bd-color-dark-surface-subtle: #252e28;
@@ -83,6 +95,12 @@
   --bd-color-dark-shadow: #080d0a;
   --bd-color-dark-selection: #303b27;
   --bd-color-dark-on-selection: #e9e8e0;
+  --bd-color-dark-success: #91a464;
+  --bd-color-dark-success-subtle: #2a3225;
+  --bd-color-dark-warning: #c38657;
+  --bd-color-dark-warning-subtle: #322d23;
+  --bd-color-dark-danger: #cd7f76;
+  --bd-color-dark-danger-subtle: #332c28;
   color-scheme: light;
 }
 
@@ -103,6 +121,12 @@
     --bd-shadow: var(--bd-color-dark-shadow);
     --bd-selection: var(--bd-color-dark-selection);
     --bd-on-selection: var(--bd-color-dark-on-selection);
+    --bd-success: var(--bd-color-dark-success);
+    --bd-success-subtle: var(--bd-color-dark-success-subtle);
+    --bd-warning: var(--bd-color-dark-warning);
+    --bd-warning-subtle: var(--bd-color-dark-warning-subtle);
+    --bd-danger: var(--bd-color-dark-danger);
+    --bd-danger-subtle: var(--bd-color-dark-danger-subtle);
     color-scheme: dark;
   }
 }
@@ -123,5 +147,11 @@
   --bd-shadow: var(--bd-color-dark-shadow);
   --bd-selection: var(--bd-color-dark-selection);
   --bd-on-selection: var(--bd-color-dark-on-selection);
+  --bd-success: var(--bd-color-dark-success);
+  --bd-success-subtle: var(--bd-color-dark-success-subtle);
+  --bd-warning: var(--bd-color-dark-warning);
+  --bd-warning-subtle: var(--bd-color-dark-warning-subtle);
+  --bd-danger: var(--bd-color-dark-danger);
+  --bd-danger-subtle: var(--bd-color-dark-danger-subtle);
   color-scheme: dark;
 }

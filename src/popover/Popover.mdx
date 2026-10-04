@@ -1,0 +1,29 @@
+import { Meta, Canvas, ArgTypes } from '@storybook/addon-docs/blocks';
+import * as Stories from './Popover.stories';
+
+<Meta of={Stories} />
+
+# Popover
+
+Import `Popover` and `Button` from `bench-design`; load `bench-design/styles.css` once.
+
+## Usage
+
+Use for contextual help anchored to a DS Button. Supply a meaningful accessible label and concise content. Avoid long tasks; use Dialog for them. This is a content dialog, not a menu or tooltip.
+
+## API
+
+<ArgTypes of={Stories} />
+
+Placement defaults to `bottom start`. React Aria adjusts the preferred placement near viewport edges. No veil is rendered.
+
+## Examples
+
+<Canvas of={Stories.ExportHelp} />
+<Canvas of={Stories.SharingHelp} />
+
+Use the theme selector to inspect both examples in light and dark mode.
+
+## Accessibility
+
+The required label names the content dialog. Enter or Space opens it from the trigger; Escape or outside interaction dismisses it. React Aria manages focus and returns it to the trigger. Appearance respects reduced motion. Give meaningful names to any interactive content.

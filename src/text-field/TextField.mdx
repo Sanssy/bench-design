@@ -1,0 +1,35 @@
+import { Meta, Canvas } from '@storybook/addon-docs/blocks';
+import { ManifestProps } from "../../.storybook/ManifestProps";
+import * as Stories from './TextField.stories';
+
+<Meta of={Stories} />
+
+# TextField
+
+Import `TextField` from `bench-design` and load `bench-design/styles.css` once.
+
+## Usage
+
+Supply a visible label. Use description for help and errorMessage for actionable
+validation feedback. Required controls use native React Aria validation; optional
+controls display “(optional)”. Use isInvalid for external validation.
+Keep application rules in the consuming product. Do not use placeholders as labels.
+
+## TypeScript API
+
+<ManifestProps component="TextField" />
+
+## Examples
+
+<Canvas of={Stories.Default} />
+<Canvas of={Stories.Review} />
+
+Use the theme selector to view light and dark examples, including invalid,
+disabled and optional controls. Controlled and uncontrolled values are supported;
+choose one mode for the lifetime of the control.
+
+## Keyboard and ARIA
+
+Tab reaches enabled controls with visible focus. Type to edit the value.
+React Aria connects labels, descriptions and validation messages. Disabled
+controls cannot be edited or activated.

@@ -20,7 +20,7 @@ test("toast expires after five seconds and announces politely", () => {
   act(() => vi.advanceTimersByTime(1));
   expect(screen.queryByText("Saved")).toBeNull();
 });
-test("action toast persists and can be closed", () => {
+test("action toast persists, and its action closes it", () => {
   vi.useFakeTimers();
   const action = vi.fn();
   render(<ToastRegion />);
@@ -33,9 +33,9 @@ test("action toast persists and can be closed", () => {
     }),
   );
   act(() => vi.advanceTimersByTime(60000));
+  expect(screen.getByText("Removed")).toBeVisible();
   fireEvent.click(screen.getByRole("button", { name: "Undo" }));
   expect(action).toHaveBeenCalledOnce();
-  fireEvent.click(screen.getByRole("button", { name: "Close" }));
   expect(screen.queryByText("Removed")).toBeNull();
 });
 test("only three toasts are visible", () => {

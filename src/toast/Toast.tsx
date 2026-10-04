@@ -64,7 +64,7 @@ export function ToastRegion() {
                   ? "check"
                   : toast.content.tone === "danger"
                     ? "x"
-                    : "triangle-alert"
+                    : "info"
               }
               size={20}
             />
@@ -78,7 +78,12 @@ export function ToastRegion() {
             </div>
           </AriaToastContent>
           {toast.content.action && (
-            <Button onPress={toast.content.action.onPress}>
+            <Button
+              onPress={() => {
+                toast.content.action?.onPress();
+                queue.close(toast.key);
+              }}
+            >
               {toast.content.action.label}
             </Button>
           )}

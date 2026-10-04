@@ -1,0 +1,15 @@
+.bd-stack {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  /* Declared here so nested layouts never inherit a parent's settings;
+     each component overrides them inline. */
+  --bd-gap: normal;
+  gap: var(--bd-gap);
+}
+.bd-stack {
+  display: flex;
+  flex-direction: column;
+  --bd-align: stretch;
+  align-items: var(--bd-align);
+}

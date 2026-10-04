@@ -1,0 +1,80 @@
+.bd-value {
+  display: inline-grid;
+  grid-auto-flow: column;
+  grid-auto-columns: auto;
+  align-items: baseline;
+  column-gap: var(--bd-space-8);
+  max-width: 100%;
+  padding: 0 var(--bd-space-8) var(--bd-space-8) 0;
+  border-bottom: var(--bd-stroke) solid var(--bd-border-strong);
+  white-space: nowrap;
+}
+.bd-value__number {
+  min-width: 0;
+  color: var(--bd-text);
+  font-family: var(--bd-font-ui);
+  font-size: var(--bd-size-hero);
+  font-weight: var(--bd-weight-semibold);
+  line-height: var(--bd-line-solid);
+  letter-spacing: var(--bd-tracking-tight);
+  font-variant-numeric: tabular-nums;
+}
+.bd-value__total {
+  display: flex;
+  flex-direction: column;
+  align-self: end;
+  gap: var(--bd-space-8);
+  font: var(--bd-size-heading) / var(--bd-line-solid) var(--bd-font-mono);
+}
+.bd-value__operator {
+  font-size: var(--bd-size-lead);
+}
+.bd-value__sign,
+.bd-value__unit {
+  align-self: start;
+  padding-top: var(--bd-space-8);
+  font: var(--bd-size-heading) / var(--bd-line-solid) var(--bd-font-mono);
+}
+.bd-value[data-mode="indexed"] .bd-value__number {
+  font-family: var(--bd-font-mono);
+  font-size: var(--bd-size-heading);
+  font-weight: var(--bd-weight-regular);
+}
+.bd-value[data-mode="dense"] {
+  column-gap: var(--bd-space-4);
+  padding: 0 var(--bd-space-8) var(--bd-space-4) 0;
+  border-bottom: 0;
+}
+.bd-value[data-mode="dense"] .bd-value__number {
+  font-size: var(--bd-size-heading);
+  font-weight: var(--bd-weight-bold);
+}
+.bd-value[data-mode="dense"] .bd-value__total {
+  display: inline-flex;
+  flex-direction: row;
+  gap: var(--bd-space-4);
+  font-size: var(--bd-size-meta);
+}
+.bd-value[data-mode="plain"] {
+  display: inline-flex;
+  width: auto;
+  align-items: baseline;
+  gap: var(--bd-space-4);
+  padding: 0;
+  border: 0;
+}
+.bd-value[data-mode="plain"] .bd-value__number {
+  font-size: inherit;
+  font-weight: inherit;
+}
+.bd-value[data-mode="plain"] .bd-value__total,
+.bd-value[data-mode="plain"] .bd-value__sign,
+.bd-value[data-mode="plain"] .bd-value__unit {
+  display: inline-flex;
+  flex-direction: row;
+  align-items: baseline;
+  gap: var(--bd-space-4);
+  padding: 0;
+  font-size: inherit;
+  font-weight: inherit;
+}

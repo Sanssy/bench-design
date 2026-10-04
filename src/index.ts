@@ -19,3 +19,5 @@ export type { StackProps } from "./stack/Stack.js";
 export { Stack } from "./stack/Stack.js";
 export type { TextProps } from "./text/Text.js";
 export { Text } from "./text/Text.js";
+export type { ValueProps } from "./value/Value.js";
+export { Value } from "./value/Value.js";

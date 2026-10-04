@@ -1,0 +1,35 @@
+import { Meta, Canvas, ArgTypes, Controls } from '@storybook/addon-docs/blocks';
+import * as Stories from './Value.stories';
+
+<Meta of={Stories} />
+
+# Value
+
+Import `Value` from `bench-design` and load `bench-design/styles.css` once.
+
+## Usage
+
+Use for a score, rank or inline statistic. Plain inherits the surrounding text size and weight. Hero emphasizes a primary value; indexed uses monospaced numerals; dense fits compact summaries.
+
+- Do provide a label when the generated English name lacks context or needs translation.
+- Avoid using this component for editable inputs or entire sentences.
+- Use the Score controls to explore indexed and dense presentation without changing the example's purpose.
+
+## API
+
+<ArgTypes of={Stories} />
+
+## Try the props
+
+<Controls of={Stories.Score} />
+
+## Examples
+
+<Canvas of={Stories.Score} />
+<Canvas of={Stories.InlineStats} />
+
+Use the theme selector to inspect light and dark themes.
+
+## Accessibility
+
+The display is one image with a generated accessible name (for example, “7 of 10” or “+12.5 %”). The label prop overrides that name. Sign, total and unit stay visible; tabular numerals align figures. There is no keyboard interaction.

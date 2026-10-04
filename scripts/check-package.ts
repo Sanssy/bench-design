@@ -53,6 +53,7 @@ try {
     "styles.css",
     "link.css",
     "layout.css",
+    "data.css",
     "theme-init.js",
   ]) {
     assert(entries.includes(`package/dist/${name}`), `packed ${name} missing`);
@@ -87,7 +88,21 @@ try {
   );
   writeFileSync(
     join(consumer, "index.tsx"),
-    `import { Button, type ButtonProps, Heading, type HeadingProps, Text, type TextProps, Link, type LinkProps, Icon, type IconProps, type IconName, IconButton, type IconButtonProps, Stack, type StackProps, Inline, type InlineProps, Grid, type GridProps, Divider, type DividerProps } from "bench-design";
+    `import { Button, type ButtonProps, Heading, type HeadingProps, Text, type TextProps, Link, type LinkProps, Icon, type IconProps, type IconName, IconButton, type IconButtonProps, Stack, type StackProps, Inline, type InlineProps, Grid, type GridProps, Divider, type DividerProps, Value, type ValueProps } from "bench-design";
+const valueProps: ValueProps = { value: 7, total: 10, mode: "hero" };
+const value = <Value {...valueProps} />;
+// @ts-expect-error value is required
+const missingValue = <Value />;
+// @ts-expect-error unsupported mode
+const valueMode = <Value value={1} mode="custom" />;
+// @ts-expect-error unsupported sign
+const valueSign = <Value value={1} sign="*" />;
+// @ts-expect-error className passthrough is excluded
+const valueClass = <Value value={1} className="custom" />;
+// @ts-expect-error style passthrough is excluded
+const valueStyle = <Value value={1} style={{ color: "red" }} />;
+void [value, missingValue, valueMode, valueSign, valueClass, valueStyle];
+
 import { createRef } from "react";
 const stackProps: StackProps = { as: "section", gap: 24, align: "stretch", children: "Details" };
 const inlineProps: InlineProps = { as: "div", gap: 8, align: "center", justify: "space-between", children: "Actions" };
@@ -198,7 +213,7 @@ void [button, missingContent, click, link, variant, type, heading, missingLevel,
   run("node", [
     "--input-type=module",
     "-e",
-    'import assert from "node:assert/strict"; import * as ds from "bench-design"; assert.deepEqual(Object.keys(ds), ["Button", "Divider", "Grid", "Heading", "Icon", "IconButton", "Inline", "Link", "Stack", "Text"]); assert.equal(typeof ds.Button, "function"); assert.equal(typeof ds.Heading, "function"); assert.equal(typeof ds.Text, "function"); assert.equal(typeof ds.Link, "function"); assert.equal(typeof ds.Icon, "function"); assert.equal(typeof ds.IconButton, "function"); for (const name of ["Stack", "Inline", "Grid", "Divider"]) assert.equal(typeof ds[name], "function");',
+    'import assert from "node:assert/strict"; import * as ds from "bench-design"; assert.deepEqual(Object.keys(ds), ["Button", "Divider", "Grid", "Heading", "Icon", "IconButton", "Inline", "Link", "Stack", "Text", "Value"]); assert.equal(typeof ds.Button, "function"); assert.equal(typeof ds.Heading, "function"); assert.equal(typeof ds.Text, "function"); assert.equal(typeof ds.Link, "function"); assert.equal(typeof ds.Icon, "function"); assert.equal(typeof ds.IconButton, "function"); for (const name of ["Stack", "Inline", "Grid", "Divider", "Value"]) assert.equal(typeof ds[name], "function");',
   ]);
   run("node", [
     "--input-type=module",
@@ -211,6 +226,9 @@ void [button, missingContent, click, link, variant, type, heading, missingLevel,
     const styles = readFileSync(new URL(import.meta.resolve("bench-design/styles.css")), "utf8");
     assert(styles.includes('@import "./tokens.css"'));
     assert(styles.includes('@import "./layout.css"'));
+    assert(styles.includes('@import "./data.css"'));
+    const data = readFileSync(new URL("./data.css", import.meta.resolve("bench-design/styles.css")), "utf8");
+    assert(data.includes(".bd-value"));
     const init = await import("bench-design/theme-init.js");
     assert.deepEqual(Object.keys(init), []);
   `,

@@ -18,6 +18,8 @@ export type { DividerProps } from "./divider/Divider.js";
 export { Divider } from "./divider/Divider.js";
 export type { EmptyStateProps } from "./empty-state/EmptyState.js";
 export { EmptyState } from "./empty-state/EmptyState.js";
+export type { FilterBarProps } from "./filter-bar/FilterBar.js";
+export { FilterBar } from "./filter-bar/FilterBar.js";
 export type { FilterChipProps } from "./filter-chip/FilterChip.js";
 export { FilterChip } from "./filter-chip/FilterChip.js";
 export type { FilterMenuProps } from "./filter-menu/FilterMenu.js";

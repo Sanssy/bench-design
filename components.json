@@ -561,6 +561,53 @@
       ]
     },
     {
+      "name": "FilterBar",
+      "import": "import { FilterBar } from \"bench-design\";",
+      "description": "A live result summary and one set of controls, moved into a mobile Dialog.",
+      "props": [
+        {
+          "name": "resultCount",
+          "type": "number",
+          "required": true,
+          "description": "Number of matching results, computed by the application."
+        },
+        {
+          "name": "activeCount",
+          "type": "number",
+          "required": true,
+          "description": "Number of active filters, computed by the application."
+        },
+        {
+          "name": "onClearFilters",
+          "type": "() => void",
+          "required": true,
+          "description": "Request that the application clears all active filters."
+        },
+        {
+          "name": "search",
+          "type": "ReactNode",
+          "required": false,
+          "description": "Optional search control; keep its value in application state."
+        },
+        {
+          "name": "children",
+          "type": "ReactNode",
+          "required": true,
+          "description": "Filter controls; keep their selected values in application state."
+        }
+      ],
+      "stories": [
+        {
+          "name": "Default",
+          "href": "./?path=/story/form-filterbar--default"
+        },
+        {
+          "name": "Mobile",
+          "href": "./?path=/story/form-filterbar--mobile"
+        }
+      ]
+    },
+    {
       "name": "FilterChip",
       "import": "import { FilterChip } from \"bench-design\";",
       "description": "A compact toggle; the application owns filtering and result counts.",

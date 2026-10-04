@@ -1,3 +1,4 @@
+import { Icon } from "../icon/Icon.js";
 import type { FieldProps } from "./FieldProps.js";
 export function ChoiceFieldLabel({
   label,
@@ -30,7 +31,8 @@ export function ChoiceFieldMessages({
       )}
       {isInvalid && errorMessage && (
         <span id={`${id}-error`} className="bd-field-error">
-          {errorMessage}
+          <Icon name="x" size={16} />
+          <span>{errorMessage}</span>
         </span>
       )}
     </>

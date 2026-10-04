@@ -69,3 +69,11 @@ test("submits its value under name", () => {
   const form = container.querySelector("form") as HTMLFormElement;
   expect(new FormData(form).get("zoom")).toBe("40");
 });
+
+test("shows the error with its icon, like the other fields", () => {
+  const { container } = render(
+    <Slider label="Zoom" isInvalid errorMessage="Too far" />,
+  );
+  expect(container.querySelector(".bd-field-error svg")).not.toBeNull();
+  expect(screen.getByRole("slider")).toHaveAccessibleDescription("Too far");
+});

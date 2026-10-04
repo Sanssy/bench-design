@@ -141,5 +141,11 @@ For Keyline icons, copy only the used sharp SVG from the reference version
 `@keyline-icons/react` 1.5.0, keeping its kebab-case name and the MIT licence
 in `src/icon/svg/LICENSE`. No npm dependency is required.
 
-Custom icons drawn in Inkscape follow the same grid; an Inkscape normalizer
-is added separately.
+For a custom icon, draw in Inkscape on the same grid with matching stroke and
+endpoints. Apply transformations before exporting. Save an SVG, then run
+`pnpm icons:normalize path/to/icon.svg`. This rewrites the file only after
+validation: metadata, editor namespaces and identifiers are removed, colors
+become `currentColor`, and shared stroke attributes move to the root. Filled
+and unstroked details are preserved. Unsupported styles or geometry require
+manual editing; transforms must be applied in Inkscape. Add the normalized SVG
+to `src/icon/svg/` and run `pnpm check` and `pnpm test`.

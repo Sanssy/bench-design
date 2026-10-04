@@ -39,7 +39,8 @@
     "tokens:generate": "node scripts/generate-tokens.ts",
     "tokens:check": "node scripts/generate-tokens.ts --check",
     "components:generate": "node scripts/generate-components.ts",
-    "components:check": "node scripts/generate-components.ts --check"
+    "components:check": "node scripts/generate-components.ts --check",
+    "icons:normalize": "node scripts/normalize-icon.ts"
   },
   "peerDependencies": {
     "react": "^19.3.0",

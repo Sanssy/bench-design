@@ -13,23 +13,23 @@ test("AppShell scrolls each wide workspace zone independently", {
     await page.setViewportSize(viewport);
     await page.goto(workspace);
     const main = page.getByRole("main");
-    const start = page
-      .getByRole("complementary", { name: "Library" })
-      .locator(".bd-side-panel");
-    const end = page
-      .getByRole("complementary", { name: "Details" })
-      .locator(".bd-side-panel");
+    // The zones carry the panel width (scrollbar included on platforms with
+    // classic scrollbars); SidePanel fills them.
+    const start = page.getByRole("complementary", { name: "Library" });
+    const end = page.getByRole("complementary", { name: "Details" });
     await expect(end).toBeVisible();
     await page.evaluate(() => document.fonts.ready);
     for (const panel of [start, end]) {
       expect(
         await panel.evaluate((element) => {
-          const probe = document.createElement("span");
-          probe.style.display = "block";
+          // Border-box width, scrollbar gutter included, against the token
+          // resolved outside the scroll container.
+          const probe = document.createElement("div");
           probe.style.width = "var(--bd-panel-width)";
-          element.append(probe);
+          document.body.append(probe);
           const matches =
-            getComputedStyle(element).width === getComputedStyle(probe).width;
+            element.getBoundingClientRect().width ===
+            probe.getBoundingClientRect().width;
           probe.remove();
           return matches;
         }),
@@ -47,9 +47,7 @@ test("AppShell scrolls each wide workspace zone independently", {
       ),
     ).toBe(true);
     // The zones themselves scroll; SidePanel never does.
-    const startZone = page.getByRole("complementary", { name: "Library" });
-    const endZone = page.getByRole("complementary", { name: "Details" });
-    const zones = [main, startZone, endZone];
+    const zones = [main, start, end];
     for (const zone of zones) {
       expect(
         await zone.evaluate(

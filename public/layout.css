@@ -112,7 +112,15 @@
   }
   .bd-app-shell-start,
   .bd-app-shell-end {
+    box-sizing: border-box;
     flex: 0 0 var(--bd-panel-width);
+  }
+  /* The zone owns the panel width and its scrollbar; SidePanel fills what remains
+     (classic scrollbars take space on Linux and Windows). */
+  .bd-app-shell-start > .bd-side-panel,
+  .bd-app-shell-end > .bd-side-panel {
+    inline-size: auto;
+    min-inline-size: 0;
   }
   .bd-app-shell-main {
     flex: 1;

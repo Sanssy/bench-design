@@ -1,0 +1,99 @@
+import { render, screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
+import { expect, test, vi } from "vitest";
+import { SegmentedControl } from "./SegmentedControl.js";
+
+test("SegmentedControl connects its name and help", () => {
+  render(
+    <SegmentedControl
+      label="Setting"
+      description="Choose carefully"
+      isRequired
+      options={[
+        { id: "all", label: "All" },
+        { id: "recent", label: "Recent" },
+      ]}
+    />,
+  );
+  expect(
+    screen.getByRole("radiogroup", { name: "Setting" }),
+  ).toHaveAccessibleDescription("Choose carefully");
+});
+test("SegmentedControl connects an external error", () => {
+  render(
+    <SegmentedControl
+      label="Setting"
+      isRequired
+      isInvalid
+      errorMessage="Review setting"
+      options={[
+        { id: "all", label: "All" },
+        { id: "recent", label: "Recent" },
+      ]}
+    />,
+  );
+  expect(
+    screen.getByRole("radiogroup", { name: "Setting" }),
+  ).toHaveAccessibleDescription("Review setting");
+});
+const options = [
+  { id: "all", label: "All" },
+  { id: "recent", label: "Recent" },
+  { id: "disabled", label: "Disabled", isDisabled: true },
+];
+test("SegmentedControl keeps a mandatory selection and reports keyboard edits", async () => {
+  const user = userEvent.setup();
+  const onChange = vi.fn();
+  render(
+    <SegmentedControl
+      label="View"
+      options={options}
+      onChange={onChange}
+      name="view"
+    />,
+  );
+  const all = screen.getByRole("radio", { name: "All" });
+  expect(all).toHaveAttribute("aria-checked", "true");
+  await user.click(all);
+  expect(all).toHaveAttribute("aria-checked", "true");
+  await user.keyboard("{ArrowRight}");
+  expect(screen.getByRole("radio", { name: "Recent" })).toHaveFocus();
+  await user.keyboard(" ");
+  expect(screen.getByRole("radio", { name: "Recent" })).toHaveAttribute(
+    "aria-checked",
+    "true",
+  );
+  expect(onChange).toHaveBeenLastCalledWith("recent");
+  expect(document.querySelector('input[name="view"]')).toHaveValue("recent");
+  await user.keyboard("{ArrowRight}");
+  expect(screen.getByRole("radio", { name: "Disabled" })).not.toHaveFocus();
+});
+test("SegmentedControl follows controlled IDs and names icon choices", () => {
+  const { rerender } = render(
+    <SegmentedControl
+      label="View"
+      hideLabel
+      options={[
+        { id: "search", label: "Search", icon: "search" },
+        { id: "menu", label: "Menu", icon: "menu" },
+      ]}
+      value="search"
+    />,
+  );
+  rerender(
+    <SegmentedControl
+      label="View"
+      hideLabel
+      options={[
+        { id: "search", label: "Search", icon: "search" },
+        { id: "menu", label: "Menu", icon: "menu" },
+      ]}
+      value="menu"
+    />,
+  );
+  expect(screen.getByRole("radiogroup", { name: "View" })).toBeInTheDocument();
+  expect(screen.getByRole("radio", { name: "Menu" })).toHaveAttribute(
+    "aria-checked",
+    "true",
+  );
+});

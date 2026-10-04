@@ -1,0 +1,32 @@
+import { Meta, Canvas } from '@storybook/addon-docs/blocks';
+import { ManifestProps } from "../../.storybook/ManifestProps";
+import * as Stories from './SegmentedControl.stories';
+
+<Meta of={Stories} />
+
+# SegmentedControl
+
+Import `SegmentedControl` from `bench-design` and load `bench-design/styles.css` once.
+
+## Usage
+
+Use for a compact mandatory single selection. Every option needs a label, including icon options. The first enabled option is selected when defaultValue is omitted. Supply unique IDs and a valid controlled value.
+Supply a meaningful label and concise help. Use actionable error messages.
+Do not use color alone to communicate meaning. Choose controlled or uncontrolled
+values for the lifetime of the component. Use the theme selector for light and dark.
+For choice groups and sliders, validation is external via isInvalid and errorMessage;
+isRequired does not introduce a native submit constraint.
+
+## TypeScript API
+
+<ManifestProps component="SegmentedControl" />
+
+## Examples
+
+<Canvas of={Stories.Default} />
+<Canvas of={Stories.Review} />
+
+## Keyboard and ARIA
+
+Tab enters the group. Arrow keys move focus; Space or Enter selects. Disabled options are skipped.
+Disabled controls cannot be edited. Help and errors are connected to the control.

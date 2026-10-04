@@ -497,6 +497,48 @@
   background: var(--bd-surface-subtle);
   border-color: var(--bd-text-muted);
 }
+.bd-color-preview {
+  flex: none;
+  inline-size: var(--bd-space-24);
+  block-size: var(--bd-space-24);
+  border: var(--bd-hair) solid var(--bd-border-strong);
+  box-sizing: border-box;
+}
+.bd-swatches {
+  display: flex;
+  gap: var(--bd-space-12);
+}
+.bd-swatch-option {
+  position: relative;
+  cursor: pointer;
+}
+.bd-swatch {
+  box-sizing: border-box;
+  inline-size: var(--bd-space-32);
+  block-size: var(--bd-space-32);
+  border: var(--bd-hair) solid var(--bd-border-strong);
+}
+.bd-swatch-option[data-selected]:not([data-focus-visible]) {
+  outline: var(--bd-stroke) solid var(--bd-text);
+  outline-offset: var(--bd-space-4);
+}
+.bd-swatch-check {
+  display: none;
+  position: absolute;
+  inset: 0;
+  align-items: center;
+  justify-content: center;
+  color: var(--bd-on-accent);
+}
+.bd-swatch-option .bd-swatch-check svg {
+  background: var(--bd-accent);
+}
+.bd-swatch-option[data-selected] .bd-swatch-check {
+  display: flex;
+}
+.bd-swatch-option[data-disabled] {
+  cursor: default;
+}
 .bd-field-hidden-label {
   position: absolute;
   inline-size: var(--bd-hair);

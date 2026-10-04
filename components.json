@@ -361,6 +361,172 @@
       ]
     },
     {
+      "name": "ColorField",
+      "import": "import { ColorField } from \"bench-design\";",
+      "description": "Accessible ColorField using React Aria interaction semantics.",
+      "props": [
+        {
+          "name": "label",
+          "type": "string",
+          "required": true,
+          "description": "Visible accessible name of the control."
+        },
+        {
+          "name": "description",
+          "type": "string",
+          "required": false,
+          "description": "Supporting text connected to the control."
+        },
+        {
+          "name": "errorMessage",
+          "type": "string",
+          "required": false,
+          "description": "Message displayed when validation fails; otherwise React Aria supplies it."
+        },
+        {
+          "name": "isRequired",
+          "type": "boolean",
+          "required": false,
+          "description": "Require a value using React Aria native form validation."
+        },
+        {
+          "name": "isDisabled",
+          "type": "boolean",
+          "required": false,
+          "description": "Prevent editing, activation and keyboard focus."
+        },
+        {
+          "name": "isInvalid",
+          "type": "boolean",
+          "required": false,
+          "description": "Display an externally determined validation error."
+        },
+        {
+          "name": "name",
+          "type": "string",
+          "required": false,
+          "description": "Form submission name."
+        },
+        {
+          "name": "value",
+          "type": "string",
+          "required": false,
+          "description": "Controlled HEX color."
+        },
+        {
+          "name": "defaultValue",
+          "type": "string",
+          "required": false,
+          "description": "Initial uncontrolled HEX color."
+        },
+        {
+          "name": "onChange",
+          "type": "(hex: string) => void",
+          "required": false,
+          "description": "Called with the edited HEX color."
+        },
+        {
+          "name": "validate",
+          "type": "(hex: string) => string | null",
+          "required": false,
+          "description": "Return a validation message or null."
+        }
+      ],
+      "stories": [
+        {
+          "name": "Default",
+          "href": "./?path=/story/form-colorfield--default"
+        },
+        {
+          "name": "Review",
+          "href": "./?path=/story/form-colorfield--review"
+        }
+      ]
+    },
+    {
+      "name": "ColorSwatchPicker",
+      "import": "import { ColorSwatchPicker } from \"bench-design\";",
+      "description": "Accessible ColorSwatchPicker using React Aria interaction semantics.",
+      "props": [
+        {
+          "name": "label",
+          "type": "string",
+          "required": true,
+          "description": "Visible accessible name of the control."
+        },
+        {
+          "name": "description",
+          "type": "string",
+          "required": false,
+          "description": "Supporting text connected to the control."
+        },
+        {
+          "name": "errorMessage",
+          "type": "string",
+          "required": false,
+          "description": "Message displayed when validation fails; otherwise React Aria supplies it."
+        },
+        {
+          "name": "isRequired",
+          "type": "boolean",
+          "required": false,
+          "description": "Require a value using React Aria native form validation."
+        },
+        {
+          "name": "isDisabled",
+          "type": "boolean",
+          "required": false,
+          "description": "Prevent editing, activation and keyboard focus."
+        },
+        {
+          "name": "isInvalid",
+          "type": "boolean",
+          "required": false,
+          "description": "Display an externally determined validation error."
+        },
+        {
+          "name": "name",
+          "type": "string",
+          "required": false,
+          "description": "Form submission name."
+        },
+        {
+          "name": "colors",
+          "type": "readonly { id: string; name: string; value: string }[]",
+          "required": true,
+          "description": "Ordered colors with unique IDs and distinct color values."
+        },
+        {
+          "name": "value",
+          "type": "string",
+          "required": false,
+          "description": "Controlled selected color ID."
+        },
+        {
+          "name": "defaultValue",
+          "type": "string",
+          "required": false,
+          "description": "Initial uncontrolled color ID."
+        },
+        {
+          "name": "onChange",
+          "type": "(id: string) => void",
+          "required": false,
+          "description": "Called with the selected color ID."
+        }
+      ],
+      "stories": [
+        {
+          "name": "Default",
+          "href": "./?path=/story/form-colorswatchpicker--default"
+        },
+        {
+          "name": "Review",
+          "href": "./?path=/story/form-colorswatchpicker--review"
+        }
+      ]
+    },
+    {
       "name": "ComboBox",
       "import": "import { ComboBox } from \"bench-design\";",
       "description": "A React Aria combo box with shared field and option primitives.",

@@ -19,7 +19,7 @@ function waitForSearch(signal: AbortSignal) {
 }
 
 // Own shape, so the published declaration does not expose React Aria types.
-interface ComboBoxItems {
+export interface ComboBoxItems {
   items: FieldOption[];
   isLoading: boolean;
   loadingState: string;

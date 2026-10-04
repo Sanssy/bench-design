@@ -2469,6 +2469,38 @@
       ]
     },
     {
+      "name": "ToastRegion",
+      "import": "import { ToastRegion } from \"bench-design\";",
+      "description": "Mount once at the application root. Timers pause on hover and keyboard focus.",
+      "props": [],
+      "stories": [
+        {
+          "name": "SaveDocument",
+          "href": "./?path=/story/feedback-toast--save-document"
+        },
+        {
+          "name": "RecoverDocument",
+          "href": "./?path=/story/feedback-toast--recover-document"
+        }
+      ]
+    },
+    {
+      "name": "useToast",
+      "import": "import { useToast } from \"bench-design\";",
+      "description": "Enqueue feedback for the application's single ToastRegion.",
+      "props": [],
+      "stories": [
+        {
+          "name": "SaveDocument",
+          "href": "./?path=/story/feedback-toast--save-document"
+        },
+        {
+          "name": "RecoverDocument",
+          "href": "./?path=/story/feedback-toast--recover-document"
+        }
+      ]
+    },
+    {
       "name": "Toolbar",
       "import": "import { Toolbar } from \"bench-design\";",
       "description": "A horizontal action group with React Aria arrow-key navigation.",

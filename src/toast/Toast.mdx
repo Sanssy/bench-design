@@ -1,0 +1,41 @@
+import { Meta, Canvas } from '@storybook/addon-docs/blocks';
+import { ManifestProps } from "../../.storybook/ManifestProps";
+import * as Stories from './Toast.stories';
+
+<Meta of={Stories} />
+
+# Toast
+
+Import `ToastRegion, useToast` from `bench-design` and load `bench-design/styles.css` once.
+
+## Usage and accessibility
+
+Mount exactly one ToastRegion at the application root; call useToast().show from an action. Up to three notifications are visible. Feedback expires after 5 seconds by default; action notifications remain until closed regardless of timeout. Hover and focus pause timers. Content is announced politely; the close button is keyboard accessible. Use inline feedback for information that must remain available.
+
+## API
+
+<ManifestProps component="ToastRegion" />
+<ManifestProps component="useToast" />
+
+The command accepts this notification content:
+
+```tsx
+const toast = useToast();
+toast.show({
+  title: "Document saved",
+  description: "Your changes are ready.",
+  tone: "success", // "neutral" (default), "success", or "danger"
+  timeout: 5000, // milliseconds; ignored when action is provided
+  action: { label: "Undo", onPress: () => restoreDocument() },
+});
+```
+
+Render the region once outside page-level navigation. The examples use separate
+iframes so each demonstrates one application region.
+
+## Examples
+
+<Canvas of={Stories.SaveDocument} />
+<Canvas of={Stories.RecoverDocument} />
+
+Use the theme selector to inspect both examples in light and dark themes.

@@ -32,7 +32,7 @@
   justify-content: space-between;
   gap: var(--bd-space-16);
   padding: var(--bd-space-24);
-  border-block-end: var(--bd-hair) solid var(--bd-divider);
+  border-block-end: var(--bd-hair) solid var(--bd-border-strong);
   flex-shrink: 0;
 }
 .bd-dialog-header > div {
@@ -59,7 +59,7 @@
   justify-content: flex-end;
   gap: var(--bd-space-12);
   padding: var(--bd-space-16) var(--bd-space-24);
-  border-block-start: var(--bd-hair) solid var(--bd-divider);
+  border-block-start: var(--bd-hair) solid var(--bd-border-strong);
   flex-shrink: 0;
 }
 .bd-popover {

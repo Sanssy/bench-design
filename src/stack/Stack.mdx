@@ -1,4 +1,5 @@
-import { Meta, Canvas, ArgTypes, Controls } from '@storybook/addon-docs/blocks';
+import { Meta, Canvas, Controls } from '@storybook/addon-docs/blocks';
+import { ManifestProps } from "../../.storybook/ManifestProps";
 import * as Stories from './Stack.stories';
 
 <Meta of={Stories} />
@@ -17,7 +18,7 @@ Use to arrange a sequence vertically. Alignment defaults to stretch.
 
 ## API
 
-<ArgTypes of={Stories} />
+<ManifestProps component="Stack" />
 
 ## Try the props
 

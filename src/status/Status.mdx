@@ -1,4 +1,5 @@
-import { Meta, Canvas, ArgTypes, Controls } from '@storybook/addon-docs/blocks';
+import { Meta, Canvas, Controls } from '@storybook/addon-docs/blocks';
+import { ManifestProps } from "../../.storybook/ManifestProps";
 import * as Stories from './Status.stories';
 
 <Meta of={Stories} />
@@ -13,7 +14,7 @@ Use for success, warning or danger feedback with a meaningful label. Never conve
 
 ## API
 
-<ArgTypes of={Stories} />
+<ManifestProps component="Status" />
 <Controls of={Stories.UploadComplete} />
 
 ## Examples

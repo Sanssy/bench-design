@@ -143,6 +143,18 @@ export function generateComponents(entry = "src/index.ts") {
           name: key,
           type: resolveAlias(source.slice(type.start ?? 0, type.end ?? 0)),
           required: !prop.optional,
+          // TSDoc on the prop, so Docs pages and agents see its intent.
+          ...(() => {
+            const doc = prop.leadingComments
+              ?.filter((comment) => comment.type === "CommentBlock")
+              .at(-1)
+              ?.value.replace(/^\*/, "")
+              .split("\n")
+              .map((line) => line.replace(/^\s*\* ?/, "").trim())
+              .filter(Boolean)
+              .join(" ");
+            return doc ? { description: doc } : {};
+          })(),
           ...(defaults.has(key) ? { default: defaults.get(key) } : {}),
         };
       });

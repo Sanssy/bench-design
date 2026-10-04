@@ -60,6 +60,28 @@ test("manifest expands a sibling string-literal alias into its values", () => {
   }
 });
 
+test("manifest carries prop TSDoc as its description", () => {
+  const root = mkdtempSync(join(tmpdir(), "bd-propdoc-"));
+  const entry = join(root, "index.ts");
+  try {
+    writeFileSync(entry, 'export { Action } from "./Action.js";');
+    writeFileSync(
+      join(root, "Action.tsx"),
+      "/** Fixture. */\nexport interface Props {\n  /** Visible label. */\n  label: string;\n  other?: boolean;\n}\n/** Fixture. */\nexport function Action({ label }: Props) { return null; }",
+    );
+    writeFileSync(
+      join(root, "Action.stories.tsx"),
+      'export default { title: "Form/Action" }; export const Primary = {};',
+    );
+    const [label, other] = JSON.parse(generateComponents(entry)).components[0]
+      .props;
+    assert.equal(label.description, "Visible label.");
+    assert.equal("description" in other, false);
+  } finally {
+    rmSync(root, { recursive: true, force: true });
+  }
+});
+
 test("an export the generator cannot describe fails instead of vanishing", () => {
   const root = mkdtempSync(join(tmpdir(), "bd-unsupported-"));
   const entry = join(root, "index.ts");

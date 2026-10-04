@@ -83,4 +83,17 @@ test("SearchField uses token geometry independently of theme", {
     return height;
   });
   await expect(control).toHaveCSS("height", expected);
+  // Only the SearchField clear button shows: forcing the engine's own button
+  // off must not change the focused, filled field.
+  const input = page.locator(".bd-search-input");
+  await input.fill("Notes");
+  await page.addStyleTag({
+    content: ".bd-search-input { caret-color: transparent; }",
+  });
+  const shown = await control.screenshot();
+  await page.addStyleTag({
+    content:
+      ".bd-search-input::-webkit-search-cancel-button { display: none !important; }",
+  });
+  expect(await control.screenshot()).toEqual(shown);
 });

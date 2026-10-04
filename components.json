@@ -410,6 +410,34 @@
       "description": "A 48px square action; label supplies its accessible name and native tooltip.",
       "props": [
         {
+          "name": "onPress",
+          "type": "() => void",
+          "required": false
+        },
+        {
+          "name": "isDisabled",
+          "type": "boolean",
+          "required": false,
+          "default": "false"
+        },
+        {
+          "name": "variant",
+          "type": "\"primary\" | \"secondary\"",
+          "required": false,
+          "default": "\"secondary\""
+        },
+        {
+          "name": "type",
+          "type": "\"button\" | \"submit\" | \"reset\"",
+          "required": false,
+          "default": "\"button\""
+        },
+        {
+          "name": "ref",
+          "type": "Ref<HTMLButtonElement>",
+          "required": false
+        },
+        {
           "name": "icon",
           "type": "\"arrow-left\" | \"arrow-right\" | \"bin\" | \"calendar\" | \"check\" | \"chevron-down\" | \"download\" | \"info\" | \"menu\" | \"pen\" | \"plus\" | \"search\" | \"settings\" | \"triangle-alert\" | \"user\" | \"x\"",
           "required": true,

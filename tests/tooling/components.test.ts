@@ -162,3 +162,38 @@ test("manifest expands relative numeric spacing aliases", () => {
     rmSync(root, { recursive: true, force: true });
   }
 });
+
+for (const base of ["Shared", 'Pick<Shared, "label">']) {
+  test(`manifest follows inherited metadata: ${base}`, () => {
+    const root = mkdtempSync(join(tmpdir(), "bd-inheritance-"));
+    try {
+      writeFileSync(
+        join(root, "index.ts"),
+        'export { Action } from "./Action.js";',
+      );
+      writeFileSync(
+        join(root, "shared.ts"),
+        "/** Shared. */ export interface Shared { /** Visible name. */ label: string; /** Validation state. */ isInvalid?: boolean; }",
+      );
+      writeFileSync(
+        join(root, "Action.tsx"),
+        `import type { Shared } from "./shared.js"; export interface Props extends ${base} { /** Submitted name. */ name?: string; } export function Action({ label }: Props) { return null; }`,
+      );
+      writeFileSync(
+        join(root, "Action.stories.tsx"),
+        'export default { title: "Form/Action" }; export const Default = {};',
+      );
+      const props = JSON.parse(generateComponents(join(root, "index.ts")))
+        .components[0].props;
+      assert.deepEqual(
+        props.map((prop: { name: string }) => prop.name),
+        base === "Shared" ? ["label", "isInvalid", "name"] : ["label", "name"],
+      );
+      assert.equal(props[0].description, "Visible name.");
+      assert.equal(props[0].type, "string");
+      assert.equal(props[0].required, true);
+    } finally {
+      rmSync(root, { recursive: true, force: true });
+    }
+  });
+}

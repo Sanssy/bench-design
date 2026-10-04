@@ -1,3 +1,5 @@
+export type { BadgeProps } from "./badge/Badge.js";
+export { Badge } from "./badge/Badge.js";
 export type { ButtonProps } from "./button/Button.js";
 export { Button } from "./button/Button.js";
 export type { CardProps } from "./card/Card.js";

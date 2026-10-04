@@ -89,15 +89,20 @@ try {
   );
   writeFileSync(
     join(consumer, "index.tsx"),
-    `import { Button, type ButtonProps, Heading, type HeadingProps, Text, type TextProps, Link, type LinkProps, Icon, type IconProps, type IconName, IconButton, type IconButtonProps, Stack, type StackProps, Inline, type InlineProps, Grid, type GridProps, Divider, type DividerProps, Value, type ValueProps, MetaList, type MetaListProps, Surface, type SurfaceProps, Card, type CardProps } from "bench-design";
+    `import { Button, type ButtonProps, Heading, type HeadingProps, Text, type TextProps, Link, type LinkProps, Icon, type IconProps, type IconName, IconButton, type IconButtonProps, Stack, type StackProps, Inline, type InlineProps, Grid, type GridProps, Divider, type DividerProps, Value, type ValueProps, MetaList, type MetaListProps, Surface, type SurfaceProps, Card, type CardProps, EmptyState, type EmptyStateProps } from "bench-design";
 const surfaceProps: SurfaceProps = { children: "Workspace", tone: "subtle", padding: 24, as: "aside" };
 const cardProps: CardProps = { children: "Collection", as: "section" };
-void [<Surface {...surfaceProps} />, <Card {...cardProps} />];
+const emptyProps: EmptyStateProps = { title: "No documents", children: "Import documents", level: 2, action: <Button>Import</Button> };
+void [<Surface {...surfaceProps} />, <Card {...cardProps} />, <EmptyState {...emptyProps} />];
 // @ts-expect-error padding must use the spacing scale
 const invalidPadding = <Surface padding={13}>Workspace</Surface>;
 // @ts-expect-error interactive cards are excluded
 const interactiveCard = <Card onClick={() => {}}>Collection</Card>;
-void [invalidPadding, interactiveCard];
+// @ts-expect-error title is required
+const missingTitle = <EmptyState>Import documents</EmptyState>;
+// @ts-expect-error the description is plain text
+const blockDescription = <EmptyState title="No documents"><ul><li>Import</li></ul></EmptyState>;
+void [invalidPadding, interactiveCard, missingTitle, blockDescription];
 const valueProps: ValueProps = { value: 7, total: 10, mode: "hero" };
 const value = <Value {...valueProps} />;
 const metaProps: MetaListProps = { items: [{ term: "Source", details: "Archive" }], label: "Source details" };
@@ -232,7 +237,7 @@ void [button, missingContent, click, link, variant, type, heading, missingLevel,
   run("node", [
     "--input-type=module",
     "-e",
-    'import assert from "node:assert/strict"; import * as ds from "bench-design"; assert.deepEqual(Object.keys(ds), ["Button", "Card", "Divider", "Grid", "Heading", "Icon", "IconButton", "Inline", "Link", "MetaList", "Stack", "Surface", "Text", "Value"]); assert.equal(typeof ds.Button, "function"); assert.equal(typeof ds.Heading, "function"); assert.equal(typeof ds.Text, "function"); assert.equal(typeof ds.Link, "function"); assert.equal(typeof ds.Icon, "function"); assert.equal(typeof ds.IconButton, "function"); for (const name of ["Stack", "Inline", "Grid", "Divider", "Value", "MetaList", "Surface", "Card"]) assert.equal(typeof ds[name], "function");',
+    'import assert from "node:assert/strict"; import * as ds from "bench-design"; assert.deepEqual(Object.keys(ds), ["Button", "Card", "Divider", "EmptyState", "Grid", "Heading", "Icon", "IconButton", "Inline", "Link", "MetaList", "Stack", "Surface", "Text", "Value"]); assert.equal(typeof ds.Button, "function"); assert.equal(typeof ds.Heading, "function"); assert.equal(typeof ds.Text, "function"); assert.equal(typeof ds.Link, "function"); assert.equal(typeof ds.Icon, "function"); assert.equal(typeof ds.IconButton, "function"); for (const name of ["Stack", "Inline", "Grid", "Divider", "Value", "MetaList", "Surface", "Card", "EmptyState"]) assert.equal(typeof ds[name], "function");',
   ]);
   run("node", [
     "--input-type=module",
@@ -248,7 +253,7 @@ void [button, missingContent, click, link, variant, type, heading, missingLevel,
     assert(styles.includes('@import "./data.css"'));
     assert(styles.includes('@import "./surfaces.css"'));
     const surfaces = readFileSync(new URL("./surfaces.css", import.meta.resolve("bench-design/styles.css")), "utf8");
-    for (const selector of [".bd-surface", ".bd-card"]) assert(surfaces.includes(selector));
+    for (const selector of [".bd-surface", ".bd-card", ".bd-empty-state"]) assert(surfaces.includes(selector));
     const data = readFileSync(new URL("./data.css", import.meta.resolve("bench-design/styles.css")), "utf8");
     assert(data.includes(".bd-value"));
     assert(data.includes(".bd-meta-list"));

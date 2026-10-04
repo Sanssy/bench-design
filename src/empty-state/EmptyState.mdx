@@ -1,0 +1,31 @@
+import { Meta, Canvas, ArgTypes, Controls } from '@storybook/addon-docs/blocks';
+import * as Stories from './EmptyState.stories';
+
+<Meta of={Stories} />
+
+# EmptyState
+
+Import `EmptyState` from `bench-design` and load `bench-design/styles.css` once.
+
+## Usage
+
+Use to explain an empty collection and a useful next step. Supply an action only when one is available. Choose the heading level for the surrounding document. Avoid using an empty state for errors or loading.
+
+## API
+
+<ArgTypes of={Stories} />
+
+## Try the props
+
+<Controls of={Stories.EmptyLibrary} />
+
+## Examples
+
+<Canvas of={Stories.EmptyLibrary} />
+<Canvas of={Stories.NoResults} />
+
+Use the theme selector to inspect light and dark themes.
+
+## Accessibility
+
+The title is a native heading (level 3 by default). The description uses muted text. Supplied controls own their accessible names and keyboard behavior.

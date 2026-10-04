@@ -28,6 +28,13 @@ test("a component edit also selects the components that import it", () => {
   assert(!grep.test("Button @component:button"));
   assert.deepEqual(componentImporters().text, ["link"]);
 });
+test("IconButton edits compare visual captures too", () => {
+  assert.equal(
+    selectBrowserTests(["src/icon-button/IconButton.tsx"]).visual,
+    true,
+  );
+  assert.equal(selectBrowserTests(["src/link/Link.tsx"]).visual, false);
+});
 test("browser file edits select that file and union with component edits", () => {
   const plan = selectBrowserTests([
     "tests/browser/fonts.spec.ts",

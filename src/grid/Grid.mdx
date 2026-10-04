@@ -1,0 +1,36 @@
+import { Meta, Canvas, ArgTypes, Controls } from '@storybook/addon-docs/blocks';
+import * as Stories from './Grid.stories';
+
+<Meta of={Stories} />
+
+# Grid
+
+Import `Grid` from `bench-design` and load `bench-design/styles.css` once.
+
+## Usage
+
+Use for equal-width collections with two, three or four columns. Below 640px, the collection uses one column.
+
+- Do choose spacing from the approved token scale; omitting gap adds no spacing.
+- Avoid visual overrides or using layout to change reading order.
+- For ul/ol, supply li children; section content should have an appropriate heading.
+
+## API
+
+<ArgTypes of={Stories} />
+
+## Try the props
+
+<Controls of={Stories.Collection} />
+
+## Examples
+
+<Canvas of={Stories.Collection} />
+<Canvas of={Stories.Gallery} />
+
+Use the theme selector to inspect light and dark themes.
+
+## Accessibility
+
+Native document order is preserved. Layout has no keyboard interaction.
+The as prop supports div, section, ul and ol. Provide valid children for the chosen element.

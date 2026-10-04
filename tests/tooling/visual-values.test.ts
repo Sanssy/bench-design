@@ -126,3 +126,14 @@ test("CLI rejects empty selection explicitly without PASS", (t) => {
   assert.match(result.stderr, /No distributed CSS to check; run build first/);
   assert.doesNotMatch(result.stdout, /PASS/);
 });
+
+test("layout breakpoint exception is exact and required", () => {
+  const css = "@media (width < 640px) { .bd-grid { display: grid; } }";
+  assert.deepEqual(visualViolations(css, "dist/layout.css"), []);
+  assert.equal(visualViolations(css, "dist/layout.css", []).length, 1);
+  assert.equal(
+    visualViolations(css.replace("640", "641"), "dist/layout.css").length,
+    1,
+  );
+  assert.equal(visualViolations(css, "dist/other.css").length, 1);
+});

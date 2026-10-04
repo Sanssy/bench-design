@@ -90,6 +90,44 @@
       ]
     },
     {
+      "name": "Grid",
+      "import": "import { Grid } from \"bench-design\";",
+      "description": "Arrange content in equal columns, collapsing below 640px.",
+      "props": [
+        {
+          "name": "children",
+          "type": "ReactNode",
+          "required": true
+        },
+        {
+          "name": "gap",
+          "type": "4 | 8 | 12 | 16 | 24 | 32 | 48 | 64 | 96",
+          "required": false
+        },
+        {
+          "name": "as",
+          "type": "\"div\" | \"section\" | \"ul\" | \"ol\"",
+          "required": false,
+          "default": "\"div\""
+        },
+        {
+          "name": "columns",
+          "type": "2 | 3 | 4",
+          "required": true
+        }
+      ],
+      "stories": [
+        {
+          "name": "Collection",
+          "href": "./?path=/story/layout-grid--collection"
+        },
+        {
+          "name": "Gallery",
+          "href": "./?path=/story/layout-grid--gallery"
+        }
+      ]
+    },
+    {
       "name": "Heading",
       "import": "import { Heading } from \"bench-design\";",
       "description": "A native heading. Choose level for document structure and size for emphasis.",

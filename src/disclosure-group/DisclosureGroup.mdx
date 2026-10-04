@@ -1,0 +1,24 @@
+import { Meta, Canvas } from '@storybook/addon-docs/blocks';
+import { ManifestProps } from "../../.storybook/ManifestProps";
+import * as Stories from './DisclosureGroup.stories';
+
+<Meta of={Stories} />
+
+# DisclosureGroup
+
+Import `DisclosureGroup` from `bench-design` and load `bench-design/styles.css` once.
+
+## Usage and accessibility
+
+Group related Disclosure children. Expansion is exclusive by default; enable allowsMultipleExpanded when readers need to compare sections. Keyboard behavior belongs to each disclosure trigger.
+
+## API
+
+<ManifestProps component="DisclosureGroup" />
+
+## Examples
+
+<Canvas of={Stories.DocumentSections} />
+<Canvas of={Stories.CompareSections} />
+
+Use the theme selector to inspect both examples in light and dark themes.

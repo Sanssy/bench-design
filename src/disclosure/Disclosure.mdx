@@ -1,0 +1,24 @@
+import { Meta, Canvas } from '@storybook/addon-docs/blocks';
+import { ManifestProps } from "../../.storybook/ManifestProps";
+import * as Stories from './Disclosure.stories';
+
+<Meta of={Stories} />
+
+# Disclosure
+
+Import `Disclosure` from `bench-design` and load `bench-design/styles.css` once.
+
+## Usage and accessibility
+
+Use for optional detail below an explicit label. Enter or Space toggles expansion; React Aria links the trigger and panel. Choose either controlled state or defaultExpanded. Reduced motion keeps the chevron stationary. Do not hide required workflow steps.
+
+## API
+
+<ManifestProps component="Disclosure" />
+
+## Examples
+
+<Canvas of={Stories.DocumentDetails} />
+<Canvas of={Stories.ExpandedDetails} />
+
+Use the theme selector to inspect both examples in light and dark themes.

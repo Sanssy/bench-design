@@ -1,0 +1,30 @@
+import { Meta, Canvas, Controls } from '@storybook/addon-docs/blocks';
+import { ManifestProps } from '../../.storybook/ManifestProps';
+import * as Stories from './ActionCard.stories';
+
+<Meta of={Stories} />
+
+# ActionCard
+
+Import `ActionCard` from `bench-design` and load `bench-design/styles.css` once.
+
+## Usage
+
+Use one whole-card target outside collections. Supply either `href` for navigation or `onPress` for an action. In a GridList, let the collection item own interaction instead. Use Card for content containing multiple controls.
+Never put interactive or focusable elements in media or trailingIcon. Use presentational inline content (such as an image or Icon); avoid block elements inside the button. Keep media sized to fit narrow screens. The trailing icon is decorative; undefined uses an arrow for links, null hides it.
+
+## API
+
+<ManifestProps component="ActionCard" />
+<Controls of={Stories.Archive} />
+
+## Examples
+
+<Canvas of={Stories.Archive} />
+<Canvas of={Stories.CreateNote} />
+<Canvas of={Stories.Unavailable} />
+Use the theme selector for light and dark themes.
+
+## Accessibility
+
+The title supplies the accessible name; description is linked with aria-describedby. Media and eyebrow do not change the name. React Aria owns keyboard and pointer interaction: Enter follows links, Enter and Space activate actions. Disabled actions cannot activate or receive tab focus. Hover and visible focus add offset elevation without moving the card. Action buttons do not submit forms.

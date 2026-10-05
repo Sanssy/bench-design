@@ -15,6 +15,10 @@ validation feedback. Required controls use native React Aria validation; optiona
 controls display “(optional)”. Use isInvalid for external validation.
 Keep application rules in the consuming product. Do not use placeholders as labels.
 
+Use `variant="cards"` for prominent choices. Optional `FieldOption.detail` is
+shown below the label and included in its accessible name in both variants.
+Cards use one column below 640px; selection remains exclusive.
+
 ## TypeScript API
 
 <ManifestProps component="RadioGroup" />
@@ -23,6 +27,8 @@ Keep application rules in the consuming product. Do not use placeholders as labe
 
 <Canvas of={Stories.Default} />
 <Canvas of={Stories.Review} />
+<Canvas of={Stories.Cards} />
+<Canvas of={Stories.CardsReview} />
 
 Use the theme selector to view light and dark examples, including invalid,
 disabled and optional controls. Controlled and uncontrolled values are supported;

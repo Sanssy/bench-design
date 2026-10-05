@@ -1,0 +1,32 @@
+import { Meta, Canvas, Controls } from '@storybook/addon-docs/blocks';
+import { ManifestProps } from "../../.storybook/ManifestProps";
+import * as Stories from './CategoryLabel.stories';
+
+<Meta of={Stories} />
+
+# CategoryLabel
+
+Import `CategoryLabel` from `bench-design` and load `bench-design/styles.css` once.
+
+## Usage
+
+Use a short visible category label. The consuming product assigns meaning to each hue.
+Category colors are graphical markers, not action colors or semantic statuses.
+Never communicate meaning through color alone or use these hues for small text.
+
+## API
+
+<ManifestProps component="CategoryLabel" />
+<Controls of={Stories.Research} />
+
+## Examples
+
+<Canvas of={Stories.Research} />
+<Canvas of={Stories.Categories} />
+
+Use the theme selector to inspect light and dark themes.
+
+## Accessibility
+
+The square is decorative and hidden from assistive technology. The label remains
+readable in standard text color. This noninteractive component has no keyboard behavior.

@@ -90,3 +90,65 @@ test("RadioGroup uses token geometry independently of theme", {
   await expect(control).toHaveCSS("height", expected);
   await expect(control).toHaveCSS("width", expected);
 });
+
+for (const theme of ["light", "dark"]) {
+  test(`Radio cards selection, focus and responsive geometry in ${theme}`, {
+    tag: ["@component:radio-group", `@theme:${theme}`],
+  }, async ({ page }) => {
+    await page.setViewportSize({ width: 1000, height: 800 });
+    await page.goto(
+      `/iframe.html?id=form-radiogroup--cards&viewMode=story&globals=a11y.manual:!true;theme:${theme}`,
+    );
+    await expect(page.locator("html")).toHaveAttribute("data-theme", theme);
+    const yes = page.getByRole("radio", { name: "Yes 42 %" });
+    const no = page.getByRole("radio", { name: "No 58 %" });
+    await expect(yes).toBeChecked();
+    const tile = page.locator(".bd-radio").first();
+    await expect(tile).toHaveCSS("min-height", "72px");
+    await expect(tile.locator(".bd-radio-label")).toHaveCSS(
+      "font-size",
+      "18px",
+    );
+    await expect(tile).toHaveCSS("border-top-width", "2px");
+    const expected = await page.evaluate(() => {
+      const probe = document.createElement("span");
+      probe.style.cssText =
+        "background:var(--bd-accent);color:var(--bd-on-accent);outline:var(--bd-strong) solid var(--bd-focus);box-shadow:var(--bd-stroke) var(--bd-stroke) 0 var(--bd-shadow)";
+      document.body.append(probe);
+      const css = getComputedStyle(probe);
+      const result = {
+        background: css.backgroundColor,
+        text: css.color,
+        focus: css.outlineColor,
+        shadow: css.boxShadow,
+      };
+      probe.remove();
+      return result;
+    });
+    await expect(tile).toHaveCSS("background-color", expected.background);
+    await expect(tile).toHaveCSS("color", expected.text);
+    await expect(tile).toHaveCSS("box-shadow", expected.shadow);
+    await page.keyboard.press("Tab");
+    await expect(yes).toBeFocused();
+    await expect(tile).toHaveCSS("outline-width", "4px");
+    await expect(tile).toHaveCSS("outline-color", expected.focus);
+    await page.keyboard.press("ArrowDown");
+    await expect(no).toBeChecked();
+    await expect(yes).not.toBeChecked();
+    await page.keyboard.press("ArrowDown");
+    await expect(yes).toBeChecked();
+    await expect(
+      page.getByRole("radio", { name: "Later Unavailable" }),
+    ).toBeDisabled();
+    await page.setViewportSize({ width: 390, height: 800 });
+    const boxes = await page.locator(".bd-radio").evaluateAll((elements) =>
+      elements.map((e) => {
+        const r = e.getBoundingClientRect();
+        return { x: r.x, y: r.y, width: r.width };
+      }),
+    );
+    expect(boxes[1]?.x).toBe(boxes[0]?.x);
+    expect(boxes[1]?.width).toBe(boxes[0]?.width);
+    expect(boxes[1]?.y).toBeGreaterThan(boxes[0]?.y ?? 0);
+  });
+}

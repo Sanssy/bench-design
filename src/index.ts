@@ -10,6 +10,8 @@ export type { ButtonProps } from "./button/Button.js";
 export { Button } from "./button/Button.js";
 export type { CardProps } from "./card/Card.js";
 export { Card } from "./card/Card.js";
+export type { CategoryLabelProps } from "./category-label/CategoryLabel.js";
+export { CategoryLabel } from "./category-label/CategoryLabel.js";
 export type { CheckboxProps } from "./checkbox/Checkbox.js";
 export { Checkbox } from "./checkbox/Checkbox.js";
 export type { CheckboxGroupProps } from "./checkbox-group/CheckboxGroup.js";

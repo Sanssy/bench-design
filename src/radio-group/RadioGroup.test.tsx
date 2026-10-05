@@ -125,3 +125,29 @@ test("RadioGroup displays custom selection validation", async () => {
     screen.getByRole("radiogroup", { name: "Collection" }),
   ).toHaveAccessibleDescription("Choose another value");
 });
+
+test.each(["list", "cards"] as const)(
+  "RadioGroup %s includes detail in the name and preserves exclusive selection",
+  async (variant) => {
+    const user = userEvent.setup();
+    render(
+      <RadioGroup
+        label="Choice"
+        variant={variant}
+        defaultValue="yes"
+        options={[
+          { id: "yes", label: "Yes", detail: "42 %" },
+          { id: "no", label: "No", detail: "58 %" },
+          { id: "later", label: "Later", isDisabled: true },
+        ]}
+      />,
+    );
+    const yes = screen.getByRole("radio", { name: "Yes 42 %" });
+    const no = screen.getByRole("radio", { name: "No 58 %" });
+    expect(yes).toBeChecked();
+    await user.click(no);
+    expect(no).toBeChecked();
+    expect(yes).not.toBeChecked();
+    expect(screen.getByRole("radio", { name: "Later" })).toBeDisabled();
+  },
+);

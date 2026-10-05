@@ -13,6 +13,13 @@ export interface VisualException {
 }
 export const exceptions: VisualException[] = [
   {
+    file: "dist/forms.css",
+    selector: "@media",
+    property: "condition",
+    value: "(width<640px)",
+    reason: "Ratified radio cards use one column below 640px.",
+  },
+  {
     file: "dist/layout.css",
     selector: "@media",
     property: "condition",

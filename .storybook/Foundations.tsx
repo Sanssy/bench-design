@@ -46,7 +46,7 @@ export function Palette({ theme }: { theme: string }) {
   return (
     <Foundation
       title="Colors"
-      intro="Paper, ink and lemon form our palette. Explore semantic roles and their contrast in the active theme."
+      intro="Paper, ink and lemon form our palette. Explore semantic roles and their contrast in the active theme. Category hues are graphical markers accompanied by text labels, never color-only meaning or action colors."
     >
       {groups.map((title) => (
         <section key={title}>
@@ -74,14 +74,15 @@ export function Palette({ theme }: { theme: string }) {
                   "accent",
                   "veil",
                 ].includes(role);
-                const graphical = [
-                  "border",
-                  "border-strong",
-                  "focus",
-                  "success",
-                  "warning",
-                  "danger",
-                ].includes(role);
+                const graphical =
+                  [
+                    "border",
+                    "border-strong",
+                    "focus",
+                    "success",
+                    "warning",
+                    "danger",
+                  ].includes(role) || role.startsWith("category-");
                 const badge = decorative
                   ? "Decorative"
                   : ratio === undefined

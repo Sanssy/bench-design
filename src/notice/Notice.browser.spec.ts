@@ -4,7 +4,7 @@ for (const theme of ["light", "dark"] as const) {
   test(`Notice semantic colors ${theme}`, {
     tag: ["@component:notice", `@theme:${theme}`],
   }, async ({ page }) => {
-    for (const tone of ["success", "warning", "danger"] as const) {
+    for (const tone of ["neutral", "success", "warning", "danger"] as const) {
       await page.goto(
         `/iframe.html?id=feedback-notice--upload-complete&args=tone:${tone}&viewMode=story&globals=a11y.manual:!true;theme:${theme}`,
       );
@@ -15,11 +15,32 @@ for (const theme of ["light", "dark"] as const) {
         const actual = getComputedStyle(element);
         const probe = document.createElement("span");
         probe.style.color = "var(--bd-text)";
-        probe.style.backgroundColor = `var(--bd-${tone}-subtle)`;
-        probe.style.borderLeft = `var(--bd-strong) solid var(--bd-${tone})`;
+        probe.style.backgroundColor =
+          tone === "neutral"
+            ? "var(--bd-surface-subtle)"
+            : `var(--bd-${tone}-subtle)`;
+        probe.style.borderLeft = `var(--bd-strong) solid var(--bd-${tone === "neutral" ? "border" : tone})`;
         element.append(probe);
         const expected = getComputedStyle(probe);
+
+        const luminance = (color: string) =>
+          (
+            color
+              .match(/[\d.]+/g)
+              ?.slice(0, 3)
+              .map(Number) ?? []
+          ).reduce((sum, channel, i) => {
+            const c = channel / 255;
+            return (
+              sum +
+              ([0.2126, 0.7152, 0.0722][i] ?? 0) *
+                (c <= 0.04045 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4)
+            );
+          }, 0);
+        const a = luminance(actual.color),
+          b = luminance(actual.backgroundColor);
         const result = {
+          contrast: (Math.max(a, b) + 0.05) / (Math.min(a, b) + 0.05),
           text: actual.color,
           expectedText: expected.color,
           icon: getComputedStyle(element.querySelector("svg") ?? element).color,
@@ -33,6 +54,7 @@ for (const theme of ["light", "dark"] as const) {
         probe.remove();
         return result;
       }, tone);
+      expect(result.contrast).toBeGreaterThanOrEqual(4.5);
       expect(result.text).toBe(result.expectedText);
       expect(result.icon).toBe(result.expectedTone);
       expect(result.background).toBe(result.expectedBackground);

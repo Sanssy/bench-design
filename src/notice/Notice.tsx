@@ -2,7 +2,7 @@ import type { ReactNode } from "react";
 import { Icon } from "../icon/Icon.js";
 /** Notice semantic feedback. */
 export interface NoticeProps {
-  tone: "success" | "warning" | "danger";
+  tone: "neutral" | "success" | "warning" | "danger";
   title: string;
   children: ReactNode;
 }
@@ -16,11 +16,13 @@ export function Notice({ tone, title, children }: NoticeProps) {
     >
       <Icon
         name={
-          tone === "success"
-            ? "check"
-            : tone === "warning"
-              ? "triangle-alert"
-              : "x"
+          tone === "neutral"
+            ? "info"
+            : tone === "success"
+              ? "check"
+              : tone === "warning"
+                ? "triangle-alert"
+                : "x"
         }
         size={20}
       />

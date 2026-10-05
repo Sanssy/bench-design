@@ -10,7 +10,7 @@ Import `Notice` from `bench-design` and load `bench-design/styles.css` once.
 
 ## Usage
 
-Use for success, warning or danger feedback with a meaningful label. Never convey meaning through color alone. Neutral information uses text and a subtle surface; there is no info tone. Avoid interactive behavior in feedback labels.
+Use for neutral, success, warning or danger feedback with a meaningful label. Never convey meaning through color alone. Neutral information uses text and a subtle surface; there is no info tone. Avoid interactive behavior in feedback labels.
 
 ## API
 
@@ -21,9 +21,10 @@ Use for success, warning or danger feedback with a meaningful label. Never conve
 
 <Canvas of={Stories.UploadComplete} />
 <Canvas of={Stories.StorageMessages} />
+<Canvas of={Stories.LocalStorage} />
 
 Use the tone control and theme selector to inspect all tones in light and dark themes.
 
 ## Accessibility
 
-Success and warning use role="status"; danger uses role="alert". The icon is decorative. Text uses the standard text token on tinted backgrounds. The left border uses the existing strong token (4 px). No keyboard interaction is added. Use alerts only for messages requiring immediate attention.
+Neutral, success and warning use role="status"; danger uses role="alert". The icon is decorative. Text uses the standard text token on tinted backgrounds. Neutral uses the standard border token on a subtle surface. The left border uses the existing strong token (4 px). No keyboard interaction is added. Use alerts only for messages requiring immediate attention.

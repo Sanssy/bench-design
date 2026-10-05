@@ -2,7 +2,7 @@ import { render, screen } from "@testing-library/react";
 import { expect, test } from "vitest";
 import { Notice } from "./Notice.js";
 
-for (const tone of ["success", "warning", "danger"] as const) {
+for (const tone of ["neutral", "success", "warning", "danger"] as const) {
   test(`Notice ${tone} announces title and description`, () => {
     const { container } = render(
       <Notice tone={tone} title="Upload result">

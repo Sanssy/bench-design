@@ -14,6 +14,8 @@ The Person example uses an inline portrait illustration and a decorative avatar 
 
 Use a full name for the accessible label. Initials use the first and last name; a failed image falls back to initials. Set isDecorative when an equivalent name is visible beside the avatar. Sizes are 24, 32 and 40 pixels. Avoid initials as the only accessible name.
 
+Avatar is static. For an identity action, compose it inside a named Button or Link and make the avatar decorative. The parent must have a full accessible name, such as "Open Ada Lovelace profile"; initials alone are insufficient. Neutral is the default tone; accent uses the accent background and its paired text token.
+
 ## API
 
 <ManifestProps component="Avatar" />
@@ -22,5 +24,6 @@ Use a full name for the accessible label. Initials use the first and last name; 
 
 <Canvas of={Stories.Person} />
 <Canvas of={Stories.Sizes} />
+<Canvas of={Stories.Identity} />
 
 Use the theme selector to inspect both examples in light and dark themes.

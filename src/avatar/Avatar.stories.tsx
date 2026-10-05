@@ -1,4 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
+import { Button } from "../button/Button.js";
+import { Stack } from "../stack/Stack.js";
 import { Avatar } from "./Avatar.js";
 
 export default {
@@ -44,5 +46,17 @@ export const Sizes: Story = {
         <Avatar key={size} name="Grace Hopper" size={size} />
       ))}
     </div>
+  ),
+};
+
+export const Identity: Story = {
+  render: () => (
+    <Stack gap={16}>
+      <Avatar name="Ada Lovelace" tone="neutral" />
+      <Avatar name="Grace Hopper" tone="accent" />
+      <Button aria-label="Open Ada Lovelace profile">
+        <Avatar name="Ada Lovelace" tone="accent" isDecorative />
+      </Button>
+    </Stack>
   ),
 };

@@ -1,5 +1,7 @@
 import { fireEvent, render, screen } from "@testing-library/react";
-import { expect, test } from "vitest";
+import userEvent from "@testing-library/user-event";
+import { expect, test, vi } from "vitest";
+import { Button } from "../button/Button.js";
 import { Avatar } from "./Avatar.js";
 
 test("initials keep the full accessible name", () => {
@@ -33,4 +35,30 @@ test("a new photo source retries after failure", () => {
   fireEvent.error(image);
   rerender(<Avatar name="Ada Lovelace" src="/second.png" />);
   expect(container.querySelector("img")).toHaveAttribute("src", "/second.png");
+});
+
+for (const tone of [undefined, "accent"] as const) {
+  test(`avatar tone ${tone ?? "neutral"} retains its full name`, () => {
+    render(<Avatar name="Ada Lovelace" {...(tone ? { tone } : {})} />);
+    expect(screen.getByRole("img", { name: "Ada Lovelace" })).toHaveAttribute(
+      "data-tone",
+      tone ?? "neutral",
+    );
+  });
+}
+
+test("an identity action has a full accessible name and keyboard activation", async () => {
+  const onPress = vi.fn();
+  render(
+    <Button aria-label="Open Ada Lovelace profile" onPress={onPress}>
+      <Avatar name="Ada Lovelace" isDecorative />
+    </Button>,
+  );
+  const user = userEvent.setup();
+  await user.tab();
+  expect(
+    screen.getByRole("button", { name: "Open Ada Lovelace profile" }),
+  ).toHaveFocus();
+  await user.keyboard("{Enter}");
+  expect(onPress).toHaveBeenCalledOnce();
 });

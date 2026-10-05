@@ -652,3 +652,11 @@
     grid-template-columns: minmax(0, 1fr);
   }
 }
+
+/* Keep validation colour and keyboard outlines from the field primitive. */
+.bd-search-field[data-variant="underlined"] .bd-search-control {
+  border-inline: none;
+  border-block-start: none;
+  border-radius: 0;
+  background: transparent;
+}

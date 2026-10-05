@@ -29,3 +29,17 @@ export const Review: Story = {
     </Stack>
   ),
 };
+
+export const Underlined: Story = {
+  args: {
+    variant: "underlined",
+    hideLabel: true,
+    autoComplete: "off",
+    label: "Search documents",
+    description: "Search by title",
+  },
+};
+export const UnderlinedReview: Story = {
+  ...Review,
+  args: { variant: "underlined", hideLabel: true, autoComplete: "off" },
+};

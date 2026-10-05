@@ -60,3 +60,15 @@ export const Wrapped: Story = {
     ],
   },
 };
+
+export const FacetsWithCounts: Story = {
+  args: {
+    label: "Category",
+    description: "Choose a category to filter the collection",
+    options: [
+      { id: "all", label: "All", count: 12 },
+      { id: "housing", label: "Housing", count: 5 },
+      { id: "travel", label: "Travel", count: 0 },
+    ],
+  },
+};

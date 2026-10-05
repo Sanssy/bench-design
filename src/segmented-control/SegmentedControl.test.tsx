@@ -148,3 +148,31 @@ test("a zero count is visible and included in the name", () => {
     "Empty0",
   );
 });
+
+for (const layout of ["inline", "wrap"] as const) {
+  test(`counts remain visible and named through selection in ${layout}`, async () => {
+    const user = userEvent.setup();
+    render(
+      <SegmentedControl
+        label="Category"
+        layout={layout}
+        options={[
+          { id: "housing", label: "Housing", count: 5 },
+          { id: "empty", label: "Empty", count: 0 },
+          { id: "other", label: "Other" },
+        ]}
+      />,
+    );
+    const housing = screen.getByRole("radio", { name: "Housing, 5" });
+    const empty = screen.getByRole("radio", { name: "Empty, 0" });
+    expect(housing).toHaveTextContent("Housing5");
+    expect(empty).toHaveTextContent("Empty0");
+    expect(screen.getByRole("radio", { name: "Other" })).toHaveTextContent(
+      "Other",
+    );
+    await user.click(empty);
+    expect(empty).toHaveAttribute("aria-checked", "true");
+    expect(housing).toHaveAttribute("aria-checked", "false");
+    expect(empty).toHaveAccessibleName("Empty, 0");
+  });
+}

@@ -114,7 +114,10 @@ export function SegmentedControl({
                   option.label
                 )}
                 {option.count !== undefined && (
-                  <span className="bd-field-mono" aria-hidden="true">
+                  <span
+                    className="bd-segment-count bd-field-mono"
+                    aria-hidden="true"
+                  >
                     {option.count}
                   </span>
                 )}

@@ -74,7 +74,12 @@ export function Slider({
             />
             {/* React Aria's Slider renders no form input; submit the value. */}
             {name !== undefined && (
-              <input type="hidden" name={name} value={state.values[0]} />
+              <input
+                type="hidden"
+                name={name}
+                value={state.values[0]}
+                disabled={isDisabled}
+              />
             )}
             <SliderThumb
               className="bd-slider-thumb"

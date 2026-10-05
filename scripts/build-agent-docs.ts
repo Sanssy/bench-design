@@ -101,8 +101,7 @@ update the attribute (remove it for system) and persist the choice if possible.
 Keep semantic HTML, accessible names, keyboard support and visible focus. Check
 focus order, body text contrast (4.5:1), required control borders and focus
 contrast (3:1) in the actual context. Follow each component’s documented semantics and accessible naming guidance.
-A dark decorative divider, error role and print theme are deferred:
-do not invent these values. Wait for document.fonts.ready before screenshots.
+The print theme is deferred: do not invent its values. Wait for document.fonts.ready before screenshots.
 `;
 
 mkdirSync("dist", { recursive: true });

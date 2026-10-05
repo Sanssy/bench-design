@@ -97,3 +97,18 @@ test("ColorSwatchPicker maps shorthand HEX colors to their IDs", async () => {
   await user.click(screen.getByRole("option", { name: "White" }));
   expect(onChange).toHaveBeenCalledWith("white");
 });
+
+test("an invalid picker exposes its invalidity, not only its message", () => {
+  render(
+    <ColorSwatchPicker
+      label="Fabric"
+      colors={[{ id: "sand", name: "Sand", value: "#c9b79c" }]}
+      isInvalid
+      errorMessage="Choose a fabric"
+    />,
+  );
+  expect(screen.getByRole("listbox", { name: "Fabric" })).toHaveAttribute(
+    "aria-invalid",
+    "true",
+  );
+});

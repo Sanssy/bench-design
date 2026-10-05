@@ -19,9 +19,10 @@ export function GettingStarted() {
       <section>
         <h2>Available today</h2>
         <p>
-          Tokens, styles, local fonts, theme initialization and the React Button
-          component with primary and secondary variants. The package is private
-          and no npm release is available.
+          Tokens, styles, local fonts, theme initialization and the React
+          components listed in components.json: typography, layout, data,
+          surfaces, status, forms, filters, overlays, structure, collections and
+          feedback. The package is private and no npm release is available.
         </p>
       </section>
       <section>
@@ -171,8 +172,7 @@ export function Themes() {
       <section>
         <h2>Current limitations</h2>
         <p>
-          The dark decorative divider and print theme are deferred. The error
-          role is also deferred. Do not invent values for these roles. Wait for
+          The print theme is deferred. Do not invent values for it. Wait for
           document.fonts.ready before screenshots.
         </p>
       </section>

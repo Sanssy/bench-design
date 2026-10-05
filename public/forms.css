@@ -504,6 +504,11 @@
   border: var(--bd-hair) solid var(--bd-border-strong);
   box-sizing: border-box;
 }
+/* Invalid picker: the field's danger stroke around the swatches. */
+.bd-field[data-invalid] .bd-swatches {
+  outline: var(--bd-stroke) solid var(--bd-danger);
+  outline-offset: var(--bd-space-4);
+}
 .bd-swatches {
   display: flex;
   gap: var(--bd-space-12);

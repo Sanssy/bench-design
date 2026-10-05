@@ -83,9 +83,9 @@ for (const theme of ["light", "dark"]) {
         await page.keyboard.type("#18201c");
         await tabTo(page, page.getByRole("slider", { name: "Opacity" }));
         await page.keyboard.press("ArrowRight");
-        await expect(
-          page.getByRole("status", { name: "Board preview" }),
-        ).toContainText("Updated board · 3 copies · #18201C · 51% opacity");
+        const preview = page.getByRole("status", { name: "Board preview" });
+        await expect(preview).toContainText("Updated board · 3 copies");
+        await expect(preview).toContainText("#18201C · 51% opacity");
       } else {
         await tabTo(
           page,
@@ -108,4 +108,62 @@ for (const theme of ["light", "dark"]) {
       await checkPage(page);
     });
   }
+}
+
+for (const theme of ["light", "dark"]) {
+  test(`Recipe polish geometry ${theme}`, {
+    tag: ["@component:recipes", `@theme:${theme}`],
+  }, async ({ page }) => {
+    await page.setViewportSize({ width: 1280, height: 800 });
+    await page.goto(
+      `/iframe.html?id=recipes-library--browse-and-inspect&globals=a11y.manual:!true;theme:${theme}`,
+    );
+    await page.evaluate(() => document.fonts.ready);
+    const search = await page.locator(".bd-search-control").boundingBox();
+    const chip = await page
+      .getByRole("button", { name: "Text only" })
+      .boundingBox();
+    expect(chip?.height).toBe(search?.height);
+    expect((chip?.y ?? 0) + (chip?.height ?? 0)).toBeCloseTo(
+      (search?.y ?? 0) + (search?.height ?? 0),
+      0,
+    );
+    const inspector = await page.locator(".bd-inspector").boundingBox();
+    const eyebrow = await page
+      .getByText("Selection", { exact: true })
+      .boundingBox();
+    expect(eyebrow?.x).toBeGreaterThan(inspector?.x ?? 0);
+    const row = page.getByRole("row", { name: "Field notes" });
+    await row.click();
+    await page.getByRole("searchbox").focus();
+    await expect(row).toHaveAttribute("aria-selected", "true");
+    const selectedBackground = await row.evaluate(
+      (element) => getComputedStyle(element).backgroundColor,
+    );
+    expect(selectedBackground).not.toBe(
+      await page
+        .getByRole("row", { name: "Reading list" })
+        .evaluate((element) => getComputedStyle(element).backgroundColor),
+    );
+    await page.goto(
+      `/iframe.html?id=recipes-workspace--edit-in-panel&globals=a11y.manual:!true;theme:${theme}`,
+    );
+    await page.evaluate(() => document.fonts.ready);
+    const button = page.getByRole("button", { name: "Open editor" });
+    expect((await button.boundingBox())?.width).toBeLessThan(
+      (await page.getByRole("main").boundingBox())?.width ?? 0,
+    );
+    const preview = page.getByRole("status", { name: "Board preview" });
+    await expect(preview.locator(".bd-color-preview")).toHaveCSS(
+      "background-color",
+      "rgb(216, 237, 105)",
+    );
+    await button.click();
+    await page.getByRole("textbox", { name: "Marker color" }).fill("#18201c");
+    await page.getByRole("textbox", { name: "Marker color" }).press("Tab");
+    await expect(preview.locator(".bd-color-preview")).toHaveCSS(
+      "background-color",
+      "rgb(24, 32, 28)",
+    );
+  });
 }

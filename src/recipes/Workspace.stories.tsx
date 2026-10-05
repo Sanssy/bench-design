@@ -4,6 +4,7 @@ import { AppShell } from "../app-shell/AppShell.js";
 import { Button } from "../button/Button.js";
 import { ColorField } from "../color-field/ColorField.js";
 import { Heading } from "../heading/Heading.js";
+import { Inline } from "../inline/Inline.js";
 import { Inspector } from "../inspector/Inspector.js";
 import { NumberField } from "../number-field/NumberField.js";
 import { SidePanel } from "../side-panel/SidePanel.js";
@@ -86,14 +87,28 @@ export const EditInPanel: StoryObj = {
         <Stack gap={16}>
           <Heading level={2}>Board preview</Heading>
           <div role="status" aria-label="Board preview">
-            <Text>
-              {name} · {copies} copies · {color} · {opacity}% opacity
-            </Text>
+            <Stack gap={8}>
+              <Text>
+                {name} · {copies} copies
+              </Text>
+              <Inline gap={8} align="center">
+                <span
+                  className="bd-color-preview"
+                  style={{ backgroundColor: color }}
+                  aria-hidden="true"
+                />
+                <Text>
+                  {color} · {opacity}% opacity
+                </Text>
+              </Inline>
+            </Stack>
           </div>
           <Text tone="muted">Edits update this local preview immediately.</Text>
-          <Button onPress={() => setOpen(!open)}>
-            {open ? "Hide editor" : "Open editor"}
-          </Button>
+          <Inline>
+            <Button onPress={() => setOpen(!open)}>
+              {open ? "Hide editor" : "Open editor"}
+            </Button>
+          </Inline>
         </Stack>
       </AppShell>
     );

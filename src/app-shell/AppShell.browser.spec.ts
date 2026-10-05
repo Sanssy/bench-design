@@ -105,8 +105,9 @@ test("AppShell keeps mobile document order, natural scrolling and sticky selecto
     const tabs = page.getByRole("tablist");
     await expect(tabs).toBeVisible();
     const main = page.getByRole("main");
-    expect((await main.boundingBox())?.y).toBeLessThan(
-      (await tabs.boundingBox())?.y ?? 0,
+    await expect(tabs).toBeInViewport();
+    expect((await tabs.boundingBox())?.y).toBeLessThan(
+      (await main.boundingBox())?.y ?? 0,
     );
     await page.evaluate(() => window.scrollTo(0, 200));
     expect(await page.evaluate(() => window.scrollY)).toBeGreaterThan(0);

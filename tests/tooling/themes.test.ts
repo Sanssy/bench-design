@@ -61,7 +61,7 @@ test("light roles use the ratified palette", () => {
 });
 
 const dark = Object.fromEntries(
-  "surface=#161c19 surface-raised=#202923 surface-subtle=#252e28 text=#e9e8e0 text-muted=#abb5ad border=#69786e border-strong=#86968a divider=#303b33 accent=#d8ed69 on-accent=#18201c focus=#a9c0fb shadow=#080d0a selection=#303b27 on-selection=#e9e8e0"
+  "surface=#161c19 surface-raised=#202923 surface-subtle=#252e28 text=#e9e8e0 text-muted=#abb5ad border=#69786e border-strong=#86968a divider=#303b33 accent=#d8ed69 on-accent=#18201c focus=#a9c0fb shadow=#86968a selection=#303b27 on-selection=#e9e8e0"
     .split(" ")
     .map((pair) => pair.split("=")),
 );

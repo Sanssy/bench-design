@@ -1,7 +1,8 @@
 name: CI
 # PRs run affected Chromium component tests and axe stories; shared changes
 # and workflow_dispatch run the full Chromium suite. Button/shared changes
-# also compare captures. Local pnpm verify and nightly CI run all browsers.
+# also compare captures. Shard 1 also tests the public homepage. Local pnpm
+# verify and nightly CI run all browsers.
 # The browser job runs as two shards. Browser images are cached in GHCR by
 # recipe and toolchain hash.
 on:
@@ -86,6 +87,11 @@ jobs:
           BASE: ${{ github.event.pull_request.base.sha }}
           SHARD: ${{ matrix.shard }}/2
         run: node scripts/select-browser-tests.ts --base "$BASE" --shard "$SHARD" --run
+      # The public homepage reuses this Storybook build; its five browser
+      # tests take seconds, so the first shard always runs them.
+      - name: Assemble and test the public homepage
+        if: ${{ !cancelled() && matrix.shard == 1 }}
+        run: node site/build.ts && pnpm test:site
       - name: Compare approved references and retain candidates
         if: ${{ !cancelled() && steps.selection.outputs.visual == 'true' }}
         run: pnpm exec playwright test --config playwright.visual.config.ts

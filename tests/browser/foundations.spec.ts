@@ -10,7 +10,7 @@ for (const theme of ["light", "dark"] as const) {
       colorScheme: theme === "light" ? "dark" : "light",
     });
     await page.goto(
-      `/iframe.html?id=foundations-colors--palette&globals=theme:${theme}`,
+      `/iframe.html?id=foundations-colors--palette&globals=a11y.manual:!true;theme:${theme}`,
     );
     await expect(page.locator("html")).toHaveAttribute("data-theme", theme);
     await expect(page.getByRole("heading", { name: "Colors" })).toBeVisible();
@@ -26,7 +26,7 @@ for (const theme of ["light", "dark"] as const) {
       theme === "light" ? "#d6d8ce" : "#303b33",
     );
     await page.goto(
-      `/iframe.html?id=foundations-typography--scale&globals=theme:${theme}`,
+      `/iframe.html?id=foundations-typography--scale&globals=a11y.manual:!true;theme:${theme}`,
     );
     await expect(page.locator("[data-family]")).toHaveCount(3);
     await page.evaluate(() => document.fonts.ready);
@@ -57,7 +57,7 @@ for (const theme of ["light", "dark"] as const) {
       "500",
     );
     await page.goto(
-      `/iframe.html?id=foundations-spacing-geometry--scale&globals=theme:${theme}`,
+      `/iframe.html?id=foundations-spacing-geometry--scale&globals=a11y.manual:!true;theme:${theme}`,
     );
     for (const space of [4, 8, 12, 16, 24, 32, 48, 64, 96]) {
       await expect(page.locator(`[data-space="${space}"]`)).toHaveCSS(
@@ -89,7 +89,7 @@ test("system theme follows OS live in the iframe", {
 }, async ({ page }) => {
   await page.emulateMedia({ colorScheme: "light" });
   await page.goto(
-    "/iframe.html?id=foundations-colors--palette&globals=theme:system",
+    "/iframe.html?id=foundations-colors--palette&globals=a11y.manual:!true;theme:system",
   );
   await expect(page.getByRole("heading", { name: "Colors" })).toBeVisible();
   await expect(page.locator("html")).not.toHaveAttribute("data-theme");
@@ -112,7 +112,7 @@ test("soft elevation follows the system theme live", {
 }, async ({ page }) => {
   await page.emulateMedia({ colorScheme: "light" });
   await page.goto(
-    "/iframe.html?id=foundations-spacing-geometry--scale&globals=theme:system",
+    "/iframe.html?id=foundations-spacing-geometry--scale&globals=a11y.manual:!true;theme:system",
   );
   const relief = page.locator("[data-elevation-soft]");
   await expect(relief).toHaveCSS(

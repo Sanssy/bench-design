@@ -1,7 +1,13 @@
 # 0001 — A standalone React design system
 
-Status: accepted decisions. Foundations and Button are implemented; visual
-reference approval and publication remain separate decisions.
+Status: accepted decisions. V0 as of 2026-10-05 includes foundations and the
+components listed in [components.json](../../components.json): typography,
+layout, surfaces, data and status, forms and filters, navigation, overlays,
+collections, import and feedback. The manifest defines the current exports
+and props. Visual reference approval and publication remain separate decisions.
+
+The initial Button pilot (2026-10-03) established the delivery and verification
+approach; references to that pilot describe its historical scope.
 
 ## Context and decision
 
@@ -59,7 +65,9 @@ are exercised by driving those examples, without test-only stories. Behavior
 observable without a browser belongs in unit tests.
 
 Component stories are adjacent (`src/**/*.stories.tsx`). Automated WCAG 2 A/AA
-checks cover Button examples, Foundations and Docs pages in light and dark.
+checks initially covered Button examples, Foundations and Docs pages in light
+and dark (Button pilot, 2026-10-03); current component scenarios are adjacent
+to their stories.
 Foundation pages document colors, typography,
 spacing, geometry and themes. Storybook loads distributed CSS and offers light,
 dark and system themes; its commands build the package.

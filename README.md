@@ -6,8 +6,11 @@ React Aria is encapsulated behind a small component API.
 
 ## Current status
 
-Available today: semantic tokens, local fonts, light/dark/system themes,
-foundation documentation and Button with primary and secondary variants.
+V0 as of 2026-10-05: semantic tokens, local fonts, light/dark/system themes,
+foundation documentation and the components listed in [components.json](components.json).
+The current families cover typography, layout, surfaces, data and status,
+forms and filters, navigation, overlays, collections, import and feedback.
+The manifest is the source of truth for exports and props.
 The package is private and has not been published to npm. Documentation hosting,
 the registry and the design system license remain to be decided. Visual
 references require explicit human approval; implementation is not approval.
@@ -34,10 +37,16 @@ pnpm add /path/to/bench-design-0.1.0.tgz
 
 ```tsx
 import "bench-design/styles.css";
+import { useState } from "react";
 import { Button } from "bench-design";
 
 export function SaveAction() {
-  return <Button variant="primary" onPress={() => console.log("Saved")}>Save</Button>;
+  const [saved, setSaved] = useState(false);
+  return <>
+    <Button variant="primary" onPress={() => setSaved(true)}>Save</Button>
+    <p role="status">{saved ? "Changes saved" : "No changes saved yet"}</p>
+    {saved && <Button onPress={() => setSaved(false)}>Reset</Button>}
+  </>;
 }
 ```
 
@@ -68,7 +77,7 @@ side effects.
 ## Documentation
 
 Run `pnpm storybook` and open [Storybook](http://localhost:6006/) for getting
-started, principles, themes, foundations and Button examples.
+started, principles, themes, foundations and component examples.
 After `pnpm build-storybook`, the generated site also provides
 `llms.txt`. After `pnpm build`, the package provides
 `AGENTS.md` for AI integration. These generated files are not

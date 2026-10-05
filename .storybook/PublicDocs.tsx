@@ -1,4 +1,5 @@
-import type { ReactNode } from "react";
+import { type ReactNode, useState } from "react";
+import { Button } from "../src/button/Button";
 import tokens from "../src/tokens.json";
 
 function Page({ title, children }: { title: string; children: ReactNode }) {
@@ -14,24 +15,90 @@ function Page({ title, children }: { title: string; children: ReactNode }) {
 }
 
 export function GettingStarted() {
+  const [saved, setSaved] = useState(false);
   return (
     <Page title="Getting started">
-      <h2>Localization</h2>
-      <p>
-        Internal labels and feedback follow the React Aria locale, with English
-        and French copy. BenchProvider is optional: set locale to configure a
-        subtree and messages to override selected internal messages. Consumer
-        labels remain application-owned. Unsupported languages fall back to
-        English copy.
-      </p>
-      <pre>
-        <code>
-          {
-            '<BenchProvider locale="fr-FR" messages={{ close: "Fermer la fenêtre" }}><App /></BenchProvider>'
-          }
-        </code>
-      </pre>
+      <section>
+        <h2>Your first render</h2>
+        <p>
+          The package is private. Build and pack a checkout, then install the
+          local tarball in your React application:
+        </p>
+        <pre>
+          <code>
+            {
+              "pnpm install --frozen-lockfile\npnpm build\npnpm pack\n# In your application:\npnpm add /path/to/bench-design-0.1.0.tgz"
+            }
+          </code>
+        </pre>
+        <p>
+          Import styles once, import Button and connect its action to local
+          state:
+        </p>
+        <pre>
+          <code>{`import "bench-design/styles.css";
+import { useState } from "react";
+import { Button } from "bench-design";
 
+export function SaveAction() {
+  const [saved, setSaved] = useState(false);
+  return <>
+    <Button variant="primary" onPress={() => setSaved(true)}>Save</Button>
+    <p role="status">{saved ? "Changes saved" : "No changes saved yet"}</p>
+    {saved && <Button onPress={() => setSaved(false)}>Reset</Button>}
+  </>;
+}`}</code>
+        </pre>
+        <Button variant="primary" onPress={() => setSaved(true)}>
+          Save
+        </Button>
+        <p role="status">{saved ? "Changes saved" : "No changes saved yet"}</p>
+        {saved && <Button onPress={() => setSaved(false)}>Reset</Button>}
+      </section>
+      <section>
+        <h2>Add a theme</h2>
+        <p>
+          Styles follow the system theme by default. For a persisted choice,
+          serve bench-design/theme-init.js from your application and load it as
+          a blocking classic script in head before CSS and React:
+        </p>
+        <pre>
+          <code>
+            {
+              '<head>\n  <script src="/theme-init.js"></script>\n  <!-- Application styles follow. -->\n</head>'
+            }
+          </code>
+        </pre>
+        <p>
+          Use no async, defer or type="module". The script reads
+          localStorage["bench-design-theme"]. See Themes for light, dark and
+          system selection.
+        </p>
+      </section>
+      <nav aria-label="Documentation next steps">
+        <ul>
+          <li>
+            <a target="_top" href="./?path=/story/docs-themes--page">
+              Themes
+            </a>
+          </li>
+          <li>
+            <a target="_top" href="./?path=/story/docs-principles--page">
+              Principles
+            </a>
+          </li>
+          <li>
+            <a target="_top" href="./?path=/story/foundations-colors--palette">
+              Colors and token roles
+            </a>
+          </li>
+          <li>
+            <a target="_top" href="./?path=/docs/form-button--docs">
+              Button API and examples
+            </a>
+          </li>
+        </ul>
+      </nav>
       <section>
         <h2>Available today</h2>
         <p>
@@ -43,11 +110,14 @@ export function GettingStarted() {
       </section>
       <section>
         <h2>Load the foundations</h2>
-        <p>In an application with the local package, import the styles once:</p>
+        <p>
+          For tools or an application that needs tokens without the component
+          styles:
+        </p>
         <pre>
           <code>
             {
-              'import "bench-design/styles.css";\n// Or just the tokens, without fonts:\nimport "bench-design/tokens.css";\n// DTCG catalog for tools:\nimport tokens from "bench-design/tokens.json";'
+              '// Tokens without component styles or fonts:\nimport "bench-design/tokens.css";\n// DTCG catalog for tools:\nimport tokens from "bench-design/tokens.json";'
             }
           </code>
         </pre>
@@ -57,6 +127,23 @@ export function GettingStarted() {
           styles.css with its relative fonts/ assets, which include the fonts
           and their OFL licenses. No CDN required.
         </p>
+      </section>
+      <section>
+        <h2>Localization</h2>
+        <p>
+          Internal labels and feedback follow the React Aria locale, with
+          English and French copy. BenchProvider is optional: set locale to
+          configure a subtree and messages to override selected internal
+          messages. Consumer labels remain application-owned. Unsupported
+          languages fall back to English copy.
+        </p>
+        <pre>
+          <code>
+            {
+              '<BenchProvider locale="fr-FR" messages={{ close: "Fermer la fenêtre" }}><App /></BenchProvider>'
+            }
+          </code>
+        </pre>
       </section>
       <section>
         <h2>Work in the repository</h2>

@@ -294,7 +294,7 @@ void [button, missingContent, click, link, variant, type, heading, missingLevel,
     const data = readFileSync(new URL("./data.css", import.meta.resolve("bench-design/styles.css")), "utf8");
     assert(data.includes(".bd-value"));
     assert(data.includes(".bd-meta-list"));
-    for (const selector of [".bd-grid-list", ".bd-selection-bar"]) assert(data.includes(selector));
+    for (const selector of [".bd-grid-list", ".bd-selection-bar", ".bd-table-frame", ".bd-table-cell"]) assert(data.includes(selector));
     const init = await import("bench-design/theme-init.js");
     assert.deepEqual(Object.keys(init), []);
   `,

@@ -80,3 +80,8 @@
   padding: 0;
   flex-shrink: 0;
 }
+
+.bd-toggle-button[data-selected]:not([data-disabled]) {
+  background: var(--bd-accent);
+  color: var(--bd-on-accent);
+}

@@ -2592,7 +2592,7 @@
     {
       "name": "Surface",
       "import": "import { Surface } from \"bench-design\";",
-      "description": "Group content on a raised or subtle background without a border.",
+      "description": "Group content on a raised, subtle or inverse background without a border.",
       "props": [
         {
           "name": "children",
@@ -2601,8 +2601,9 @@
         },
         {
           "name": "tone",
-          "type": "\"raised\" | \"subtle\"",
+          "type": "\"raised\" | \"subtle\" | \"inverse\"",
           "required": false,
+          "description": "Inverse uses the opposite global theme; nested inverse surfaces do not toggle it.",
           "default": "\"raised\""
         },
         {
@@ -2625,6 +2626,10 @@
         {
           "name": "Notice",
           "href": "./?path=/story/surfaces-surface--notice"
+        },
+        {
+          "name": "Inverse",
+          "href": "./?path=/story/surfaces-surface--inverse"
         }
       ]
     },

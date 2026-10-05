@@ -8,6 +8,9 @@
 .bd-surface[data-tone="subtle"] {
   background: var(--bd-surface-subtle);
 }
+.bd-surface[data-tone="inverse"] {
+  background: var(--bd-surface);
+}
 .bd-card {
   border: var(--bd-hair) solid var(--bd-divider);
   padding: var(--bd-space-12);

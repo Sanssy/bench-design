@@ -170,3 +170,30 @@ test("category hues match the palette and retain graphical contrast in both them
     );
   }
 });
+
+test("inverse surfaces remap semantic roles for explicit and system themes", () => {
+  const result = spawnSync(
+    process.execPath,
+    ["scripts/generate-tokens.ts", "--stdout"],
+    { encoding: "utf8" },
+  );
+  assert.equal(result.status, 0, result.stderr);
+  const css = result.stdout;
+  for (const [selector, theme] of [
+    ['.bd-surface[data-tone="inverse"]', "dark"],
+    [':root[data-theme="dark"] .bd-surface[data-tone="inverse"]', "light"],
+    [':root:not([data-theme]) .bd-surface[data-tone="inverse"]', "light"],
+  ] as const) {
+    const start = css.indexOf(`${selector} {`);
+    assert.ok(start >= 0, `missing inverse context: ${selector}`);
+    const block = css.slice(start, css.indexOf("}", start));
+    const tokens = JSON.parse(readFileSync("src/tokens.json", "utf8"));
+    for (const role of Object.keys(tokens[theme])) {
+      assert.ok(
+        block.includes(`--bd-${role}: var(--bd-color-${theme}-${role});`),
+        `${theme} ${role}`,
+      );
+    }
+    assert.ok(block.includes(`color-scheme: ${theme};`));
+  }
+});

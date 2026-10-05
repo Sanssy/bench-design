@@ -12,6 +12,10 @@ Import `Surface` from `bench-design` and load `bench-design/styles.css` once.
 
 Use raised for a content region and subtle for a supporting note. Choose padding from the shared spacing scale. A Surface has no border; compose headings and controls inside it. Avoid using a background tone to communicate success or failure.
 
+Use `tone="inverse"` for a contrasting introduction or call to action: dark on a light page, light on a dark page, including the system theme. Text, muted text, links, buttons and focus indicators use the local palette. Raised and subtle surfaces inside inherit it; nesting inverse keeps the same opposite global theme.
+
+Keep content concise and leave room for focus outlines. Use ordinary text, links and buttons with their native semantics. Avoid using inverse to signal status, selection or urgency. It adds no landmark or meaning by itself. Overlays rendered through portals outside the Surface do not inherit this local context; do not assume inverse is a universal theme provider.
+
 ## API
 
 <ManifestProps component="Surface" />
@@ -24,6 +28,7 @@ Use raised for a content region and subtle for a supporting note. Choose padding
 
 <Canvas of={Stories.Workspace} />
 <Canvas of={Stories.Notice} />
+<Canvas of={Stories.Inverse} />
 
 Use the theme selector to inspect light and dark themes.
 

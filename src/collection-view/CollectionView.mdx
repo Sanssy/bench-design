@@ -10,7 +10,7 @@ Import `CollectionView` from `bench-design` and load `bench-design/styles.css` o
 
 ## Usage and accessibility
 
-Compose search, filters, view controls, a collection and a result footer. The consumer calculates counts and applies filtering and sorting. Provide EmptyState and isEmpty for no matches; children are replaced but tools and footer remain. The toolbar sticks within its nearest scrolling ancestor. Use an appropriate surrounding heading hierarchy: the title is a second-level heading. Avoid nesting collection regions with the same name.
+Compose search, filters, view controls, a collection and a result footer. The consumer calculates counts and applies filtering and sorting. Provide EmptyState and isEmpty for no matches; children are replaced but tools and footer remain. The toolbar sticks within its nearest scrolling ancestor. Use an appropriate surrounding heading hierarchy: the title defaults to a second-level heading; set `headingLevel` (2–6) to fit the surrounding structure. For example, use `<CollectionView label="Related resources" headingLevel={3}>…</CollectionView>` within a section introduced by an h2. Avoid nesting collection regions with the same name.
 
 ## API
 

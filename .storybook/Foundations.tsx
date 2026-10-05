@@ -48,8 +48,22 @@ export function Palette({ theme }: { theme: string }) {
       title="Colors"
       intro="Paper, ink and lemon form our palette. Explore semantic roles and their contrast in the active theme. Category hues are graphical markers accompanied by text labels, never color-only meaning or action colors."
     >
+      <nav aria-label="Color groups">
+        <ul>
+          {groups.map((title) => (
+            <li key={title}>
+              <a href={`#colors-${title.toLowerCase().replaceAll(" ", "-")}`}>
+                {title}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </nav>
       {groups.map((title) => (
-        <section key={title}>
+        <section
+          key={title}
+          id={`colors-${title.toLowerCase().replaceAll(" ", "-")}`}
+        >
           <h2>{title}</h2>
           <div className="foundation-grid">
             {roles

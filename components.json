@@ -38,6 +38,10 @@
       ],
       "stories": [
         {
+          "name": "ShortWorkspace",
+          "href": "./?path=/story/layout-appshell--short-workspace"
+        },
+        {
           "name": "Workspace",
           "href": "./?path=/story/layout-appshell--workspace"
         },

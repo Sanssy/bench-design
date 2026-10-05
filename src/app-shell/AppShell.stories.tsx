@@ -19,6 +19,37 @@ export default {
 } satisfies Meta<typeof AppShell>;
 type Story = StoryObj<typeof AppShell>;
 
+export const ShortWorkspace: Story = {
+  args: {
+    start: {
+      label: "Library",
+      content: (
+        <SidePanel title="Library">
+          <Text>Field notes</Text>
+          <Text>Reading list</Text>
+        </SidePanel>
+      ),
+    },
+    children: (
+      <>
+        <Heading level={2}>Field notes</Heading>
+        <Text>
+          Select a collection, read its introduction and keep its details
+          nearby.
+        </Text>
+      </>
+    ),
+    end: {
+      label: "Details",
+      content: (
+        <SidePanel title="Details">
+          <Text>Two documents ready to read.</Text>
+        </SidePanel>
+      ),
+    },
+  },
+};
+
 export const Workspace: Story = {
   args: {
     start: {

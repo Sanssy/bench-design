@@ -1,0 +1,31 @@
+import { Meta, Canvas, Controls } from '@storybook/addon-docs/blocks';
+import { ManifestProps } from "../../.storybook/ManifestProps";
+import * as Stories from './ReferenceList.stories';
+
+<Meta of={Stories} />
+
+# ReferenceList
+
+Import `ReferenceList` from `bench-design` and load `bench-design/styles.css` once.
+
+## Usage
+
+Use references in caller order with stable unique identifiers and a descriptive label. Supply href for navigable titles and description for optional context. Avoid using the list for source resolution or generated citations.
+
+## API
+
+<ManifestProps component="ReferenceList" />
+
+## Try the props
+
+<Controls of={Stories.References} />
+
+## Examples
+
+<Canvas of={Stories.References} />
+
+Use the theme selector to inspect light and dark themes.
+
+## Accessibility
+
+A named native ordered list provides visible decimal numbering. Linked titles use the shared React Aria Link and support Tab focus and Enter activation. Unlinked references do not become focusable.

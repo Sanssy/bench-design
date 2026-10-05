@@ -5,7 +5,12 @@ for (const theme of ["light", "dark"]) {
   test(`DropZone examples and axe ${theme}`, {
     tag: ["@component:drop-zone", `@theme:${theme}`],
   }, async ({ page }) => {
-    for (const story of ["upload-documents", "unavailable"]) {
+    for (const story of [
+      "upload-documents",
+      "unavailable",
+      "editorial",
+      "editorial-unavailable",
+    ]) {
       await page.goto(
         `/iframe.html?id=import-dropzone--${story}&viewMode=story&globals=a11y.manual:!true;theme:${theme}`,
       );
@@ -113,3 +118,63 @@ test("drop zone geometry follows tokens", {
   });
   for (const [actual, expected] of values) expect(actual).toBe(expected);
 });
+
+for (const theme of ["light", "dark"]) {
+  test(`editorial compact layout and keyboard picker ${theme}`, {
+    tag: ["@component:drop-zone", `@theme:${theme}`],
+  }, async ({ page }) => {
+    await page.goto(
+      `/iframe.html?id=import-dropzone--editorial&globals=a11y.manual:!true;theme:${theme}`,
+    );
+    const zone = page.getByRole("button", {
+      name: "Bring your documents into focus",
+      exact: true,
+    });
+    const picker = page.getByRole("button", { name: "Add files" });
+    for (const width of [640, 639, 320]) {
+      await page.setViewportSize({ width, height: 800 });
+      await expect(zone).toBeVisible();
+      await expect(
+        page.getByRole("heading", {
+          level: 2,
+          name: "Bring your documents into focus",
+        }),
+      ).toBeVisible();
+      await expect(
+        page.getByText(
+          "Drop local documents here or choose files to get started.",
+        ),
+      ).toBeVisible();
+      await expect(page.getByText("TXT, PDF · 10 MB max.")).toBeVisible();
+      await expect(picker).toBeVisible();
+      if (width < 640) {
+        await expect(page.locator(".bd-icon-tile")).toBeHidden();
+        await expect(page.getByText("01 / IMPORT")).toBeHidden();
+      } else {
+        await expect(page.locator(".bd-icon-tile")).toBeVisible();
+        await expect(page.getByText("01 / IMPORT")).toBeVisible();
+      }
+      expect(
+        await page.evaluate(
+          () => document.documentElement.scrollWidth - innerWidth,
+        ),
+      ).toBeLessThanOrEqual(1);
+    }
+    await page.keyboard.press("Tab");
+    await expect(zone).toBeFocused();
+    await page.keyboard.press("Tab");
+    await expect(picker).toBeFocused();
+    const chooser = page.waitForEvent("filechooser");
+    await page.keyboard.press("Enter");
+    await (await chooser).setFiles({
+      name: "note.txt",
+      mimeType: "text/plain",
+      buffer: Buffer.from("ok"),
+    });
+    await expect(page.getByRole("status")).toHaveText("note.txt");
+    const results = await new AxeBuilder({ page })
+      .withTags(["wcag2a", "wcag2aa", "wcag21a", "wcag21aa"])
+      .analyze();
+    expect(results.violations).toEqual([]);
+  });
+}

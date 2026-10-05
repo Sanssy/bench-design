@@ -39,3 +39,18 @@ export const Unavailable: Story = {
     onDrop: () => {},
   },
 };
+
+export const Editorial: Story = {
+  ...UploadDocuments,
+  args: {
+    ...UploadDocuments.args,
+    variant: "editorial",
+    label: "Bring your documents into focus",
+    eyebrow: "01 / IMPORT",
+    icon: "file-text",
+    description: "Drop local documents here or choose files to get started.",
+  },
+};
+export const EditorialUnavailable: Story = {
+  args: { ...Editorial.args, isDisabled: true },
+};

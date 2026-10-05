@@ -3,6 +3,9 @@ import { DropZone as AriaDropZone } from "react-aria-components";
 import { useBenchMessages } from "../bench-provider/BenchProvider.js";
 import { Button } from "../button/Button.js";
 import { FileTrigger } from "../file-trigger/FileTrigger.js";
+import { Heading } from "../heading/Heading.js";
+import type { IconName } from "../icon/icons.js";
+import { IconTile } from "../icon-tile/IconTile.js";
 /** A rejected file and the applicable refusal reason. */
 export interface FileRejection {
   file: File;
@@ -11,6 +14,18 @@ export interface FileRejection {
 /** Accessible local file import. maxSize is in bytes. */
 export interface DropZoneProps {
   label: string;
+  /** Editorial presentation automatically compacts below 640 px. */
+  variant?: "default" | "editorial";
+  /** Optional metadata above the editorial title. */
+  eyebrow?: string;
+  /** Decorative neutral tile in the editorial presentation. */
+  icon?: IconName;
+  /** Semantic title level; editorial defaults to 2. */
+  headingLevel?: 1 | 2 | 3 | 4 | 5 | 6;
+  /** Decorative picker icon; editorial defaults to upload. */
+  buttonIcon?: IconName;
+  /** Picker icon placement; defaults to start. */
+  buttonIconPosition?: "start" | "end";
   description?: string;
   acceptedFileTypes?: string[];
   maxSize?: number;
@@ -44,6 +59,12 @@ function typeLabel(type: string, kindLabel: (kind: string) => string) {
 /** Validate picker and dragged files with the same acceptance policy. */
 export function DropZone({
   label,
+  variant = "default",
+  eyebrow,
+  icon,
+  headingLevel,
+  buttonIcon,
+  buttonIconPosition,
   description,
   acceptedFileTypes = [],
   maxSize,
@@ -54,6 +75,8 @@ export function DropZone({
   buttonLabel,
 }: DropZoneProps) {
   const { messages: m, number } = useBenchMessages();
+  const pickerIcon =
+    buttonIcon ?? (variant === "editorial" ? "upload" : undefined);
   const types = acceptedFileTypes
     .map((type) => typeLabel(type, m.fileKind))
     .join(", ");
@@ -88,6 +111,7 @@ export function DropZone({
   return (
     <AriaDropZone
       className="bd-drop-zone"
+      data-variant={variant}
       aria-label={label}
       isDisabled={isDisabled}
       data-rejected={rejections.length > 0 || undefined}
@@ -100,14 +124,38 @@ export function DropZone({
         receive(files);
       }}
     >
-      <strong className="bd-drop-zone__title">{label}</strong>
+      {variant === "editorial" && icon && (
+        <span className="bd-drop-zone__icon">
+          <IconTile icon={icon} tone="neutral" />
+        </span>
+      )}
+      {variant === "editorial" && eyebrow && (
+        <p className="bd-drop-zone__eyebrow">{eyebrow}</p>
+      )}
+      {variant === "editorial" || headingLevel ? (
+        <div className="bd-drop-zone__title">
+          <Heading
+            level={headingLevel ?? 2}
+            size={variant === "editorial" ? "heading" : "ui"}
+          >
+            {label}
+          </Heading>
+        </div>
+      ) : (
+        <strong className="bd-drop-zone__title">{label}</strong>
+      )}
       {description && <p className="bd-drop-zone__help">{description}</p>}
       <FileTrigger
         acceptedFileTypes={acceptedFileTypes}
         allowsMultiple={allowsMultiple}
         onSelect={receive}
       >
-        <Button variant="primary" isDisabled={isDisabled}>
+        <Button
+          variant="primary"
+          isDisabled={isDisabled}
+          {...(pickerIcon ? { icon: pickerIcon } : {})}
+          {...(buttonIconPosition ? { iconPosition: buttonIconPosition } : {})}
+        >
           {buttonLabel ?? m.addFiles}
         </Button>
       </FileTrigger>

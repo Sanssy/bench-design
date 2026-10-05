@@ -17,7 +17,7 @@ export function checkFontAssets(stylesURL: URL) {
     readFileSync(new URL("./fonts/provenance.json", stylesURL), "utf8"),
   );
   const urls = [...css.matchAll(/url\("([^"]+)"\)/g)].map((match) => match[1]);
-  assert.equal(urls.length, 3, "three bundled font URLs required");
+  assert.equal(urls.length, 5, "five bundled font URLs required");
   for (const font of provenance) {
     const relative = `./fonts/${font.file}`;
     assert(urls.includes(relative), `missing CSS URL ${relative}`);

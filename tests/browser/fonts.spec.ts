@@ -1,7 +1,13 @@
 import { readFileSync } from "node:fs";
 import { expect, type Page, test } from "@playwright/test";
 
-const families = ["Bench Fraunces", "Bench Manrope", "Bench Plex"];
+const faces = [
+  '400 16px "Bench Fraunces"',
+  '400 16px "Bench Manrope"',
+  '400 16px "Bench Plex"',
+  'italic 500 16px "Bench Fraunces"',
+  '600 16px "Bench Plex"',
+];
 const roles = ["editorial", "ui", "metadata", "mono"];
 const fallbacks = [
   '"Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif',
@@ -41,21 +47,33 @@ test("distributed fonts load through document.fonts", async ({ page }) => {
   await renderFonts(page);
   const loaded = await page.evaluate(async (names) => {
     const result = [];
-    for (const family of names) {
-      const faces = await document.fonts.load(
-        `400 16px "${family}"`,
-        "Readable 012345",
-      );
+    for (const face of names) {
+      const faces = await document.fonts.load(face, "Readable 012345");
       result.push({
         count: faces.length,
         loaded: faces.every((face) => face.status === "loaded"),
-        available: document.fonts.check(`400 16px "${family}"`),
+        available: document.fonts.check(face),
+        style: faces[0]?.style,
+        weight: faces[0]?.weight,
       });
     }
     return result;
-  }, families);
+  }, faces);
   expect(loaded).toEqual(
-    families.map(() => ({ count: 1, loaded: true, available: true })),
+    faces.map((_, index) => ({
+      count: 1,
+      loaded: true,
+      available: true,
+      style: index === 3 ? "italic" : "normal",
+      weight:
+        index === 0 || index === 3
+          ? "100 900"
+          : index === 1
+            ? "200 800"
+            : index === 4
+              ? "600"
+              : "400",
+    })),
   );
 });
 
@@ -86,5 +104,5 @@ test("missing fonts leave readable text matching the system fallback", async ({
   }
   expect(
     await page.evaluate(() => [...document.fonts].map((face) => face.status)),
-  ).toEqual(["error", "error", "error"]);
+  ).toEqual(["error", "error", "error", "unloaded", "unloaded"]);
 });

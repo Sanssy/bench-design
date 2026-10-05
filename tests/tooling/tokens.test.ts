@@ -41,8 +41,9 @@ test("DTCG hex fallback agrees with every sRGB color", () => {
   const tokens = JSON.parse(readFileSync("src/tokens.json", "utf8"));
   for (const theme of ["light", "dark"]) {
     for (const token of Object.values(tokens[theme]) as {
-      $value: { components: number[]; hex: string };
+      $value: { components: number[]; hex: string } | string;
     }[]) {
+      if (typeof token.$value === "string") continue;
       const hex = `#${token.$value.components
         .map((channel) =>
           Math.round(channel * 255)
@@ -194,6 +195,17 @@ test("inverse surfaces remap semantic roles for explicit and system themes", () 
         `${theme} ${role}`,
       );
     }
+    for (const [role, target] of Object.entries({
+      "selection-strong": "text",
+      "on-selection-strong": "surface",
+    })) {
+      assert.equal(tokens[theme][role]?.$value, `{${theme}.${target}}`);
+      assert.ok(
+        css.includes(
+          `--bd-color-${theme}-${role}: var(--bd-color-${theme}-${target});`,
+        ),
+      );
+    }
     assert.ok(block.includes(`color-scheme: ${theme};`));
   }
 });
@@ -256,4 +268,35 @@ test("soft elevation is limited to the three approved surface roots", () => {
     ".bd-inspector",
     '.bd-surface[data-tone="raised"]',
   ]);
+});
+
+test("subtle categories preserve exact colors and readable text in both themes", () => {
+  const tokens = JSON.parse(readFileSync("src/tokens.json", "utf8"));
+  const expected = {
+    light: ["#e0e6d9", "#eee2d6", "#e4e0e6", "#eddee0", "#dde6e3", "#dee3e6"],
+    dark: ["#293628", "#372f23", "#2d2f39", "#362b31", "#223534", "#273239"],
+  };
+  const luminance = (hex: string) =>
+    [0.2126, 0.7152, 0.0722].reduce((sum, weight, i) => {
+      const c = Number.parseInt(hex.slice(1 + i * 2, 3 + i * 2), 16) / 255;
+      return (
+        sum + weight * (c <= 0.04045 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4)
+      );
+    }, 0);
+  for (const theme of ["light", "dark"] as const) {
+    ["green", "orange", "violet", "magenta", "teal", "blue"].forEach(
+      (name, i) => {
+        const hex = tokens[theme][`category-${name}-subtle`]?.$value.hex;
+        assert.equal(hex, expected[theme][i]);
+        for (const text of ["text", "text-muted"]) {
+          const a = luminance(String(hex)),
+            b = luminance(tokens[theme][text].$value.hex);
+          assert.ok(
+            (Math.max(a, b) + 0.05) / (Math.min(a, b) + 0.05) >= 4.5,
+            `${theme} ${name} ${text}`,
+          );
+        }
+      },
+    );
+  }
 });

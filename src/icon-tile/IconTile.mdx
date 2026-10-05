@@ -1,0 +1,32 @@
+import { Meta, Canvas, Controls } from '@storybook/addon-docs/blocks';
+import { ManifestProps } from "../../.storybook/ManifestProps";
+import * as Stories from './IconTile.stories';
+
+<Meta of={Stories} />
+
+# IconTile
+
+Import `IconTile` from `bench-design` and load `bench-design/styles.css` once.
+
+## Usage
+
+Use a square icon illustration beside a heading or item description. Choose `sm` (48 px) or `md` (64 px, default); the catalogue icon stays 24 px. Neutral uses a subtle surface, accent uses the primary accent, and category tones use subtle category surfaces. Avoid color-only meaning or using the tile as a button. Place actions in the surrounding control.
+
+## API
+
+<ManifestProps component="IconTile" />
+
+## Try the props
+
+<Controls of={Stories.SearchIllustration} />
+
+## Examples
+
+<Canvas of={Stories.SearchIllustration} />
+<Canvas of={Stories.CategoryMarkers} />
+
+Use the theme selector to inspect light and dark themes.
+
+## Accessibility
+
+Without `label`, the whole tile is decorative and hidden from assistive technology. With a nonempty label, it exposes one named image. Omit the label when adjacent text already conveys the meaning. The tile has no keyboard interaction or focus stop.

@@ -1,3 +1,7 @@
+.bd-badge > svg,
+.bd-category-label > svg {
+  flex-shrink: 0;
+}
 /* Component variables are reset here to keep nested surfaces independent. */
 .bd-surface {
   --bd-surface-padding: 0;
@@ -396,4 +400,45 @@
 }
 .bd-icon-tile[data-tone="blue"] {
   background: var(--bd-category-blue-subtle);
+}
+
+/* Shared label geometry keeps decorative icons stable beside wrapping text. */
+.bd-badge {
+  gap: var(--bd-space-4);
+  max-inline-size: 100%;
+  box-sizing: border-box;
+  overflow-wrap: anywhere;
+}
+.bd-badge > span,
+.bd-category-label > span:not(.bd-category-label__marker) {
+  min-inline-size: 0;
+}
+.bd-badge[data-variant="tag"] {
+  font-family: var(--bd-font-ui);
+  color: var(--bd-text);
+  background: var(--bd-feedback-subtle);
+  border-color: var(--bd-divider);
+}
+.bd-category-label[data-variant="plain"] {
+  border: none;
+  padding: 0;
+  background: transparent;
+}
+.bd-badge[data-tone="teal"] {
+  --bd-feedback-subtle: var(--bd-category-teal-subtle);
+}
+.bd-badge[data-tone="magenta"] {
+  --bd-feedback-subtle: var(--bd-category-magenta-subtle);
+}
+.bd-badge[data-tone="orange"] {
+  --bd-feedback-subtle: var(--bd-category-orange-subtle);
+}
+.bd-badge[data-tone="violet"] {
+  --bd-feedback-subtle: var(--bd-category-violet-subtle);
+}
+.bd-badge[data-tone="green"] {
+  --bd-feedback-subtle: var(--bd-category-green-subtle);
+}
+.bd-badge[data-tone="blue"] {
+  --bd-feedback-subtle: var(--bd-category-blue-subtle);
 }

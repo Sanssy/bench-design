@@ -36,3 +36,8 @@ export const NoResults: Story = {
     children: "Try a broader search or remove a filter.",
   },
 };
+
+export const EditorialLibrary: Story = {
+  ...EmptyLibrary,
+  args: { ...EmptyLibrary.args, variant: "editorial", icon: "file-text" },
+};

@@ -1,5 +1,6 @@
 import { render, screen } from "@testing-library/react";
-import { expect, test } from "vitest";
+import userEvent from "@testing-library/user-event";
+import { expect, test, vi } from "vitest";
 import { Button } from "../button/Button.js";
 import { EmptyState } from "./EmptyState.js";
 
@@ -37,4 +38,34 @@ test("EmptyState presents the supplied action", () => {
   expect(
     screen.getByRole("button", { name: "Import documents" }),
   ).toBeVisible();
+});
+
+test("editorial empty state keeps its heading, decorative icon and usable action", async () => {
+  const onPress = vi.fn();
+  const { container } = render(
+    <EmptyState
+      title="No resources"
+      level={2}
+      variant="editorial"
+      icon="file-text"
+      action={<Button onPress={onPress}>Add resource</Button>}
+    >
+      Start your collection.
+    </EmptyState>,
+  );
+  expect(
+    screen.getByRole("heading", { name: "No resources", level: 2 }),
+  ).toHaveAttribute("data-size", "lead");
+  expect(container.querySelector(".bd-icon-tile")).toHaveAttribute(
+    "data-tone",
+    "neutral",
+  );
+  expect(container.querySelector(".bd-icon-tile")).toHaveAttribute(
+    "aria-hidden",
+    "true",
+  );
+  await userEvent
+    .setup()
+    .click(screen.getByRole("button", { name: "Add resource" }));
+  expect(onPress).toHaveBeenCalledOnce();
 });

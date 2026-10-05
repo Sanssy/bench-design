@@ -12,6 +12,8 @@ Import `EmptyState` from `bench-design` and load `bench-design/styles.css` once.
 
 Use to explain an empty collection and a useful next step. Supply an action only when one is available. Choose the heading level for the surrounding document. Avoid using an empty state for errors or loading.
 
+Use `variant="editorial"` for an editorial heading and solid border. The optional `icon` uses a neutral decorative IconTile; the title supplies its meaning.
+
 ## API
 
 <ManifestProps component="EmptyState" />
@@ -24,6 +26,7 @@ Use to explain an empty collection and a useful next step. Supply an action only
 
 <Canvas of={Stories.EmptyLibrary} />
 <Canvas of={Stories.NoResults} />
+<Canvas of={Stories.EditorialLibrary} />
 
 Use the theme selector to inspect light and dark themes.
 

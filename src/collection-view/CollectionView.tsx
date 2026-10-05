@@ -8,6 +8,8 @@ export interface CollectionViewProps {
   headingLevel?: 2 | 3 | 4 | 5 | 6;
   /** Optional total supplied by the consumer, including zero. */
   count?: number;
+  /** Count appearance; defaults to plain. */
+  countVariant?: "plain" | "outlined";
   /** Search, filters and view controls supplied by the consumer. */
   toolbar?: ReactNode;
   /** Consumer-owned result summary and sorting controls. */
@@ -24,6 +26,7 @@ export function CollectionView({
   label,
   headingLevel = 2,
   count,
+  countVariant = "plain",
   toolbar,
   footer,
   isEmpty = false,
@@ -37,11 +40,19 @@ export function CollectionView({
         <div id={id}>
           <Heading level={headingLevel} size="heading">
             {label}
+            {count !== undefined && (
+              <>
+                {" "}
+                <span
+                  className="bd-collection-view-count"
+                  data-variant={countVariant}
+                >
+                  {count}
+                </span>
+              </>
+            )}
           </Heading>
         </div>
-        {count !== undefined && (
-          <span className="bd-collection-view-count">{count}</span>
-        )}
       </header>
       {toolbar != null && (
         <div className="bd-collection-view-toolbar">{toolbar}</div>

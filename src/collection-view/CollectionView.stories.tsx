@@ -106,10 +106,15 @@ export const EmptyLibrary: Story = {
     <CollectionView
       label="Resource library"
       count={0}
+      countVariant="outlined"
       isEmpty
       footer="0 of 0 shown"
       emptyState={
-        <EmptyState title="No resources yet">
+        <EmptyState
+          title="No resources yet"
+          variant="editorial"
+          icon="file-text"
+        >
           Add a resource to start your library.
         </EmptyState>
       }

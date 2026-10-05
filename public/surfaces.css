@@ -48,6 +48,12 @@
   background: var(--bd-surface-subtle);
   color: var(--bd-text);
 }
+.bd-empty-state[data-variant="editorial"] {
+  border-style: solid;
+}
+:where(.bd-empty-state) > .bd-icon-tile {
+  margin-block-end: var(--bd-space-16);
+}
 .bd-empty-state > .bd-heading {
   margin-bottom: var(--bd-space-8);
 }

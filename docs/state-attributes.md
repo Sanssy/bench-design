@@ -48,7 +48,7 @@ meaning; ownership depends on the element, not just the attribute name.
 | `data-size` | Heading/Text typography role and Avatar size. |
 | `data-sticky` | Table frame enables a sticky header. |
 | `data-tone` | Surface, Badge, Status, Notice, Text and Toast semantic tone. |
-| `data-variant` | Button/IconButton/ToggleButton, Badge, Text and RadioGroup presentation. |
+| `data-variant` | Button/IconButton/ToggleButton, Badge, Text and RadioGroup presentation; GridList selection treatment. |
 
 ## Maintenance
 

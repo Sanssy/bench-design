@@ -12,6 +12,14 @@ Import `GridList` from `bench-design` and load `bench-design/styles.css` once.
 
 Use for consumer-rendered cards or rows with stable string identifiers. Provide getKey when items have no string id. Keep readable text directly in renderItem for typeahead; opaque components cannot supply that text automatically. Provide selectionBar actions and renderEmpty content. Arrow keys navigate items; Tab enters internal controls. Enter activates before selection. React Aria toggle selection suppresses actions while a selection exists; Space selects. Avoid embedding a second independent selection control.
 
+## Layout and selection
+
+`columns` sets the maximum number of grid columns (default: 2). Columns fit the container using the panel-width token as a minimum, then collapse to one column on narrow screens. List layout remains vertical. Use positive integers.
+
+`selectionVariant="strong"` uses the theme-aware strong selection tokens; `"accent"` keeps the default treatment. Item activation stays on GridList via `onAction`.
+
+<Canvas of={Stories.WideResourceCards} />
+
 ## API
 
 <ManifestProps component="GridList" />

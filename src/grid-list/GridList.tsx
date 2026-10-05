@@ -1,4 +1,10 @@
-import { Children, isValidElement, type ReactNode, useState } from "react";
+import {
+  Children,
+  type CSSProperties,
+  isValidElement,
+  type ReactNode,
+  useState,
+} from "react";
 import {
   GridList as AriaGridList,
   Checkbox,
@@ -23,8 +29,12 @@ export interface GridListProps<T> {
   getKey?: (item: T) => string;
   /** Grid uses two-dimensional arrow navigation; list uses vertical arrows. */
   layout?: "grid" | "list";
+  /** Maximum grid columns; defaults to two and collapses to fit the container. */
+  columns?: number;
   /** Allowed selection cardinality. */
   selectionMode?: "none" | "single" | "multiple";
+  /** Selected item treatment; accent is the default. */
+  selectionVariant?: "accent" | "strong";
   /** Controlled selected keys. */
   selectedKeys?: readonly string[];
   /** Initial uncontrolled selected keys. */
@@ -59,7 +69,9 @@ export function GridList<T>({
   items,
   getKey,
   layout = "grid",
+  columns = 2,
   selectionMode = "none",
+  selectionVariant = "accent",
   selectedKeys,
   defaultSelectedKeys,
   onSelectionChange,
@@ -91,6 +103,12 @@ export function GridList<T>({
         {...(dragAndDropHooks ? { dragAndDropHooks } : {})}
         aria-label={label}
         className="bd-grid-list"
+        data-variant={selectionVariant}
+        style={
+          {
+            "--bd-grid-list-columns": Math.max(1, Math.floor(columns)),
+          } as CSSProperties
+        }
         layout={layout === "grid" ? "grid" : "stack"}
         orientation="vertical"
         selectionMode={selectionMode}

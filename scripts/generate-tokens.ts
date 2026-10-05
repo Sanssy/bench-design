@@ -68,6 +68,43 @@ const css = `:root {\n${indent(
   ],
   2,
 )}\n}\n\n@media (prefers-color-scheme: dark) {\n  :root:not([data-theme]) {\n${indent(dark, 4)}\n  }\n}\n\n:root[data-theme="dark"] {\n${indent(dark, 2)}\n}\n`;
+const inverseContext = (theme: "light" | "dark") => [
+  ...Object.entries(tokens.base).flatMap(([name, token]) => {
+    const metadata = token.$extensions["org.bench-design"];
+    return "darkValue" in metadata
+      ? [
+          `--bd-${name}: ${theme === "dark" ? `${metadata.darkValue.value}${metadata.darkValue.unit}` : baseValue(token)};`,
+        ]
+      : [];
+  }),
+  ...declarations(theme),
+  ...Object.keys(tokens[theme === "light" ? "dark" : "light"])
+    .filter((name) => !(name in tokens[theme]))
+    .map((name) => `--bd-${name}: initial;`),
+  // Shadow aliases are resolved at their declaration site, so rebind locally.
+  ...Object.entries(tokens.base)
+    .filter(
+      ([, token]) =>
+        typeof token.$value === "object" && "offsetX" in token.$value,
+    )
+    .map(([name, token]) => `--bd-${name}: ${baseValue(token)};`),
+  `color-scheme: ${theme};`,
+];
+const inverseCss = `
+.bd-surface[data-tone="inverse"] {
+${indent(inverseContext("dark"), 2)}
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme]) .bd-surface[data-tone="inverse"] {
+${indent(inverseContext("light"), 4)}
+  }
+}
+
+:root[data-theme="dark"] .bd-surface[data-tone="inverse"] {
+${indent(inverseContext("light"), 2)}
+}
+`;
 const types = `/** Generated from tokens.json; run pnpm tokens:generate. */
 /** Ratified spacing scale used by layout gaps and surface padding. */
 export type SpaceToken = ${Object.keys(tokens.base)
@@ -81,10 +118,10 @@ const typesPath =
 const path =
   process.argv.find((arg) => arg.startsWith("--css="))?.slice(6) ??
   "src/tokens.css";
-if (process.argv.includes("--stdout")) process.stdout.write(css);
+if (process.argv.includes("--stdout")) process.stdout.write(css + inverseCss);
 else if (process.argv.includes("--check")) {
   if (
-    readFileSync(path, "utf8") !== css ||
+    readFileSync(path, "utf8") !== css + inverseCss ||
     readFileSync(typesPath, "utf8") !== types
   ) {
     console.error(
@@ -93,6 +130,6 @@ else if (process.argv.includes("--check")) {
     process.exitCode = 1;
   }
 } else {
-  writeFileSync(path, css);
+  writeFileSync(path, css + inverseCss);
   writeFileSync(typesPath, types);
 }

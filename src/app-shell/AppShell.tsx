@@ -57,12 +57,6 @@ export function AppShell({
           if (key === "start" || key === "end") setSelected(key);
         }}
       >
-        {/* Zones scroll on their own on wide screens: keyboard users must
-            be able to focus them to scroll (WCAG 2.1.1). */}
-        {/* biome-ignore lint/a11y/noNoninteractiveTabindex: the zone is a keyboard-scrollable region. */}
-        <main className="bd-app-shell-main" tabIndex={0}>
-          {children}
-        </main>
         {(start || end) && (
           <TabList
             className="bd-app-shell-selector bd-tab-list"
@@ -86,6 +80,12 @@ export function AppShell({
             ))}
           </TabList>
         )}
+        {/* Zones scroll on their own on wide screens: keyboard users must
+            be able to focus them to scroll (WCAG 2.1.1). */}
+        {/* biome-ignore lint/a11y/noNoninteractiveTabindex: the zone is a keyboard-scrollable region. */}
+        <main className="bd-app-shell-main" tabIndex={0}>
+          {children}
+        </main>
         {panels.map(({ key, panel }) => (
           <TabPanel
             key={key}

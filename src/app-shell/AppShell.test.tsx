@@ -56,8 +56,8 @@ test("AppShell keeps named panels mounted and input state across selection", asy
   expect(start).toHaveAttribute("aria-labelledby", library.id);
   expect(
     screen
-      .getByRole("main")
-      .compareDocumentPosition(screen.getByRole("tablist")) &
+      .getByRole("tablist")
+      .compareDocumentPosition(screen.getByRole("main")) &
       Node.DOCUMENT_POSITION_FOLLOWING,
   ).toBeTruthy();
   await user.type(input, "Saved search");

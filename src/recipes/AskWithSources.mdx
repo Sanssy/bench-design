@@ -1,0 +1,28 @@
+import { Meta, Canvas } from '@storybook/addon-docs/blocks';
+import * as Stories from './AskWithSources.stories';
+
+<Meta of={Stories} />
+
+# Ask with sources
+
+Compose AppShell, AppHeader, TopNav, Heading, ActionCard, ActionList, Composer,
+ReferenceList and Paper to show a question alongside its supporting sources.
+The example uses fictional content and a local timer; it makes no network request.
+
+## Application responsibilities
+
+Own conversation state, answer generation, permissions, errors and source resolution
+in the application. This exported recipe is a demonstration, not a conversation service.
+Use React Aria links for citations and provide real destinations in your application.
+The highlighted excerpt uses native `mark` semantics.
+
+## Keyboard and responsive use
+
+Choose a suggestion to fill the draft. Enter submits; Shift+Enter adds a line.
+The Composer announces waiting and the answer region announces completion.
+Tab reaches each citation, which links to the focusable source excerpt.
+At narrow widths, numbered ActionList rows replace the suggestion cards.
+The composer stays in the document flow and sticks to the bottom with trailing space.
+Use the theme selector to inspect light and dark appearances at 320 px and desktop widths.
+
+<Canvas of={Stories.AskAndRead} />

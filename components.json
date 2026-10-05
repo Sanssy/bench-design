@@ -3339,6 +3339,41 @@
       ]
     },
     {
+      "name": "TopNav",
+      "import": "import { TopNav } from \"bench-design\";",
+      "description": "Page links; routing remains owned by the consuming application (React Aria links, ready for a client router).",
+      "props": [
+        {
+          "name": "label",
+          "type": "string",
+          "required": true,
+          "description": "Accessible navigation landmark name."
+        },
+        {
+          "name": "items",
+          "type": "readonly {\n    id: string;\n    label: string;\n    href: string;\n    count?: number;\n    icon?: IconName;\n  }[]",
+          "required": true,
+          "description": "Ordered destinations with unique stable identifiers. Counts describe the destination."
+        },
+        {
+          "name": "currentId",
+          "type": "string",
+          "required": false,
+          "description": "Identifier of the current page; omitted when none matches."
+        }
+      ],
+      "stories": [
+        {
+          "name": "PageNavigation",
+          "href": "./?path=/story/navigation-topnav--page-navigation"
+        },
+        {
+          "name": "LongLabels",
+          "href": "./?path=/story/navigation-topnav--long-labels"
+        }
+      ]
+    },
+    {
       "name": "Tree",
       "import": "import { Tree } from \"bench-design\";",
       "description": "A React Aria tree; hierarchy state and keyboard behavior stay with React Aria.",

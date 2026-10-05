@@ -198,8 +198,11 @@ export function Typography() {
       <section>
         <h2>Three voices, four uses</h2>
         <h3 data-family="editorial" className="editorial specimen-title">
-          Ideas take shape.
+          Ideas <em>take shape.</em>
         </h3>
+        <p className="editorial specimen-body">
+          An editorial voice gives <i>new perspectives</i> room to grow.
+        </p>
         <p data-family="ui" className="specimen-body">
           A reading paragraph gives ideas room to breathe. Manrope supports the
           content with a steady rhythm and a quiet presence.
@@ -207,6 +210,12 @@ export function Typography() {
         <p className="interface-label">Open the collection</p>
         <p data-family="metadata" className="metadata">
           EDITION 01 · BENCH DESIGN · 0123456789
+        </p>
+        <p
+          className="metadata"
+          style={{ fontWeight: "var(--bd-weight-semibold)" }}
+        >
+          IBM Plex Mono · Semibold 600 · 0123456789
         </p>
         <p className="metadata">
           Fraunces: wght {tokens.base["weight-editorial"].$value} · SOFT{" "}

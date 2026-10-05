@@ -25,5 +25,23 @@
     "license_source": "https://raw.githubusercontent.com/google/fonts/main/ofl/fraunces/OFL.txt",
     "sha256": "177ff6c0f14e5550a3c624247cd1189611d4eb65d000b14944c63d967958abbb",
     "bytes": 360440
+  },
+  {
+    "family": "fraunces",
+    "file": "Fraunces-Italic.ttf",
+    "role": "editorial",
+    "source": "https://raw.githubusercontent.com/google/fonts/main/ofl/fraunces/Fraunces-Italic%5BSOFT%2CWONK%2Copsz%2Cwght%5D.ttf",
+    "license_source": "https://raw.githubusercontent.com/google/fonts/main/ofl/fraunces/OFL.txt",
+    "sha256": "b24448c43702fac4ee856781d461a0dfba8d8e594b6e8e190234b75fed2c0e01",
+    "bytes": 414904
+  },
+  {
+    "family": "ibmplexmono",
+    "file": "IBMPlexMono-SemiBold.ttf",
+    "role": "metadata",
+    "source": "https://raw.githubusercontent.com/google/fonts/main/ofl/ibmplexmono/IBMPlexMono-SemiBold.ttf",
+    "license_source": "https://raw.githubusercontent.com/google/fonts/main/ofl/ibmplexmono/OFL.txt",
+    "sha256": "d3c38e55c78f5b0f28009fddba4834ec503278936a5986032424c9bd2d23aa46",
+    "bytes": 140216
   }
 ]

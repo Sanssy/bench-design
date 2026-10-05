@@ -22,6 +22,22 @@
   font-display: swap;
 }
 
+@font-face {
+  font-family: "Bench Fraunces";
+  src: url("./fonts/Fraunces-Italic.ttf") format("truetype");
+  font-style: italic;
+  font-weight: 100 900;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Bench Plex";
+  src: url("./fonts/IBMPlexMono-SemiBold.ttf") format("truetype");
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+}
+
 :root {
   --bd-font-editorial:
     "Bench Fraunces", "Iowan Old Style", "Palatino Linotype", Palatino, Georgia,

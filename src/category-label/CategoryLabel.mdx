@@ -14,6 +14,8 @@ Use a short visible category label. The consuming product assigns meaning to eac
 Category colors are graphical markers, not action colors or semantic statuses.
 Never communicate meaning through color alone or use these hues for small text.
 
+Use `icon` to replace the decorative square. `marker` keeps the outlined surface (default); `plain` removes its border, padding and background. Both retain the visible text and support wrapping long labels.
+
 ## API
 
 <ManifestProps component="CategoryLabel" />
@@ -23,6 +25,8 @@ Never communicate meaning through color alone or use these hues for small text.
 
 <Canvas of={Stories.Research} />
 <Canvas of={Stories.Categories} />
+
+<Canvas of={Stories.TopicLabels} />
 
 Use the theme selector to inspect light and dark themes.
 

@@ -9,7 +9,18 @@ export default {
   argTypes: {
     tone: {
       control: "select",
-      options: ["neutral", "success", "warning", "danger"],
+      options: [
+        "neutral",
+        "success",
+        "warning",
+        "danger",
+        "teal",
+        "magenta",
+        "orange",
+        "violet",
+        "green",
+        "blue",
+      ],
     },
   },
 } satisfies Meta<typeof Badge>;
@@ -33,6 +44,31 @@ export const PublicationStates: Story = {
       <Badge tone="warning">Draft</Badge>
       <Badge tone="danger">Blocked</Badge>
       <Badge variant="solid">SVG</Badge>
+    </Inline>
+  ),
+};
+
+export const RelatedTopics: Story = {
+  render: () => (
+    <Inline gap={8}>
+      <Badge variant="meta" icon="file-text">
+        PDF
+      </Badge>
+      {(
+        [
+          "neutral",
+          "teal",
+          "magenta",
+          "orange",
+          "violet",
+          "green",
+          "blue",
+        ] as const
+      ).map((tone) => (
+        <Badge key={tone} variant="tag" tone={tone} icon="link">
+          Related research and supporting documentation
+        </Badge>
+      ))}
     </Inline>
   ),
 };

@@ -12,6 +12,8 @@ Import `Badge` from `bench-design` and load `bench-design/styles.css` once.
 
 Use for short counts or format labels. Both variants are noninteractive. Neutral is the default; success, warning and danger require a meaningful label. Status outline uses a colored border and transparent background; status solid uses that border and a tinted background. Both keep standard text color. Provide any missing context in surrounding text. Avoid long sentences, color-only status meanings or clickable badges.
 
+Use `meta` for monospaced metadata (the default outline presentation), or `tag` for interface text on a subtle category background. Existing outline and solid variants remain available. Category tones are abstract hues assigned by the consumer. `icon` is decorative; always keep a visible label. Long labels wrap within the available width.
+
 ## API
 
 <ManifestProps component="Badge" />
@@ -24,6 +26,8 @@ Use for short counts or format labels. Both variants are noninteractive. Neutral
 
 <Canvas of={Stories.DocumentCount} />
 <Canvas of={Stories.PublicationStates} />
+
+<Canvas of={Stories.RelatedTopics} />
 
 Use the theme selector to inspect light and dark themes.
 

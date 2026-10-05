@@ -21,3 +21,19 @@ export const Categories: Story = {
     </Inline>
   ),
 };
+
+export const TopicLabels: Story = {
+  render: () => (
+    <Inline gap={8}>
+      <CategoryLabel category="teal" icon="file-text">
+        Research and supporting documentation
+      </CategoryLabel>
+      <CategoryLabel category="blue" icon="link" variant="plain">
+        Related resources
+      </CategoryLabel>
+      <CategoryLabel category="green" variant="plain">
+        Nature
+      </CategoryLabel>
+    </Inline>
+  ),
+};

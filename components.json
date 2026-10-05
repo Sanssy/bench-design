@@ -234,16 +234,23 @@
         },
         {
           "name": "tone",
-          "type": "\"neutral\" | \"success\" | \"warning\" | \"danger\"",
+          "type": "| \"neutral\"\n    | \"success\"\n    | \"warning\"\n    | \"danger\"\n    | \"teal\"\n    | \"magenta\"\n    | \"orange\"\n    | \"violet\"\n    | \"green\"\n    | \"blue\"",
           "required": false,
           "description": "Semantic tone; include a meaningful label.",
           "default": "\"neutral\""
         },
         {
           "name": "variant",
-          "type": "\"outline\" | \"solid\"",
+          "type": "\"outline\" | \"solid\" | \"meta\" | \"tag\"",
           "required": false,
+          "description": "Metadata is monospaced; tags use the interface font and subtle fills.",
           "default": "\"outline\""
+        },
+        {
+          "name": "icon",
+          "type": "\"arrow-left\" | \"arrow-right\" | \"arrow-up-right\" | \"arrow-up\" | \"asterisk\" | \"bike\" | \"bin\" | \"briefcase\" | \"calendar\" | \"check\" | \"chevron-down\" | \"chevron-right\" | \"download\" | \"file-text\" | \"grip\" | \"heart\" | \"home\" | \"info\" | \"layers\" | \"layout-grid\" | \"link\" | \"list\" | \"menu\" | \"pen\" | \"plus\" | \"scan\" | \"search\" | \"settings\" | \"shopping-bag\" | \"triangle-alert\" | \"upload\" | \"user\" | \"wallet\" | \"x\"",
+          "required": false,
+          "description": "Decorative catalogue icon; the visible label supplies meaning."
         }
       ],
       "stories": [
@@ -254,6 +261,10 @@
         {
           "name": "PublicationStates",
           "href": "./?path=/story/feedback-badge--publication-states"
+        },
+        {
+          "name": "RelatedTopics",
+          "href": "./?path=/story/feedback-badge--related-topics"
         }
       ]
     },
@@ -482,6 +493,19 @@
           "type": "string",
           "required": true,
           "description": "Visible label; color must never carry the meaning alone."
+        },
+        {
+          "name": "icon",
+          "type": "\"arrow-left\" | \"arrow-right\" | \"arrow-up-right\" | \"arrow-up\" | \"asterisk\" | \"bike\" | \"bin\" | \"briefcase\" | \"calendar\" | \"check\" | \"chevron-down\" | \"chevron-right\" | \"download\" | \"file-text\" | \"grip\" | \"heart\" | \"home\" | \"info\" | \"layers\" | \"layout-grid\" | \"link\" | \"list\" | \"menu\" | \"pen\" | \"plus\" | \"scan\" | \"search\" | \"settings\" | \"shopping-bag\" | \"triangle-alert\" | \"upload\" | \"user\" | \"wallet\" | \"x\"",
+          "required": false,
+          "description": "Decorative icon replacing the category square."
+        },
+        {
+          "name": "variant",
+          "type": "\"marker\" | \"plain\"",
+          "required": false,
+          "description": "Marker keeps the outlined presentation; plain removes its surface.",
+          "default": "\"marker\""
         }
       ],
       "stories": [
@@ -492,6 +516,10 @@
         {
           "name": "Categories",
           "href": "./?path=/story/data-categorylabel--categories"
+        },
+        {
+          "name": "TopicLabels",
+          "href": "./?path=/story/data-categorylabel--topic-labels"
         }
       ]
     },

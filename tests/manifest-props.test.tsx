@@ -6,7 +6,9 @@ it("shows exact literal types, required flags and defaults from the manifest", (
   render(<ManifestProps component="Badge" />);
   const row = screen.getByRole("row", { name: /tone/ });
   expect(
-    within(row).getByText('"neutral" | "success" | "warning" | "danger"'),
+    within(row).getByText(
+      '| "neutral" | "success" | "warning" | "danger" | "teal" | "magenta" | "orange" | "violet" | "green" | "blue"',
+    ),
   ).toBeVisible();
   expect(within(row).getByText("No")).toBeVisible();
   expect(within(row).getByText('"neutral"')).toBeVisible();

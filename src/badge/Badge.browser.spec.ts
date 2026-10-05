@@ -156,3 +156,64 @@ for (const theme of ["light", "dark"] as const) {
     }
   });
 }
+
+test("Badge tags keep readable wrapping text in both themes", {
+  tag: ["@component:badge", "@theme:light", "@theme:dark"],
+}, async ({ page }) => {
+  await page.setViewportSize({ width: 170, height: 800 });
+  for (const theme of ["light", "dark"]) {
+    await page.goto(
+      `/iframe.html?id=feedback-badge--related-topics&viewMode=story&globals=a11y.manual:!true;theme:${theme}`,
+    );
+    await expect(page.locator("html")).toHaveAttribute("data-theme", theme);
+    for (const tag of await page
+      .locator('.bd-badge[data-variant="tag"]')
+      .all()) {
+      await expect(tag.locator("svg")).toHaveAttribute("aria-hidden", "true");
+      const result = await tag.evaluate((element) => {
+        const css = getComputedStyle(element);
+        const tone = element.getAttribute("data-tone");
+        const probe = document.createElement("span");
+        probe.style.backgroundColor =
+          tone === "neutral"
+            ? "var(--bd-surface-subtle)"
+            : `var(--bd-category-${tone}-subtle)`;
+        element.append(probe);
+        const background = getComputedStyle(probe).backgroundColor;
+        probe.remove();
+        const luminance = (color: string) => {
+          const channels =
+            color
+              .match(/[\d.]+/g)
+              ?.slice(0, 3)
+              .map(Number) ?? [];
+          return channels.reduce((sum, channel, i) => {
+            const c = channel / 255;
+            return (
+              sum +
+              ([0.2126, 0.7152, 0.0722][i] ?? 0) *
+                (c <= 0.04045 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4)
+            );
+          }, 0);
+        };
+        const a = luminance(css.color),
+          b = luminance(css.backgroundColor);
+        return {
+          background: css.backgroundColor,
+          expected: background,
+          font: css.fontFamily,
+          contrast: (Math.max(a, b) + 0.05) / (Math.min(a, b) + 0.05),
+          fits: element.scrollWidth <= element.clientWidth,
+          wraps:
+            (element.querySelector("span")?.getBoundingClientRect().height ??
+              0) > parseFloat(css.lineHeight),
+        };
+      });
+      expect(result.background).toBe(result.expected);
+      expect(result.font).toContain("Bench Manrope");
+      expect(result.contrast).toBeGreaterThanOrEqual(4.5);
+      expect(result.fits).toBe(true);
+      expect(result.wraps).toBe(true);
+    }
+  }
+});

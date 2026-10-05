@@ -57,3 +57,35 @@ test("CategoryLabel keeps its width in a stretching stack", {
   ]);
   expect(widths[0]).toBeLessThan((widths[1] ?? 0) / 2);
 });
+
+for (const theme of ["light", "dark"]) {
+  test(`CategoryLabel icon and plain labels wrap in ${theme}`, {
+    tag: ["@component:category-label", `@theme:${theme}`],
+  }, async ({ page }) => {
+    await page.setViewportSize({ width: 170, height: 800 });
+    await page.goto(
+      `/iframe.html?id=data-categorylabel--topic-labels&viewMode=story&globals=a11y.manual:!true;theme:${theme}`,
+    );
+    await expect(page.locator("html")).toHaveAttribute("data-theme", theme);
+    const labels = page.locator(".bd-category-label");
+    await expect(labels).toHaveCount(3);
+    for (const label of await labels.all()) {
+      await expect(label).toBeVisible();
+      expect(await label.evaluate((e) => e.scrollWidth <= e.clientWidth)).toBe(
+        true,
+      );
+    }
+    await expect(labels.first().locator("svg")).toHaveAttribute(
+      "aria-hidden",
+      "true",
+    );
+    await expect(
+      labels.first().locator(".bd-category-label__marker"),
+    ).toHaveCount(0);
+    await expect(labels.nth(1)).toHaveCSS("border-top-style", "none");
+    await expect(labels.nth(1)).toHaveCSS(
+      "background-color",
+      "rgba(0, 0, 0, 0)",
+    );
+  });
+}

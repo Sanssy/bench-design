@@ -1,6 +1,69 @@
 {
   "components": [
     {
+      "name": "ActionCard",
+      "import": "import { ActionCard } from \"bench-design\";",
+      "description": "A single accessible card target: href OR onPress. Do not nest controls or use inside GridList.",
+      "props": [
+        {
+          "name": "href",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "onPress",
+          "type": "() => void",
+          "required": false
+        },
+        {
+          "name": "isDisabled",
+          "type": "boolean",
+          "required": false
+        },
+        {
+          "name": "title",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "description",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "media",
+          "type": "ReactNode",
+          "required": false,
+          "description": "Presentational content only; never include controls or focusable elements."
+        },
+        {
+          "name": "eyebrow",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "trailingIcon",
+          "type": "ReactNode",
+          "required": false,
+          "description": "Decorative trailing content; undefined uses the link arrow, null omits it."
+        }
+      ],
+      "stories": [
+        {
+          "name": "Archive",
+          "href": "./?path=/story/surfaces-actioncard--archive"
+        },
+        {
+          "name": "CreateNote",
+          "href": "./?path=/story/surfaces-actioncard--create-note"
+        },
+        {
+          "name": "Unavailable",
+          "href": "./?path=/story/surfaces-actioncard--unavailable"
+        }
+      ]
+    },
+    {
       "name": "AppShell",
       "import": "import { AppShell } from \"bench-design\";",
       "description": "A viewport workspace on large screens and a natural document on small screens, with a localized keyboard skip link to main.",

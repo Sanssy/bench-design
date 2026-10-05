@@ -914,9 +914,23 @@
         },
         {
           "name": "title",
-          "type": "string",
+          "type": "ReactNode",
           "required": true,
           "description": "Visible editorial heading and accessible dialog name."
+        },
+        {
+          "name": "placement",
+          "type": "\"center\" | \"end\"",
+          "required": false,
+          "description": "Centered modal or full-height sheet at the logical end edge.",
+          "default": "\"center\""
+        },
+        {
+          "name": "size",
+          "type": "\"default\" | \"wide\"",
+          "required": false,
+          "description": "Default reading measure or wider workspace measure.",
+          "default": "\"default\""
         },
         {
           "name": "eyebrow",
@@ -949,6 +963,18 @@
         {
           "name": "ControlledHelp",
           "href": "./?path=/story/overlays-dialog--controlled-help"
+        },
+        {
+          "name": "AddDocuments",
+          "href": "./?path=/story/overlays-dialog--add-documents"
+        },
+        {
+          "name": "WideSheet",
+          "href": "./?path=/story/overlays-dialog--wide-sheet"
+        },
+        {
+          "name": "WideDialog",
+          "href": "./?path=/story/overlays-dialog--wide-dialog"
         }
       ]
     },

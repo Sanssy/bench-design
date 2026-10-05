@@ -220,10 +220,10 @@ test("Open Dialog passes automated axe in both themes", {
   }
 });
 
-for (const theme of ["light", "dark"] as const) {
-  test(`Controlled Dialog restores origin focus and passes axe at 320px ${theme}`, {
-    tag: ["@component:dialog", `@theme:${theme}`],
-  }, async ({ page }) => {
+test("Controlled Dialog restores origin focus and passes axe at 320px in both themes", {
+  tag: ["@component:dialog", "@theme:light", "@theme:dark"],
+}, async ({ page }) => {
+  for (const theme of ["light", "dark"] as const) {
     await page.setViewportSize({ width: 320, height: 640 });
     await page.goto(
       `/iframe.html?id=overlays-dialog--controlled-help&viewMode=story&globals=a11y.manual:!true;theme:${theme}`,
@@ -253,5 +253,71 @@ for (const theme of ["light", "dark"] as const) {
     await page.getByRole("button", { name: "Close", exact: true }).click();
     await expect(dialog).toHaveCount(0);
     await expect(origin).toBeFocused();
-  });
-}
+  }
+});
+
+test("End sheets keep the header visible and contain focus across themes and sizes", {
+  tag: ["@component:dialog", "@theme:light", "@theme:dark"],
+}, async ({ page }) => {
+  for (const theme of ["light", "dark"]) {
+    for (const width of [320, 1000]) {
+      for (const [story, trigger, title] of [
+        ["add-documents", "Add documents", "Add documents"],
+        ["wide-sheet", "Open reading workspace", "Reading workspace"],
+      ] as const) {
+        await page.setViewportSize({ width, height: 640 });
+        await page.goto(
+          `/iframe.html?id=overlays-dialog--${story}&viewMode=story&globals=a11y.manual:!true;theme:${theme}`,
+        );
+        const origin = page.getByRole("button", { name: trigger });
+        await origin.click();
+        const dialog = page.getByRole("dialog", { name: title });
+        await expect(dialog).toBeFocused();
+        await page.evaluate(() => document.fonts.ready);
+        const modal = await page.locator(".bd-modal").boundingBox();
+        expect(modal?.y).toBe(0);
+        expect(modal?.height).toBe(640);
+        expect((modal?.x ?? 0) + (modal?.width ?? 0)).toBe(width);
+        if (width === 320) expect(modal?.width).toBe(320);
+        const heading = page.getByRole("heading", { name: title });
+        const before = await heading.boundingBox();
+        expect(before?.y).toBeGreaterThanOrEqual(0);
+        const close = dialog.getByRole("button", {
+          name: "Close",
+          exact: true,
+        });
+        const target = await close.boundingBox();
+        expect(target?.width).toBeGreaterThanOrEqual(44);
+        expect(target?.height).toBeGreaterThanOrEqual(44);
+        await page.keyboard.press("Tab");
+        await expect(close).toBeFocused();
+        await page.keyboard.press("Shift+Tab");
+        expect(
+          await dialog.evaluate((element) =>
+            element.contains(document.activeElement),
+          ),
+        ).toBe(true);
+        const body = page.locator(".bd-dialog-body");
+        await body.evaluate((element) => {
+          element.scrollTop = element.scrollHeight;
+        });
+        if (story === "wide-sheet") {
+          expect(
+            await body.evaluate((element) => element.scrollTop),
+          ).toBeGreaterThan(0);
+        }
+        expect(await heading.boundingBox()).toEqual(before);
+        expect(
+          (
+            await new AxeBuilder({ page })
+              .withTags(["wcag2a", "wcag2aa"])
+              .analyze()
+          ).violations,
+        ).toEqual([]);
+        await page.keyboard.press("Escape");
+        await expect(dialog).toHaveCount(0);
+        await expect(origin).toBeFocused();
+      }
+    }
+  }
+});

@@ -19,7 +19,11 @@ export interface DialogProps {
   /** Called when the trigger or dismissal requests a visibility change. */
   onOpenChange?: (isOpen: boolean) => void;
   /** Visible editorial heading and accessible dialog name. */
-  title: string;
+  title: ReactNode;
+  /** Centered modal or full-height sheet at the logical end edge. */
+  placement?: "center" | "end";
+  /** Default reading measure or wider workspace measure. */
+  size?: "default" | "wide";
   /** Optional metadata above the title. */
   eyebrow?: string;
   /** Content in the internally scrolling body. */
@@ -34,6 +38,8 @@ export function Dialog({
   onOpenChange,
   title,
   eyebrow,
+  placement = "center",
+  size = "default",
   children,
   actions,
 }: DialogProps) {
@@ -41,13 +47,15 @@ export function Dialog({
   const titleId = useId();
   const overlay = (
     <ModalOverlay
-      className="bd-modal-overlay"
+      className={`bd-modal-overlay${placement === "end" ? " bd-modal-overlay-end" : ""}`}
       {...(trigger !== undefined || isOpen === undefined ? {} : { isOpen })}
       {...(trigger !== undefined || onOpenChange === undefined
         ? {}
         : { onOpenChange })}
     >
-      <Modal className="bd-modal">
+      <Modal
+        className={`bd-modal${placement === "end" ? " bd-modal-end" : ""}${size === "wide" ? " bd-modal-wide" : ""}`}
+      >
         <AriaDialog className="bd-dialog" aria-labelledby={titleId}>
           {({ close }) => (
             <>

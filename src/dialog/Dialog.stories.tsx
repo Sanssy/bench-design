@@ -86,3 +86,33 @@ export const ControlledHelp: Story = {
     );
   },
 };
+
+export const AddDocuments: Story = {
+  args: {
+    trigger: <Button>Add documents</Button>,
+    title: (
+      <>
+        Add <em>documents</em>
+      </>
+    ),
+    placement: "end",
+    children: (
+      <>
+        <Text>Choose documents to add to your collection.</Text>
+        <Button>Choose files</Button>
+      </>
+    ),
+  },
+};
+export const WideSheet: Story = {
+  args: {
+    ...ReadingGuide.args,
+    trigger: <Button>Open reading workspace</Button>,
+    title: "Reading workspace",
+    placement: "end",
+    size: "wide",
+  },
+};
+export const WideDialog: Story = {
+  args: { ...ReadingGuide.args, size: "wide" },
+};

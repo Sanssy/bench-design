@@ -6,6 +6,7 @@ const excludedDirectories = new Set([
   "node_modules",
   "dist",
   "storybook-static",
+  "site-dist",
   ".git",
   "coverage",
   "test-results",

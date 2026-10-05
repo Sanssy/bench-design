@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="bench-design: semantic tokens, local typography and accessible React components.">
+  <title>bench-design — A shared interface language</title>
+  <script src="assets/theme-init.js"></script>
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="assets/styles.css"><link rel="stylesheet" href="site.css">
+  <script src="theme.js" defer></script>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header>
+  <a class="brand" href="#top"><span class="brand-mark" aria-hidden="true">b</span><span>bench-design</span></a>
+  <nav aria-label="Primary"><a href="#principles">Principles</a><a href="#recipes">Recipes</a><a href="#start">Start</a><a href="#foundations">Foundations</a><a href="#catalog">Catalog</a><a href="#accessibility">Accessibility</a></nav>
+  <fieldset id="theme" class="bd-segmented" aria-label="Theme"><button type="button" class="bd-segment" data-theme-choice="system" aria-pressed="true" data-selected>System</button><button type="button" class="bd-segment" data-theme-choice="light" aria-pressed="false">Light</button><button type="button" class="bd-segment" data-theme-choice="dark" aria-pressed="false">Dark</button></fieldset>
+</header>
+<main id="main">
+<section id="top" class="hero" aria-labelledby="title">
+  <div><p class="meta">Semantic tokens · React · React Aria</p><h1 id="title">A shared language for clear, expressive interfaces.</h1>
+  <p class="lead">A small, durable vocabulary of tokens, local type, themes and accessible components. Compose interfaces while keeping application rules in your application.</p>
+  <div class="actions"><a class="bd-button" data-variant="primary" href="storybook/">Open Storybook <span aria-hidden="true">↗</span></a><a href="#start">See installation</a></div></div>
+  <aside><p class="meta">Understand → inspect → compose</p><h2>Start with the evidence.</h2><p>Explore real usage stories, inspect the API, then bring the package into your project.</p><a href="storybook/">Browse the documentation</a></aside>
+</section>
+<section id="principles" aria-labelledby="principles-title">
+  <div class="section-head"><p class="meta">01 / orientation</p><div><h2 id="principles-title">A point of view before a parts list.</h2></div></div>
+  <div class="grid"><article><h3>Swiss structure</h3><p>Clear grids, direct geometry and visible hierarchy keep dense work legible.</p></article><article><h3>Editorial voice</h3><p>Fraunces gives headings a distinct reading rhythm. Manrope carries the interface.</p></article><article><h3>Brutalist energy</h3><p>A lemon accent, strong borders and small offsets make action visible.</p></article></div>
+<div class="grid flow-grid"><article><span class="flow-number" aria-hidden="true">1</span><h3>Understand</h3><p>Principles and foundations name the shared decisions.</p></article><article><span class="flow-number" aria-hidden="true">2</span><h3>Inspect</h3><p>Storybook shows real stories, themes and API examples.</p></article><article><span class="flow-number" aria-hidden="true">3</span><h3>Compose</h3><p>Recipes bring generic pieces together in an application.</p></article></div>
+</section>
+<section id="recipes" aria-labelledby="recipes-title">
+  <div class="section-head"><p class="meta">02 / recipes</p><div><h2 id="recipes-title">See the pieces work together.</h2></div></div>
+  <div class="grid"><article><h3><a href="storybook/./?path=/story/recipes-choice--confirm-selection">Choose and confirm <span aria-hidden="true">↗</span></a></h3><p>A short selection and confirmation loop with clear feedback.</p></article><article><h3><a href="storybook/./?path=/story/recipes-library--browse-and-inspect">Browse and inspect <span aria-hidden="true">↗</span></a></h3><p>Search, filter and selection alongside the details they affect.</p></article><article><h3><a href="storybook/./?path=/story/recipes-workspace--edit-in-panel">Edit in a panel <span aria-hidden="true">↗</span></a></h3><p>A workspace keeps fields close to their preview. Persistence and validation belong to the application.</p></article></div>
+</section>
+<section id="start" aria-labelledby="start-title"><div class="section-head"><p class="meta">03 / getting started</p><div><h2 id="start-title">Take the package for a first render.</h2><p>Download the <code>.tgz</code> from <a href="https://github.com/Sanssy/bench-design/releases/tag/v0.1.0">GitHub Releases</a>, then install it in your React application. The v0.1.0 release contains the package tarball.</p></div></div>
+<p class="meta">Shell</p><pre><code>pnpm add ./bench-design-0.1.0.tgz</code></pre>
+<p class="meta">TSX</p><pre><code>import { Button } from 'bench-design';
+import 'bench-design/styles.css';
+
+&lt;Button onPress={() =&gt; { /* application action */ }}&gt;
+  Continue
+&lt;/Button&gt;</code></pre><p>Keep the local font assets beside the styles. Serve <code>theme-init.js</code> before CSS to restore the theme before first paint. Read the <a href="storybook/./?path=/story/docs-getting-started--page">integration documentation</a> for the full setup.</p></section>
+<section id="foundations" aria-labelledby="foundations-title">
+  <div class="section-head"><p class="meta">04 / foundations</p><div><h2 id="foundations-title">Values you can see and name.</h2></div></div>
+  <div class="grid"><article><h3>Paper, ink, lemon.</h3><div class="swatches"><span class="paper">Surface</span><span class="ink">Text</span><span class="lemon">Accent</span><span class="focus">Focus</span></div><p>Semantic roles adapt to light, dark and your system preference.</p></article><article><h3>Three voices.</h3><p class="editorial">Make room for the next thought.</p><p>Manrope for reading and controls.</p><p class="meta">IBM Plex Mono for metadata.</p></article><article><h3>Direct geometry.</h3><p>Square corners, fine rules and compact relief. Shared tokens carry these relationships across components.</p></article></div>
+  <h3>Inspect the real styles.</h3><p>These static specimens use the distributed component CSS. Open their stories for interactive behavior and API examples.</p>
+  <div class="grid specimens"><article><div class="specimen-stage" inert><button type="button" class="bd-button" data-variant="primary">Continue</button></div><p class="meta">Static specimen</p><p><a data-specimen="Button" href="<!-- BUTTON -->">Button stories <span aria-hidden="true">↗</span></a></p></article><article><div class="specimen-stage" inert><span class="bd-badge" data-variant="solid" data-tone="success">Ready</span><span class="bd-badge" data-variant="solid" data-tone="neutral">Info</span><span class="bd-badge" data-variant="solid" data-tone="warning">Review</span></div><p class="meta">Static specimen</p><p><a data-specimen="Badge" href="<!-- BADGE -->">Badge stories <span aria-hidden="true">↗</span></a></p></article><article><div class="specimen-stage" inert><div class="bd-card"><p class="specimen-title">A clear next step</p><p>A surface for related content.</p></div></div><p class="meta">Static specimen</p><p><a data-specimen="Card" href="<!-- CARD -->">Card stories <span aria-hidden="true">↗</span></a></p></article></div>
+</section>
+<section id="catalog" aria-labelledby="catalog-title">
+  <div class="section-head"><p class="meta">05 / catalog</p><div><h2 id="catalog-title">Find the family that fits the job.</h2><p>Generated from the package manifest. Each export leads to a usage story.</p></div></div><div class="grid catalog"><!-- CATALOG --></div>
+</section>
+<section id="accessibility" aria-labelledby="access-title"><div class="section-head"><p class="meta">06 / accessibility</p><div><h2 id="access-title">Make the path perceivable and operable.</h2><p>Meaningful structure, visible labels, keyboard support and visible focus belong together. Inspect the real stories and test your integration: automated accessibility checks do not certify every application context.</p></div></div></section>
+</main>
+<footer><p class="meta">bench-design · Tokens → stories → recipes</p><a href="https://github.com/Sanssy/bench-design/blob/main/LICENSE">MIT License</a><span>fonts: SIL OFL</span><a href="https://github.com/Sanssy/bench-design">Source</a></footer>
+</body>
+</html>

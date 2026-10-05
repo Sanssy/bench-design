@@ -2393,6 +2393,97 @@
       ]
     },
     {
+      "name": "Table",
+      "import": "import { Table } from \"bench-design\";",
+      "description": "A React Aria table that contains horizontal overflow within its own frame.",
+      "props": [
+        {
+          "name": "label",
+          "type": "string",
+          "required": true,
+          "description": "Accessible table name."
+        },
+        {
+          "name": "columns",
+          "type": "readonly TableColumn[]",
+          "required": true,
+          "description": "Ordered visible columns."
+        },
+        {
+          "name": "rows",
+          "type": "readonly T[]",
+          "required": true,
+          "description": "Ordered rows; consumers apply requested sorting."
+        },
+        {
+          "name": "getKey",
+          "type": "(row: T) => string",
+          "required": false,
+          "description": "Stable key extractor; defaults to a string id."
+        },
+        {
+          "name": "renderCell",
+          "type": "(row: T, columnId: string) => ReactNode",
+          "required": true,
+          "description": "Cell content for a row and column identifier."
+        },
+        {
+          "name": "sortDescriptor",
+          "type": "TableSortDescriptor",
+          "required": false,
+          "description": "Controlled sorting state."
+        },
+        {
+          "name": "onSortChange",
+          "type": "(descriptor: TableSortDescriptor) => void",
+          "required": false,
+          "description": "Called when a column requests sorting."
+        },
+        {
+          "name": "selectionMode",
+          "type": "\"none\" | \"single\" | \"multiple\"",
+          "required": false,
+          "description": "Allowed selection cardinality.",
+          "default": "\"none\""
+        },
+        {
+          "name": "selectedKeys",
+          "type": "readonly string[]",
+          "required": false,
+          "description": "Controlled selected row identifiers."
+        },
+        {
+          "name": "onSelectionChange",
+          "type": "(keys: string[]) => void",
+          "required": false,
+          "description": "Called with all selected identifiers."
+        },
+        {
+          "name": "stickyHeader",
+          "type": "boolean",
+          "required": false,
+          "description": "Keep column headings visible within the table's scrolling frame.",
+          "default": "true"
+        },
+        {
+          "name": "renderEmpty",
+          "type": "() => ReactNode",
+          "required": false,
+          "description": "Content for an empty table body."
+        }
+      ],
+      "stories": [
+        {
+          "name": "ResourceInventory",
+          "href": "./?path=/story/collections-table--resource-inventory"
+        },
+        {
+          "name": "CompactInventory",
+          "href": "./?path=/story/collections-table--compact-inventory"
+        }
+      ]
+    },
+    {
       "name": "Tabs",
       "import": "import { Tabs } from \"bench-design\";",
       "description": "Tab navigation and panels managed together by React Aria.",

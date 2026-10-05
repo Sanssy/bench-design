@@ -1,0 +1,24 @@
+import { Meta, Canvas } from '@storybook/addon-docs/blocks';
+import { ManifestProps } from "../../.storybook/ManifestProps";
+import * as Stories from './Table.stories';
+
+<Meta of={Stories} />
+
+# Table
+
+Import `Table` from `bench-design` and load `bench-design/styles.css` once.
+
+## Usage and accessibility
+
+Use for related data with named columns. Consumers reorder rows in response to onSortChange; sortDescriptor only represents sorting state. Use align="end" for numeric columns. Headings are sticky by default within the scrolling frame. Arrow keys move between rows and cells; Space selects and the selection checkbox supports select-all. Keep a meaningful row-header column first. Avoid using a table for unrelated card content.
+
+## API
+
+<ManifestProps component="Table" />
+
+## Examples
+
+<Canvas of={Stories.ResourceInventory} />
+<Canvas of={Stories.CompactInventory} />
+
+Use the theme selector to inspect both examples in light and dark themes.

@@ -85,6 +85,12 @@ export type { StatusProps } from "./status/Status.js";
 export { Status } from "./status/Status.js";
 export type { SurfaceProps } from "./surface/Surface.js";
 export { Surface } from "./surface/Surface.js";
+export type {
+  TableColumn,
+  TableProps,
+  TableSortDescriptor,
+} from "./table/Table.js";
+export { Table } from "./table/Table.js";
 export type { TabsProps } from "./tabs/Tabs.js";
 export { Tabs } from "./tabs/Tabs.js";
 export type { TextProps } from "./text/Text.js";

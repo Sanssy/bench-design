@@ -16,6 +16,12 @@ foundation documentation and the components listed in [components.json](componen
 The current families cover typography, layout, surfaces, data and status,
 forms and filters, navigation, overlays, collections, import and feedback.
 The manifest is the source of truth for exports and props.
+The source package version is 0.2.0. Select, ComboBox and MultiComboBox use
+`value` / `defaultValue` / `onChange`, with no aliases for the previous API.
+Select uses string identifiers (or null); ComboBox uses complete FieldOption
+objects (or null); MultiComboBox uses FieldOption arrays (empty to clear).
+FilterMenu keeps `value` / `onApply`; collections keep their selection APIs.
+The release download below remains the published 0.1.0 artifact.
 The [public repository](https://github.com/Sanssy/bench-design) is licensed under MIT.
 The package is distributed as a release tarball and is not published to npm. Visual
 references require explicit human approval; implementation is not approval.

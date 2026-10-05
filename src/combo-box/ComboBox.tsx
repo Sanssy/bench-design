@@ -19,11 +19,11 @@ export interface ComboBoxProps extends FieldProps {
   /** Form submission name. */
   name?: string;
   /** Controlled selected option, including its saved label; null clears selection. */
-  selectedOption?: FieldOption | null;
+  value?: FieldOption | null;
   /** Initial uncontrolled selected option, including its saved label. */
-  defaultSelectedOption?: FieldOption;
+  defaultValue?: FieldOption | null;
   /** Called with the selected option, or null when cleared. */
-  onSelectionChange?: (option: FieldOption | null) => void;
+  onChange?: (option: FieldOption | null) => void;
   /** Hint displayed until the user types or chooses an option. */
   placeholder?: string;
   /** Custom validation message; return null for a valid selection. */
@@ -41,16 +41,15 @@ export function ComboBox({
   options = [],
   loadItems,
   name,
-  selectedOption,
-  defaultSelectedOption,
-  onSelectionChange,
+  value,
+  defaultValue,
+  onChange,
   placeholder,
   validate,
 }: ComboBoxProps) {
   const [uncontrolledOption, setUncontrolledOption] =
-    useState<FieldOption | null>(defaultSelectedOption ?? null);
-  const selected =
-    selectedOption === undefined ? uncontrolledOption : selectedOption;
+    useState<FieldOption | null>(defaultValue ?? null);
+  const selected = value === undefined ? uncontrolledOption : value;
   const [inputValue, setInputValue] = useState(selected?.label ?? "");
   // Keyed on content: an equal inline option must not reset typed text.
   const selectedLabel = selected?.label ?? "";
@@ -75,7 +74,7 @@ export function ComboBox({
         search.onInputChange(value);
         if (value === "" && selected) {
           setUncontrolledOption(null);
-          onSelectionChange?.(null);
+          onChange?.(null);
         }
       }}
       onOpenChange={(isOpen, trigger) => {
@@ -88,10 +87,8 @@ export function ComboBox({
             ? null
             : (items.find((item) => item.id === String(key)) ?? selected);
         setUncontrolledOption(next);
-        setInputValue(
-          (selectedOption === undefined ? next : selectedOption)?.label ?? "",
-        );
-        onSelectionChange?.(next);
+        setInputValue((value === undefined ? next : value)?.label ?? "");
+        onChange?.(next);
       }}
       validate={({ value }) =>
         validate?.(value == null ? null : String(value)) ?? null

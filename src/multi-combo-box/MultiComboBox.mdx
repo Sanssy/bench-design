@@ -48,12 +48,12 @@ Enter selects, and Escape dismisses. React Aria owns focus, selection, validatio
 and label/help/error connections. Result updates use a polite live region.
 Disabled options cannot be selected. Loading motion stops with reduced motion.
 
-Selection uses `selectedOptions` / `onSelectionChange`, or `defaultSelectedOptions`
+Selection uses `value` / `onChange`, or `defaultValue`
 for uncontrolled usage. Keep the selected identifiers stable across searches.
 `validate` receives all selected keys and returns a message or `null`.
 
 Supply full `FieldOption` objects for saved choices, including their labels.
-`onSelectionChange` returns the selected options; form submission sends one
+`onChange` returns the selected options; form submission sends one
 `id` per choice. Saved choices need no additional server lookup.
 
 Internal copy and numeric summaries follow the React Aria locale. Use the optional `BenchProvider` for English/French copy and partial message overrides; consumer labels remain application-owned.

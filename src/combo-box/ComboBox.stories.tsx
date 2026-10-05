@@ -51,7 +51,7 @@ export const ServerSearch: Story = {
       <ComboBox
         {...args}
         label="Remote document"
-        defaultSelectedOption={{ id: "42", label: "Document 00042" }}
+        defaultValue={{ id: "42", label: "Document 00042" }}
         options={[]}
         loadItems={async ({ query, signal, cursor }) => {
           await new Promise<void>((resolve, reject) => {

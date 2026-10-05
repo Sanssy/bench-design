@@ -80,8 +80,8 @@ export function FilterMenu({
         <Dialog className="bd-popover-dialog bd-filter-menu" aria-label={label}>
           <MultiComboBox
             label={label}
-            selectedOptions={draft}
-            onSelectionChange={setDraft}
+            value={draft}
+            onChange={setDraft}
             {...(options === undefined ? {} : { options })}
             {...(loadItems === undefined ? {} : { loadItems })}
           />

@@ -684,10 +684,14 @@
 
 .bd-segmented[data-layout="wrap"] {
   flex-wrap: wrap;
+  gap: var(--bd-space-4);
+  border: none;
+  background: transparent;
   max-inline-size: 100%;
   min-inline-size: 0;
 }
 .bd-segmented[data-layout="wrap"] .bd-segment {
+  border: var(--bd-hair) solid var(--bd-border-strong);
   block-size: auto;
   min-block-size: calc(var(--bd-space-32) + var(--bd-space-12));
   min-inline-size: calc(var(--bd-space-32) + var(--bd-space-12));

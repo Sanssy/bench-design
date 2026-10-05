@@ -18,7 +18,7 @@ For choice groups and sliders, validation is external via isInvalid and errorMes
 isRequired does not introduce a native submit constraint.
 
 Use `layout="wrap"` for up to six single-choice facets on narrow screens. Wrapped
-segments have a minimum 44 px target and long labels break within the available width.
+segments carry their own background and border, leaving unused row space transparent. They have a minimum 44 px target and long labels break within the available width.
 More than six options in wrap mode raises a RangeError. For larger facet sets or
 multiple selection, use FilterBar and a filter sheet labelled “Filters N”.
 An optional `count` appears after the label and is included in the accessible name,

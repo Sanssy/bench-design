@@ -44,6 +44,8 @@ export type { ComboBoxProps } from "./combo-box/ComboBox.js";
 export { ComboBox } from "./combo-box/ComboBox.js";
 export type { ComposerProps } from "./composer/Composer.js";
 export { Composer } from "./composer/Composer.js";
+export type { ConnectedListProps } from "./connected-list/ConnectedList.js";
+export { ConnectedList } from "./connected-list/ConnectedList.js";
 export type { DialogProps } from "./dialog/Dialog.js";
 export { Dialog } from "./dialog/Dialog.js";
 export type { DisclosureProps } from "./disclosure/Disclosure.js";

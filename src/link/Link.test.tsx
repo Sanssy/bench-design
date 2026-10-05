@@ -65,3 +65,28 @@ test("forwards the ref and accessible name", () => {
     screen.getByRole("link", { name: "Read chapter details" }),
   );
 });
+
+for (const external of [false, true]) {
+  test(`decorative icons preserve the ${external ? "external" : "internal"} name`, () => {
+    render(
+      <Link
+        href="/chapter"
+        icon="info"
+        trailingIcon="arrow-right"
+        external={external}
+      >
+        Read chapter
+      </Link>,
+    );
+    const link = screen.getByRole("link", {
+      name: external ? "Read chapter (opens in a new tab)" : "Read chapter",
+    });
+    const icons = link.querySelectorAll("svg");
+    expect(icons).toHaveLength(2);
+    for (const icon of icons) {
+      expect(icon).toHaveAttribute("aria-hidden", "true");
+      expect(icon).toHaveAttribute("focusable", "false");
+    }
+    expect(screen.queryByRole("img")).toBeNull();
+  });
+}

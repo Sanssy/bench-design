@@ -1,5 +1,6 @@
 .bd-link {
   color: inherit;
+  overflow-wrap: anywhere;
   text-decoration-line: underline;
   text-decoration-thickness: var(--bd-hair);
   text-underline-offset: 0.2em;
@@ -30,4 +31,24 @@
   clip-path: inset(50%);
   white-space: nowrap;
   border: 0;
+}
+
+.bd-link[data-variant="meta"] {
+  font-family: var(--bd-font-mono);
+  font-size: var(--bd-size-meta);
+}
+
+.bd-link-icon-leading,
+.bd-link-icon-trailing {
+  display: inline-block;
+  vertical-align: middle;
+  line-height: 0;
+}
+
+.bd-link-icon-leading {
+  margin-inline-end: var(--bd-space-8);
+}
+
+.bd-link-icon-trailing {
+  margin-inline-start: var(--bd-space-8);
 }

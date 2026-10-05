@@ -11,7 +11,10 @@ Import `Link` from `bench-design` and load `bench-design/styles.css` once.
 ## Usage
 
 Use Link for navigation and Button for actions. Link inherits the surrounding
-text color and remains underlined. Set `external` when opening a new tab.
+text color and remains underlined. Optional `icon` and `trailingIcon` names add
+decorative icons; keep meaningful visible text, including for external links.
+Use `variant="meta"` for monospace metadata at the metadata text size.
+Long labels wrap within the surrounding text layout. Set `external` when opening a new tab.
 
 - Do use meaningful link text describing the destination.
 - Avoid “click here” and unexpected new tabs.
@@ -25,11 +28,14 @@ text color and remains underlined. Set `external` when opening a new tab.
 
 <Canvas of={Stories.Paragraph} />
 <Canvas of={Stories.External} />
+<Canvas of={Stories.Metadata} />
+<Canvas of={Stories.LongLabel} />
 
 Use the theme selector to inspect light and dark themes.
 
 ## Accessibility
 
+Icons are hidden from assistive technology and do not change the accessible name.
 Tab focuses the link; Enter follows its destination. React Aria owns interaction
 and keyboard focus visibility. External links use `noopener noreferrer` and
 announce “(opens in a new tab)” to screen readers without displaying it.

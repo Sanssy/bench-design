@@ -70,7 +70,7 @@ for (const theme of ["light", "dark"] as const) {
         const css = getComputedStyle(sample);
         return [css.borderTopWidth, css.borderRadius, css.boxShadow];
       });
-    const shadow = theme === "light" ? "rgb(24, 32, 28)" : "rgb(8, 13, 10)";
+    const shadow = theme === "light" ? "rgb(24, 32, 28)" : "rgb(134, 150, 138)";
     expect(geometry).toEqual(["1px", "0px", `${shadow} 3px 3px 0px 0px`]);
   });
 }

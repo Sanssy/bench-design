@@ -87,20 +87,21 @@ export const EditInPanel: StoryObj = {
         <Stack gap={16}>
           <Heading level={2}>Board preview</Heading>
           <div role="status" aria-label="Board preview">
-            <Inline gap={8} align="center">
+            <Stack gap={8}>
               <Text>
-                {name} · {copies} copies ·
+                {name} · {copies} copies
               </Text>
-              <span
-                className="bd-color-preview"
-                style={{ backgroundColor: color }}
-                aria-hidden="true"
-              />
-              <Text>
-                {/* Keeps the announced status text spaced around the swatch. */}{" "}
-                {color} · {opacity}% opacity
-              </Text>
-            </Inline>
+              <Inline gap={8} align="center">
+                <span
+                  className="bd-color-preview"
+                  style={{ backgroundColor: color }}
+                  aria-hidden="true"
+                />
+                <Text>
+                  {color} · {opacity}% opacity
+                </Text>
+              </Inline>
+            </Stack>
           </div>
           <Text tone="muted">Edits update this local preview immediately.</Text>
           <Inline>

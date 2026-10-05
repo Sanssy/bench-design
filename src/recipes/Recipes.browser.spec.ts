@@ -83,9 +83,9 @@ for (const theme of ["light", "dark"]) {
         await page.keyboard.type("#18201c");
         await tabTo(page, page.getByRole("slider", { name: "Opacity" }));
         await page.keyboard.press("ArrowRight");
-        await expect(
-          page.getByRole("status", { name: "Board preview" }),
-        ).toContainText("Updated board · 3 copies · #18201C · 51% opacity");
+        const preview = page.getByRole("status", { name: "Board preview" });
+        await expect(preview).toContainText("Updated board · 3 copies");
+        await expect(preview).toContainText("#18201C · 51% opacity");
       } else {
         await tabTo(
           page,

@@ -43,7 +43,9 @@
     "components:check": "node scripts/generate-components.ts --check",
     "icons:normalize": "node scripts/normalize-icon.ts",
     "icons:generate": "node scripts/generate-icons.ts",
-    "icons:check": "node scripts/generate-icons.ts --check"
+    "icons:check": "node scripts/generate-icons.ts --check",
+    "build:site": "pnpm build-storybook && node site/build.ts",
+    "test:site": "playwright test --config playwright.site.config.ts"
   },
   "peerDependencies": {
     "react": "^19.3.0",

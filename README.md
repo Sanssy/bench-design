@@ -11,27 +11,22 @@ foundation documentation and the components listed in [components.json](componen
 The current families cover typography, layout, surfaces, data and status,
 forms and filters, navigation, overlays, collections, import and feedback.
 The manifest is the source of truth for exports and props.
-The package is not published to npm. It is licensed under MIT; documentation
-hosting and the registry remain to be decided. Visual
+The [public repository](https://github.com/Sanssy/bench-design) is licensed under MIT.
+The package is distributed as a release tarball and is not published to npm. Visual
 references require explicit human approval; implementation is not approval.
 
 ## Installation
 
 Use Node 24.21.0 and pnpm 12.8.1 for development. The package requires Node
 >=24.21.0 and React/React DOM ^19.3.0 as peer dependencies.
-Until publication, build and pack this checkout:
+Download `bench-design-0.1.0.tgz` from [Release v0.1.0](https://github.com/Sanssy/bench-design/releases/tag/v0.1.0), then install it in your React application:
 
 ```sh
-pnpm install --frozen-lockfile
-pnpm build
-pnpm pack
+pnpm add ./bench-design-0.1.0.tgz
 ```
 
-In your React application, install the resulting local tarball:
-
-```sh
-pnpm add /path/to/bench-design-0.1.0.tgz
-```
+To build a tarball from source, run `pnpm install --frozen-lockfile`,
+`pnpm build` and `pnpm pack` in this checkout.
 
 ## Minimal usage
 
@@ -76,8 +71,10 @@ side effects.
 
 ## Documentation
 
-Run `pnpm storybook` and open [Storybook](http://localhost:6006/) for getting
+Visit the [published site](https://sanssy.github.io/bench-design/) and
+[Storybook](https://sanssy.github.io/bench-design/storybook/) for getting
 started, principles, themes, foundations and component examples.
+For local development, run `pnpm storybook` and open http://localhost:6006/.
 After `pnpm build-storybook`, the generated site also provides
 `llms.txt`. After `pnpm build`, the package provides
 `AGENTS.md` for AI integration. These generated files are not

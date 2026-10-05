@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
+import { useRef } from "react";
 import { Stack } from "../stack/Stack.js";
 import { ComboBox } from "./ComboBox.js";
 
@@ -18,6 +19,30 @@ export default {
   },
   parameters: { layout: "centered" },
 } satisfies Meta<typeof ComboBox>;
+
+/** The first search fails, as a dropped connection would; Try again succeeds. */
+function UnreliableSearch() {
+  const attempts = useRef(0);
+  return (
+    <ComboBox
+      label="Shared drive document"
+      description="The first search fails on purpose to show recovery."
+      options={[]}
+      loadItems={async ({ query }) => {
+        attempts.current += 1;
+        if (attempts.current === 1)
+          throw new Error("The shared drive did not answer.");
+        return {
+          items: documents
+            .filter((item) =>
+              item.label.toLowerCase().includes(query.toLowerCase()),
+            )
+            .slice(0, 50),
+        };
+      }}
+    />
+  );
+}
 type Story = StoryObj<typeof ComboBox>;
 export const Default: Story = {};
 export const ServerSearch: Story = {
@@ -52,6 +77,7 @@ export const ServerSearch: Story = {
           };
         }}
       />
+      <UnreliableSearch />
       <ComboBox {...args} label="Archived document" isDisabled />
       <ComboBox {...args} label="Additional document" isRequired={false} />
       <ComboBox

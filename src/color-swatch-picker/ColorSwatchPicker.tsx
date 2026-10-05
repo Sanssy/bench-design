@@ -61,6 +61,12 @@ export function ColorSwatchPicker({
         className="bd-swatches"
         aria-labelledby={id}
         {...(describedBy ? { "aria-describedby": describedBy } : {})}
+        // React Aria filters aria-invalid from this listbox; set it directly.
+        ref={(element) => {
+          if (!element) return;
+          if (isInvalid) element.setAttribute("aria-invalid", "true");
+          else element.removeAttribute("aria-invalid");
+        }}
         {...(selected === undefined ? {} : { value: selected })}
         {...(initial === undefined ? {} : { defaultValue: initial })}
         onChange={(color) => {

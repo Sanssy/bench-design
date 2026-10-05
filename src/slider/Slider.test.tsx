@@ -77,3 +77,13 @@ test("shows the error with its icon, like the other fields", () => {
   expect(container.querySelector(".bd-field-error svg")).not.toBeNull();
   expect(screen.getByRole("slider")).toHaveAccessibleDescription("Too far");
 });
+
+test("a disabled slider is left out of the submitted form", () => {
+  const { container } = render(
+    <form>
+      <Slider label="Zoom" name="zoom" defaultValue={40} isDisabled />
+    </form>,
+  );
+  const form = container.querySelector("form") as HTMLFormElement;
+  expect(new FormData(form).has("zoom")).toBe(false);
+});

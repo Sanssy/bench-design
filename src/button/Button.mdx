@@ -39,9 +39,20 @@ is not supported.
 <Canvas of={ButtonStories.Secondary} />
 <Canvas of={ButtonStories.Disabled} />
 <Canvas of={ButtonStories.WithIcon} />
+<Canvas of={ButtonStories.IconEnd} />
+<Canvas of={ButtonStories.Pending} />
 
 Use `icon` for a decorative 20px icon before the visible label, separated by 8px.
+Set `iconPosition="end"` to place the icon after the label.
 Use `IconButton` for an action without visible text.
+
+Control `isPending` while an action is running. The label and width remain
+unchanged, with a static activity mark that requires no animation.
+React Aria blocks activation, keeps the button focusable, and announces
+focused pending transitions. Reset the prop
+when the action completes. Pending submit and reset buttons use `type="button"` to block their native
+actions. The application remains responsible for guarding form submission
+through other controls or implicit submission.
 
 Use the theme selector to view the examples in light and dark themes.
 
@@ -79,6 +90,6 @@ The DS does not extract visible text or rewrite accessible names automatically.
 
 ## Out of scope
 
-Ghost and danger variants, compact sizes, loading, toggling and routing
+Ghost and danger variants, compact sizes, toggling and routing
 are not provided. Business permissions, validation, form state and application
 workflows belong to the consuming product.

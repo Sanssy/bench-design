@@ -7,8 +7,12 @@ import type { IconName } from "../icon/icons.js";
 /** Explicit public API; interaction is delegated to React Aria. */
 export interface ButtonProps {
   children: ReactNode;
-  /** Decorative icon before the visible label. */
+  /** Decorative icon beside the visible label. */
   icon?: IconName;
+  /** Icon placement relative to the label. Defaults to start. */
+  iconPosition?: "start" | "end";
+  /** Blocks activation while retaining focus and the visible label. */
+  isPending?: boolean;
   onPress?: () => void;
   isDisabled?: boolean;
   variant?: "primary" | "secondary";
@@ -27,6 +31,8 @@ export interface ButtonProps {
 export function Button({
   children,
   icon,
+  iconPosition = "start",
+  isPending = false,
   onPress,
   isDisabled = false,
   variant = "secondary",
@@ -41,17 +47,23 @@ export function Button({
         icon === undefined ? "bd-button" : "bd-button bd-button--with-icon"
       }
       ref={ref}
-      type={type}
+      type={isPending ? "button" : type}
       {...(onPress === undefined ? {} : { onPress })}
       isDisabled={isDisabled}
+      isPending={isPending}
       data-variant={variant}
       {...(ariaLabel === undefined ? {} : { "aria-label": ariaLabel })}
       {...(ariaLabelledby === undefined
         ? {}
         : { "aria-labelledby": ariaLabelledby })}
     >
-      {icon === undefined ? null : <Icon name={icon} size={20} />}
+      {icon !== undefined && iconPosition === "start" ? (
+        <Icon name={icon} size={20} />
+      ) : null}
       {children}
+      {icon !== undefined && iconPosition === "end" ? (
+        <Icon name={icon} size={20} />
+      ) : null}
     </AriaButton>
   );
 }

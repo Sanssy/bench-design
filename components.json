@@ -208,7 +208,21 @@
           "name": "icon",
           "type": "\"arrow-left\" | \"arrow-right\" | \"arrow-up-right\" | \"arrow-up\" | \"asterisk\" | \"bike\" | \"bin\" | \"briefcase\" | \"calendar\" | \"check\" | \"chevron-down\" | \"chevron-right\" | \"download\" | \"file-text\" | \"grip\" | \"heart\" | \"home\" | \"info\" | \"layers\" | \"layout-grid\" | \"link\" | \"list\" | \"menu\" | \"pen\" | \"plus\" | \"scan\" | \"search\" | \"settings\" | \"shopping-bag\" | \"triangle-alert\" | \"upload\" | \"user\" | \"wallet\" | \"x\"",
           "required": false,
-          "description": "Decorative icon before the visible label."
+          "description": "Decorative icon beside the visible label."
+        },
+        {
+          "name": "iconPosition",
+          "type": "\"start\" | \"end\"",
+          "required": false,
+          "description": "Icon placement relative to the label. Defaults to start.",
+          "default": "\"start\""
+        },
+        {
+          "name": "isPending",
+          "type": "boolean",
+          "required": false,
+          "description": "Blocks activation while retaining focus and the visible label.",
+          "default": "false"
         },
         {
           "name": "onPress",
@@ -269,6 +283,14 @@
         {
           "name": "WithIcon",
           "href": "./?path=/story/form-button--with-icon"
+        },
+        {
+          "name": "IconEnd",
+          "href": "./?path=/story/form-button--icon-end"
+        },
+        {
+          "name": "Pending",
+          "href": "./?path=/story/form-button--pending"
         }
       ]
     },

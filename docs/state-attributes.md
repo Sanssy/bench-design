@@ -25,6 +25,7 @@ Boolean state selectors test presence, not a particular string value.
 | `data-layout` | GridList layout (`grid` selector). |
 | `data-orientation` | Tabs axis (`vertical` selector). |
 | `data-placeholder` | Select value displaying its placeholder. |
+| `data-pending` | Button activity; React Aria blocks activation and retains focus. |
 | `data-pressed` | Pressed button or number step control. |
 | `data-selected` | Selected choice, tab, toggle or collection item; also emitted by FilterMenu below. |
 

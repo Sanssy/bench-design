@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
+import { useState } from "react";
 import { Button } from "../button/Button";
 import { Text } from "../text/Text";
 import { Dialog } from "./Dialog";
@@ -31,5 +32,21 @@ export const ReadingGuide: Story = {
       </Text>
     )),
     actions: <Button variant="primary">Download guide</Button>,
+  },
+};
+
+export const ControlledHelp: Story = {
+  args: {
+    title: "Editing help",
+    children: <Text>Use guides to align your composition.</Text>,
+  },
+  render: function ControlledHelp(args) {
+    const [open, setOpen] = useState(false);
+    return (
+      <>
+        <Button onPress={() => setOpen(true)}>Read editing help</Button>
+        <Dialog {...args} isOpen={open} onOpenChange={setOpen} />
+      </>
+    );
   },
 };

@@ -1,6 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { expect, test } from "vitest";
+import { useState } from "react";
+import { expect, test, vi } from "vitest";
 import { Button } from "../button/Button.js";
 import { Dialog } from "./Dialog.js";
 
@@ -27,5 +28,51 @@ test("Dialog close action hides the dialog", async () => {
   );
   await user.click(screen.getByRole("button", { name: "Open" }));
   await user.click(screen.getByRole("button", { name: "Close" }));
+  expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
+});
+
+test("Dialog supports external opening without a trigger and restores origin focus", async () => {
+  const user = userEvent.setup();
+  const change = vi.fn();
+  function Example() {
+    const [open, setOpen] = useState(false);
+    return (
+      <>
+        <Button onPress={() => setOpen(true)}>Show help</Button>
+        <Dialog
+          title="Help"
+          isOpen={open}
+          onOpenChange={(next) => {
+            change(next);
+            setOpen(next);
+          }}
+        >
+          Instructions
+        </Dialog>
+      </>
+    );
+  }
+  render(<Example />);
+  const origin = screen.getByRole("button", { name: "Show help" });
+  await user.tab();
+  await user.keyboard("{Enter}");
+  expect(screen.getByRole("dialog", { name: "Help" })).toBeInTheDocument();
+  await user.keyboard("{Escape}");
+  expect(change).toHaveBeenCalledWith(false);
+  expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
+  await vi.waitFor(() => expect(origin).toHaveFocus());
+});
+test("Dialog follows controlled changes with its optional trigger", () => {
+  const { rerender } = render(
+    <Dialog title="Help" trigger={<Button>Open</Button>} isOpen>
+      Instructions
+    </Dialog>,
+  );
+  expect(screen.getByRole("dialog", { name: "Help" })).toBeInTheDocument();
+  rerender(
+    <Dialog title="Help" trigger={<Button>Open</Button>} isOpen={false}>
+      Instructions
+    </Dialog>,
+  );
   expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
 });

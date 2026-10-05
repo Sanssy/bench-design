@@ -37,3 +37,23 @@ export const ControlledSections: Story = {
     );
   },
 };
+
+export const DocumentSections: Story = {
+  args: {
+    label: "Document sections",
+    items: [
+      "Overview",
+      "Contents",
+      "References",
+      "Annotations",
+      "Versions",
+      "Contributors",
+      "Permissions",
+      "Activity",
+    ].map((title) => ({
+      id: title.toLowerCase(),
+      title,
+      content: `${title} for this document.`,
+    })),
+  },
+};

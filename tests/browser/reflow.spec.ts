@@ -36,9 +36,9 @@ for (const { id, type, importPath } of Object.values(index.entries)) {
       return [...document.querySelectorAll("#storybook-root *")]
         .filter((element) => {
           const box = element.getBoundingClientRect();
-          // Scroll containers (tables, code) may hold wider content.
+          // Scroll containers (tables, code, tab lists) may hold wider content.
           const scroller = element.closest(
-            '[role="region"][tabindex], .bd-table-frame, pre',
+            '[role="region"][tabindex], .bd-table-frame, pre, [role="tablist"]',
           );
           return box.width > 0 && box.right > width + 1 && !scroller;
         })

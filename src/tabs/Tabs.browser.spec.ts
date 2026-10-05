@@ -177,3 +177,68 @@ test("Controlled Tabs changes the selected panel from keyboard", {
   await page.keyboard.press("ArrowRight");
   await expect(page.getByRole("tabpanel", { name: "Saved" })).toBeVisible();
 });
+
+test("Horizontal Tabs overflow stays local at 320px", {
+  tag: ["@component:tabs", "@theme:light", "@viewport:mobile"],
+}, async ({ page }) => {
+  await page.setViewportSize({ width: 320, height: 640 });
+  await page.goto(
+    "/iframe.html?id=navigation-tabs--document-sections&viewMode=story&globals=a11y.manual:!true;theme:light",
+  );
+  await expect(page.locator("html")).toHaveAttribute("data-theme", "light");
+  const list = page.getByRole("tablist", { name: "Document sections" });
+  await expect(list).toBeVisible();
+  await page.evaluate(() => document.fonts.ready);
+  await expect(page.getByRole("tab")).toHaveCount(8);
+  expect(
+    await list.evaluate((element) => element.scrollWidth > element.clientWidth),
+  ).toBe(true);
+  await expect(list).toHaveCSS("overflow-x", "auto");
+  const first = page.getByRole("tab", { name: "Overview", exact: true });
+  await expect(first).toHaveCSS("white-space", "nowrap");
+  await expect(first).toHaveCSS("flex-shrink", "0");
+  const pageFits = () =>
+    page.evaluate(
+      () =>
+        document.documentElement.scrollWidth <= window.innerWidth &&
+        window.scrollX === 0,
+    );
+  expect(await pageFits()).toBe(true);
+  await page.keyboard.press("Tab");
+  await expect(first).toBeFocused();
+  await page.keyboard.press("End");
+  const last = page.getByRole("tab", { name: "Activity", exact: true });
+  await expect(last).toBeFocused();
+  await expect(last).toHaveAttribute("aria-selected", "true");
+  await expect(page.getByRole("tabpanel", { name: "Activity" })).toBeVisible();
+  const focusFits = async () =>
+    page.locator('[role="tab"][aria-selected="true"]').evaluate((element) => {
+      const list = element.closest('[role="tablist"]') as HTMLElement;
+      const tab = element.getBoundingClientRect();
+      const bounds = list.getBoundingClientRect();
+      const style = getComputedStyle(element);
+      const ring =
+        Number.parseFloat(style.outlineWidth) +
+        Number.parseFloat(style.outlineOffset);
+      // Scroll offsets are whole pixels in Firefox and WebKit: allow 1 px.
+      const slack = 1;
+      return (
+        style.outlineStyle === "solid" &&
+        tab.left - ring >= bounds.left - slack &&
+        tab.right + ring <= bounds.right + slack &&
+        tab.top - ring >= bounds.top - slack &&
+        tab.bottom + ring <= bounds.top + list.clientHeight + slack
+      );
+    });
+  await expect.poll(focusFits).toBe(true);
+  expect(await pageFits()).toBe(true);
+  await page.keyboard.press("Home");
+  await expect(first).toBeFocused();
+  await expect(first).toHaveAttribute("aria-selected", "true");
+  await expect.poll(focusFits).toBe(true);
+  expect(await pageFits()).toBe(true);
+  expect(
+    (await new AxeBuilder({ page }).withTags(["wcag2a", "wcag2aa"]).analyze())
+      .violations,
+  ).toEqual([]);
+});

@@ -1,3 +1,8 @@
+.bd-tabs {
+  min-inline-size: 0;
+  max-inline-size: 100%;
+}
+
 .bd-tab-list {
   display: flex;
   border-block-end: var(--bd-hair) solid var(--bd-divider);
@@ -43,6 +48,32 @@
 .bd-tab-panel[data-focus-visible] {
   outline: var(--bd-strong) solid var(--bd-focus);
   outline-offset: var(--bd-space-4);
+}
+
+/* Narrow screens: horizontal tab lists scroll instead of squeezing. A scroll
+   container clips what overflows it, so the divider is drawn inside the list
+   and the focus ring inside the tab (an exception to the 4 px outer offset,
+   limited to this case). */
+@media (width < 640px) {
+  .bd-tabs[data-orientation="horizontal"] .bd-tab-list {
+    max-inline-size: 100%;
+    overflow-x: auto;
+    border-block-end: none;
+    box-shadow: inset 0 calc(-1 * var(--bd-hair)) 0 var(--bd-divider);
+    /* A classic scrollbar would add height and hide the divider; the list
+       scrolls by touch, wheel and keyboard (the selected tab is kept in view). */
+    scrollbar-width: none;
+  }
+
+  .bd-tabs[data-orientation="horizontal"] .bd-tab {
+    flex: 1 0 auto;
+    margin-block-end: 0;
+    white-space: nowrap;
+  }
+
+  .bd-tabs[data-orientation="horizontal"] .bd-tab[data-focus-visible] {
+    outline-offset: calc(-1 * var(--bd-strong));
+  }
 }
 
 .bd-toolbar {

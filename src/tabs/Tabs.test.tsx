@@ -75,3 +75,47 @@ test("Vertical Tabs delegates up/down navigation", async () => {
   await user.keyboard("{ArrowUp}");
   expect(screen.getByRole("tab", { name: "Assets" })).toHaveFocus();
 });
+
+test.each([400, -80])(
+  "Controlled horizontal selection scrolls only the tab list (left=%i)",
+  (tabLeft) => {
+    const bounds = vi.spyOn(HTMLElement.prototype, "getBoundingClientRect");
+    bounds.mockImplementation(function (this: HTMLElement) {
+      const left = this.getAttribute("role") === "tab" ? tabLeft : 0;
+      const width = this.getAttribute("role") === "tab" ? 80 : 300;
+      return {
+        left,
+        right: left + width,
+        top: 0,
+        bottom: 48,
+        width,
+        height: 48,
+        x: left,
+        y: 0,
+        toJSON: () => ({}),
+      };
+    });
+    try {
+      const { rerender } = render(
+        <Tabs label="Sections" items={items} selectedKey="assets" />,
+      );
+      const list = screen.getByRole("tablist");
+      list.scrollLeft = 0;
+      rerender(<Tabs label="Sections" items={items} selectedKey="saved" />);
+      expect(list.scrollLeft).toBe(tabLeft === 400 ? 180 : -80);
+      expect(document.documentElement.scrollLeft).toBe(0);
+      list.scrollLeft = 0;
+      rerender(
+        <Tabs
+          label="Sections"
+          items={items}
+          selectedKey="assets"
+          orientation="vertical"
+        />,
+      );
+      expect(list.scrollLeft).toBe(0);
+    } finally {
+      bounds.mockRestore();
+    }
+  },
+);

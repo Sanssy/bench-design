@@ -20,6 +20,14 @@ export const exceptions: VisualException[] = [
     reason: "Ratified radio cards use one column below 640px.",
   },
   {
+    file: "dist/navigation.css",
+    selector: "@media",
+    property: "condition",
+    value: "(width<640px)",
+    reason:
+      "Horizontal tab lists scroll below the 640px breakpoint (audit 073).",
+  },
+  {
     file: "dist/layout.css",
     selector: "@media",
     property: "condition",

@@ -2795,6 +2795,10 @@
         {
           "name": "ControlledSections",
           "href": "./?path=/story/navigation-tabs--controlled-sections"
+        },
+        {
+          "name": "DocumentSections",
+          "href": "./?path=/story/navigation-tabs--document-sections"
         }
       ]
     },

@@ -1695,6 +1695,25 @@
           "default": "false"
         },
         {
+          "name": "icon",
+          "type": "\"arrow-left\" | \"arrow-right\" | \"arrow-up-right\" | \"arrow-up\" | \"asterisk\" | \"bike\" | \"bin\" | \"briefcase\" | \"calendar\" | \"check\" | \"chevron-down\" | \"chevron-right\" | \"download\" | \"file-text\" | \"grip\" | \"heart\" | \"home\" | \"info\" | \"layers\" | \"layout-grid\" | \"link\" | \"list\" | \"menu\" | \"pen\" | \"plus\" | \"scan\" | \"search\" | \"settings\" | \"shopping-bag\" | \"triangle-alert\" | \"upload\" | \"user\" | \"wallet\" | \"x\"",
+          "required": false,
+          "description": "Decorative icon before the visible text."
+        },
+        {
+          "name": "trailingIcon",
+          "type": "\"arrow-left\" | \"arrow-right\" | \"arrow-up-right\" | \"arrow-up\" | \"asterisk\" | \"bike\" | \"bin\" | \"briefcase\" | \"calendar\" | \"check\" | \"chevron-down\" | \"chevron-right\" | \"download\" | \"file-text\" | \"grip\" | \"heart\" | \"home\" | \"info\" | \"layers\" | \"layout-grid\" | \"link\" | \"list\" | \"menu\" | \"pen\" | \"plus\" | \"scan\" | \"search\" | \"settings\" | \"shopping-bag\" | \"triangle-alert\" | \"upload\" | \"user\" | \"wallet\" | \"x\"",
+          "required": false,
+          "description": "Decorative icon after the visible text; does not replace it."
+        },
+        {
+          "name": "variant",
+          "type": "\"default\" | \"meta\"",
+          "required": false,
+          "description": "Metadata typography; default inherits the surrounding typography.",
+          "default": "\"default\""
+        },
+        {
           "name": "ref",
           "type": "Ref<HTMLAnchorElement>",
           "required": false
@@ -1713,6 +1732,14 @@
         {
           "name": "External",
           "href": "./?path=/story/typography-link--external"
+        },
+        {
+          "name": "Metadata",
+          "href": "./?path=/story/typography-link--metadata"
+        },
+        {
+          "name": "LongLabel",
+          "href": "./?path=/story/typography-link--long-label"
         }
       ]
     },

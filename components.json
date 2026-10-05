@@ -1370,6 +1370,43 @@
           "required": true
         },
         {
+          "name": "variant",
+          "type": "\"default\" | \"editorial\"",
+          "required": false,
+          "description": "Editorial presentation automatically compacts below 640 px.",
+          "default": "\"default\""
+        },
+        {
+          "name": "eyebrow",
+          "type": "string",
+          "required": false,
+          "description": "Optional metadata above the editorial title."
+        },
+        {
+          "name": "icon",
+          "type": "\"arrow-left\" | \"arrow-right\" | \"arrow-up-right\" | \"arrow-up\" | \"asterisk\" | \"bike\" | \"bin\" | \"briefcase\" | \"calendar\" | \"check\" | \"chevron-down\" | \"chevron-right\" | \"download\" | \"file-text\" | \"grip\" | \"heart\" | \"home\" | \"info\" | \"layers\" | \"layout-grid\" | \"link\" | \"list\" | \"menu\" | \"pen\" | \"plus\" | \"scan\" | \"search\" | \"settings\" | \"shopping-bag\" | \"triangle-alert\" | \"upload\" | \"user\" | \"wallet\" | \"x\"",
+          "required": false,
+          "description": "Decorative neutral tile in the editorial presentation."
+        },
+        {
+          "name": "headingLevel",
+          "type": "1 | 2 | 3 | 4 | 5 | 6",
+          "required": false,
+          "description": "Semantic title level; editorial defaults to 2."
+        },
+        {
+          "name": "buttonIcon",
+          "type": "\"arrow-left\" | \"arrow-right\" | \"arrow-up-right\" | \"arrow-up\" | \"asterisk\" | \"bike\" | \"bin\" | \"briefcase\" | \"calendar\" | \"check\" | \"chevron-down\" | \"chevron-right\" | \"download\" | \"file-text\" | \"grip\" | \"heart\" | \"home\" | \"info\" | \"layers\" | \"layout-grid\" | \"link\" | \"list\" | \"menu\" | \"pen\" | \"plus\" | \"scan\" | \"search\" | \"settings\" | \"shopping-bag\" | \"triangle-alert\" | \"upload\" | \"user\" | \"wallet\" | \"x\"",
+          "required": false,
+          "description": "Decorative picker icon; editorial defaults to upload."
+        },
+        {
+          "name": "buttonIconPosition",
+          "type": "\"start\" | \"end\"",
+          "required": false,
+          "description": "Picker icon placement; defaults to start."
+        },
+        {
           "name": "description",
           "type": "string",
           "required": false
@@ -1421,6 +1458,14 @@
         {
           "name": "Unavailable",
           "href": "./?path=/story/import-dropzone--unavailable"
+        },
+        {
+          "name": "Editorial",
+          "href": "./?path=/story/import-dropzone--editorial"
+        },
+        {
+          "name": "EditorialUnavailable",
+          "href": "./?path=/story/import-dropzone--editorial-unavailable"
         }
       ]
     },

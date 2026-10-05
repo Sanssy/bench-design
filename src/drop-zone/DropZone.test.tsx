@@ -4,35 +4,37 @@ import userEvent from "@testing-library/user-event";
 import { expect, test, vi } from "vitest";
 import { DropZone } from "./DropZone.js";
 
-test("picker rejects type and size, accepts valid files and clears rejection", () => {
-  const drop = vi.fn(),
-    reject = vi.fn();
-  const { container } = render(
-    <DropZone
-      label="Upload files"
-      acceptedFileTypes={[".txt"]}
-      maxSize={4}
-      allowsMultiple
-      onDrop={drop}
-      onReject={reject}
-    />,
-  );
-  const input = container.querySelector('input[type="file"]');
-  expect(input).not.toBeNull();
-  if (!input) throw new Error("Missing file input");
-  const type = new File(["x"], "image.png"),
-    size = new File(["12345"], "large.txt"),
-    valid = new File(["ok"], "note.txt");
-  fireEvent.change(input, { target: { files: [type, size, valid] } });
-  expect(reject).toHaveBeenCalledWith([
-    { file: type, reason: "type" },
-    { file: size, reason: "size" },
-  ]);
-  expect(drop).toHaveBeenCalledWith([valid]);
-  expect(screen.getByRole("alert")).toHaveTextContent("✕");
-  fireEvent.change(input, { target: { files: [valid] } });
-  expect(screen.queryByRole("alert")).toBeNull();
-});
+for (const variant of ["default", "editorial"] as const)
+  test(`picker ${variant} rejects type and size, accepts valid files and clears rejection`, () => {
+    const drop = vi.fn(),
+      reject = vi.fn();
+    const { container } = render(
+      <DropZone
+        label="Upload files"
+        variant={variant}
+        acceptedFileTypes={[".txt"]}
+        maxSize={4}
+        allowsMultiple
+        onDrop={drop}
+        onReject={reject}
+      />,
+    );
+    const input = container.querySelector('input[type="file"]');
+    expect(input).not.toBeNull();
+    if (!input) throw new Error("Missing file input");
+    const type = new File(["x"], "image.png"),
+      size = new File(["12345"], "large.txt"),
+      valid = new File(["ok"], "note.txt");
+    fireEvent.change(input, { target: { files: [type, size, valid] } });
+    expect(reject).toHaveBeenCalledWith([
+      { file: type, reason: "type" },
+      { file: size, reason: "size" },
+    ]);
+    expect(drop).toHaveBeenCalledWith([valid]);
+    expect(screen.getByRole("alert")).toHaveTextContent("✕");
+    fireEvent.change(input, { target: { files: [valid] } });
+    expect(screen.queryByRole("alert")).toBeNull();
+  });
 test("disabled picker cannot be activated", () => {
   render(<DropZone label="Upload" isDisabled onDrop={vi.fn()} />);
   expect(screen.getByRole("button", { name: "Add files" })).toBeDisabled();
@@ -160,4 +162,54 @@ test("shows formats and size in readable units, one rejection per line", async (
   expect(items[0]).toHaveTextContent(
     "✕ scan.heic: this format is not accepted. Use PDF, PNG.",
   );
+});
+
+test("editorial import keeps its name, heading, metadata and decorative tile", () => {
+  const { container } = render(
+    <DropZone
+      variant="editorial"
+      label="Bring documents into focus"
+      eyebrow="01 / IMPORT"
+      icon="file-text"
+      headingLevel={3}
+      description="Choose a local file."
+      acceptedFileTypes={[".pdf"]}
+      onDrop={vi.fn()}
+    />,
+  );
+  expect(
+    screen.getByRole("heading", {
+      level: 3,
+      name: "Bring documents into focus",
+    }),
+  ).toBeVisible();
+  expect(
+    screen.getByRole("button", {
+      name: /^Bring documents into focus$/,
+    }),
+  ).toBeInTheDocument();
+  expect(screen.getByText("01 / IMPORT")).toBeVisible();
+  expect(screen.getByText("Choose a local file.")).toBeVisible();
+  expect(screen.getByText("PDF")).toBeVisible();
+  expect(container.querySelector(".bd-icon-tile")).toHaveAttribute(
+    "aria-hidden",
+    "true",
+  );
+  expect(container.querySelector(".bd-icon-tile")).toHaveAttribute(
+    "data-tone",
+    "neutral",
+  );
+});
+test("editorial picker opens with keyboard and has a decorative upload icon", async () => {
+  const user = userEvent.setup();
+  const { container } = render(
+    <DropZone variant="editorial" label="Import" onDrop={vi.fn()} />,
+  );
+  const input = container.querySelector("input[type=file]") as HTMLInputElement;
+  const click = vi.spyOn(input, "click");
+  const button = screen.getByRole("button", { name: "Add files" });
+  expect(button.querySelector("svg")).toHaveAttribute("aria-hidden", "true");
+  button.focus();
+  await user.keyboard("{Enter}");
+  expect(click).toHaveBeenCalledOnce();
 });

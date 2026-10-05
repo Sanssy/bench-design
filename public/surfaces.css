@@ -495,3 +495,43 @@
   margin: 0;
   color: var(--bd-text-muted);
 }
+
+.bd-drop-zone[data-variant="editorial"] {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--bd-space-16);
+  text-align: center;
+}
+.bd-drop-zone[data-variant="editorial"] > p,
+.bd-drop-zone__title .bd-heading {
+  margin: 0;
+}
+.bd-drop-zone__eyebrow {
+  font: var(--bd-size-meta) / var(--bd-line-normal) var(--bd-font-mono);
+  letter-spacing: var(--bd-tracking-label);
+}
+.bd-drop-zone[data-variant="editorial"] > .bd-button {
+  order: 1;
+}
+.bd-drop-zone[data-variant="editorial"] > .bd-drop-zone__errors {
+  order: 2;
+  align-self: stretch;
+  text-align: start;
+}
+/* L26 exception: a compact touch layout below the approved 640 px threshold. */
+@media (width < 640px) {
+  .bd-drop-zone[data-variant="editorial"] {
+    align-items: flex-start;
+    padding: var(--bd-space-16);
+    gap: var(--bd-space-8);
+    text-align: start;
+  }
+  .bd-drop-zone[data-variant="editorial"] > .bd-drop-zone__icon,
+  .bd-drop-zone[data-variant="editorial"] > .bd-drop-zone__eyebrow {
+    display: none;
+  }
+  .bd-drop-zone[data-variant="editorial"] .bd-heading {
+    font-size: var(--bd-size-lead);
+  }
+}

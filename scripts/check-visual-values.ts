@@ -13,6 +13,14 @@ export interface VisualException {
 }
 export const exceptions: VisualException[] = [
   {
+    file: "dist/surfaces.css",
+    selector: "@media",
+    property: "condition",
+    value: "(width<640px)",
+    reason:
+      "L26 editorial DropZone compacts below 640px for touch layouts; CSS variables cannot define media conditions.",
+  },
+  {
     file: "dist/overlays.css",
     selector: "@media",
     property: "condition",

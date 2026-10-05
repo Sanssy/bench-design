@@ -51,7 +51,7 @@ for (const theme of ["light", "dark"]) {
   test(`SegmentedControl axe A and AA in ${theme}`, {
     tag: ["@component:segmented-control", `@theme:${theme}`],
   }, async ({ page }) => {
-    for (const story of ["default", "review"]) {
+    for (const story of ["default", "review", "wrapped"]) {
       await page.goto(
         `/iframe.html?id=form-segmentedcontrol--${story}&viewMode=story&globals=a11y.manual:!true;theme:${theme}`,
       );
@@ -76,10 +76,53 @@ test("SegmentedControl keyboard editing", {
   await expect(page.locator(".bd-field").first()).toBeVisible();
   await page.keyboard.press("Tab");
   await page.keyboard.press("ArrowRight");
-  const recent = page.getByRole("radio", { name: "Recent" });
+  const recent = page.getByRole("radio", { name: "Recent, 8" });
   await expect(recent).toBeFocused();
   await page.keyboard.press("Space");
   await expect(recent).toHaveAttribute("aria-checked", "true");
   await page.keyboard.press("Space");
   await expect(recent).toHaveAttribute("aria-checked", "true");
+});
+
+test("wrapped facets fit 320 px and traverse successive rows", {
+  tag: ["@component:segmented-control"],
+}, async ({ page }) => {
+  await page.setViewportSize({ width: 320, height: 800 });
+  await page.goto(
+    "/iframe.html?id=form-segmentedcontrol--wrapped&viewMode=story&globals=a11y.manual:!true",
+  );
+  const radios = page.getByRole("radio");
+  await expect(radios).toHaveCount(6);
+  await page.evaluate(() => document.fonts.ready);
+  const boxes = await radios.evaluateAll((elements) =>
+    elements.map((element) => {
+      const box = element.getBoundingClientRect();
+      return {
+        x: box.x,
+        right: box.right,
+        y: box.y,
+        width: box.width,
+        height: box.height,
+      };
+    }),
+  );
+  for (const box of boxes) {
+    expect(box.width).toBeGreaterThanOrEqual(44);
+    expect(box.height).toBeGreaterThanOrEqual(44);
+    expect(box.x).toBeGreaterThanOrEqual(0);
+    expect(box.right).toBeLessThanOrEqual(320);
+  }
+  expect(boxes[1]?.y).toBeGreaterThan(boxes[0]?.y ?? 0);
+  await page.keyboard.press("Tab");
+  await page.keyboard.press("ArrowRight");
+  await expect(radios.nth(1)).toBeFocused();
+  await page.keyboard.press("Space");
+  await expect(radios.nth(1)).toHaveAttribute("aria-checked", "true");
+  for (let i = 0; i < 3; i++) await page.keyboard.press("ArrowRight");
+  await expect(radios.nth(5)).toBeFocused();
+  await page.keyboard.press("ArrowLeft");
+  await expect(radios.nth(3)).toBeFocused();
+  expect(
+    await page.evaluate(() => document.documentElement.scrollWidth),
+  ).toBeLessThanOrEqual(320);
 });

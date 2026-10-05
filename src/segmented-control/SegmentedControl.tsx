@@ -18,9 +18,12 @@ export interface SegmentedControlProps extends FieldProps {
     id: string;
     label: string;
     icon?: IconName;
+    /** Visible count included in the accessible name, including zero. */
     count?: number;
     isDisabled?: boolean;
   }[];
+  /** Wrap up to six single-choice options; use FilterBar for larger sets. @default "inline" */
+  layout?: "inline" | "wrap";
   /** Controlled selection ID. */
   value?: string;
   /** Initial uncontrolled selection ID; defaults to the first enabled option. */
@@ -43,8 +46,14 @@ export function SegmentedControl({
   defaultValue,
   onChange,
   hideLabel = false,
+  layout = "inline",
 }: SegmentedControlProps) {
   const id = useId();
+  if (layout === "wrap" && options.length > 6) {
+    throw new RangeError(
+      "SegmentedControl wrap supports at most six options; use FilterBar for larger sets.",
+    );
+  }
   const describedBy = choiceDescription(
     id,
     description,
@@ -62,6 +71,7 @@ export function SegmentedControl({
       <ChoiceFieldLabel label={label} id={id} hideLabel={hideLabel} />
       <ToggleButtonGroup
         className="bd-segmented"
+        data-layout={layout}
         aria-labelledby={id}
         {...(describedBy ? { "aria-describedby": describedBy } : {})}
         selectionMode="single"

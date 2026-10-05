@@ -40,3 +40,23 @@ export const Review: Story = {
     </Stack>
   ),
 };
+
+export const Wrapped: Story = {
+  args: {
+    label: "Category",
+    description: "Choose one category",
+    layout: "wrap",
+    options: [
+      { id: "all", label: "All", count: 24 },
+      { id: "documents", label: "Documents and correspondence", count: 8 },
+      { id: "housing", label: "Housing", count: 5 },
+      {
+        id: "administration",
+        label: "Verwaltungsangelegenheiten und Versicherungsunterlagen",
+        count: 0,
+      },
+      { id: "travel", label: "Travel", count: 3, isDisabled: true },
+      { id: "other", label: "Other", count: 8 },
+    ],
+  },
+};

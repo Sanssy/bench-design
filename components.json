@@ -2724,9 +2724,16 @@
         },
         {
           "name": "options",
-          "type": "readonly {\n    id: string;\n    label: string;\n    icon?: IconName;\n    count?: number;\n    isDisabled?: boolean;\n  }[]",
+          "type": "readonly {\n    id: string;\n    label: string;\n    icon?: IconName;\n    /** Visible count included in the accessible name, including zero. */\n    count?: number;\n    isDisabled?: boolean;\n  }[]",
           "required": true,
           "description": "Ordered segments; label is mandatory even when displaying an icon."
+        },
+        {
+          "name": "layout",
+          "type": "\"inline\" | \"wrap\"",
+          "required": false,
+          "description": "Wrap up to six single-choice options; use FilterBar for larger sets. @default \"inline\"",
+          "default": "\"inline\""
         },
         {
           "name": "value",
@@ -2762,6 +2769,10 @@
         {
           "name": "Review",
           "href": "./?path=/story/form-segmentedcontrol--review"
+        },
+        {
+          "name": "Wrapped",
+          "href": "./?path=/story/form-segmentedcontrol--wrapped"
         }
       ]
     },

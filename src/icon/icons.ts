@@ -7,6 +7,7 @@ export const icons = {
   "check": {"tag":"svg","attrs":{"xmlns":"http://www.w3.org/2000/svg","viewBox":"0 0 24 24","fill":"none","stroke":"currentColor","strokeWidth":"2","strokeLinecap":"butt","strokeLinejoin":"round"},"children":[{"tag":"path","attrs":{"d":"M4.7311 11.7118L9.6667 17L19.2689 6.7118"},"children":[]}]},
   "chevron-down": {"tag":"svg","attrs":{"xmlns":"http://www.w3.org/2000/svg","viewBox":"0 0 24 24","fill":"none","stroke":"currentColor","strokeWidth":"2","strokeLinecap":"butt","strokeLinejoin":"round"},"children":[{"tag":"path","attrs":{"d":"M5.7071 8.7071L12 15L18.2929 8.7071"},"children":[]}]},
   "download": {"tag":"svg","attrs":{"xmlns":"http://www.w3.org/2000/svg","viewBox":"0 0 24 24","fill":"none","stroke":"currentColor","strokeWidth":"2","strokeLinecap":"butt","strokeLinejoin":"round"},"children":[{"tag":"path","attrs":{"d":"M12 2L12 14M7.7071 9.7071L12 14L16.2929 9.7071M4 17L4 21L20 21L20 17"},"children":[]}]},
+  "grip": {"tag":"svg","attrs":{"xmlns":"http://www.w3.org/2000/svg","viewBox":"0 0 24 24","fill":"none","stroke":"currentColor","strokeWidth":"2","strokeLinecap":"butt","strokeLinejoin":"round"},"children":[{"tag":"circle","attrs":{"cx":"9","cy":"5","r":"1"},"children":[]},{"tag":"circle","attrs":{"cx":"15","cy":"5","r":"1"},"children":[]},{"tag":"circle","attrs":{"cx":"9","cy":"12","r":"1"},"children":[]},{"tag":"circle","attrs":{"cx":"15","cy":"12","r":"1"},"children":[]},{"tag":"circle","attrs":{"cx":"9","cy":"19","r":"1"},"children":[]},{"tag":"circle","attrs":{"cx":"15","cy":"19","r":"1"},"children":[]}]},
   "info": {"tag":"svg","attrs":{"xmlns":"http://www.w3.org/2000/svg","viewBox":"0 0 24 24","fill":"none","stroke":"currentColor","strokeWidth":"2","strokeLinecap":"butt","strokeLinejoin":"round"},"children":[{"tag":"path","attrs":{"d":"M12 2C17.5228 2 22 6.4771 22 12C22 17.5228 17.5228 22 12 22C6.4771 22 2 17.5228 2 12C2 6.4771 6.4771 2 12 2Z"},"children":[]},{"tag":"path","attrs":{"d":"M12 11L12 17"},"children":[]},{"tag":"path","attrs":{"d":"M13 8C13 8.5523 12.5523 9 12 9C11.4477 9 11 8.5523 11 8C11 7.4477 11.4477 7 12 7C12.5523 7 13 7.4477 13 8Z","fill":"currentColor","stroke":"none"},"children":[]}]},
   "menu": {"tag":"svg","attrs":{"xmlns":"http://www.w3.org/2000/svg","viewBox":"0 0 24 24","fill":"none","stroke":"currentColor","strokeWidth":"2","strokeLinecap":"butt","strokeLinejoin":"round"},"children":[{"tag":"path","attrs":{"d":"M3 6L21 6M3 12L21 12M3 18L21 18"},"children":[]}]},
   "pen": {"tag":"svg","attrs":{"xmlns":"http://www.w3.org/2000/svg","viewBox":"0 0 24 24","fill":"none","stroke":"currentColor","strokeWidth":"2","strokeLinecap":"butt","strokeLinejoin":"round"},"children":[{"tag":"path","attrs":{"d":"M21.0237 7.6904L9.8567 18.8573L2 22L5.1427 14.1433L16.3096 2.9763C16.9348 2.3512 17.7826 2 18.6667 2C19.5507 2 20.3986 2.3512 21.0237 2.9763C21.6488 3.6014 22 4.4493 22 5.3333C22 6.2174 21.6488 7.0652 21.0237 7.6904ZM15.0638 4.2222L19.7778 8.9362","fill":"none"},"children":[]}]},
@@ -27,6 +28,7 @@ export type IconName =
   | "check"
   | "chevron-down"
   | "download"
+  | "grip"
   | "info"
   | "menu"
   | "pen"

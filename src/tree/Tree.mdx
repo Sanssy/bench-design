@@ -22,3 +22,11 @@ Use for an actual hierarchy with globally unique node ids. Counts are supplied b
 <Canvas of={Stories.ExpandedFolders} />
 
 Use the theme selector to inspect both examples in light and dark themes.
+
+## Reordering
+
+Provide `onReorder` to enable the six-dot drag handle. The callback receives string keys and a `{ key, position: "before" | "after" }` target. Apply that request to your own data; the DS does not change the collection. Provide `getItemLabel` for readable drag previews and announcements (Table otherwise uses its stable key). Select multiple items before dragging to move a group. Tree requests relative positioning, not insertion into a node; consumers own hierarchy validation.
+
+Tab into the collection and reach the drag handle. Enter starts dragging, arrows move between insertion points, Enter drops and Escape cancels. React Aria supplies the live announcements. Keep the reorder capability stable: toggling whether `onReorder` exists remounts the Aria collection; control selection and expansion if they must survive that toggle.
+
+<Canvas of={Stories.ReorderableResources} />

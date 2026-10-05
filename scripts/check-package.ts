@@ -176,6 +176,21 @@ const layoutStyle = <Inline style={{ gap: 1 }}>Actions</Inline>;
 // @ts-expect-error divider has no visual overrides
 const dividerStyle = <Divider style={{ color: "red" }} />;
 void [layouts, invalidGap, invalidTag, missingColumns, invalidColumns, layoutClass, layoutStyle, dividerStyle];
+const collectionViewProps: CollectionViewProps = { label: "Resources", count: 0, toolbar: <Button>Search</Button>, footer: "0 of 3 shown", isEmpty: true, emptyState: <EmptyState title="No results">Try again</EmptyState>, children: "Collection" };
+const inspectorProps: InspectorProps = { title: "Resource", eyebrow: "Selected", sections: [{ id: "details", title: "Details", meta: "1 field", content: <MetaList items={[{ term: "Format", details: "Text" }]} />, defaultExpanded: true }], actions: <Button>Edit</Button>, emptyState: "Select an item" };
+const reorder: (keys: string[], target: { key: string; position: "before" | "after" }) => void = () => {};
+const collectionItems = [{ id: "notes", label: "Notes" }];
+void [<CollectionView {...collectionViewProps} />, <Inspector {...inspectorProps} />,
+  <GridList label="Resources" items={collectionItems} renderItem={item => item.label} onReorder={reorder} getItemLabel={item => item.label} />,
+  <Table label="Resources" rows={collectionItems} columns={[{ id: "label", label: "Name" }]} renderCell={item => item.label} onReorder={reorder} getItemLabel={item => item.label} />,
+  <Tree label="Resources" items={collectionItems} onReorder={reorder} getItemLabel={item => item.label} />];
+// @ts-expect-error the collection requires a label
+const unnamedCollection = <CollectionView>Content</CollectionView>;
+// @ts-expect-error visual overrides are excluded
+const styledInspector = <Inspector className="custom" />;
+// @ts-expect-error nesting is excluded from reorder requests
+const nesting: Parameters<NonNullable<GridListProps<typeof collectionItems[number]>["onReorder"]>>[1] = { key: "notes", position: "on" };
+void [unnamedCollection, styledInspector, nesting];
 const props: ButtonProps = { children: "Save", type: "submit", variant: "primary", ref: createRef<HTMLButtonElement>(), onPress: () => {}, isDisabled: false, "aria-label": "Save document", "aria-labelledby": "save-label" };
 const button = <Button {...props} icon="plus" />;
 const iconButtonProps: IconButtonProps = { icon: "search", label: "Search", ref: createRef<HTMLButtonElement>(), variant: "primary", type: "submit", onPress: () => {}, isDisabled: false };
@@ -294,6 +309,7 @@ void [button, missingContent, click, link, variant, type, heading, missingLevel,
     const data = readFileSync(new URL("./data.css", import.meta.resolve("bench-design/styles.css")), "utf8");
     assert(data.includes(".bd-value"));
     assert(data.includes(".bd-meta-list"));
+    for (const selector of [".bd-collection-view", ".bd-inspector", ".bd-reorder-handle", ".bd-reorder-preview", ".bd-reorder-indicator"]) assert(data.includes(selector));
     for (const selector of [".bd-grid-list", ".bd-selection-bar", ".bd-table-frame", ".bd-table-cell", ".bd-tree-content"]) assert(data.includes(selector));
     const init = await import("bench-design/theme-init.js");
     assert.deepEqual(Object.keys(init), []);

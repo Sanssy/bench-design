@@ -78,3 +78,43 @@ export const CompactInventory: Story = {
     </div>
   ),
 };
+
+export const ReorderableResources: Story = {
+  render: () => {
+    const [ordered, setOrdered] = useState([
+      { id: "notes", label: "Field notes" },
+      { id: "images", label: "Reference images" },
+      { id: "reading", label: "Reading list" },
+    ]);
+    return (
+      <div style={{ width: "var(--bd-panel-width)", maxWidth: "100%" }}>
+        <Table
+          label="Ordered resources"
+          rows={ordered}
+          columns={[{ id: "label", label: "Name" }]}
+          renderCell={(item) => item.label}
+          getItemLabel={(item) => item.label}
+          onReorder={(keys, target) => {
+            setOrdered((current) => {
+              if (keys.includes(target.key)) return current;
+              const moving = current.filter((item) => keys.includes(item.id));
+              const remaining = current.filter(
+                (item) => !keys.includes(item.id),
+              );
+              const index = remaining.findIndex(
+                (item) => item.id === target.key,
+              );
+              if (index < 0) return current;
+              remaining.splice(
+                index + (target.position === "after" ? 1 : 0),
+                0,
+                ...moving,
+              );
+              return remaining;
+            });
+          }}
+        />
+      </div>
+    );
+  },
+};

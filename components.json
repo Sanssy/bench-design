@@ -160,7 +160,7 @@
         },
         {
           "name": "icon",
-          "type": "\"arrow-left\" | \"arrow-right\" | \"bin\" | \"calendar\" | \"check\" | \"chevron-down\" | \"download\" | \"info\" | \"menu\" | \"pen\" | \"plus\" | \"search\" | \"settings\" | \"triangle-alert\" | \"user\" | \"x\"",
+          "type": "\"arrow-left\" | \"arrow-right\" | \"bin\" | \"calendar\" | \"check\" | \"chevron-down\" | \"download\" | \"grip\" | \"info\" | \"menu\" | \"pen\" | \"plus\" | \"search\" | \"settings\" | \"triangle-alert\" | \"user\" | \"x\"",
           "required": false,
           "description": "Decorative icon before the visible label."
         },
@@ -423,6 +423,66 @@
         {
           "name": "Review",
           "href": "./?path=/story/form-checkboxgroup--review"
+        }
+      ]
+    },
+    {
+      "name": "CollectionView",
+      "import": "import { CollectionView } from \"bench-design\";",
+      "description": "A named collection region with a sticky tools slot and a result footer.",
+      "props": [
+        {
+          "name": "label",
+          "type": "string",
+          "required": true,
+          "description": "Visible heading and accessible region name."
+        },
+        {
+          "name": "count",
+          "type": "number",
+          "required": false,
+          "description": "Optional total supplied by the consumer, including zero."
+        },
+        {
+          "name": "toolbar",
+          "type": "ReactNode",
+          "required": false,
+          "description": "Search, filters and view controls supplied by the consumer."
+        },
+        {
+          "name": "footer",
+          "type": "ReactNode",
+          "required": false,
+          "description": "Consumer-owned result summary and sorting controls."
+        },
+        {
+          "name": "isEmpty",
+          "type": "boolean",
+          "required": false,
+          "description": "Replace collection content with the empty state.",
+          "default": "false"
+        },
+        {
+          "name": "emptyState",
+          "type": "ReactNode",
+          "required": false,
+          "description": "Usually an EmptyState explaining that no results match."
+        },
+        {
+          "name": "children",
+          "type": "ReactNode",
+          "required": true,
+          "description": "Rendered collection; the consumer owns its data and state."
+        }
+      ],
+      "stories": [
+        {
+          "name": "ResourceLibrary",
+          "href": "./?path=/story/collections-collectionview--resource-library"
+        },
+        {
+          "name": "EmptyLibrary",
+          "href": "./?path=/story/collections-collectionview--empty-library"
         }
       ]
     },
@@ -1161,6 +1221,18 @@
       "description": "An accessible grid or list with React Aria navigation and selection.",
       "props": [
         {
+          "name": "onReorder",
+          "type": "ReorderHandler",
+          "required": false,
+          "description": "Request reordering; consumers apply the new order to their data."
+        },
+        {
+          "name": "getItemLabel",
+          "type": "(item: T) => string",
+          "required": false,
+          "description": "Readable item name for dragging and announcements."
+        },
+        {
           "name": "label",
           "type": "string",
           "required": true,
@@ -1243,6 +1315,10 @@
         {
           "name": "ResourceList",
           "href": "./?path=/story/collections-gridlist--resource-list"
+        },
+        {
+          "name": "ReorderableResources",
+          "href": "./?path=/story/collections-gridlist--reorderable-resources"
         }
       ]
     },
@@ -1297,7 +1373,7 @@
       "props": [
         {
           "name": "name",
-          "type": "\"arrow-left\" | \"arrow-right\" | \"bin\" | \"calendar\" | \"check\" | \"chevron-down\" | \"download\" | \"info\" | \"menu\" | \"pen\" | \"plus\" | \"search\" | \"settings\" | \"triangle-alert\" | \"user\" | \"x\"",
+          "type": "\"arrow-left\" | \"arrow-right\" | \"bin\" | \"calendar\" | \"check\" | \"chevron-down\" | \"download\" | \"grip\" | \"info\" | \"menu\" | \"pen\" | \"plus\" | \"search\" | \"settings\" | \"triangle-alert\" | \"user\" | \"x\"",
           "required": true,
           "description": "Name from the generated SVG catalogue."
         },
@@ -1361,7 +1437,7 @@
         },
         {
           "name": "icon",
-          "type": "\"arrow-left\" | \"arrow-right\" | \"bin\" | \"calendar\" | \"check\" | \"chevron-down\" | \"download\" | \"info\" | \"menu\" | \"pen\" | \"plus\" | \"search\" | \"settings\" | \"triangle-alert\" | \"user\" | \"x\"",
+          "type": "\"arrow-left\" | \"arrow-right\" | \"bin\" | \"calendar\" | \"check\" | \"chevron-down\" | \"download\" | \"grip\" | \"info\" | \"menu\" | \"pen\" | \"plus\" | \"search\" | \"settings\" | \"triangle-alert\" | \"user\" | \"x\"",
           "required": true,
           "description": "Decorative icon from the shared catalogue."
         },
@@ -1427,6 +1503,54 @@
         {
           "name": "Labels",
           "href": "./?path=/story/layout-inline--labels"
+        }
+      ]
+    },
+    {
+      "name": "Inspector",
+      "import": "import { Inspector } from \"bench-design\";",
+      "description": "Inspector details use shared Disclosure semantics and consumer-owned content.",
+      "props": [
+        {
+          "name": "title",
+          "type": "string",
+          "required": false,
+          "description": "Optional visible second-level heading."
+        },
+        {
+          "name": "eyebrow",
+          "type": "string",
+          "required": false,
+          "description": "Short context above the heading."
+        },
+        {
+          "name": "sections",
+          "type": "readonly InspectorSection[]",
+          "required": false,
+          "description": "Ordered expandable details.",
+          "default": "[]"
+        },
+        {
+          "name": "actions",
+          "type": "ReactNode",
+          "required": false,
+          "description": "Consumer-owned footer actions."
+        },
+        {
+          "name": "emptyState",
+          "type": "ReactNode",
+          "required": false,
+          "description": "Content displayed when no sections exist."
+        }
+      ],
+      "stories": [
+        {
+          "name": "ResourceDetails",
+          "href": "./?path=/story/collections-inspector--resource-details"
+        },
+        {
+          "name": "NoSelection",
+          "href": "./?path=/story/collections-inspector--no-selection"
         }
       ]
     },
@@ -2398,6 +2522,18 @@
       "description": "A React Aria table that contains horizontal overflow within its own frame.",
       "props": [
         {
+          "name": "onReorder",
+          "type": "ReorderHandler",
+          "required": false,
+          "description": "Request reordering; consumers apply the new order to their data."
+        },
+        {
+          "name": "getItemLabel",
+          "type": "(item: T) => string",
+          "required": false,
+          "description": "Readable item name for dragging and announcements."
+        },
+        {
           "name": "label",
           "type": "string",
           "required": true,
@@ -2480,6 +2616,10 @@
         {
           "name": "CompactInventory",
           "href": "./?path=/story/collections-table--compact-inventory"
+        },
+        {
+          "name": "ReorderableResources",
+          "href": "./?path=/story/collections-table--reorderable-resources"
         }
       ]
     },
@@ -2854,6 +2994,18 @@
       "description": "A React Aria tree; hierarchy state and keyboard behavior stay with React Aria.",
       "props": [
         {
+          "name": "onReorder",
+          "type": "ReorderHandler",
+          "required": false,
+          "description": "Request reordering; consumers apply the new order to their data."
+        },
+        {
+          "name": "getItemLabel",
+          "type": "(item: TreeNode) => string",
+          "required": false,
+          "description": "Readable item name for dragging and announcements."
+        },
+        {
           "name": "label",
           "type": "string",
           "required": true,
@@ -2917,6 +3069,10 @@
         {
           "name": "ExpandedFolders",
           "href": "./?path=/story/collections-tree--expanded-folders"
+        },
+        {
+          "name": "ReorderableResources",
+          "href": "./?path=/story/collections-tree--reorderable-resources"
         }
       ]
     },

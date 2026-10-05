@@ -14,6 +14,12 @@ export type { CheckboxProps } from "./checkbox/Checkbox.js";
 export { Checkbox } from "./checkbox/Checkbox.js";
 export type { CheckboxGroupProps } from "./checkbox-group/CheckboxGroup.js";
 export { CheckboxGroup } from "./checkbox-group/CheckboxGroup.js";
+export type { CollectionViewProps } from "./collection-view/CollectionView.js";
+export { CollectionView } from "./collection-view/CollectionView.js";
+export type {
+  ReorderHandler,
+  ReorderTarget,
+} from "./collections/reorder-types.js";
 export type { ColorFieldProps } from "./color-field/ColorField.js";
 export { ColorField } from "./color-field/ColorField.js";
 export type { ColorSwatchPickerProps } from "./color-swatch-picker/ColorSwatchPicker.js";
@@ -54,6 +60,11 @@ export type { IconButtonProps } from "./icon-button/IconButton.js";
 export { IconButton } from "./icon-button/IconButton.js";
 export type { InlineProps } from "./inline/Inline.js";
 export { Inline } from "./inline/Inline.js";
+export type {
+  InspectorProps,
+  InspectorSection,
+} from "./inspector/Inspector.js";
+export { Inspector } from "./inspector/Inspector.js";
 export type { LinkProps } from "./link/Link.js";
 export { Link } from "./link/Link.js";
 export type { MetaListProps } from "./meta-list/MetaList.js";

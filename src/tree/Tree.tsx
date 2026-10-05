@@ -7,6 +7,8 @@ import {
   TreeItemContent,
 } from "react-aria-components";
 import { selectionKeys } from "../collections/keys.js";
+import { ReorderHandle, useCollectionReorder } from "../collections/reorder.js";
+import type { ReorderHandler } from "../collections/reorder-types.js";
 import { Icon } from "../icon/Icon.js";
 
 /** A generic hierarchy node with a stable unique identifier. */
@@ -22,6 +24,10 @@ export interface TreeNode {
 }
 /** A hierarchy with expansion, selection and activation. */
 export interface TreeProps {
+  /** Request reordering; consumers apply the new order to their data. */
+  onReorder?: ReorderHandler;
+  /** Readable item name for dragging and announcements. */
+  getItemLabel?: (item: TreeNode) => string;
   /** Accessible hierarchy name. */
   label: string;
   /** Root nodes in display order. */
@@ -47,6 +53,8 @@ function allKeys(items: readonly TreeNode[]): string[] {
 /** A React Aria tree; hierarchy state and keyboard behavior stay with React Aria. */
 export function Tree({
   label,
+  onReorder,
+  getItemLabel,
   items,
   expandedKeys,
   defaultExpandedKeys,
@@ -56,10 +64,19 @@ export function Tree({
   onSelectionChange,
   onAction,
 }: TreeProps) {
+  const flatten = (nodes: readonly TreeNode[]): TreeNode[] =>
+    nodes.flatMap((node) => [node, ...flatten(node.children ?? [])]);
+  const dragAndDropHooks = useCollectionReorder(
+    flatten(items).map((item) => ({
+      key: item.id,
+      label: getItemLabel?.(item) ?? item.label,
+    })),
+    onReorder,
+  );
   const renderNode = (item: TreeNode) => (
     <TreeItem
       id={item.id}
-      textValue={item.label}
+      textValue={getItemLabel?.(item) ?? item.label}
       className="bd-tree-item"
       {...(onAction ? { onAction: () => onAction(item.id) } : {})}
     >
@@ -71,6 +88,7 @@ export function Tree({
               paddingInlineStart: `calc((${level} - 1) * var(--bd-space-24))`,
             }}
           >
+            {onReorder && <ReorderHandle />}
             {hasChildItems ? (
               <Button slot="chevron" className="bd-tree-chevron">
                 <Icon name="chevron-down" size={16} />
@@ -102,6 +120,8 @@ export function Tree({
   );
   return (
     <AriaTree
+      key={onReorder ? "reorder" : "static"}
+      {...(dragAndDropHooks ? { dragAndDropHooks } : {})}
       aria-label={label}
       className="bd-tree"
       items={items}

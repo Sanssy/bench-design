@@ -3321,6 +3321,30 @@
       ]
     },
     {
+      "name": "Timeline",
+      "import": "import { Timeline } from \"bench-design\";",
+      "description": "A vertical ordered list with decorative rail and caller-owned rich content.",
+      "props": [
+        {
+          "name": "label",
+          "type": "string",
+          "required": true,
+          "description": "Accessible name of the ordered list."
+        },
+        {
+          "name": "items",
+          "type": "{\n    /** Stable unique identifier. */\n    id: string;\n    /** Visible date, period or step; never parsed or sorted. */\n    marker: string;\n    title: ReactNode;\n    children?: ReactNode;\n  }[]",
+          "required": true
+        }
+      ],
+      "stories": [
+        {
+          "name": "PublicationHistory",
+          "href": "./?path=/story/data-timeline--publication-history"
+        }
+      ]
+    },
+    {
       "name": "ToastRegion",
       "import": "import { ToastRegion } from \"bench-design\";",
       "description": "Mount once at the application root. Timers pause on hover and keyboard focus.",

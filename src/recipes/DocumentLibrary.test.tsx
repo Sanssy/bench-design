@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import { render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { afterEach, beforeEach, expect, test, vi } from "vitest";
 import { DocumentLibrary } from "./DocumentLibrary.js";
@@ -27,4 +27,12 @@ test("search and facet combine, then recover from no matching documents", async 
   expect(screen.getAllByRole("row")).toHaveLength(2);
   await user.click(screen.getByRole("radio", { name: "All, 4" }));
   expect(screen.getAllByRole("row")).toHaveLength(4);
+});
+
+test("document previews highlight a short passage within readable context", () => {
+  render(<DocumentLibrary />);
+  const row = screen.getByRole("row", { name: "Energy invoice" });
+  const passage = "Total payable: 64.80 EUR.";
+  const preview = within(row).getByText(passage, { selector: "mark" });
+  expect(preview.parentElement?.textContent).not.toBe(passage);
 });

@@ -26,6 +26,7 @@ for (const theme of ["light", "dark"]) {
       ).toEqual([]);
     }
     await check();
+    await expect(page.getByRole("row").locator(".bd-card")).toHaveCount(0);
     const search = page.getByRole("searchbox", { name: /Search documents/ });
     await search.focus();
     await page.keyboard.type("unknown");
@@ -57,6 +58,11 @@ for (const theme of ["light", "dark"]) {
     await expect(dialog.locator("mark")).toHaveText(
       "Total payable: 64.80 EUR.",
     );
+    expect(
+      await dialog
+        .locator("mark")
+        .evaluate((el) => el.parentElement?.textContent),
+    ).not.toBe("Total payable: 64.80 EUR.");
     await check();
     await page.keyboard.press("Escape");
     if (await dialog.isVisible()) await page.keyboard.press("Escape");

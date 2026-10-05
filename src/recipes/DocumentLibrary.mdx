@@ -4,7 +4,7 @@ import * as Stories from './DocumentLibrary.stories';
 <Meta of={Stories} />
 
 # Document library
-An editorial import area, searchable collection and modal reading sheet composed entirely from shared primitives. Cards are static; GridList owns their activation.
+An editorial import area, searchable collection and modal reading sheet composed entirely from shared primitives. GridList owns each document’s border and activation; compose its content directly to avoid nesting a second bordered Card. Paper previews highlight a short excerpt within surrounding text.
 
 Supply document data, categories, search policy, upload, extraction, persistence and routing. All documents here are fictional. Choosing files only displays filenames; it does not upload or add documents to the archive.
 

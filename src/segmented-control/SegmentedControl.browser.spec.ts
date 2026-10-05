@@ -52,6 +52,15 @@ for (const theme of ["light", "dark"]) {
       await page.goto(
         `/iframe.html?id=form-segmentedcontrol--${story}&viewMode=story&globals=a11y.manual:!true;theme:${theme}`,
       );
+      if (story === "wrapped") {
+        const group = page.locator(".bd-segmented");
+        await expect(group).toHaveCSS("background-color", "rgba(0, 0, 0, 0)");
+        await expect(group).toHaveCSS("border-top-width", "0px");
+        for (const segment of await page.locator(".bd-segment").all()) {
+          await expect(segment).toHaveCSS("border-top-style", "solid");
+          await expect(segment).toHaveCSS("border-inline-end-style", "solid");
+        }
+      }
       const housing = page.getByRole("radio", { name: "Housing, 5" });
       const count = housing.locator(".bd-segment-count");
       await expect(count).toHaveText("5");

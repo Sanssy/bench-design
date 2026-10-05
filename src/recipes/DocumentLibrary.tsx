@@ -3,7 +3,6 @@ import { AppHeader } from "../app-header/AppHeader.js";
 import { AppShell } from "../app-shell/AppShell.js";
 import { Avatar } from "../avatar/Avatar.js";
 import { Badge } from "../badge/Badge.js";
-import { Card } from "../card/Card.js";
 import { CategoryLabel } from "../category-label/CategoryLabel.js";
 import { CollectionView } from "../collection-view/CollectionView.js";
 import { Dialog } from "../dialog/Dialog.js";
@@ -173,18 +172,16 @@ export function DocumentLibrary() {
               getItemLabel={(item) => item.title}
               onAction={setOpened}
               renderItem={(item) => (
-                <Card
-                  variant="outlined"
-                  media={
-                    <Surface tone="subtle" padding={16}>
-                      <Paper>
-                        <Text>
-                          <mark>{item.passage}</mark>
-                        </Text>
-                      </Paper>
-                    </Surface>
-                  }
-                >
+                <Stack gap={16}>
+                  <Surface tone="subtle" padding={16}>
+                    <Paper>
+                      <Text>
+                        This sample records the document details.{" "}
+                        <mark>{item.passage}</mark> Keep this copy for your
+                        records.
+                      </Text>
+                    </Paper>
+                  </Surface>
                   <Stack gap={12}>
                     <CategoryLabel
                       category="violet"
@@ -203,7 +200,7 @@ export function DocumentLibrary() {
                       Sample document
                     </Badge>
                   </Stack>
-                </Card>
+                </Stack>
               )}
             />
           </CollectionView>
@@ -229,7 +226,9 @@ export function DocumentLibrary() {
                 <Heading level={3}>{selected.kind}</Heading>
                 <Text>{selected.date}</Text>
                 <Text>
-                  <mark>{selected.passage}</mark>
+                  This sample records the document details.{" "}
+                  <mark>{selected.passage}</mark> Keep this copy for your
+                  records.
                 </Text>
               </Stack>
             </Paper>

@@ -17,6 +17,13 @@ values for the lifetime of the component. Use the theme selector for light and d
 For choice groups and sliders, validation is external via isInvalid and errorMessage;
 isRequired does not introduce a native submit constraint.
 
+Use `layout="wrap"` for up to six single-choice facets on narrow screens. Wrapped
+segments have a minimum 44 px target and long labels break within the available width.
+More than six options in wrap mode raises a RangeError. For larger facet sets or
+multiple selection, use FilterBar and a filter sheet labelled “Filters N”.
+An optional `count` appears after the label and is included in the accessible name,
+including zero. The default inline layout remains compact.
+
 ## TypeScript API
 
 <ManifestProps component="SegmentedControl" />
@@ -25,8 +32,11 @@ isRequired does not introduce a native submit constraint.
 
 <Canvas of={Stories.Default} />
 <Canvas of={Stories.Review} />
+<Canvas of={Stories.Wrapped} />
 
 ## Keyboard and ARIA
 
 Tab enters the group. Arrow keys move focus; Space or Enter selects. Disabled options are skipped.
+In wrap mode, Right/Left follow option order across successive rows (reversed in RTL);
+Space or Enter commits the focused choice.
 Disabled controls cannot be edited. Help and errors are connected to the control.

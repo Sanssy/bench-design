@@ -675,3 +675,17 @@
 .bd-composer > .bd-button {
   flex: none;
 }
+
+.bd-segmented[data-layout="wrap"] {
+  flex-wrap: wrap;
+  max-inline-size: 100%;
+  min-inline-size: 0;
+}
+.bd-segmented[data-layout="wrap"] .bd-segment {
+  block-size: auto;
+  min-block-size: calc(var(--bd-space-32) + var(--bd-space-12));
+  min-inline-size: calc(var(--bd-space-32) + var(--bd-space-12));
+  max-inline-size: 100%;
+  padding-block: var(--bd-space-8);
+  overflow-wrap: anywhere;
+}

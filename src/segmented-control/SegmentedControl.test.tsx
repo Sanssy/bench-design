@@ -110,3 +110,41 @@ test("includes the visible count in the accessible name", () => {
   );
   expect(screen.getByRole("radio", { name: "Housing, 5" })).toBeVisible();
 });
+
+test("wrap is explicit and limited to six single-choice options", () => {
+  const { rerender } = render(
+    <SegmentedControl label="Category" options={options} />,
+  );
+  expect(screen.getByRole("radiogroup")).toHaveAttribute(
+    "data-layout",
+    "inline",
+  );
+  rerender(
+    <SegmentedControl label="Category" options={options} layout="wrap" />,
+  );
+  expect(screen.getByRole("radiogroup")).toHaveAttribute("data-layout", "wrap");
+  expect(() =>
+    rerender(
+      <SegmentedControl
+        label="Category"
+        layout="wrap"
+        options={Array.from({ length: 7 }, (_, i) => ({
+          id: String(i),
+          label: String(i),
+        }))}
+      />,
+    ),
+  ).toThrow(/six/);
+});
+
+test("a zero count is visible and included in the name", () => {
+  render(
+    <SegmentedControl
+      label="Category"
+      options={[{ id: "empty", label: "Empty", count: 0 }]}
+    />,
+  );
+  expect(screen.getByRole("radio", { name: "Empty, 0" })).toHaveTextContent(
+    "Empty0",
+  );
+});

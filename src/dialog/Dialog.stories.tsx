@@ -15,7 +15,25 @@ export const DocumentDetails: Story = {
     title: "Document details",
     eyebrow: "Collection",
     children: <Text>Review the document before sharing it.</Text>,
-    actions: <Button variant="primary">Download</Button>,
+  },
+  render: function DocumentDetails(args) {
+    const [ready, setReady] = useState(false);
+    return (
+      <Dialog
+        {...args}
+        actions={
+          <>
+            <Button variant="primary" onPress={() => setReady(true)}>
+              Download
+            </Button>
+            <p role="status">{ready ? "Local download preview ready" : ""}</p>
+            {ready && (
+              <Button onPress={() => setReady(false)}>Reset preview</Button>
+            )}
+          </>
+        }
+      />
+    );
   },
 };
 export const ReadingGuide: Story = {
@@ -31,7 +49,25 @@ export const ReadingGuide: Story = {
         readers can find and understand each document.
       </Text>
     )),
-    actions: <Button variant="primary">Download guide</Button>,
+  },
+  render: function ReadingGuide(args) {
+    const [ready, setReady] = useState(false);
+    return (
+      <Dialog
+        {...args}
+        actions={
+          <>
+            <Button variant="primary" onPress={() => setReady(true)}>
+              Download guide
+            </Button>
+            <p role="status">{ready ? "Local download preview ready" : ""}</p>
+            {ready && (
+              <Button onPress={() => setReady(false)}>Reset preview</Button>
+            )}
+          </>
+        }
+      />
+    );
   },
 };
 

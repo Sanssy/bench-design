@@ -12,7 +12,12 @@ test("Storybook Controls exposes literal variant choices", {
     .filter({ has: page.getByText("variant", { exact: true }) });
   const select = row.getByRole("combobox");
   await expect(select).toBeVisible();
-  await expect(select.getByRole("option")).toHaveText(["list", "cards"]);
+  // Storybook adds its own "Choose option..." placeholder first.
+  await expect(select.getByRole("option")).toHaveText([
+    /Choose option/,
+    "list",
+    "cards",
+  ]);
   await select.selectOption("list");
   await expect(
     page.frameLocator("#storybook-preview-iframe").getByRole("radiogroup"),

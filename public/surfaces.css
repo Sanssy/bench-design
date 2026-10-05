@@ -229,7 +229,8 @@
   gap: var(--bd-space-4);
 }
 .bd-avatar-group__overflow {
-  min-inline-size: var(--bd-space-32);
+  /* Square at the avatar size; wider only when "+N" needs it. */
+  aspect-ratio: 1;
   inline-size: auto;
   padding-inline: var(--bd-space-4);
 }

@@ -37,3 +37,21 @@ test("empty results replace children and preserve tools and footer", () => {
   expect(screen.getByRole("button", { name: "Clear filters" })).toBeVisible();
   expect(screen.getByText("0 of 8 shown")).toBeVisible();
 });
+test("heading level defaults to 2 and follows headingLevel", () => {
+  const { rerender } = render(
+    <CollectionView label="Resources">
+      <p>Content</p>
+    </CollectionView>,
+  );
+  expect(screen.getByRole("heading", { level: 2 })).toHaveTextContent(
+    "Resources",
+  );
+  rerender(
+    <CollectionView label="Resources" headingLevel={3}>
+      <p>Content</p>
+    </CollectionView>,
+  );
+  expect(screen.getByRole("heading", { level: 3 })).toHaveTextContent(
+    "Resources",
+  );
+});

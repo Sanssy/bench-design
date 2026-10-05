@@ -509,6 +509,13 @@
           "description": "Visible heading and accessible region name."
         },
         {
+          "name": "headingLevel",
+          "type": "2 | 3 | 4 | 5 | 6",
+          "required": false,
+          "description": "Heading level within the page outline; defaults to 2.",
+          "default": "2"
+        },
+        {
           "name": "count",
           "type": "number",
           "required": false,

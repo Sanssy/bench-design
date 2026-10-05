@@ -4,6 +4,8 @@ import { Heading } from "../heading/Heading.js";
 export interface CollectionViewProps {
   /** Visible heading and accessible region name. */
   label: string;
+  /** Heading level within the page outline; defaults to 2. */
+  headingLevel?: 2 | 3 | 4 | 5 | 6;
   /** Optional total supplied by the consumer, including zero. */
   count?: number;
   /** Search, filters and view controls supplied by the consumer. */
@@ -20,6 +22,7 @@ export interface CollectionViewProps {
 /** A named collection region with a sticky tools slot and a result footer. */
 export function CollectionView({
   label,
+  headingLevel = 2,
   count,
   toolbar,
   footer,
@@ -32,7 +35,7 @@ export function CollectionView({
     <section className="bd-collection-view" aria-labelledby={id}>
       <header className="bd-collection-view-header">
         <div id={id}>
-          <Heading level={2} size="heading">
+          <Heading level={headingLevel} size="heading">
             {label}
           </Heading>
         </div>

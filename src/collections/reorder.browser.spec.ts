@@ -78,7 +78,26 @@ for (const component of ["grid-list", "table", "tree"]) {
       );
     });
   }
-  // Pointer dragging is React Aria's native drag and drop; synthetic drags in
-  // automated browsers are unreliable, and the keyboard path above exercises
-  // the same onReorder, indicator and announcements.
+  test(`${component} mouse drag reorders consumer data`, {
+    tag: [`@component:${component}`, "@theme:light"],
+  }, async ({ page }) => {
+    await page.goto(
+      `/iframe.html?id=collections-${story}--reorderable-resources&globals=a11y.manual:!true;theme:light`,
+    );
+    const rows = page.locator(selector);
+    await expect(rows).toHaveCount(3);
+    const from = await rows.nth(0).boundingBox();
+    const to = await rows.nth(2).boundingBox();
+    if (!from || !to) throw new Error("Rows are not rendered");
+    // Real mouse steps: one-shot synthetic drags are unreliable across engines.
+    const x = from.x + from.width / 2;
+    const startY = from.y + from.height / 2;
+    const endY = to.y + to.height - 4;
+    await page.mouse.move(x, startY);
+    await page.mouse.down();
+    for (let step = 1; step <= 12; step += 1)
+      await page.mouse.move(x, startY + ((endY - startY) * step) / 12);
+    await page.mouse.up();
+    await expect(rows.nth(0)).not.toContainText("Field notes");
+  });
 }

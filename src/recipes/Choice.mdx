@@ -1,0 +1,22 @@
+import { Meta, Canvas } from '@storybook/addon-docs/blocks';
+import * as Stories from './Choice.stories';
+
+<Meta of={Stories} />
+
+# Choose, confirm and see the result
+
+Choose a sample set, review its contents and confirm. Changing the choice clears the previous confirmation.
+
+## Components
+
+RadioGroup with the existing cards variant, CategoryLabel, Card, Value, Notice and Button.
+
+## Application responsibilities
+
+Option meaning, availability, submission, async errors and persistence. Confirmation here only updates local demonstration state.
+
+## Keyboard and responsive use
+
+Tab to the radio group and use arrows to choose. Tab to Confirm choice and press Enter. Shift+Tab returns to the choice. Use the theme selector to inspect light and dark themes. The layout uses existing primitives and fits a 320 px viewport.
+
+<Canvas of={Stories.ConfirmSelection} />

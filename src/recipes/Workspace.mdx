@@ -1,0 +1,22 @@
+import { Meta, Canvas } from '@storybook/addon-docs/blocks';
+import * as Stories from './Workspace.stories';
+
+<Meta of={Stories} />
+
+# Edit in a workspace panel
+
+Open the editor and change a board name, copy count, marker color and opacity. The summary updates immediately.
+
+## Components
+
+AppShell, SidePanel, Inspector, TextField, NumberField, ColorField, Slider and Button.
+
+## Application responsibilities
+
+Validation, undo, autosave, storage and the actual canvas. Color is sample data; it does not change the design-system theme.
+
+## Keyboard and responsive use
+
+Tab to Open editor and press Enter. Tab through the fields; use arrows for Copies and Opacity. On narrow screens AppShell exposes the panel through its existing tab selector. Use the theme selector to inspect light and dark themes. The layout uses existing primitives and fits a 320 px viewport.
+
+<Canvas of={Stories.EditInPanel} />

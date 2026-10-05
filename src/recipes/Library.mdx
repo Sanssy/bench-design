@@ -1,0 +1,22 @@
+import { Meta, Canvas } from '@storybook/addon-docs/blocks';
+import * as Stories from './Library.stories';
+
+<Meta of={Stories} />
+
+# Browse, select and inspect
+
+Find a resource, filter the collection and select an item to read its details.
+
+## Components
+
+CollectionView, GridList, SearchField, FilterChip, Inspector, MetaList and EmptyState.
+
+## Application responsibilities
+
+Resource data, search policy, selection lifetime, loading, permissions and persistence. This example only stores local state. Hidden selections do not show stale details.
+
+## Keyboard and responsive use
+
+Tab to search and the filter; Space toggles the filter. Tab into the collection, use arrows to navigate and Space to select. Use the theme selector to inspect light and dark themes. The layout uses existing primitives and fits a 320 px viewport.
+
+<Canvas of={Stories.BrowseAndInspect} />

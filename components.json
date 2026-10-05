@@ -1134,7 +1134,7 @@
           "name": "search",
           "type": "ReactNode",
           "required": false,
-          "description": "Optional search control; keep its value in application state."
+          "description": "Optional search control with a label and no description or error; keep its value in application state."
         },
         {
           "name": "children",

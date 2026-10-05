@@ -12,7 +12,7 @@ export interface FilterBarProps {
   activeCount: number;
   /** Request that the application clears all active filters. */
   onClearFilters: () => void;
-  /** Optional search control; keep its value in application state. */
+  /** Optional search control with a label and no description or error; keep its value in application state. */
   search?: ReactNode;
   /** Filter controls; keep their selected values in application state. */
   children: ReactNode;

@@ -13,6 +13,14 @@ export interface VisualException {
 }
 export const exceptions: VisualException[] = [
   {
+    file: "dist/overlays.css",
+    selector: "@media",
+    property: "condition",
+    value: "(width<640px)",
+    reason:
+      "Ratified Dialog end placement fills mobile viewports below 640px; CSS variables cannot define media conditions.",
+  },
+  {
     file: "dist/forms.css",
     selector: "@media",
     property: "condition",

@@ -18,13 +18,18 @@ Use for a focused task or a longer reading surface that interrupts the page. Sup
 
 The optional eyebrow is metadata. Actions stay visible while the body scrolls. Action behavior belongs to the consumer; the built-in Close button and Escape dismiss the dialog.
 
+Use `placement="end"` for a full-height sheet on the logical end edge (including RTL). It fills the screen below 640px. Use `size="wide"` for a wider reading workspace; the defaults remain `center` and `default`. The header stays visible while only the body scrolls. A rich `title` must contain meaningful text; keep interactive controls in the body or actions.
+
 ## Examples
 
 <Canvas of={Stories.DocumentDetails} />
 <Canvas of={Stories.ReadingGuide} />
 <Canvas of={Stories.ControlledHelp} />
+<Canvas of={Stories.AddDocuments} />
+<Canvas of={Stories.WideSheet} />
+<Canvas of={Stories.WideDialog} />
 
-Use the theme selector to inspect both examples in light and dark mode.
+Use the theme selector to inspect all examples in light and dark mode.
 
 ## Accessibility
 

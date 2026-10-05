@@ -76,3 +76,32 @@ test("Dialog follows controlled changes with its optional trigger", () => {
   );
   expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
 });
+
+test("End Dialog keeps a rich accessible title and restores focus after Escape", async () => {
+  const user = userEvent.setup();
+  render(
+    <Dialog
+      trigger={<Button>Open sheet</Button>}
+      title={
+        <>
+          Add <em>documents</em>
+        </>
+      }
+      placement="end"
+      size="wide"
+    >
+      <Button>Choose files</Button>
+    </Dialog>,
+  );
+  const origin = screen.getByRole("button", { name: "Open sheet" });
+  await user.click(origin);
+  const dialog = screen.getByRole("dialog", { name: "Add documents" });
+  expect(dialog.closest(".bd-modal")).toHaveClass(
+    "bd-modal-end",
+    "bd-modal-wide",
+  );
+  expect(screen.getByRole("heading", { name: "Add documents" })).toBeVisible();
+  await user.keyboard("{Escape}");
+  expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
+  await vi.waitFor(() => expect(origin).toHaveFocus());
+});

@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
+import { useState } from "react";
 import { Tabs } from "./Tabs.js";
 export default {
   title: "Navigation/Tabs",
@@ -26,3 +27,13 @@ export default {
 } satisfies Meta<typeof Tabs>;
 type Story = StoryObj<typeof Tabs>;
 export const LibrarySections: Story = {};
+
+export const VerticalSections: Story = { args: { orientation: "vertical" } };
+export const ControlledSections: Story = {
+  render: function ControlledSections(args) {
+    const [selected, setSelected] = useState("collections");
+    return (
+      <Tabs {...args} selectedKey={selected} onSelectionChange={setSelected} />
+    );
+  },
+};

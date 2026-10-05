@@ -2737,12 +2737,39 @@
           "type": "string",
           "required": false,
           "description": "Initially selected identifier; defaults to the first item."
+        },
+        {
+          "name": "selectedKey",
+          "type": "string",
+          "required": false,
+          "description": "Controlled selected identifier."
+        },
+        {
+          "name": "onSelectionChange",
+          "type": "(key: string) => void",
+          "required": false,
+          "description": "Called with the selected identifier."
+        },
+        {
+          "name": "orientation",
+          "type": "\"horizontal\" | \"vertical\"",
+          "required": false,
+          "description": "Tab list axis and corresponding arrow navigation.",
+          "default": "\"horizontal\""
         }
       ],
       "stories": [
         {
           "name": "LibrarySections",
           "href": "./?path=/story/navigation-tabs--library-sections"
+        },
+        {
+          "name": "VerticalSections",
+          "href": "./?path=/story/navigation-tabs--vertical-sections"
+        },
+        {
+          "name": "ControlledSections",
+          "href": "./?path=/story/navigation-tabs--controlled-sections"
         }
       ]
     },

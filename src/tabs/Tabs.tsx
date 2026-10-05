@@ -14,12 +14,30 @@ export interface TabsProps {
   items: readonly { id: string; title: string; content: ReactNode }[];
   /** Initially selected identifier; defaults to the first item. */
   defaultSelectedKey?: string;
+  /** Controlled selected identifier. */
+  selectedKey?: string;
+  /** Called with the selected identifier. */
+  onSelectionChange?: (key: string) => void;
+  /** Tab list axis and corresponding arrow navigation. */
+  orientation?: "horizontal" | "vertical";
 }
 /** Tab navigation and panels managed together by React Aria. */
-export function Tabs({ label, items, defaultSelectedKey }: TabsProps) {
+export function Tabs({
+  label,
+  items,
+  defaultSelectedKey,
+  selectedKey,
+  onSelectionChange,
+  orientation = "horizontal",
+}: TabsProps) {
   return (
     <AriaTabs
       className="bd-tabs"
+      orientation={orientation}
+      {...(selectedKey === undefined ? {} : { selectedKey })}
+      {...(onSelectionChange === undefined
+        ? {}
+        : { onSelectionChange: (key) => onSelectionChange(String(key)) })}
       {...(defaultSelectedKey === undefined ? {} : { defaultSelectedKey })}
     >
       <TabList className="bd-tab-list" aria-label={label} items={items}>

@@ -4,6 +4,7 @@
   "private": true,
   "type": "module",
   "description": "Shared React design system with tokens, themes and accessible components",
+  "license": "MIT",
   "packageManager": "pnpm@12.8.1",
   "engines": {
     "node": ">=24.21.0"

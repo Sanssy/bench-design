@@ -32,7 +32,7 @@ export const ResourceLibrary: Story = {
     );
     const shown = reversed ? [...matches].reverse() : matches;
     return (
-      <div style={{ width: "var(--bd-measure)", maxWidth: "100%" }}>
+      <div style={{ width: "min(var(--bd-measure), calc(100vw - 2rem))" }}>
         <CollectionView
           label="Resource library"
           count={resources.length}

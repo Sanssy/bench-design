@@ -37,7 +37,7 @@ export const ResourceInventory: Story = {
       return sort.direction === "ascending" ? order : -order;
     });
     return (
-      <div style={{ width: "var(--bd-measure)", maxWidth: "100%" }}>
+      <div style={{ width: "min(var(--bd-measure), calc(100vw - 2rem))" }}>
         <Table
           label="Resource inventory"
           rows={sorted}

@@ -19,7 +19,7 @@ export const ResourceCards: Story = {
   render: () => {
     const [opened, setOpened] = useState<string>();
     return (
-      <div style={{ width: "var(--bd-measure)", maxWidth: "100%" }}>
+      <div style={{ width: "min(var(--bd-measure), calc(100vw - 2rem))" }}>
         <GridList
           label="Resources"
           items={items}
@@ -42,7 +42,7 @@ export const ResourceCards: Story = {
 };
 export const ResourceList: Story = {
   render: () => (
-    <div style={{ width: "var(--bd-measure)", maxWidth: "100%" }}>
+    <div style={{ width: "min(var(--bd-measure), calc(100vw - 2rem))" }}>
       <GridList
         label="Resources"
         items={items}

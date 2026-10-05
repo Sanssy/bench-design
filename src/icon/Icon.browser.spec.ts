@@ -22,5 +22,6 @@ test("Icon inherits parent color in both themes", {
       colors.push(actual.stroke);
     }
   }
-  expect(colors[0]).not.toBe(colors[16]);
+  // First light icon against first dark icon.
+  expect(colors[0]).not.toBe(colors[colors.length / 2]);
 });

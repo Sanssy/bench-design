@@ -61,3 +61,9 @@
 .bd-text[data-tone="muted"] {
   color: var(--bd-text-muted);
 }
+
+/* Long words and identifiers wrap inside components instead of widening the
+   page (UX-11). Zero specificity: any component or product rule overrides it. */
+:where([class^="bd-"], [class*=" bd-"]) {
+  overflow-wrap: anywhere;
+}

@@ -4,6 +4,7 @@
   flex-direction: column;
   gap: var(--bd-space-8);
   min-inline-size: 0;
+  max-inline-size: 100%;
   color: var(--bd-text);
   font-family: var(--bd-font-ui);
   font-size: var(--bd-size-ui);
@@ -173,6 +174,7 @@
   cursor: pointer;
 }
 .bd-select-trigger > span {
+  min-inline-size: 0;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;

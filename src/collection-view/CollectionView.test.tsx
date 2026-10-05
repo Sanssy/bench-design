@@ -13,8 +13,8 @@ test("names the collection and keeps consumer tools, zero count and footer", () 
       <p>Consumer content</p>
     </CollectionView>,
   );
-  expect(screen.getByRole("region", { name: "Resources" })).toBeVisible();
-  expect(screen.getByRole("heading", { name: "Resources" })).toBeVisible();
+  expect(screen.getByRole("region", { name: "Resources 0" })).toBeVisible();
+  expect(screen.getByRole("heading", { name: "Resources 0" })).toBeVisible();
   expect(screen.getByText("0")).toBeVisible();
   expect(screen.getByRole("button", { name: "Search" })).toBeVisible();
   expect(screen.getByText("Consumer content")).toBeVisible();
@@ -54,4 +54,21 @@ test("heading level defaults to 2 and follows headingLevel", () => {
   expect(screen.getByRole("heading", { level: 3 })).toHaveTextContent(
     "Resources",
   );
+});
+
+test("outlined count is announced with the chosen heading level", () => {
+  render(
+    <CollectionView
+      label="Resources"
+      count={12}
+      countVariant="outlined"
+      headingLevel={3}
+    >
+      Content
+    </CollectionView>,
+  );
+  expect(
+    screen.getByRole("heading", { name: "Resources 12", level: 3 }),
+  ).toBeVisible();
+  expect(screen.getByRole("region", { name: "Resources 12" })).toBeVisible();
 });

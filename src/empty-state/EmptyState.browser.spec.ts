@@ -65,3 +65,42 @@ test("EmptyState geometry uses spacing and typography tokens", {
   );
   for (const [actual, expected] of values) expect(actual).toBe(expected);
 });
+
+for (const theme of ["light", "dark"] as const) {
+  test(`Editorial empty state at 320 px ${theme}`, {
+    tag: ["@component:empty-state", `@theme:${theme}`],
+  }, async ({ page }) => {
+    await page.setViewportSize({ width: 320, height: 700 });
+    await page.goto(
+      `/iframe.html?id=surfaces-emptystate--editorial-library&globals=a11y.manual:!true;theme:${theme}`,
+    );
+    await page.evaluate(() => document.fonts.ready);
+    const component = page.locator(".bd-empty-state");
+    await expect(component).toHaveCSS("border-top-style", "solid");
+    await expect(component.locator(".bd-icon-tile")).toHaveAttribute(
+      "data-tone",
+      "neutral",
+    );
+    const fonts = await component.evaluate((element) => {
+      const probe = document.createElement("span");
+      probe.style.fontFamily = "var(--bd-font-editorial)";
+      element.append(probe);
+      const expected = getComputedStyle(probe).fontFamily;
+      const actual = getComputedStyle(
+        element.querySelector(".bd-heading")!,
+      ).fontFamily;
+      probe.remove();
+      return { actual, expected };
+    });
+    expect(fonts.actual).toBe(fonts.expected);
+    expect(
+      await page.evaluate(
+        () => document.documentElement.scrollWidth <= innerWidth,
+      ),
+    ).toBe(true);
+    await page.getByRole("button", { name: "Import documents" }).click();
+    await expect(page.getByRole("status")).toHaveText(
+      "Sample document imported",
+    );
+  });
+}

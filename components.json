@@ -777,6 +777,13 @@
           "description": "Optional total supplied by the consumer, including zero."
         },
         {
+          "name": "countVariant",
+          "type": "\"plain\" | \"outlined\"",
+          "required": false,
+          "description": "Count appearance; defaults to plain.",
+          "default": "\"plain\""
+        },
+        {
           "name": "toolbar",
           "type": "ReactNode",
           "required": false,
@@ -1443,6 +1450,19 @@
           "name": "action",
           "type": "ReactNode",
           "required": false
+        },
+        {
+          "name": "icon",
+          "type": "\"arrow-left\" | \"arrow-right\" | \"arrow-up-right\" | \"arrow-up\" | \"asterisk\" | \"bike\" | \"bin\" | \"briefcase\" | \"calendar\" | \"check\" | \"chevron-down\" | \"chevron-right\" | \"download\" | \"file-text\" | \"grip\" | \"heart\" | \"home\" | \"info\" | \"layers\" | \"layout-grid\" | \"link\" | \"list\" | \"menu\" | \"pen\" | \"plus\" | \"scan\" | \"search\" | \"settings\" | \"shopping-bag\" | \"triangle-alert\" | \"upload\" | \"user\" | \"wallet\" | \"x\"",
+          "required": false,
+          "description": "Decorative catalogue icon on a neutral tile."
+        },
+        {
+          "name": "variant",
+          "type": "\"default\" | \"editorial\"",
+          "required": false,
+          "description": "Editorial heading and solid border; defaults to default.",
+          "default": "\"default\""
         }
       ],
       "stories": [
@@ -1453,6 +1473,10 @@
         {
           "name": "NoResults",
           "href": "./?path=/story/surfaces-emptystate--no-results"
+        },
+        {
+          "name": "EditorialLibrary",
+          "href": "./?path=/story/surfaces-emptystate--editorial-library"
         }
       ]
     },

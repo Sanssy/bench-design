@@ -12,6 +12,8 @@ Import `CollectionView` from `bench-design` and load `bench-design/styles.css` o
 
 Compose search, filters, view controls, a collection and a result footer. The consumer calculates counts and applies filtering and sorting. Provide EmptyState and isEmpty for no matches; children are replaced but tools and footer remain. The toolbar sticks within its nearest scrolling ancestor. Use an appropriate surrounding heading hierarchy: the title defaults to a second-level heading; set `headingLevel` (2–6) to fit the surrounding structure. For example, use `<CollectionView label="Related resources" headingLevel={3}>…</CollectionView>` within a section introduced by an h2. Avoid nesting collection regions with the same name.
 
+The optional count, including zero, is announced with the title and region name. Use `countVariant="outlined"` for a bordered metadata counter; the default is `plain`.
+
 ## API
 
 <ManifestProps component="CollectionView" />

@@ -324,6 +324,17 @@
   font: var(--bd-size-meta) / var(--bd-line-normal) var(--bd-font-mono);
   font-variant-numeric: tabular-nums;
 }
+.bd-collection-view-header > div {
+  min-inline-size: 0;
+}
+.bd-collection-view-count {
+  display: inline-block;
+  vertical-align: middle;
+}
+.bd-collection-view-count[data-variant="outlined"] {
+  border: var(--bd-hair) solid var(--bd-border);
+  padding: var(--bd-space-4) var(--bd-space-8);
+}
 .bd-collection-view-toolbar {
   position: sticky;
   inset-block-start: 0;

@@ -11,7 +11,7 @@ for (const theme of ["light", "dark"]) {
       );
       await expect(page.locator("html")).toHaveAttribute("data-theme", theme);
       await expect(
-        page.getByRole("region", { name: "Resource library" }),
+        page.getByRole("region", { name: /Resource library [03]/ }),
       ).toBeVisible();
       await page.evaluate(() => document.fonts.ready);
       await expect(page.locator(".bd-collection-view-footer")).toHaveCSS(
@@ -27,17 +27,26 @@ for (const theme of ["light", "dark"]) {
           return family;
         }),
       );
+      await page.setViewportSize({ width: 320, height: 700 });
+      expect(
+        await page.evaluate(
+          () => document.documentElement.scrollWidth <= innerWidth,
+        ),
+      ).toBe(true);
+      if (story === "empty-library") {
+        await expect(
+          page.getByRole("heading", { name: "Resource library 0", level: 2 }),
+        ).toBeVisible();
+        await expect(page.locator(".bd-collection-view-count")).toHaveCSS(
+          "border-top-style",
+          "solid",
+        );
+      }
       if (story === "resource-library") {
         await expect(page.locator(".bd-collection-view-toolbar")).toHaveCSS(
           "position",
           "sticky",
         );
-        await page.setViewportSize({ width: 360, height: 700 });
-        expect(
-          await page.evaluate(
-            () => document.documentElement.scrollWidth <= innerWidth,
-          ),
-        ).toBe(true);
       }
       expect(
         (

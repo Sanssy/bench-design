@@ -1,5 +1,10 @@
 export type { ActionCardProps } from "./action-card/ActionCard.js";
 export { ActionCard } from "./action-card/ActionCard.js";
+export type {
+  ActionListItem,
+  ActionListProps,
+} from "./action-list/ActionList.js";
+export { ActionList } from "./action-list/ActionList.js";
 export type { AppShellProps } from "./app-shell/AppShell.js";
 export { AppShell } from "./app-shell/AppShell.js";
 export type { AvatarProps } from "./avatar/Avatar.js";

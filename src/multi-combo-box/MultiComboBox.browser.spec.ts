@@ -11,6 +11,7 @@ for (const theme of ["light", "dark"]) {
     );
     await expect(page.locator("html")).toHaveAttribute("data-theme", theme);
     const input = page.getByRole("combobox");
+    await expect(input).toBeVisible();
     await input.focus();
     const tokens = await page.evaluate(() => {
       const probe = document.createElement("span");
@@ -73,7 +74,9 @@ for (const theme of ["light", "dark"]) {
 test("MultiComboBox keyboard selection and tag removal", {
   tag: ["@component:multi-combo-box"],
 }, async ({ page }) => {
-  await page.goto("/iframe.html?id=form-multicombobox--default&viewMode=story");
+  await page.goto(
+    "/iframe.html?id=form-multicombobox--default&viewMode=story&globals=a11y.manual:!true",
+  );
   const input = page.getByRole("combobox");
   await input.fill("Document 09999");
   await expect(page.getByRole("option").locator("u")).toHaveText(
@@ -98,7 +101,9 @@ test("MultiComboBox limits tags to two lines and counts additional choices", {
   tag: ["@component:multi-combo-box"],
 }, async ({ page }) => {
   await page.setViewportSize({ width: 420, height: 900 });
-  await page.goto("/iframe.html?id=form-multicombobox--default&viewMode=story");
+  await page.goto(
+    "/iframe.html?id=form-multicombobox--default&viewMode=story&globals=a11y.manual:!true",
+  );
   await page.getByRole("combobox").fill("Document 000");
   for (const label of [
     "Document 00002",
@@ -130,7 +135,7 @@ test("MultiComboBox loads server pages while retaining selected tags", {
   tag: ["@component:multi-combo-box"],
 }, async ({ page }) => {
   await page.goto(
-    "/iframe.html?id=form-multicombobox--server-search&viewMode=story",
+    "/iframe.html?id=form-multicombobox--server-search&viewMode=story&globals=a11y.manual:!true",
   );
   const input = page.getByRole("combobox", { name: "Remote documents" });
   await input.fill("Document");
@@ -155,7 +160,7 @@ test("MultiComboBox disabled, invalid and optional usage", {
   tag: ["@component:multi-combo-box"],
 }, async ({ page }) => {
   await page.goto(
-    "/iframe.html?id=form-multicombobox--server-search&viewMode=story",
+    "/iframe.html?id=form-multicombobox--server-search&viewMode=story&globals=a11y.manual:!true",
   );
   await expect(
     page.getByRole("combobox", { name: /Archived documents/ }),

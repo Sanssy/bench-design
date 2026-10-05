@@ -1,3 +1,4 @@
+import { useId } from "react";
 import {
   NumberField as AriaNumberField,
   Button,
@@ -46,9 +47,11 @@ export function NumberField({
   unit,
   formatOptions,
 }: NumberFieldProps) {
+  const unitId = useId();
   return (
     <AriaNumberField
       className="bd-field"
+      {...(unit ? { "aria-describedby": unitId } : {})}
       {...(name === undefined ? {} : { name })}
       {...(value === undefined ? {} : { value })}
       {...(defaultValue === undefined ? {} : { defaultValue })}
@@ -67,7 +70,11 @@ export function NumberField({
       />
       <Group className="bd-field-control bd-number-control">
         <Input className="bd-search-input" />
-        {unit && <span className="bd-field-mono">{unit}</span>}
+        {unit && (
+          <span id={unitId} className="bd-field-mono">
+            {unit}
+          </span>
+        )}
         <Button slot="decrement" className="bd-number-step">
           −
         </Button>

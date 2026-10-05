@@ -86,3 +86,14 @@
 .bd-modal:has(.bd-filter-bar-sheet) .bd-dialog-body {
   flex: 1;
 }
+
+@media (width >= 640px) {
+  .bd-filter-bar,
+  .bd-filter-bar-controls {
+    align-items: flex-end;
+  }
+  .bd-filter-bar-chips,
+  .bd-filter-bar-summary {
+    min-block-size: var(--bd-space-48);
+  }
+}

@@ -110,6 +110,14 @@
         {
           "name": "LimitedCollaborators",
           "href": "./?path=/story/data-avatargroup--limited-collaborators"
+        },
+        {
+          "name": "CompactCollaborators",
+          "href": "./?path=/story/data-avatargroup--compact-collaborators"
+        },
+        {
+          "name": "LargeCollaborators",
+          "href": "./?path=/story/data-avatargroup--large-collaborators"
         }
       ]
     },

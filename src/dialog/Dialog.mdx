@@ -10,7 +10,7 @@ Import `Dialog` and `Button` from `bench-design`; load `bench-design/styles.css`
 
 ## Usage
 
-Use for a focused task or a longer reading surface that interrupts the page. Supply a DS Button as the trigger, a concise title, body content and optional actions. Avoid nested modals. Use Popover for contextual help.
+Use for a focused task or a longer reading surface that interrupts the page. Supply a DS Button as the trigger, a concise title, body content and optional actions. For application-driven opening, supply `isOpen` and `onOpenChange`; `trigger` may then be omitted. Keep one control mode for the lifetime of the dialog. Avoid nested modals. Use Popover for contextual help.
 
 ## API
 
@@ -22,11 +22,12 @@ The optional eyebrow is metadata. Actions stay visible while the body scrolls. A
 
 <Canvas of={Stories.DocumentDetails} />
 <Canvas of={Stories.ReadingGuide} />
+<Canvas of={Stories.ControlledHelp} />
 
 Use the theme selector to inspect both examples in light and dark mode.
 
 ## Accessibility
 
-The editorial heading names the dialog. React Aria contains focus, hides the background from assistive technology, handles Escape and restores focus to the trigger. Tab and Shift+Tab cycle through dialog controls. The Close button is an icon action named “Close”. Appearance fades only when reduced motion is not requested. Test the reading order and focus sequence of your content.
+The editorial heading names the dialog. React Aria contains focus, hides the background from assistive technology, handles Escape and restores focus to the trigger or the element focused before controlled opening. Tab and Shift+Tab cycle through dialog controls. The Close button is an icon action named “Close”. Appearance fades only when reduced motion is not requested. Test the reading order and focus sequence of your content.
 
 Internal copy and numeric summaries follow the React Aria locale. Use the optional `BenchProvider` for English/French copy and partial message overrides; consumer labels remain application-owned.

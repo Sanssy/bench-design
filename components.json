@@ -840,8 +840,20 @@
         {
           "name": "trigger",
           "type": "ReactNode",
-          "required": true,
+          "required": false,
           "description": "A React Aria compatible action, usually a DS Button."
+        },
+        {
+          "name": "isOpen",
+          "type": "boolean",
+          "required": false,
+          "description": "Controlled modal visibility; required when omitting trigger."
+        },
+        {
+          "name": "onOpenChange",
+          "type": "(isOpen: boolean) => void",
+          "required": false,
+          "description": "Called when the trigger or dismissal requests a visibility change."
         },
         {
           "name": "title",
@@ -876,6 +888,10 @@
         {
           "name": "ReadingGuide",
           "href": "./?path=/story/overlays-dialog--reading-guide"
+        },
+        {
+          "name": "ControlledHelp",
+          "href": "./?path=/story/overlays-dialog--controlled-help"
         }
       ]
     },

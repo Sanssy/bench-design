@@ -213,3 +213,39 @@ test("Open Dialog passes automated axe in both themes", {
     }
   }
 });
+
+for (const theme of ["light", "dark"] as const) {
+  test(`Controlled Dialog restores origin focus and passes axe at 320px ${theme}`, {
+    tag: ["@component:dialog", `@theme:${theme}`],
+  }, async ({ page }) => {
+    await page.setViewportSize({ width: 320, height: 640 });
+    await page.goto(
+      `/iframe.html?id=overlays-dialog--controlled-help&viewMode=story&globals=a11y.manual:!true;theme:${theme}`,
+    );
+    await expect(page.locator("html")).toHaveAttribute("data-theme", theme);
+    const origin = page.getByRole("button", { name: "Read editing help" });
+    await expect(origin).toBeVisible();
+    await page.evaluate(() => document.fonts.ready);
+    await origin.focus();
+    await page.keyboard.press("Enter");
+    const dialog = page.getByRole("dialog", { name: "Editing help" });
+    await expect(dialog).toBeVisible();
+    expect(
+      (await new AxeBuilder({ page }).withTags(["wcag2a", "wcag2aa"]).analyze())
+        .violations,
+    ).toEqual([]);
+    expect(
+      await page.evaluate(
+        () => document.documentElement.scrollWidth <= window.innerWidth,
+      ),
+    ).toBe(true);
+    await page.keyboard.press("Escape");
+    await expect(dialog).toHaveCount(0);
+    await expect(origin).toBeFocused();
+    await page.keyboard.press("Enter");
+    await expect(dialog).toBeVisible();
+    await page.getByRole("button", { name: "Close", exact: true }).click();
+    await expect(dialog).toHaveCount(0);
+    await expect(origin).toBeFocused();
+  });
+}

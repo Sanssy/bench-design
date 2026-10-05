@@ -6,6 +6,7 @@ import {
   Text,
   UNSTABLE_ToastQueue as ToastQueue,
 } from "react-aria-components";
+import { useBenchMessages } from "../bench-provider/BenchProvider.js";
 import { Button } from "../button/Button.js";
 import { Icon } from "../icon/Icon.js";
 import { IconButton } from "../icon-button/IconButton.js";
@@ -37,6 +38,7 @@ export function useToast(): ToastController {
 }
 /** Mount once at the application root. Timers pause on hover and keyboard focus. */
 export function ToastRegion() {
+  const { messages: m } = useBenchMessages();
   useEffect(() => {
     if (mounted) throw new Error("Mount only one ToastRegion per application.");
     mounted = true;
@@ -89,7 +91,7 @@ export function ToastRegion() {
           )}
           <IconButton
             icon="x"
-            label="Close"
+            label={m.close}
             onPress={() => {
               queue.close(toast.key);
             }}

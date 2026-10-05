@@ -12,8 +12,8 @@ Import `Value` from `bench-design` and load `bench-design/styles.css` once.
 
 Use for a score, rank or inline statistic. Plain inherits the surrounding text size and weight. Hero emphasizes a primary value; indexed uses monospaced numerals; dense fits compact summaries.
 
-- Do provide a label when the generated English name lacks context or needs translation.
-- Supply a label for an empty value; the default accessible name is “No value”.
+- Do provide a label when the generated localized name lacks context.
+- Supply a label for an empty value; the English default accessible name is “No value” (localized internally).
 - Apply `sign` to a positive magnitude: use `value={12.5} sign="-"`, rather than embedding a sign in `value`.
 - Avoid using this component for editable inputs or entire sentences.
 - Use the Score controls to explore indexed and dense presentation without changing the example's purpose.
@@ -35,4 +35,4 @@ Use the theme selector to inspect light and dark themes.
 
 ## Accessibility
 
-The display is one image with a generated accessible name (for example, “7 of 10” or “+12.5 %”). The label prop overrides that name. Sign, total and unit stay visible; tabular numerals align figures. There is no keyboard interaction.
+The display is one image with a generated accessible name (for example, “7 of 10” or “+12.5 %”). The label prop overrides that name. Numeric values and totals follow the React Aria locale; string values retain their supplied formatting. Sign, total and unit stay visible; tabular numerals align figures. There is no keyboard interaction.

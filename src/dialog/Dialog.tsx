@@ -5,6 +5,7 @@ import {
   Modal,
   ModalOverlay,
 } from "react-aria-components";
+import { useBenchMessages } from "../bench-provider/BenchProvider.js";
 import { Heading } from "../heading/Heading.js";
 import { IconButton } from "../icon-button/IconButton.js";
 import { Text } from "../text/Text.js";
@@ -30,6 +31,7 @@ export function Dialog({
   children,
   actions,
 }: DialogProps) {
+  const { messages: m } = useBenchMessages();
   const titleId = useId();
   return (
     <DialogTrigger>
@@ -50,7 +52,7 @@ export function Dialog({
                       </Heading>
                     </div>
                   </div>
-                  <IconButton icon="x" label="Close" onPress={close} />
+                  <IconButton icon="x" label={m.close} onPress={close} />
                 </header>
                 <section
                   className="bd-dialog-body"

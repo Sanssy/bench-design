@@ -1,4 +1,5 @@
 import { FieldError, Label, Text } from "react-aria-components";
+import { useBenchMessages } from "../bench-provider/BenchProvider.js";
 import { Icon } from "../icon/Icon.js";
 import type { FieldProps } from "./FieldProps.js";
 
@@ -9,7 +10,7 @@ export function FieldLabel({
   return (
     <Label className="bd-field-label">
       {label}
-      {!isRequired && <span className="bd-field-optional"> (optional)</span>}
+      {!isRequired && <FieldOptional />}
     </Label>
   );
 }
@@ -34,4 +35,9 @@ export function FieldMessages({
       </FieldError>
     </>
   );
+}
+
+export function FieldOptional() {
+  const { messages: m } = useBenchMessages();
+  return <span className="bd-field-optional"> {m.optional}</span>;
 }

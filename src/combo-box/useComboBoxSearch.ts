@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useFilter } from "react-aria-components";
+import { useBenchMessages } from "../bench-provider/BenchProvider.js";
 import type { FieldOption } from "../forms/FieldProps.js";
 import type { ComboBoxProps } from "./ComboBox.js";
 import { useComboBoxItems } from "./useComboBoxItems.js";
@@ -8,6 +9,7 @@ export function useComboBoxSearch(
   options: readonly FieldOption[],
   loadItems: ComboBoxProps["loadItems"],
 ) {
+  const { messages: m, context: c } = useBenchMessages();
   const [query, setQuery] = useState("");
   const { contains } = useFilter({ sensitivity: "base" });
   const remote = useComboBoxItems(loadItems);
@@ -19,10 +21,12 @@ export function useComboBoxSearch(
   const hasError = !!loadItems && remote.loadingState === "error";
   const loading = !!loadItems && remote.isLoading;
   const status = loading
-    ? "Loading results…"
+    ? m.loadingResults
     : hasError
-      ? "Could not load results."
-      : `${items.length} ${loadItems && remote.hasMore ? "loaded" : items.length === 1 ? "result" : "results"}`;
+      ? m.loadError
+      : loadItems && remote.hasMore
+        ? m.loaded(items.length, c)
+        : m.results(items.length, c);
   return {
     items,
     query,

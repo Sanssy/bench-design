@@ -1,0 +1,43 @@
+import { Meta, Canvas, Controls } from '@storybook/addon-docs/blocks';
+import { ManifestProps } from "../../.storybook/ManifestProps";
+import * as Stories from './BenchProvider.stories';
+
+<Meta of={Stories} />
+
+# BenchProvider
+
+Import `BenchProvider` and its `BenchProviderProps` and `BenchMessages` types from `bench-design`.
+
+## Usage
+
+The provider is optional. Internal copy follows the React Aria locale, with English and French dictionaries; unsupported languages use English copy while retaining their number formatting. With the default English locale, existing English behavior is preserved. An existing React Aria I18nProvider is supported without BenchProvider.
+
+Set `locale` to configure React Aria and internal copy together. Omitting it inherits the surrounding locale. Supply `messages` as partial overrides; nested providers inherit overrides and replace only the keys they supply. Application labels, descriptions, validation messages and content remain application-owned.
+
+```tsx
+<BenchProvider locale="fr-FR" messages={{ close: "Fermer la fenêtre" }}>
+  <App />
+</BenchProvider>
+```
+
+Count messages receive a number and a context with `number` and `plural` helpers. Overrides replace the complete message; use these helpers for localized numbers and plural forms.
+
+```tsx
+<BenchProvider messages={{ results: (count, context) =>
+  `${context.number(count)} ${context.plural(count) === "one" ? "match" : "matches"}`
+}}><App /></BenchProvider>
+```
+
+Internal copy covers optional fields, close actions, external links, search feedback and retry, selection summaries, filters, values and file-import feedback. React Aria continues to own its built-in accessible messages and validation. The provider adds no DOM element, styling or keyboard interaction.
+
+## API
+
+<ManifestProps component="BenchProvider" />
+<Controls of={Stories.FrenchProfile} />
+
+## Examples
+
+<Canvas of={Stories.EnglishProfile} />
+<Canvas of={Stories.FrenchProfile} />
+
+Use the theme selector to inspect both themes.

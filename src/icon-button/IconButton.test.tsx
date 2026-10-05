@@ -15,10 +15,10 @@ test("Button places a decorative 20px icon before its visible label", () => {
   expect(button.lastChild?.textContent).toBe("Add");
 });
 
-test("IconButton has an accessible name, native title and decorative icon", () => {
+test("IconButton has an accessible name and decorative icon", () => {
   render(<IconButton icon="search" label="Search documents" />);
   const button = screen.getByRole("button", { name: "Search documents" });
-  expect(button).toHaveAttribute("title", "Search documents");
+  expect(button).not.toHaveAttribute("title");
   expect(button).toHaveAttribute("data-variant", "secondary");
   expect(button).toHaveAttribute("type", "button");
   expect(button.querySelector("svg")).toHaveAttribute("aria-hidden", "true");
@@ -72,10 +72,17 @@ const missingLabel: IconButtonProps = { icon: "search" };
 const missingIcon: IconButtonProps = { label: "Search" };
 void [missingLabel, missingIcon];
 
-test("IconButton updates its native title and accessible name with label", () => {
+test("IconButton exposes its label on keyboard focus and closes on Escape", async () => {
+  const user = userEvent.setup();
   const { rerender } = render(<IconButton icon="search" label="Search" />);
+  await user.tab();
+  expect(await screen.findByRole("tooltip")).toHaveTextContent("Search");
+  expect(screen.getByRole("button", { name: "Search" })).toHaveFocus();
   rerender(<IconButton icon="search" label="Find documents" />);
+  expect(screen.getByRole("tooltip")).toHaveTextContent("Find documents");
   expect(
     screen.getByRole("button", { name: "Find documents" }),
-  ).toHaveAttribute("title", "Find documents");
+  ).not.toHaveAttribute("title");
+  await user.keyboard("{Escape}");
+  expect(screen.queryByRole("tooltip")).not.toBeInTheDocument();
 });

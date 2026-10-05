@@ -86,3 +86,14 @@
   background: var(--bd-accent);
   color: var(--bd-on-accent);
 }
+
+.bd-tooltip.bd-surface {
+  background: var(--bd-surface);
+  color: var(--bd-text);
+  padding: var(--bd-space-8) var(--bd-space-12);
+  font-family: var(--bd-font-ui);
+  font-size: var(--bd-size-meta);
+  line-height: var(--bd-line-normal);
+  border-radius: var(--bd-radius);
+  overflow-wrap: anywhere;
+}

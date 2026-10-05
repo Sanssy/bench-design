@@ -85,6 +85,12 @@ test("Dialog contains focus, Escape closes and restores the trigger", {
   await expect(dialog.getByRole("button", { name: "Download" })).toBeFocused();
   await page.keyboard.press("Tab");
   await expect(dialog.getByRole("button", { name: "Close" })).toBeFocused();
+  // The focused Close button shows its tooltip: the first Escape dismisses
+  // the tooltip (WCAG 1.4.13), the second closes the dialog.
+  await expect(page.getByRole("tooltip")).toHaveText("Close");
+  await page.keyboard.press("Escape");
+  await expect(page.getByRole("tooltip")).toHaveCount(0);
+  await expect(dialog).toBeVisible();
   await page.keyboard.press("Escape");
   await expect(dialog).toHaveCount(0);
   await expect(trigger).toBeFocused();

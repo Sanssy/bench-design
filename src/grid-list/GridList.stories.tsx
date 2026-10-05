@@ -100,3 +100,25 @@ export const ReorderableResources: Story = {
     );
   },
 };
+
+export const WideResourceCards: Story = {
+  render: () => (
+    <div
+      style={{ width: "min(calc(var(--bd-measure) * 2), calc(100vw - 2rem))" }}
+    >
+      <GridList
+        label="Resources"
+        items={[
+          ...items,
+          { id: "e", label: "Research archive" },
+          { id: "f", label: "Source index" },
+        ]}
+        columns={4}
+        selectionVariant="strong"
+        selectionMode="single"
+        defaultSelectedKeys={["a"]}
+        renderItem={(item) => <strong>{item.label}</strong>}
+      />
+    </div>
+  ),
+};

@@ -112,3 +112,45 @@ test("React Aria toggle selection suppresses actions while selection is nonempty
   await userEvent.keyboard("{Enter}");
   expect(action).not.toHaveBeenCalled();
 });
+
+test("requested maximum columns configures the grid", () => {
+  render(
+    <GridList
+      label="Items"
+      items={items}
+      columns={4}
+      renderItem={(item) => item.label}
+    />,
+  );
+  expect(
+    screen
+      .getByRole("grid", { name: "Items" })
+      .style.getPropertyValue("--bd-grid-list-columns"),
+  ).toBe("4");
+});
+
+test("strong selection keeps item activation and selection", async () => {
+  const action = vi.fn();
+  render(
+    <GridList
+      label="Items"
+      items={items}
+      selectionVariant="strong"
+      selectionMode="single"
+      onAction={action}
+      renderItem={(item) => item.label}
+    />,
+  );
+  expect(screen.getByRole("grid", { name: "Items" })).toHaveAttribute(
+    "data-variant",
+    "strong",
+  );
+  await userEvent.tab();
+  await userEvent.keyboard("{Enter}");
+  expect(action).toHaveBeenLastCalledWith("a");
+  await userEvent.keyboard(" ");
+  expect(screen.getByRole("row", { name: "Alpha" })).toHaveAttribute(
+    "aria-selected",
+    "true",
+  );
+});

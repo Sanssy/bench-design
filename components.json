@@ -1709,11 +1709,25 @@
           "default": "\"grid\""
         },
         {
+          "name": "columns",
+          "type": "number",
+          "required": false,
+          "description": "Maximum grid columns; defaults to two and collapses to fit the container.",
+          "default": "2"
+        },
+        {
           "name": "selectionMode",
           "type": "\"none\" | \"single\" | \"multiple\"",
           "required": false,
           "description": "Allowed selection cardinality.",
           "default": "\"none\""
+        },
+        {
+          "name": "selectionVariant",
+          "type": "\"accent\" | \"strong\"",
+          "required": false,
+          "description": "Selected item treatment; accent is the default.",
+          "default": "\"accent\""
         },
         {
           "name": "selectedKeys",
@@ -1770,6 +1784,10 @@
         {
           "name": "ReorderableResources",
           "href": "./?path=/story/collections-gridlist--reorderable-resources"
+        },
+        {
+          "name": "WideResourceCards",
+          "href": "./?path=/story/collections-gridlist--wide-resource-cards"
         }
       ]
     },

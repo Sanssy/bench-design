@@ -126,6 +126,9 @@
   border-left: var(--bd-strong) solid var(--bd-feedback-color);
   background: var(--bd-feedback-subtle);
 }
+.bd-notice[data-tone="neutral"] {
+  --bd-feedback-color: var(--bd-border);
+}
 .bd-notice__title {
   display: block;
   font-weight: var(--bd-weight-semibold);
@@ -237,6 +240,10 @@
   color: var(--bd-text);
   background: var(--bd-surface-subtle);
   font: var(--bd-size-meta) / var(--bd-line-solid) var(--bd-font-mono);
+}
+.bd-avatar[data-tone="accent"] {
+  color: var(--bd-on-accent);
+  background: var(--bd-accent);
 }
 .bd-avatar[data-size="24"] {
   inline-size: var(--bd-space-24);

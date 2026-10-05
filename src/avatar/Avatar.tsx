@@ -1,7 +1,10 @@
 import { useState } from "react";
 /** A person's image or name-derived initials. */
 export interface AvatarProps {
+  /** Full name; an interactive parent must also provide its own accessible name. */
   name: string;
+  /** Initials background. Defaults to neutral. */
+  tone?: "neutral" | "accent";
   src?: string;
   size?: 24 | 32 | 40;
   isDecorative?: boolean;
@@ -11,6 +14,7 @@ export function Avatar({
   name,
   src,
   size = 32,
+  tone = "neutral",
   isDecorative = false,
 }: AvatarProps) {
   const [failed, setFailed] = useState<string>();
@@ -24,6 +28,7 @@ export function Avatar({
     <span
       className="bd-avatar"
       data-size={size}
+      data-tone={tone}
       role="img"
       aria-label={isDecorative ? undefined : name}
       aria-hidden={isDecorative || undefined}

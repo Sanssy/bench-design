@@ -300,3 +300,27 @@ test("subtle categories preserve exact colors and readable text in both themes",
     );
   }
 });
+
+test("avatar and neutral notice token pairs remain readable in both themes", () => {
+  const tokens = JSON.parse(readFileSync("src/tokens.json", "utf8"));
+  const luminance = (hex: string) =>
+    [0.2126, 0.7152, 0.0722].reduce((sum, weight, i) => {
+      const c = Number.parseInt(hex.slice(1 + i * 2, 3 + i * 2), 16) / 255;
+      return (
+        sum + weight * (c <= 0.04045 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4)
+      );
+    }, 0);
+  for (const theme of ["light", "dark"]) {
+    for (const [foreground, background] of [
+      ["text", "surface-subtle"],
+      ["on-accent", "accent"],
+    ] as const) {
+      const a = luminance(tokens[theme][foreground].$value.hex);
+      const b = luminance(tokens[theme][background].$value.hex);
+      assert.ok(
+        (Math.max(a, b) + 0.05) / (Math.min(a, b) + 0.05) >= 4.5,
+        `${theme}: ${foreground}/${background}`,
+      );
+    }
+  }
+});

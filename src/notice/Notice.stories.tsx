@@ -6,7 +6,10 @@ export default {
   component: Notice,
   parameters: { layout: "centered" },
   argTypes: {
-    tone: { control: "select", options: ["success", "warning", "danger"] },
+    tone: {
+      control: "select",
+      options: ["neutral", "success", "warning", "danger"],
+    },
   },
 } satisfies Meta<typeof Notice>;
 type Story = StoryObj<typeof Notice>;
@@ -29,4 +32,12 @@ export const StorageMessages: Story = {
       </Notice>
     </Stack>
   ),
+};
+
+export const LocalStorage: Story = {
+  args: {
+    tone: "neutral",
+    title: "Saved locally",
+    children: "Changes will sync when you reconnect.",
+  },
 };

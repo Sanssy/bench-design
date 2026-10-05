@@ -201,7 +201,15 @@
         {
           "name": "name",
           "type": "string",
-          "required": true
+          "required": true,
+          "description": "Full name; an interactive parent must also provide its own accessible name."
+        },
+        {
+          "name": "tone",
+          "type": "\"neutral\" | \"accent\"",
+          "required": false,
+          "description": "Initials background. Defaults to neutral.",
+          "default": "\"neutral\""
         },
         {
           "name": "src",
@@ -229,6 +237,10 @@
         {
           "name": "Sizes",
           "href": "./?path=/story/data-avatar--sizes"
+        },
+        {
+          "name": "Identity",
+          "href": "./?path=/story/data-avatar--identity"
         }
       ]
     },
@@ -2269,7 +2281,7 @@
       "props": [
         {
           "name": "tone",
-          "type": "\"success\" | \"warning\" | \"danger\"",
+          "type": "\"neutral\" | \"success\" | \"warning\" | \"danger\"",
           "required": true
         },
         {
@@ -2291,6 +2303,10 @@
         {
           "name": "StorageMessages",
           "href": "./?path=/story/feedback-notice--storage-messages"
+        },
+        {
+          "name": "LocalStorage",
+          "href": "./?path=/story/feedback-notice--local-storage"
         }
       ]
     },

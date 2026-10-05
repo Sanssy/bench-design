@@ -5,6 +5,8 @@ import type { FieldProps } from "../forms/FieldProps.js";
 
 /** Multiline input with bounded automatic growth. */
 export interface TextAreaProps extends FieldProps {
+  /** Visually hide the associated label. */
+  hideLabel?: boolean;
   /** Form submission name. */
   name?: string;
   /** Controlled text. */
@@ -27,6 +29,7 @@ export interface TextAreaProps extends FieldProps {
 /** React Aria owns editing and validation; measurement only controls geometry. */
 export function TextArea({
   label,
+  hideLabel = false,
   description,
   errorMessage,
   isRequired,
@@ -86,6 +89,7 @@ export function TextArea({
     >
       <FieldLabel
         label={label}
+        hideLabel={hideLabel}
         {...(isRequired === undefined ? {} : { isRequired })}
       />
       <AriaTextArea

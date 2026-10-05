@@ -42,6 +42,8 @@ export type { ColorSwatchPickerProps } from "./color-swatch-picker/ColorSwatchPi
 export { ColorSwatchPicker } from "./color-swatch-picker/ColorSwatchPicker.js";
 export type { ComboBoxProps } from "./combo-box/ComboBox.js";
 export { ComboBox } from "./combo-box/ComboBox.js";
+export type { ComposerProps } from "./composer/Composer.js";
+export { Composer } from "./composer/Composer.js";
 export type { DialogProps } from "./dialog/Dialog.js";
 export { Dialog } from "./dialog/Dialog.js";
 export type { DisclosureProps } from "./disclosure/Disclosure.js";

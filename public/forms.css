@@ -660,3 +660,18 @@
   border-radius: 0;
   background: transparent;
 }
+
+/* Message composition shares field surfaces, growth and button geometry. */
+.bd-composer {
+  display: flex;
+  align-items: flex-end;
+  gap: var(--bd-space-12);
+  min-inline-size: 0;
+  inline-size: 100%;
+}
+.bd-composer > .bd-field {
+  flex: 1;
+}
+.bd-composer > .bd-button {
+  flex: none;
+}

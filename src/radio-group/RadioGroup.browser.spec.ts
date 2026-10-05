@@ -152,3 +152,30 @@ for (const theme of ["light", "dark"]) {
     expect(boxes[1]?.y).toBeGreaterThan(boxes[0]?.y ?? 0);
   });
 }
+
+test("RadioGroup cards remain readable at intrinsic and mobile widths", {
+  tag: ["@component:radio-group"],
+}, async ({ page }) => {
+  for (const width of [1280, 320]) {
+    await page.setViewportSize({ width, height: 900 });
+    await page.goto(
+      "/iframe.html?id=form-radiogroup--cards&viewMode=story&globals=a11y.manual:!true",
+    );
+    await expect(page.getByRole("radiogroup")).toBeVisible();
+    await page.evaluate(() => document.fonts.ready);
+    const cards = page.locator('.bd-field[data-variant="cards"] .bd-radio');
+    await expect(cards).toHaveCount(3);
+    const boxes = await cards.evaluateAll((elements) =>
+      elements.map((element) => {
+        const box = element.getBoundingClientRect();
+        return { width: box.width, top: box.top, right: box.right };
+      }),
+    );
+    for (const box of boxes) {
+      expect(box.width).toBeGreaterThanOrEqual(144);
+      expect(box.right).toBeLessThanOrEqual(width);
+    }
+    if (width === 320)
+      expect(new Set(boxes.map((box) => box.top)).size).toBe(3);
+  }
+});

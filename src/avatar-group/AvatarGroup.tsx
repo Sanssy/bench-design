@@ -20,7 +20,10 @@ export function AvatarGroup({ max, children }: AvatarGroupProps) {
       {hidden.length > 0 && (
         <span
           className="bd-avatar bd-avatar-group__overflow"
-          data-size={32}
+          data-size={
+            (avatars[Math.min(limit, avatars.length) - 1] ?? avatars[0])?.props
+              .size ?? 32
+          }
           role="img"
           aria-label={hidden.map((avatar) => avatar.props.name).join(", ")}
         >

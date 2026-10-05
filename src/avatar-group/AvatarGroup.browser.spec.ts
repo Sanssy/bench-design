@@ -39,3 +39,28 @@ test("overflow names and group spacing", {
   });
   expect(values[0]).toBe(values[1]);
 });
+
+for (const [story, size] of [
+  ["compact-collaborators", 24],
+  ["large-collaborators", 40],
+] as const) {
+  test(`AvatarGroup overflow follows ${size}px avatars`, {
+    tag: ["@component:avatar-group"],
+  }, async ({ page }) => {
+    await page.goto(
+      `/iframe.html?id=data-avatargroup--${story}&viewMode=story&globals=a11y.manual:!true`,
+    );
+    const overflow = page.getByRole("img", { name: "Grace Hopper" });
+    await expect(overflow).toBeVisible();
+    await expect(overflow).toHaveText("+1");
+    await expect(overflow).toHaveCSS("width", `${size}px`);
+    await expect(overflow).toHaveCSS("height", `${size}px`);
+    // "+N" stays on one line, even in the 24 px bubble.
+    const lines = await overflow.evaluate((element) => {
+      const range = document.createRange();
+      range.selectNodeContents(element);
+      return range.getClientRects().length;
+    });
+    expect(lines).toBe(1);
+  });
+}

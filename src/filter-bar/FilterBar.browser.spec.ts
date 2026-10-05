@@ -89,3 +89,24 @@ for (const theme of ["light", "dark"] as const) {
     ).toEqual([]);
   });
 }
+
+test("FilterBar chips and summary align with the search control", {
+  tag: ["@component:filter-bar"],
+}, async ({ page }) => {
+  await page.setViewportSize({ width: 1280, height: 900 });
+  await page.goto(
+    "/iframe.html?id=form-filterbar--default&viewMode=story&globals=a11y.manual:!true",
+  );
+  await expect(page.getByRole("searchbox")).toBeVisible();
+  await page.evaluate(() => document.fonts.ready);
+  const centres = await page
+    .locator(".bd-search-control, .bd-filter-bar-chips, .bd-filter-bar-summary")
+    .evaluateAll((elements) =>
+      elements.map((element) => {
+        const box = element.getBoundingClientRect();
+        return box.top + box.height / 2;
+      }),
+    );
+  expect(centres).toHaveLength(3);
+  expect(Math.max(...centres) - Math.min(...centres)).toBeLessThanOrEqual(1);
+});

@@ -580,7 +580,10 @@
 }
 .bd-field[data-variant="cards"] .bd-choice-list {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(0, 1fr));
+  grid-template-columns: repeat(
+      auto-fit,
+      minmax(calc(var(--bd-space-96) + var(--bd-space-48)), 1fr)
+    );
 }
 .bd-field[data-variant="cards"] .bd-radio {
   position: relative;

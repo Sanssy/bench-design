@@ -110,6 +110,14 @@
         {
           "name": "LimitedCollaborators",
           "href": "./?path=/story/data-avatargroup--limited-collaborators"
+        },
+        {
+          "name": "CompactCollaborators",
+          "href": "./?path=/story/data-avatargroup--compact-collaborators"
+        },
+        {
+          "name": "LargeCollaborators",
+          "href": "./?path=/story/data-avatargroup--large-collaborators"
         }
       ]
     },
@@ -499,6 +507,13 @@
           "type": "string",
           "required": true,
           "description": "Visible heading and accessible region name."
+        },
+        {
+          "name": "headingLevel",
+          "type": "2 | 3 | 4 | 5 | 6",
+          "required": false,
+          "description": "Heading level within the page outline; defaults to 2.",
+          "default": "2"
         },
         {
           "name": "count",
@@ -1119,7 +1134,7 @@
           "name": "search",
           "type": "ReactNode",
           "required": false,
-          "description": "Optional search control; keep its value in application state."
+          "description": "Optional search control with a label and no description or error; keep its value in application state."
         },
         {
           "name": "children",

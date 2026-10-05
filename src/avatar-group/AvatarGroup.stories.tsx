@@ -26,3 +26,20 @@ export const LimitedCollaborators: Story = {
     </AvatarGroup>
   ),
 };
+
+export const CompactCollaborators: Story = {
+  render: () => (
+    <AvatarGroup max={1}>
+      <Avatar name="Ada Lovelace" size={24} />
+      <Avatar name="Grace Hopper" size={24} />
+    </AvatarGroup>
+  ),
+};
+export const LargeCollaborators: Story = {
+  render: () => (
+    <AvatarGroup max={1}>
+      <Avatar name="Ada Lovelace" size={40} />
+      <Avatar name="Grace Hopper" size={40} />
+    </AvatarGroup>
+  ),
+};

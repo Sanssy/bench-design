@@ -77,3 +77,19 @@ test("NumberField connects required submit validation", async () => {
     error?.textContent ?? "",
   );
 });
+
+test("NumberField announces its unit alongside help and errors", () => {
+  render(
+    <NumberField
+      label="Quantity"
+      unit="items"
+      description="Choose carefully"
+      isInvalid
+      errorMessage="Review setting"
+    />,
+  );
+  const input = screen.getByRole("textbox");
+  expect(input).toHaveAccessibleDescription(/items/);
+  expect(input).toHaveAccessibleDescription(/Choose carefully/);
+  expect(input).toHaveAccessibleDescription(/Review setting/);
+});

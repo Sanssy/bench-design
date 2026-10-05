@@ -22,9 +22,14 @@ for (const { id, type, importPath } of Object.values(index.entries)) {
     await page.goto(
       `/iframe.html?id=${id}&viewMode=story&globals=a11y.manual:!true;theme:light`,
     );
-    await expect(
-      page.locator("#storybook-root > *").filter({ visible: true }).first(),
-    ).toBeVisible();
+    // React Aria collections add a hidden builder node: wait until a child has
+    // a rendered box (a filtered locator missed rendered stories on loaded CI).
+    await page.waitForFunction(() =>
+      [...document.querySelectorAll("#storybook-root > *")].some((element) => {
+        const box = element.getBoundingClientRect();
+        return box.width > 0 && box.height > 0;
+      }),
+    );
     await page.evaluate(() => document.fonts.ready);
     const overflow = await page.evaluate(() => {
       const width = document.documentElement.clientWidth;

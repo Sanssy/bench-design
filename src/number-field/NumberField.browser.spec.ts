@@ -81,3 +81,15 @@ test("NumberField keyboard editing", {
   await page.getByRole("button", { name: "Decrease" }).click();
   await expect(input).toHaveValue("2");
 });
+
+test("NumberField includes the visible unit in its accessible description", {
+  tag: ["@component:number-field"],
+}, async ({ page }) => {
+  await page.goto(
+    "/iframe.html?id=form-numberfield--default&viewMode=story&globals=a11y.manual:!true",
+  );
+  await expect(page.getByRole("textbox")).toHaveAccessibleDescription(/items/);
+  await expect(page.getByRole("textbox")).toHaveAccessibleDescription(
+    /Choose a value for your workspace/,
+  );
+});

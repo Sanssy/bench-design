@@ -86,3 +86,13 @@
 .bd-modal:has(.bd-filter-bar-sheet) .bd-dialog-body {
   flex: 1;
 }
+
+/* Chips and summary sit on the search control's axis, not the label's. */
+.bd-filter-bar,
+.bd-filter-bar-controls {
+  align-items: flex-end;
+}
+.bd-filter-bar-chips,
+.bd-filter-bar-summary {
+  min-block-size: var(--bd-space-48);
+}

@@ -38,11 +38,16 @@ try {
     entries.includes("package/dist/index.d.ts"),
     "packed types are missing",
   );
+  assert(entries.includes("package/LICENSE"), "MIT license is missing");
   assert(
     entries.every(
       (entry) =>
         entry.startsWith("package/dist/") ||
-        ["package/package.json", "package/README.md"].includes(entry),
+        [
+          "package/package.json",
+          "package/README.md",
+          "package/LICENSE",
+        ].includes(entry),
     ),
     "unexpected private/source/test file in tarball",
   );

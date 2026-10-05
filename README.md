@@ -11,8 +11,8 @@ foundation documentation and the components listed in [components.json](componen
 The current families cover typography, layout, surfaces, data and status,
 forms and filters, navigation, overlays, collections, import and feedback.
 The manifest is the source of truth for exports and props.
-The package is private and has not been published to npm. Documentation hosting,
-the registry and the design system license remain to be decided. Visual
+The package is not published to npm. It is licensed under MIT; documentation
+hosting and the registry remain to be decided. Visual
 references require explicit human approval; implementation is not approval.
 
 ## Installation
@@ -102,5 +102,5 @@ and versioning.
 
 ## License
 
-The design system license is undecided. Bundled fonts retain their own OFL
-licenses in the distributed `fonts/` directory.
+bench-design is released under the [MIT License](LICENSE). Bundled fonts retain
+their own OFL licenses in the distributed `fonts/` directory.

@@ -41,8 +41,8 @@ The initial version line is 0.1.x. Before 1.0, incompatible changes increment
 MINOR and compatible fixes increment PATCH. From 1.0 onward, standard SemVer
 applies. The API includes exports, props, tokens and documented behavior.
 Removals are announced with a replacement and removal version; migrations are
-documented. The registry, initial publication, documentation hosting and design
-system license remain undecided.
+documented. The design system is licensed under MIT (decided 2026-10-05). The
+registry, initial publication and documentation hosting remain undecided.
 
 ## Verification
 

@@ -84,3 +84,15 @@ test("TextField uses token geometry independently of theme", {
   });
   await expect(control).toHaveCSS("height", expected);
 });
+
+test("TextField native maxLength limits editing", {
+  tag: ["@component:text-field", "@theme:light"],
+}, async ({ page }) => {
+  await page.goto(
+    "/iframe.html?id=form-textfield--short-name&viewMode=story&globals=a11y.manual:!true;theme:light",
+  );
+  const input = page.getByRole("textbox", { name: "Name", exact: true });
+  await expect(input).toBeVisible();
+  await input.fill("123456789012345");
+  await expect(input).toHaveValue("123456789012");
+});

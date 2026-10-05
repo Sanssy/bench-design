@@ -3053,6 +3053,12 @@
           "type": "string",
           "required": false,
           "description": "Browser autofill hint."
+        },
+        {
+          "name": "maxLength",
+          "type": "number",
+          "required": false,
+          "description": "Maximum native input character count."
         }
       ],
       "stories": [
@@ -3063,6 +3069,10 @@
         {
           "name": "Review",
           "href": "./?path=/story/form-textfield--review"
+        },
+        {
+          "name": "ShortName",
+          "href": "./?path=/story/form-textfield--short-name"
         }
       ]
     },

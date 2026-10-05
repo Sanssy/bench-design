@@ -13,6 +13,7 @@ Import `TextField` from `bench-design` and load `bench-design/styles.css` once.
 Supply a visible label. Use description for help and errorMessage for actionable
 validation feedback. Required controls use native React Aria validation; optional
 controls display “(optional)”. Use isInvalid for external validation.
+Use `maxLength` to limit native editing; it does not truncate an externally supplied value.
 Keep application rules in the consuming product. Do not use placeholders as labels.
 
 ## TypeScript API
@@ -23,6 +24,7 @@ Keep application rules in the consuming product. Do not use placeholders as labe
 
 <Canvas of={Stories.Default} />
 <Canvas of={Stories.Review} />
+<Canvas of={Stories.ShortName} />
 
 Use the theme selector to view light and dark examples, including invalid,
 disabled and optional controls. Controlled and uncontrolled values are supported;

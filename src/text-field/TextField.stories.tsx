@@ -29,3 +29,12 @@ export const Review: Story = {
     </Stack>
   ),
 };
+
+export const ShortName: Story = {
+  args: {
+    label: "Name",
+    description: "Up to 12 characters",
+    defaultValue: "",
+    maxLength: 12,
+  },
+};

@@ -1,0 +1,34 @@
+import { Meta, Canvas } from '@storybook/addon-docs/blocks';
+import { ManifestProps } from "../../.storybook/ManifestProps";
+import * as Stories from './ToggleButton.stories';
+
+<Meta of={Stories} />
+
+# ToggleButton
+
+Import `ToggleButton` from `bench-design` and load `bench-design/styles.css` once.
+Use it for independent on/off view options. Supply a meaningful `label`; an optional
+`icon` replaces the visible label while retaining the accessible name. Use Button
+for a one-time action and SegmentedControl for mutually exclusive choices.
+
+## TypeScript API
+
+<ManifestProps component="ToggleButton" />
+
+Choose `defaultSelected` for an uncontrolled initial state or `isSelected` with
+`onChange` for application state. Keep one mode for the lifetime of the control.
+
+## Examples
+
+<Canvas of={Stories.Guides} />
+<Canvas of={Stories.ViewOptions} />
+<Canvas of={Stories.ControlledGuides} />
+
+Use the theme selector to inspect selected, unselected and disabled options in
+light and dark mode.
+
+## Keyboard and ARIA
+
+Tab reaches enabled toggles. Enter and Space toggle the state; React Aria owns
+`aria-pressed`, keyboard activation and visible focus. Disabled options cannot
+be activated. Selected options reuse the SegmentedControl accent treatment.

@@ -80,3 +80,9 @@
   padding: 0;
   flex-shrink: 0;
 }
+
+/* Selected stays visible when disabled, as in SegmentedControl. */
+.bd-toggle-button[data-selected] {
+  background: var(--bd-accent);
+  color: var(--bd-on-accent);
+}

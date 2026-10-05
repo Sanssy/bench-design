@@ -119,6 +119,8 @@ export type { TextFieldProps } from "./text-field/TextField.js";
 export { TextField } from "./text-field/TextField.js";
 export type { ToastController, ToastOptions } from "./toast/Toast.js";
 export { ToastRegion, useToast } from "./toast/Toast.js";
+export type { ToggleButtonProps } from "./toggle-button/ToggleButton.js";
+export { ToggleButton } from "./toggle-button/ToggleButton.js";
 export type { ToolbarProps } from "./toolbar/Toolbar.js";
 export { Toolbar } from "./toolbar/Toolbar.js";
 export type { TreeNode, TreeProps } from "./tree/Tree.js";

@@ -3109,6 +3109,64 @@
       ]
     },
     {
+      "name": "ToggleButton",
+      "import": "import { ToggleButton } from \"bench-design\";",
+      "description": "A React Aria toggle using shared button geometry and selection tokens.",
+      "props": [
+        {
+          "name": "label",
+          "type": "string",
+          "required": true,
+          "description": "Visible label, or accessible name when displaying an icon."
+        },
+        {
+          "name": "icon",
+          "type": "\"arrow-left\" | \"arrow-right\" | \"bin\" | \"calendar\" | \"check\" | \"chevron-down\" | \"download\" | \"grip\" | \"info\" | \"menu\" | \"pen\" | \"plus\" | \"search\" | \"settings\" | \"triangle-alert\" | \"user\" | \"x\"",
+          "required": false,
+          "description": "Decorative catalogue icon displayed instead of the visible label."
+        },
+        {
+          "name": "isSelected",
+          "type": "boolean",
+          "required": false,
+          "description": "Controlled selected state."
+        },
+        {
+          "name": "defaultSelected",
+          "type": "boolean",
+          "required": false,
+          "description": "Initial uncontrolled selected state."
+        },
+        {
+          "name": "onChange",
+          "type": "(isSelected: boolean) => void",
+          "required": false,
+          "description": "Called with the requested selected state."
+        },
+        {
+          "name": "isDisabled",
+          "type": "boolean",
+          "required": false,
+          "description": "Prevent activation and remove the button from keyboard navigation.",
+          "default": "false"
+        }
+      ],
+      "stories": [
+        {
+          "name": "Guides",
+          "href": "./?path=/story/actions-togglebutton--guides"
+        },
+        {
+          "name": "ViewOptions",
+          "href": "./?path=/story/actions-togglebutton--view-options"
+        },
+        {
+          "name": "ControlledGuides",
+          "href": "./?path=/story/actions-togglebutton--controlled-guides"
+        }
+      ]
+    },
+    {
       "name": "Toolbar",
       "import": "import { Toolbar } from \"bench-design\";",
       "description": "A horizontal action group with React Aria arrow-key navigation.",

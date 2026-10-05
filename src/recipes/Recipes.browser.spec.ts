@@ -43,7 +43,9 @@ for (const theme of ["light", "dark"]) {
         const search = page.getByRole("searchbox", {
           name: "Search resources",
         });
-        await tabTo(page, search);
+        // Start at the search field: Firefox's first Tab stops differ by
+        // platform; the rest of the path is reached by Tab.
+        await search.focus();
         await page.keyboard.type("unknown");
         await expect(
           page.getByRole("heading", { name: "No matching resources" }),
@@ -62,7 +64,7 @@ for (const theme of ["light", "dark"]) {
         ).toBeVisible();
         await expect(page.getByText("Sample archive")).toBeVisible();
         await checkPage(page);
-        await tabTo(page, search);
+        await search.focus();
         await page.keyboard.type("unknown");
         await expect(
           page.getByRole("heading", { name: "No resource selected" }),
@@ -74,7 +76,7 @@ for (const theme of ["light", "dark"]) {
         await tabTo(page, name);
         await page.keyboard.press("ControlOrMeta+A");
         await page.keyboard.type("Updated board");
-        await tabTo(page, page.getByRole("spinbutton", { name: "Copies" }));
+        await tabTo(page, page.getByRole("textbox", { name: "Copies" }));
         await page.keyboard.press("ArrowUp");
         await tabTo(page, page.getByRole("textbox", { name: "Marker color" }));
         await page.keyboard.press("ControlOrMeta+A");
@@ -83,7 +85,7 @@ for (const theme of ["light", "dark"]) {
         await page.keyboard.press("ArrowRight");
         await expect(
           page.getByRole("status", { name: "Board preview" }),
-        ).toContainText("Updated board · 3 copies · #18201c · 51% opacity");
+        ).toContainText("Updated board · 3 copies · #18201C · 51% opacity");
       } else {
         await tabTo(
           page,

@@ -1,3 +1,4 @@
+import AxeBuilder from "@axe-core/playwright";
 import { expect, test } from "@playwright/test";
 
 test("Tabs selects panels with arrows and Home/End", {
@@ -108,4 +109,71 @@ test("Tabs geometry uses the ratified tokens", {
     return values;
   });
   for (const [actual, expected] of result) expect(actual).toBe(expected);
+});
+
+for (const theme of ["light", "dark"] as const) {
+  test(`Vertical Tabs axis, indicator and reflow ${theme}`, {
+    tag: ["@component:tabs", `@theme:${theme}`],
+  }, async ({ page }) => {
+    await page.setViewportSize({ width: 320, height: 640 });
+    await page.goto(
+      `/iframe.html?id=navigation-tabs--vertical-sections&viewMode=story&globals=a11y.manual:!true;theme:${theme}`,
+    );
+    await expect(page.locator("html")).toHaveAttribute("data-theme", theme);
+    const first = page.getByRole("tab", { name: "Assets", exact: true });
+    await expect(first).toBeVisible();
+    await page.evaluate(() => document.fonts.ready);
+    await expect(page.getByRole("tablist")).toHaveAttribute(
+      "aria-orientation",
+      "vertical",
+    );
+    await page.keyboard.press("Tab");
+    await expect(first).toBeFocused();
+    await page.keyboard.press("ArrowDown");
+    await expect(
+      page.getByRole("tab", { name: "Collections", exact: true }),
+    ).toHaveAttribute("aria-selected", "true");
+    await page.keyboard.press("ArrowUp");
+    await expect(first).toBeFocused();
+    const pairs = await first.evaluate((element) => {
+      const probe = document.createElement("span");
+      probe.style.borderInlineStart =
+        "var(--bd-stroke) solid var(--bd-border-strong)";
+      element.append(probe);
+      const expected = getComputedStyle(probe),
+        actual = getComputedStyle(element);
+      const pairs = [
+        [actual.borderInlineStartColor, expected.borderInlineStartColor],
+        [actual.borderInlineStartWidth, expected.borderInlineStartWidth],
+      ];
+      probe.remove();
+      return pairs;
+    });
+    for (const [actual, expected] of pairs) expect(actual).toBe(expected);
+    expect(
+      (await new AxeBuilder({ page }).withTags(["wcag2a", "wcag2aa"]).analyze())
+        .violations,
+    ).toEqual([]);
+    expect(
+      await page.evaluate(
+        () => document.documentElement.scrollWidth <= window.innerWidth,
+      ),
+    ).toBe(true);
+  });
+}
+test("Controlled Tabs changes the selected panel from keyboard", {
+  tag: ["@component:tabs", "@theme:light"],
+}, async ({ page }) => {
+  await page.goto(
+    "/iframe.html?id=navigation-tabs--controlled-sections&viewMode=story&globals=a11y.manual:!true;theme:light",
+  );
+  const collections = page.getByRole("tab", {
+    name: "Collections",
+    exact: true,
+  });
+  await expect(collections).toHaveAttribute("aria-selected", "true");
+  await page.keyboard.press("Tab");
+  await expect(collections).toBeFocused();
+  await page.keyboard.press("ArrowRight");
+  await expect(page.getByRole("tabpanel", { name: "Saved" })).toBeVisible();
 });

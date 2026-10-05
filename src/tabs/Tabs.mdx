@@ -10,7 +10,7 @@ A named list of tabs and their associated content panels. Import `Tabs` from `be
 
 ## Usage
 
-Supply unique stable item identifiers, short titles and panel content. Use `defaultSelectedKey` for an initial selection. Keep routing and business state in the consumer. Do not use tabs for unrelated destinations. General `className` and `style` overrides are excluded.
+Supply unique stable item identifiers, short titles and panel content. Use `defaultSelectedKey` for an initial selection, or `selectedKey` with `onSelectionChange` for application-controlled panels. Use `orientation="vertical"` for a side list. Keep routing and business state in the consumer. Do not use tabs for unrelated destinations. General `className` and `style` overrides are excluded.
 
 ## TypeScript API
 
@@ -19,9 +19,11 @@ Supply unique stable item identifiers, short titles and panel content. Use `defa
 ## Example
 
 <Canvas of={Stories.LibrarySections} />
+<Canvas of={Stories.VerticalSections} />
+<Canvas of={Stories.ControlledSections} />
 
 Use the theme selector to view light and dark examples.
 
 ## Keyboard and ARIA
 
-Tab enters the selected tab. Left and Right arrows select adjacent tabs; Home and End reach the first and last. React Aria connects tablist, tab and tabpanel roles, names and selection states. Keyboard focus uses the shared visible focus treatment.
+Tab enters the selected tab. Left and Right arrows select adjacent tabs; Up and Down select adjacent tabs in vertical orientation; Home and End reach the first and last. React Aria connects tablist, tab and tabpanel roles, names and selection states. Keyboard focus uses the shared visible focus treatment.

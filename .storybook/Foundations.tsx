@@ -87,6 +87,13 @@ export function Palette({ theme }: { theme: string }) {
                   "shadow",
                   "accent",
                   "veil",
+                  ...roles
+                    .filter(
+                      ([name]) =>
+                        name.startsWith("category-") &&
+                        name.endsWith("-subtle"),
+                    )
+                    .map(([name]) => name),
                 ].includes(role);
                 const graphical =
                   [

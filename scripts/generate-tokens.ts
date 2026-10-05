@@ -55,6 +55,13 @@ const indent = (lines: string[], spaces: number) =>
   lines.map((line) => `${" ".repeat(spaces)}${line}`).join("\n");
 const palette = (theme: "light" | "dark") =>
   Object.entries(tokens[theme]).map(([name, token]) => {
+    if (typeof token.$value === "string") {
+      const alias = token.$value.replace(
+        /^\{(light|dark)\.(.+)\}$/,
+        "var(--bd-color-$1-$2)",
+      );
+      return `--bd-color-${theme}-${name}: ${alias};`;
+    }
     const channels = token.$value.components.map((channel) =>
       Math.round(channel * 255),
     );

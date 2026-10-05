@@ -162,3 +162,9 @@ become `currentColor`, and shared stroke attributes move to the root. Filled
 and unstroked details are preserved. Unsupported styles or geometry require
 manual editing; transforms must be applied in Inkscape. Add the normalized SVG
 to `src/icon/svg/` and run `pnpm check` and `pnpm test`.
+
+## React Aria maintenance
+
+Follow the [React Aria decision](docs/decisions/0002-react-aria.md) for dependency
+upgrades and application integration. The [CSS state attribute contract](docs/state-attributes.md)
+lists upstream and DS-owned selectors; `pnpm check` rejects undeclared attributes.

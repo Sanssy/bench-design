@@ -44,6 +44,7 @@ declare module "css-tree" {
       enter(node: CssNode & { prelude: CssNode | null }): void;
     },
   ): void;
+  export const ident: { decode(value: string): string };
   export const lexer: {
     matchType(type: string, node: CssNode): { matched: object | null };
   };

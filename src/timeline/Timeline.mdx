@@ -1,0 +1,41 @@
+import { Meta, Canvas, Controls } from '@storybook/addon-docs/blocks';
+import { ManifestProps } from "../../.storybook/ManifestProps";
+import * as Stories from './Timeline.stories';
+
+<Meta of={Stories} />
+
+# Timeline
+
+Import `Timeline` from `bench-design` and load `bench-design/styles.css` once.
+
+## Usage
+
+Use a vertical timeline for a caller-ordered sequence of events or steps.
+Markers are visible text: dates, open periods and unknown dates are all caller-owned.
+The component never parses dates or sorts items.
+
+- Do provide a descriptive list label and stable, unique item identifiers.
+- Do compose rich titles and content, including Link or ActionList when available.
+- Avoid making the entire event interactive or using the rail to convey status.
+- Keep content responsive; fixed-width embedded media must handle its own sizing.
+
+## API
+
+<ManifestProps component="Timeline" />
+
+## Try the props
+
+<Controls of={Stories.PublicationHistory} />
+
+## Examples
+
+<Canvas of={Stories.PublicationHistory} />
+
+Use the theme selector to inspect light and dark themes.
+
+## Accessibility
+
+A named native ordered list preserves the supplied order. Its rail and square
+markers are decorative CSS; textual markers remain available to assistive technology.
+No heading level is imposed on titles. The timeline itself has no keyboard behavior;
+links and other interactive children retain their own keyboard interaction and focus.

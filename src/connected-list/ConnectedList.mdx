@@ -1,0 +1,41 @@
+import { Meta, Canvas, Controls } from '@storybook/addon-docs/blocks';
+import { ManifestProps } from "../../.storybook/ManifestProps";
+import * as Stories from './ConnectedList.stories';
+
+<Meta of={Stories} />
+
+# ConnectedList
+
+Import `ConnectedList` from `bench-design` and load `bench-design/styles.css` once.
+
+## Usage
+
+Present related items in the order supplied by the caller. The decorative rail
+runs horizontally at 640 px and above, and vertically below 640 px.
+
+- Do provide a descriptive label and stable, unique identifiers.
+- Do compose rich titles and metadata with Badge and Link.
+- Avoid conveying relationship types or status through the rail alone.
+- Keep graph calculation, sorting and relationship rules in the application.
+- Embedded content must handle its own responsive sizing.
+
+## API
+
+<ManifestProps component="ConnectedList" />
+
+## Try the props
+
+<Controls of={Stories.RelatedResources} />
+
+## Examples
+
+<Canvas of={Stories.RelatedResources} />
+
+Use the theme selector to inspect light and dark themes.
+
+## Accessibility
+
+A named native ordered list keeps the same DOM and reading order at every viewport.
+CSS draws the decorative rail and markers without adding accessible content.
+Titles impose no heading level. The list has no keyboard interaction of its own;
+interactive children retain their keyboard behavior and focus indicators.

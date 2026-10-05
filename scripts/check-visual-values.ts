@@ -21,6 +21,14 @@ export const exceptions: VisualException[] = [
       "L26 editorial DropZone compacts below 640px for touch layouts; CSS variables cannot define media conditions.",
   },
   {
+    file: "dist/data.css",
+    selector: "@media",
+    property: "condition",
+    value: "(width<640px)",
+    reason:
+      "L30 ConnectedList uses a vertical rail below 640px to keep related items readable; CSS variables cannot define media conditions.",
+  },
+  {
     file: "dist/overlays.css",
     selector: "@media",
     property: "condition",

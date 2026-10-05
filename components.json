@@ -1184,6 +1184,30 @@
       ]
     },
     {
+      "name": "ConnectedList",
+      "import": "import { ConnectedList } from \"bench-design\";",
+      "description": "Show related items without calculating their relationships.",
+      "props": [
+        {
+          "name": "label",
+          "type": "string",
+          "required": true,
+          "description": "Accessible name of the ordered list."
+        },
+        {
+          "name": "items",
+          "type": "{\n    /** Stable unique identifier. */\n    id: string;\n    title: ReactNode;\n    meta?: ReactNode;\n  }[]",
+          "required": true
+        }
+      ],
+      "stories": [
+        {
+          "name": "RelatedResources",
+          "href": "./?path=/story/data-connectedlist--related-resources"
+        }
+      ]
+    },
+    {
       "name": "Dialog",
       "import": "import { Dialog } from \"bench-design\";",
       "description": "A named modal with React Aria focus containment, Escape and focus restoration.",

@@ -197,3 +197,35 @@ for (const base of ["Shared", 'Pick<Shared, "label">']) {
     }
   });
 }
+
+test("manifest resolves a generic props interface without losing its members", () => {
+  const root = mkdtempSync(join(tmpdir(), "bd-generic-"));
+  try {
+    writeFileSync(
+      join(root, "index.ts"),
+      'export { Items } from "./Items.js";',
+    );
+    writeFileSync(
+      join(root, "Items.tsx"),
+      "/** Collection. */ export interface Props<T> { /** Ordered items. */ items: readonly T[]; } export function Items<T>({ items }: Props<T>) { return null; }",
+    );
+    writeFileSync(
+      join(root, "Items.stories.tsx"),
+      'export default { title: "Collections/Items" }; export const Example = {};',
+    );
+    assert.deepEqual(
+      JSON.parse(generateComponents(join(root, "index.ts"))).components[0]
+        .props,
+      [
+        {
+          name: "items",
+          type: "readonly T[]",
+          required: true,
+          description: "Ordered items.",
+        },
+      ],
+    );
+  } finally {
+    rmSync(root, { recursive: true, force: true });
+  }
+});

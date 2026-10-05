@@ -55,5 +55,12 @@ for (const [story, size] of [
     await expect(overflow).toHaveText("+1");
     await expect(overflow).toHaveCSS("width", `${size}px`);
     await expect(overflow).toHaveCSS("height", `${size}px`);
+    // "+N" stays on one line, even in the 24 px bubble.
+    const lines = await overflow.evaluate((element) => {
+      const range = document.createRange();
+      range.selectNodeContents(element);
+      return range.getClientRects().length;
+    });
+    expect(lines).toBe(1);
   });
 }

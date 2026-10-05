@@ -232,6 +232,7 @@
   /* Square at the avatar size; wider only when "+N" needs it. */
   aspect-ratio: 1;
   inline-size: auto;
+  white-space: nowrap;
   padding-inline: var(--bd-space-4);
 }
 

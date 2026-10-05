@@ -64,6 +64,40 @@
       ]
     },
     {
+      "name": "ActionList",
+      "import": "import { ActionList } from \"bench-design\";",
+      "description": "Full-row React Aria links and buttons with optional supporting text.",
+      "props": [
+        {
+          "name": "label",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "items",
+          "type": "ActionListItem[]",
+          "required": true
+        },
+        {
+          "name": "numbered",
+          "type": "boolean",
+          "required": false,
+          "description": "Show decorative numbers without imposing ordered-list semantics.",
+          "default": "false"
+        }
+      ],
+      "stories": [
+        {
+          "name": "Resources",
+          "href": "./?path=/story/navigation-actionlist--resources"
+        },
+        {
+          "name": "NumberedActions",
+          "href": "./?path=/story/navigation-actionlist--numbered-actions"
+        }
+      ]
+    },
+    {
       "name": "AppShell",
       "import": "import { AppShell } from \"bench-design\";",
       "description": "A viewport workspace on large screens and a natural document on small screens, with a localized keyboard skip link to main.",

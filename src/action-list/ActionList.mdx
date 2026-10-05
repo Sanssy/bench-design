@@ -1,0 +1,38 @@
+import { Meta, Canvas, Controls } from '@storybook/addon-docs/blocks';
+import { ManifestProps } from '../../.storybook/ManifestProps';
+import * as Stories from './ActionList.stories';
+
+<Meta of={Stories} />
+
+# ActionList
+
+Import `ActionList` from `bench-design` and load `bench-design/styles.css` once.
+
+## Usage
+
+Use for a short list of destinations or immediate actions. Each row has exactly one activation mode: `href` or `onPress`.
+
+- Do provide stable IDs, descriptive titles and a list label.
+- Use `description` for supporting text and `icon` for a decorative catalogue icon.
+- Use `external` on links that open a new tab; the destination is announced.
+- Avoid selectable options or nested interactive content. Use a selection component for persistent choices.
+- Optional numbers are visual content; the list retains unordered semantics.
+
+## API
+
+<ManifestProps component="ActionList" />
+
+## Try the props
+
+<Controls of={Stories.Resources} />
+
+## Examples
+
+<Canvas of={Stories.Resources} />
+<Canvas of={Stories.NumberedActions} />
+
+Use the theme selector to inspect light and dark themes.
+
+## Accessibility
+
+A native named list contains React Aria links and buttons. Tab moves between rows; Enter activates either kind and Space activates buttons. Titles provide accessible names, descriptions provide accessible descriptions, and icons and numbers are decorative. Buttons never submit a surrounding form. Rows have a minimum height of 48px, visible keyboard focus and wrapping text.

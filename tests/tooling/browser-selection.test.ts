@@ -38,6 +38,7 @@ test("a component edit also selects the components that import it", () => {
     "inline",
     "link",
     "popover",
+    "recipes",
     "side-panel",
     "stack",
     "surface",

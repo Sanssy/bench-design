@@ -7,6 +7,8 @@ import {
 } from "react";
 import { Tab, TabList, TabPanel, Tabs } from "react-aria-components";
 
+import { useBenchMessages } from "../bench-provider/BenchProvider.js";
+
 const wideQuery = "(min-width: 960px)";
 function subscribeWidth(listener: () => void) {
   const query = window.matchMedia(wideQuery);
@@ -30,7 +32,7 @@ export interface AppShellProps {
   /** Optional application footer. */
   footer?: ReactNode;
 }
-/** A viewport workspace on large screens and a natural document on small screens. */
+/** A viewport workspace on large screens and a natural document on small screens, with a localized keyboard skip link to main. */
 export function AppShell({
   header,
   start,
@@ -39,6 +41,8 @@ export function AppShell({
   footer,
 }: AppShellProps) {
   const id = useId();
+  const mainId = `${id}-main`;
+  const { messages } = useBenchMessages();
   const wide = useSyncExternalStore(subscribeWidth, isWide, () => false);
   const [selected, setSelected] = useState("start");
   const panels = [
@@ -49,6 +53,17 @@ export function AppShell({
     selected === "start" && start ? "start" : end ? "end" : "start";
   return (
     <div className="bd-app-shell" data-active-panel={active}>
+      <a
+        className="bd-app-shell-skip"
+        href={`#${mainId}`}
+        onClick={(event) => {
+          // Hash-routed applications must not navigate: only move focus.
+          event.preventDefault();
+          document.getElementById(mainId)?.focus();
+        }}
+      >
+        {messages.skipToMain}
+      </a>
       <header className="bd-app-shell-header">{header}</header>
       <Tabs
         className="bd-app-shell-workspace"
@@ -83,7 +98,7 @@ export function AppShell({
         {/* Zones scroll on their own on wide screens: keyboard users must
             be able to focus them to scroll (WCAG 2.1.1). */}
         {/* biome-ignore lint/a11y/noNoninteractiveTabindex: the zone is a keyboard-scrollable region. */}
-        <main className="bd-app-shell-main" tabIndex={0}>
+        <main id={mainId} className="bd-app-shell-main" tabIndex={0}>
           {children}
         </main>
         {panels.map(({ key, panel }) => (

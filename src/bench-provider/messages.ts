@@ -4,6 +4,7 @@ export interface MessageContext {
 }
 /** Internal copy overrides. Functions receive locale-aware number and plural helpers. */
 export interface BenchMessages {
+  skipToMain: string;
   optional: string;
   close: string;
   noResults: string;
@@ -33,6 +34,7 @@ export interface BenchMessages {
   fileSize(value: string, unit: number): string;
 }
 export const en: BenchMessages = {
+  skipToMain: "Skip to main content",
   optional: "(optional)",
   close: "Close",
   noResults: "No results. Try a different search.",
@@ -64,6 +66,7 @@ export const en: BenchMessages = {
   fileSize: (value, unit) => `${value} ${["bytes", "KB", "MB", "GB"][unit]}`,
 };
 export const fr: BenchMessages = {
+  skipToMain: "Aller au contenu principal",
   optional: "(facultatif)",
   close: "Fermer",
   noResults: "Aucun résultat. Essayez une autre recherche.",

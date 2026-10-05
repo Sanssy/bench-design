@@ -19,6 +19,21 @@ test("AppShell scrolls each wide workspace zone independently", {
     const start = page.getByRole("complementary", { name: "Library" });
     const end = page.getByRole("complementary", { name: "Details" });
     await expect(end).toBeVisible();
+    const skip = page.getByRole("link", { name: "Skip to main content" });
+    await expect(skip).toHaveCSS("clip-path", "inset(50%)");
+    await page.keyboard.press("Tab");
+    await expect(skip).toBeFocused();
+    await expect(skip).toHaveCSS("clip-path", "none");
+    await expect(skip).toBeInViewport();
+    await page.keyboard.press("Enter");
+    await expect(main).toBeFocused();
+    expect(
+      (
+        await new AxeBuilder({ page })
+          .withTags(["wcag2a", "wcag2aa", "wcag21a", "wcag21aa"])
+          .analyze()
+      ).violations,
+    ).toEqual([]);
     await page.evaluate(() => document.fonts.ready);
     for (const panel of [start, end]) {
       expect(
@@ -138,6 +153,14 @@ for (const theme of ["light", "dark"] as const) {
     const library = page.getByRole("tab", { name: "Library" });
     const details = page.getByRole("tab", { name: "Details" });
     await expect(library).toBeVisible();
+    const skip = page.getByRole("link", { name: "Skip to main content" });
+    await expect(skip).toHaveCSS("clip-path", "inset(50%)");
+    await page.keyboard.press("Tab");
+    await expect(skip).toBeFocused();
+    await expect(skip).toHaveCSS("clip-path", "none");
+    await expect(skip).toBeInViewport();
+    await page.keyboard.press("Enter");
+    await expect(page.getByRole("main")).toBeFocused();
     await page.evaluate(() => document.fonts.ready);
     await expect(library).toHaveAttribute("aria-selected", "true");
     const start = page.locator(".bd-app-shell-start");

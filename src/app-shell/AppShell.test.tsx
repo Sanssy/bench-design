@@ -1,6 +1,7 @@
 import { act, render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { afterEach, beforeEach, expect, test, vi } from "vitest";
+import { BenchProvider } from "../bench-provider/BenchProvider.js";
 import { AppShell } from "./AppShell.js";
 
 let wide = false;
@@ -110,4 +111,45 @@ test("AppShell supports either optional panel and updates the active panel", () 
     "end",
   );
   expect(screen.queryByRole("contentinfo")).not.toBeInTheDocument();
+});
+
+test("AppShell offers the first keyboard stop and focuses its stable main target", async () => {
+  const user = userEvent.setup();
+  const content = (
+    <AppShell header={<button type="button">Menu</button>}>Document</AppShell>
+  );
+  const { rerender } = render(content);
+  const main = screen.getByRole("main");
+  const id = main.id;
+  const link = screen.getByRole("link", { name: "Skip to main content" });
+  expect(id).not.toBe("");
+  expect(link).toHaveAttribute("href", `#${id}`);
+  await user.tab();
+  expect(link).toHaveFocus();
+  await user.keyboard("{Enter}");
+  expect(main).toHaveFocus();
+  rerender(<AppShell header="Updated">Document</AppShell>);
+  expect(screen.getByRole("main")).toHaveAttribute("id", id);
+});
+
+test("AppShell localizes its skip link and accepts internal message overrides", () => {
+  const { rerender } = render(
+    <BenchProvider locale="fr-FR">
+      <AppShell header="Header">Document</AppShell>
+    </BenchProvider>,
+  );
+  expect(
+    screen.getByRole("link", { name: "Aller au contenu principal" }),
+  ).toBeInTheDocument();
+  rerender(
+    <BenchProvider
+      locale="fr-FR"
+      messages={{ skipToMain: "Passer au document" }}
+    >
+      <AppShell header="Header">Document</AppShell>
+    </BenchProvider>,
+  );
+  expect(
+    screen.getByRole("link", { name: "Passer au document" }),
+  ).toBeInTheDocument();
 });

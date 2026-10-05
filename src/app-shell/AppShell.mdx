@@ -36,6 +36,8 @@ Use the theme selector to inspect light and dark themes.
 
 ## Accessibility
 
-On large screens, keyboard focus follows DOM order: the main content first, then the start panel, then the end panel. Visual placement does not change this tab order.
+The first keyboard stop is “Skip to main content”, revealed on keyboard focus. Press Enter to move focus to main, bypassing the header and mobile panel selector. Its target ID is stable across renders. BenchProvider localizes the label (English/French) and accepts a `messages.skipToMain` override.
+
+On large screens, keyboard focus then follows DOM order: the main content first, then the start panel, then the end panel. Visual placement does not change this tab order.
 
 Below 960px, a sticky single-selection panel selector comes before main, followed by the selected panel. React Aria manages Tabs keyboard navigation and automatic selection: arrow keys move focus and select a tab. Each tab and tabpanel is linked with aria-controls and aria-labelledby. Supply start and end as optional objects with a meaningful label and content. Both panels remain mounted when switching selection or resizing; CSS hides the inactive panel on small screens and it is inert. At desktop widths both panels are interactive complementary landmarks. Use only one AppShell per page; supply headings in main and the header.

@@ -3,7 +3,7 @@
     {
       "name": "AppShell",
       "import": "import { AppShell } from \"bench-design\";",
-      "description": "A viewport workspace on large screens and a natural document on small screens.",
+      "description": "A viewport workspace on large screens and a natural document on small screens, with a localized keyboard skip link to main.",
       "props": [
         {
           "name": "header",

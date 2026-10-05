@@ -161,3 +161,19 @@
     scrollbar-gutter: stable;
   }
 }
+
+.bd-app-shell-skip {
+  position: fixed;
+  inset-block-start: var(--bd-space-8);
+  inset-inline-start: var(--bd-space-8);
+  z-index: 2;
+  padding: var(--bd-space-12) var(--bd-space-16);
+  background: var(--bd-surface);
+  color: var(--bd-text);
+  clip-path: inset(50%);
+}
+.bd-app-shell-skip:focus-visible {
+  clip-path: none;
+  outline: var(--bd-strong) solid var(--bd-focus);
+  outline-offset: var(--bd-space-4);
+}

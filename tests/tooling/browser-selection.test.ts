@@ -115,3 +115,41 @@ test("shards split the full suite and run a scoped selection once", () => {
   assert.equal(shardPlan(scoped, "2/2").mode, "empty");
   assert.deepEqual(shardPlan(scoped, undefined), scoped);
 });
+
+test("composition components activate visual comparisons", () => {
+  for (const component of [
+    "recipes",
+    "card",
+    "surface",
+    "text-field",
+    "select",
+    "checkbox",
+    "radio-group",
+    "notice",
+    "status",
+    "tabs",
+    "grid-list",
+    "table",
+  ]) {
+    assert.equal(
+      selectBrowserTests([`src/${component}/example.tsx`]).visual,
+      true,
+      component,
+    );
+  }
+});
+test("transitive importers activate composition captures, including cycles", () => {
+  const importers = { text: ["link"], link: ["recipes"], recipes: ["link"] };
+  assert.equal(
+    selectBrowserTests(["src/text/Text.tsx"], importers).visual,
+    true,
+  );
+  assert.equal(
+    selectBrowserTests(["src/link/Link.tsx"], componentImporters()).visual,
+    true,
+  );
+  assert.equal(
+    selectBrowserTests(["src/uncaptured/Example.tsx"]).visual,
+    false,
+  );
+});

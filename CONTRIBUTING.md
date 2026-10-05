@@ -87,7 +87,8 @@ Cleanup touches only resources owned by that run.
 
 GitHub CI is the canonical capture environment: Linux x64 with the pinned
 Chromium image. The capture step in the `browser` job compares twenty Button
-scenarios (two variants, five states, two themes) in Chromium. Firefox and
+scenarios, twelve Button-with-icon/IconButton scenarios, and thirty composition
+captures (fifteen stories in both themes) in Chromium. Firefox and
 WebKit are covered by computed-style tests. After `pnpm build-storybook`, run:
 
 ```sh
@@ -97,16 +98,20 @@ pnpm exec playwright test --config playwright.visual.config.ts
 Canonical execution uses `ci/Containerfile.chromium`: pinned Ubuntu 24.04,
 Playwright 1.63.0 Chromium, and Node/pnpm from `ci/install-toolchain.sh`.
 References live in `tests/visual/baselines/chromium/`.
-The viewport is 400 × 160, DPR 1; captures wait for `document.fonts.ready`
-and disable animations. `threshold: 0` and `maxDiffPixels: 0` require exact equality
+Button and IconButton use 400 × 160 viewports. Composition captures use full-page
+screenshots: recipes at 1280 × 800, and surface, form, feedback, navigation and
+collection examples at 800 × 800. DPR is 1; captures wait for `document.fonts.ready`
+and disable animations. Compositions clear focus and move the pointer outside the
+page. Component edits also trigger captures when the transitive importer graph
+reaches a captured component or recipe. `threshold: 0` and `maxDiffPixels: 0` require exact equality
 in this environment. Missing references and differences fail the comparison.
 `updateSnapshots: none` prevents automatic reference creation or replacement.
-The `button-visual-<run>-<attempt>` artifact retains candidates, diffs, traces
+The `browser-1-<run>-<attempt>` artifact retains candidates, diffs, traces
 and reports for 14 days, including failed comparisons.
 
 For approval, download the artifact for the candidate SHA, inspect every candidate
 and any diffs, and obtain explicit approval from the visual owner. After approval,
-manually copy only approved `candidate-<variant>-<state>-<theme>.png` files into
+manually copy only approved `candidate-<scenario>-<theme>.png` files into
 `tests/visual/baselines/chromium/`, removing the `candidate-` prefix. Include the
 SHA and approved run link in the PR, then rerun CI against those references.
 Never use `--update-snapshots` or replace references just to hide a failure.

@@ -34,9 +34,24 @@ export function selectBrowserTests(
   }
   for (const component of components)
     patterns.add(`@component:${escapeRegex(component)}(?:\\s|$)`);
-  // Components with visual captures (tests/visual); Icon reaches them as an
-  // import of both.
-  const visual = ["button", "icon-button"].some((name) => components.has(name));
+  // Any captured component reached through the importer graph requires the
+  // visual suite, including compositions that render shared primitives.
+  const visual = [
+    "button",
+    "icon-button",
+    "recipes",
+    "card",
+    "surface",
+    "text-field",
+    "select",
+    "checkbox",
+    "radio-group",
+    "notice",
+    "status",
+    "tabs",
+    "grid-list",
+    "table",
+  ].some((name) => components.has(name));
   return patterns.size
     ? { mode: "scoped", args: ["--grep", [...patterns].join("|")], visual }
     : { mode: "empty", args: [], visual: false };

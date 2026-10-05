@@ -6,9 +6,14 @@ import type { FieldProps } from "./FieldProps.js";
 export function FieldLabel({
   label,
   isRequired,
-}: Pick<FieldProps, "label" | "isRequired">) {
+  hideLabel = false,
+}: Pick<FieldProps, "label" | "isRequired"> & { hideLabel?: boolean }) {
   return (
-    <Label className="bd-field-label">
+    <Label
+      className={
+        hideLabel ? "bd-field-label bd-field-hidden-label" : "bd-field-label"
+      }
+    >
       {label}
       {!isRequired && <FieldOptional />}
     </Label>

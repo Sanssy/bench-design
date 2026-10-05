@@ -2226,6 +2226,26 @@
           "description": "Display an externally determined validation error."
         },
         {
+          "name": "variant",
+          "type": "\"boxed\" | \"underlined\"",
+          "required": false,
+          "description": "Visual treatment; boxed by default.",
+          "default": "\"boxed\""
+        },
+        {
+          "name": "hideLabel",
+          "type": "boolean",
+          "required": false,
+          "description": "Visually hide the associated label without removing its accessible name.",
+          "default": "false"
+        },
+        {
+          "name": "autoComplete",
+          "type": "string",
+          "required": false,
+          "description": "Browser autocomplete hint."
+        },
+        {
           "name": "name",
           "type": "string",
           "required": false,
@@ -2282,6 +2302,14 @@
         {
           "name": "Review",
           "href": "./?path=/story/form-searchfield--review"
+        },
+        {
+          "name": "Underlined",
+          "href": "./?path=/story/form-searchfield--underlined"
+        },
+        {
+          "name": "UnderlinedReview",
+          "href": "./?path=/story/form-searchfield--underlined-review"
         }
       ]
     },

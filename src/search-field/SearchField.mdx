@@ -10,7 +10,10 @@ Import `SearchField` from `bench-design` and load `bench-design/styles.css` once
 
 ## Usage
 
-Supply a visible label. Use description for help and errorMessage for actionable
+Supply a label. Use `hideLabel` when the surrounding context makes the purpose
+clear; the label remains associated with the input. `variant="underlined"`
+removes the frame while preserving keyboard focus and validation feedback.
+Use `autoComplete` to provide a browser autocomplete hint. Use description for help and errorMessage for actionable
 validation feedback. Required controls use native React Aria validation; optional
 controls display “(optional)”. Use isInvalid for external validation.
 Keep application rules in the consuming product. Do not use placeholders as labels.
@@ -23,6 +26,8 @@ Keep application rules in the consuming product. Do not use placeholders as labe
 
 <Canvas of={Stories.Default} />
 <Canvas of={Stories.Review} />
+<Canvas of={Stories.Underlined} />
+<Canvas of={Stories.UnderlinedReview} />
 
 Use the theme selector to view light and dark examples, including invalid,
 disabled and optional controls. Controlled and uncontrolled values are supported;
@@ -30,6 +35,6 @@ choose one mode for the lifetime of the control.
 
 ## Keyboard and ARIA
 
-Tab reaches enabled controls with visible focus. Type to search; Enter submits and the clear button resets the value.
+Tab reaches enabled controls with visible focus. Type to search; Enter submits and Escape clears the value, and the clear button offers the same action by pointer.
 React Aria connects labels, descriptions and validation messages. Disabled
 controls cannot be edited or activated.

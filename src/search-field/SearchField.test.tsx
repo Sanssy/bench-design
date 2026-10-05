@@ -109,3 +109,62 @@ test("SearchField submits and clears using React Aria actions", async () => {
   expect(onClear).toHaveBeenCalledOnce();
   expect(input).toHaveValue("");
 });
+
+test("SearchField keeps a hidden label linked and forwards autocomplete", () => {
+  render(
+    <SearchField
+      label="Find documents"
+      isRequired
+      hideLabel
+      autoComplete="off"
+      variant="underlined"
+    />,
+  );
+  const input = screen.getByRole("searchbox", { name: "Find documents" });
+  const label = screen.getByText("Find documents");
+  expect(label).toHaveAttribute("for", input.id);
+  expect(label).toHaveClass("bd-field-hidden-label");
+  expect(input).toHaveAttribute("autocomplete", "off");
+});
+
+test("SearchField clears an uncontrolled value with the keyboard", async () => {
+  const user = userEvent.setup();
+  const onClear = vi.fn();
+  render(
+    <SearchField
+      label="Find documents"
+      isRequired
+      defaultValue="Notes"
+      onClear={onClear}
+    />,
+  );
+  await user.click(screen.getByRole("searchbox"));
+  await user.keyboard("{Escape}");
+  expect(screen.getByRole("searchbox")).toHaveValue("");
+  expect(onClear).toHaveBeenCalledOnce();
+});
+
+test("SearchField requests a controlled clear and waits for its owner", async () => {
+  const user = userEvent.setup();
+  const onChange = vi.fn();
+  const { rerender } = render(
+    <SearchField
+      label="Find documents"
+      isRequired
+      value="Notes"
+      onChange={onChange}
+    />,
+  );
+  await user.click(screen.getByRole("button"));
+  expect(onChange).toHaveBeenCalledWith("");
+  expect(screen.getByRole("searchbox")).toHaveValue("Notes");
+  rerender(
+    <SearchField
+      label="Find documents"
+      isRequired
+      value=""
+      onChange={onChange}
+    />,
+  );
+  expect(screen.getByRole("searchbox")).toHaveValue("");
+});

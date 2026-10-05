@@ -1,3 +1,4 @@
+import AxeBuilder from "@axe-core/playwright";
 import { expect, test } from "@playwright/test";
 
 for (const theme of ["light", "dark"]) {
@@ -97,3 +98,33 @@ test("SearchField uses token geometry independently of theme", {
   });
   expect(await control.screenshot()).toEqual(shown);
 });
+
+for (const theme of ["light", "dark"]) {
+  test(`SearchField underlined accessibility in ${theme}`, {
+    tag: [`@theme:${theme}`, "@component:search-field"],
+  }, async ({ page }) => {
+    await page.goto(
+      `/iframe.html?id=form-searchfield--underlined&viewMode=story&globals=theme:${theme}`,
+    );
+    await expect(page.locator("html")).toHaveAttribute("data-theme", theme);
+    const input = page.getByRole("searchbox", { name: "Search documents" });
+    const control = page.locator(".bd-search-control");
+    await expect(input).toHaveAttribute("autocomplete", "off");
+    await expect(control).toHaveCSS("border-top-width", "0px");
+    await expect(control).toHaveCSS("border-left-width", "0px");
+    await expect(control).toHaveCSS("background-color", "rgba(0, 0, 0, 0)");
+    await page.keyboard.press("Tab");
+    await expect(input).toBeFocused();
+    await expect(control).toHaveCSS("outline-style", "solid");
+    const clear = page.getByRole("button", { name: "Clear search" });
+    const bounds = await clear.boundingBox();
+    expect(bounds?.width).toBeGreaterThanOrEqual(44);
+    expect(bounds?.height).toBeGreaterThanOrEqual(44);
+    const axe = await new AxeBuilder({ page })
+      .withTags(["wcag2a", "wcag2aa", "wcag21aa", "wcag22aa"])
+      .analyze();
+    expect(axe.violations).toEqual([]);
+    await page.keyboard.press("Escape");
+    await expect(input).toHaveValue("");
+  });
+}

@@ -9,6 +9,12 @@ import { Icon } from "../icon/Icon.js";
 
 /** Accessible search input with integrated label and validation. */
 export interface SearchFieldProps extends FieldProps {
+  /** Visual treatment; boxed by default. */
+  variant?: "boxed" | "underlined";
+  /** Visually hide the associated label without removing its accessible name. */
+  hideLabel?: boolean;
+  /** Browser autocomplete hint. */
+  autoComplete?: string;
   /** Form submission name. */
   name?: string;
   /** Current controlled value. */
@@ -29,6 +35,9 @@ export interface SearchFieldProps extends FieldProps {
 /** A React Aria input retaining native form validation. */
 export function SearchField({
   label,
+  variant = "boxed",
+  hideLabel = false,
+  autoComplete,
   description,
   errorMessage,
   isRequired,
@@ -45,7 +54,8 @@ export function SearchField({
 }: SearchFieldProps) {
   return (
     <AriaSearchField
-      className="bd-field"
+      className="bd-field bd-search-field"
+      data-variant={variant}
       {...(name === undefined ? {} : { name })}
       {...(value === undefined ? {} : { value })}
       {...(defaultValue === undefined ? {} : { defaultValue })}
@@ -59,12 +69,14 @@ export function SearchField({
     >
       <FieldLabel
         label={label}
+        hideLabel={hideLabel}
         {...(isRequired === undefined ? {} : { isRequired })}
       />
       <div className="bd-field-control bd-search-control">
         <Icon name="search" size={20} />
         <Input
           className="bd-search-input"
+          {...(autoComplete === undefined ? {} : { autoComplete })}
           {...(placeholder === undefined ? {} : { placeholder })}
         />
         <Button className="bd-search-clear">

@@ -455,3 +455,43 @@
 .bd-badge[data-tone="blue"] {
   --bd-feedback-subtle: var(--bd-category-blue-subtle);
 }
+
+/* Document primitives: Paper and ReferenceList. */
+.bd-paper {
+  box-sizing: border-box;
+  inline-size: 100%;
+  max-inline-size: var(--bd-measure);
+  min-inline-size: 0;
+  padding: var(--bd-space-24);
+  background: var(--bd-surface-raised);
+  color: var(--bd-text);
+  border: var(--bd-stroke) solid var(--bd-border);
+  box-shadow: var(--bd-offset) var(--bd-offset) 0 var(--bd-shadow);
+  font: var(--bd-size-body) / var(--bd-line-reading) var(--bd-font-ui);
+  overflow-wrap: anywhere;
+}
+.bd-paper mark {
+  background: var(--bd-accent);
+  color: var(--bd-on-accent);
+}
+.bd-reference-list {
+  margin: 0;
+  padding-inline-start: var(--bd-space-32);
+  color: var(--bd-text);
+  font: var(--bd-size-body) / var(--bd-line-reading) var(--bd-font-ui);
+  list-style-type: decimal;
+  overflow-wrap: anywhere;
+}
+.bd-reference-list li {
+  padding-inline-start: var(--bd-space-4);
+}
+.bd-reference-list li + li {
+  margin-block-start: var(--bd-space-16);
+}
+.bd-reference-list li::marker {
+  font-family: var(--bd-font-mono);
+}
+.bd-reference-list p {
+  margin: 0;
+  color: var(--bd-text-muted);
+}

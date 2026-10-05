@@ -1,0 +1,31 @@
+import { Meta, Canvas, Controls } from '@storybook/addon-docs/blocks';
+import { ManifestProps } from "../../.storybook/ManifestProps";
+import * as Stories from './Paper.stories';
+
+<Meta of={Stories} />
+
+# Paper
+
+Import `Paper` from `bench-design` and load `bench-design/styles.css` once.
+
+## Usage
+
+Use a document sheet for caller-owned text and headings. Compose references separately. Do provide a textual cue such as “Highlighted passage” alongside a mark; avoid conveying significance through color alone. No extraction or document viewing behavior is provided.
+
+## API
+
+<ManifestProps component="Paper" />
+
+## Try the props
+
+<Controls of={Stories.Document} />
+
+## Examples
+
+<Canvas of={Stories.Document} />
+
+Use the theme selector to inspect light and dark themes.
+
+## Accessibility
+
+Paper adds no landmark or heading level. Native mark content remains available to assistive technology, but highlighting may not be announced; supply accompanying text. Interactive children keep their own keyboard behavior.

@@ -2442,6 +2442,24 @@
       ]
     },
     {
+      "name": "Paper",
+      "import": "import { Paper } from \"bench-design\";",
+      "description": "A raised, bordered document sheet constrained to the reading measure.",
+      "props": [
+        {
+          "name": "children",
+          "type": "ReactNode",
+          "required": true
+        }
+      ],
+      "stories": [
+        {
+          "name": "Document",
+          "href": "./?path=/story/layout-paper--document"
+        }
+      ]
+    },
+    {
       "name": "Popover",
       "import": "import { Popover } from \"bench-design\";",
       "description": "An anchored dialog without a veil; Escape and outside interaction dismiss it.",
@@ -2583,6 +2601,30 @@
         {
           "name": "CardsReview",
           "href": "./?path=/story/form-radiogroup--cards-review"
+        }
+      ]
+    },
+    {
+      "name": "ReferenceList",
+      "import": "import { ReferenceList } from \"bench-design\";",
+      "description": "A visibly numbered list in caller order.",
+      "props": [
+        {
+          "name": "label",
+          "type": "string",
+          "required": true,
+          "description": "Accessible name of the ordered list."
+        },
+        {
+          "name": "items",
+          "type": "{\n    /** Stable unique identifier. */\n    id: string;\n    title: string;\n    href?: string;\n    description?: string;\n  }[]",
+          "required": true
+        }
+      ],
+      "stories": [
+        {
+          "name": "References",
+          "href": "./?path=/story/data-referencelist--references"
         }
       ]
     },

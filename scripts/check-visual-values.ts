@@ -110,7 +110,7 @@ export const exceptions: VisualException[] = [
     property: "condition",
     value: "(width<640px)",
     reason:
-      "Ratified Grid collapses below 640px; CSS variables cannot define media query thresholds.",
+      "Ratified Grid collapses and AppHeader places navigation on a second row below 640px; CSS variables cannot define media query thresholds.",
   },
   {
     file: "dist/link.css",

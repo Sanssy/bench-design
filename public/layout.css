@@ -177,3 +177,47 @@
   outline: var(--bd-strong) solid var(--bd-focus);
   outline-offset: var(--bd-space-4);
 }
+
+.bd-app-header {
+  display: grid;
+  grid-template-columns: minmax(0, auto) minmax(0, 1fr) minmax(0, auto);
+  align-items: center;
+  gap: var(--bd-space-16);
+  color: var(--bd-text);
+  background: var(--bd-surface);
+}
+.bd-app-header-brand,
+.bd-app-header-navigation,
+.bd-app-header-utilities {
+  min-inline-size: 0;
+  overflow-wrap: anywhere;
+}
+.bd-app-header-utilities {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: end;
+  gap: var(--bd-space-12);
+}
+.bd-app-header-meta {
+  font-family: var(--bd-font-mono);
+  font-size: var(--bd-size-meta);
+  color: var(--bd-text-muted);
+}
+@media (width < 640px) {
+  .bd-app-header {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  }
+  .bd-app-header-brand {
+    grid-column: 1;
+    grid-row: 1;
+  }
+  .bd-app-header-utilities {
+    grid-column: 2;
+    grid-row: 1;
+  }
+  .bd-app-header-navigation {
+    grid-column: 1 / -1;
+    grid-row: 2;
+  }
+}

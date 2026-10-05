@@ -98,6 +98,51 @@
       ]
     },
     {
+      "name": "AppHeader",
+      "import": "import { AppHeader } from \"bench-design\";",
+      "description": "A responsive application banner with brand, navigation, actions and metadata slots.",
+      "props": [
+        {
+          "name": "brand",
+          "type": "ReactNode",
+          "required": true,
+          "description": "Brand content, typically a link to the application's home page."
+        },
+        {
+          "name": "navigation",
+          "type": "ReactNode",
+          "required": true,
+          "description": "Named page navigation, typically TopNav."
+        },
+        {
+          "name": "actions",
+          "type": "ReactNode",
+          "required": false,
+          "description": "Optional application actions."
+        },
+        {
+          "name": "meta",
+          "type": "ReactNode",
+          "required": false,
+          "description": "Optional contextual metadata."
+        }
+      ],
+      "stories": [
+        {
+          "name": "Basic",
+          "href": "./?path=/story/layout-appheader--basic"
+        },
+        {
+          "name": "WithUtilities",
+          "href": "./?path=/story/layout-appheader--with-utilities"
+        },
+        {
+          "name": "Workspace",
+          "href": "./?path=/story/layout-appheader--workspace"
+        }
+      ]
+    },
+    {
       "name": "AppShell",
       "import": "import { AppShell } from \"bench-design\";",
       "description": "A viewport workspace on large screens and a natural document on small screens, with a localized keyboard skip link to main.",

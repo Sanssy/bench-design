@@ -16,7 +16,16 @@ for (const theme of ["light", "dark"]) {
       await page.evaluate(() => document.fonts.ready);
       await expect(page.locator(".bd-collection-view-footer")).toHaveCSS(
         "font-family",
-        /IBM Plex Mono/,
+
+        // The mono token, whatever face it names.
+        await page.evaluate(() => {
+          const probe = document.createElement("span");
+          probe.style.fontFamily = "var(--bd-font-mono)";
+          document.body.append(probe);
+          const family = getComputedStyle(probe).fontFamily;
+          probe.remove();
+          return family;
+        }),
       );
       if (story === "resource-library") {
         await expect(page.locator(".bd-collection-view-toolbar")).toHaveCSS(
@@ -58,7 +67,8 @@ test("consumer search, view and sorting operate through the composition", {
     .getByRole("button", { name: "Clear filters", exact: true })
     .click();
   await expect(page.getByText("3 of 3 shown")).toBeVisible();
-  await page.getByRole("button", { name: "List", exact: true }).click();
+  // SegmentedControl segments are radios (single choice).
+  await page.getByRole("radio", { name: "List", exact: true }).click();
   await expect(page.locator(".bd-grid-list")).toHaveAttribute(
     "data-layout",
     "stack",

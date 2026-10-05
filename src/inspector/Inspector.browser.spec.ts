@@ -15,7 +15,16 @@ for (const theme of ["light", "dark"]) {
       if (story === "resource-details") {
         await expect(page.locator(".bd-inspector-eyebrow")).toHaveCSS(
           "font-family",
-          /IBM Plex Mono/,
+
+          // The mono token, whatever face it names.
+          await page.evaluate(() => {
+            const probe = document.createElement("span");
+            probe.style.fontFamily = "var(--bd-font-mono)";
+            document.body.append(probe);
+            const family = getComputedStyle(probe).fontFamily;
+            probe.remove();
+            return family;
+          }),
         );
         await page.setViewportSize({ width: 360, height: 700 });
         expect(

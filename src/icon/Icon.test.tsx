@@ -3,15 +3,17 @@ import { expect, test } from "vitest";
 import { Icon } from "./Icon";
 import { type IconName, icons } from "./icons";
 
-test("decorative icon is hidden and has no role", () => {
-  const { container } = render(<Icon name="plus" />);
-  const svg = container.querySelector("svg");
-  expect(svg).toHaveAttribute("aria-hidden", "true");
-  expect(svg).not.toHaveAttribute("role");
-  expect(svg).toHaveAttribute("focusable", "false");
-  expect(svg).toHaveAttribute("width", "24");
-  expect(svg).toHaveAttribute("height", "24");
-});
+for (const name of Object.keys(icons) as IconName[]) {
+  test(`decorative ${name} is hidden and has no role`, () => {
+    const { container } = render(<Icon name={name} />);
+    const svg = container.querySelector("svg");
+    expect(svg).toHaveAttribute("aria-hidden", "true");
+    expect(svg).not.toHaveAttribute("role");
+    expect(svg).toHaveAttribute("focusable", "false");
+    expect(svg).toHaveAttribute("width", "24");
+    expect(svg).toHaveAttribute("height", "24");
+  });
+}
 test("label exposes an image with an accessible name", () => {
   render(<Icon name="search" label="Search" />);
   expect(screen.getByRole("img", { name: "Search" })).not.toHaveAttribute(

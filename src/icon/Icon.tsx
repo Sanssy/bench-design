@@ -1,7 +1,7 @@
 import { createElement, type ReactNode } from "react";
 import { type IconName, icons } from "./icons.js";
 
-/** A Keyline sharp icon, colored by its parent. */
+/** A sharp catalogue icon, colored by its parent. */
 export interface IconProps {
   /** Name from the generated SVG catalogue. */
   name: IconName;

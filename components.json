@@ -206,7 +206,7 @@
         },
         {
           "name": "icon",
-          "type": "\"arrow-left\" | \"arrow-right\" | \"bin\" | \"calendar\" | \"check\" | \"chevron-down\" | \"download\" | \"grip\" | \"info\" | \"menu\" | \"pen\" | \"plus\" | \"search\" | \"settings\" | \"triangle-alert\" | \"user\" | \"x\"",
+          "type": "\"arrow-left\" | \"arrow-right\" | \"arrow-up-right\" | \"arrow-up\" | \"asterisk\" | \"bike\" | \"bin\" | \"briefcase\" | \"calendar\" | \"check\" | \"chevron-down\" | \"chevron-right\" | \"download\" | \"file-text\" | \"grip\" | \"heart\" | \"home\" | \"info\" | \"layers\" | \"layout-grid\" | \"link\" | \"list\" | \"menu\" | \"pen\" | \"plus\" | \"scan\" | \"search\" | \"settings\" | \"shopping-bag\" | \"triangle-alert\" | \"upload\" | \"user\" | \"wallet\" | \"x\"",
           "required": false,
           "description": "Decorative icon before the visible label."
         },
@@ -1470,7 +1470,7 @@
       "props": [
         {
           "name": "name",
-          "type": "\"arrow-left\" | \"arrow-right\" | \"bin\" | \"calendar\" | \"check\" | \"chevron-down\" | \"download\" | \"grip\" | \"info\" | \"menu\" | \"pen\" | \"plus\" | \"search\" | \"settings\" | \"triangle-alert\" | \"user\" | \"x\"",
+          "type": "\"arrow-left\" | \"arrow-right\" | \"arrow-up-right\" | \"arrow-up\" | \"asterisk\" | \"bike\" | \"bin\" | \"briefcase\" | \"calendar\" | \"check\" | \"chevron-down\" | \"chevron-right\" | \"download\" | \"file-text\" | \"grip\" | \"heart\" | \"home\" | \"info\" | \"layers\" | \"layout-grid\" | \"link\" | \"list\" | \"menu\" | \"pen\" | \"plus\" | \"scan\" | \"search\" | \"settings\" | \"shopping-bag\" | \"triangle-alert\" | \"upload\" | \"user\" | \"wallet\" | \"x\"",
           "required": true,
           "description": "Name from the generated SVG catalogue."
         },
@@ -1534,7 +1534,7 @@
         },
         {
           "name": "icon",
-          "type": "\"arrow-left\" | \"arrow-right\" | \"bin\" | \"calendar\" | \"check\" | \"chevron-down\" | \"download\" | \"grip\" | \"info\" | \"menu\" | \"pen\" | \"plus\" | \"search\" | \"settings\" | \"triangle-alert\" | \"user\" | \"x\"",
+          "type": "\"arrow-left\" | \"arrow-right\" | \"arrow-up-right\" | \"arrow-up\" | \"asterisk\" | \"bike\" | \"bin\" | \"briefcase\" | \"calendar\" | \"check\" | \"chevron-down\" | \"chevron-right\" | \"download\" | \"file-text\" | \"grip\" | \"heart\" | \"home\" | \"info\" | \"layers\" | \"layout-grid\" | \"link\" | \"list\" | \"menu\" | \"pen\" | \"plus\" | \"scan\" | \"search\" | \"settings\" | \"shopping-bag\" | \"triangle-alert\" | \"upload\" | \"user\" | \"wallet\" | \"x\"",
           "required": true,
           "description": "Decorative icon from the shared catalogue."
         },
@@ -3130,7 +3130,7 @@
         },
         {
           "name": "icon",
-          "type": "\"arrow-left\" | \"arrow-right\" | \"bin\" | \"calendar\" | \"check\" | \"chevron-down\" | \"download\" | \"grip\" | \"info\" | \"menu\" | \"pen\" | \"plus\" | \"search\" | \"settings\" | \"triangle-alert\" | \"user\" | \"x\"",
+          "type": "\"arrow-left\" | \"arrow-right\" | \"arrow-up-right\" | \"arrow-up\" | \"asterisk\" | \"bike\" | \"bin\" | \"briefcase\" | \"calendar\" | \"check\" | \"chevron-down\" | \"chevron-right\" | \"download\" | \"file-text\" | \"grip\" | \"heart\" | \"home\" | \"info\" | \"layers\" | \"layout-grid\" | \"link\" | \"list\" | \"menu\" | \"pen\" | \"plus\" | \"scan\" | \"search\" | \"settings\" | \"shopping-bag\" | \"triangle-alert\" | \"upload\" | \"user\" | \"wallet\" | \"x\"",
           "required": false,
           "description": "Decorative catalogue icon displayed instead of the visible label."
         },

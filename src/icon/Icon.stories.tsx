@@ -5,6 +5,7 @@ export default {
   title: "Media/Icon",
   component: Icon,
   parameters: { layout: "centered" },
+  argTypes: { name: { control: "select", options: Object.keys(icons) } },
   args: { name: "search" },
 } satisfies Meta<typeof Icon>;
 type Story = StoryObj<typeof Icon>;

@@ -1,0 +1,24 @@
+import { Meta, Canvas } from '@storybook/addon-docs/blocks';
+import { ManifestProps } from "../../.storybook/ManifestProps";
+import * as Stories from './Tree.stories';
+
+<Meta of={Stories} />
+
+# Tree
+
+Import `Tree` from `bench-design` and load `bench-design/styles.css` once.
+
+## Usage and accessibility
+
+Use for an actual hierarchy with globally unique node ids. Counts are supplied by consumers. Right and Left expand or collapse and move through ancestors; Up and Down navigate visible rows. Enter activates before selection and Space selects. React Aria toggle selection suppresses actions while a selection exists. Choose controlled keys or initial expanded keys. Avoid using a tree for a flat collection.
+
+## API
+
+<ManifestProps component="Tree" />
+
+## Examples
+
+<Canvas of={Stories.ResourceFolders} />
+<Canvas of={Stories.ExpandedFolders} />
+
+Use the theme selector to inspect both examples in light and dark themes.

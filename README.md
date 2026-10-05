@@ -4,6 +4,11 @@ A React design system combining editorial typography, clear structure and
 accessible interactions. Shared visual foundations stay in CSS and tokens;
 React Aria is encapsulated behind a small component API.
 
+**[Website](https://sanssy.github.io/bench-design/)** ·
+[Storybook](https://sanssy.github.io/bench-design/storybook/) ·
+[Release v0.1.0](https://github.com/Sanssy/bench-design/releases/tag/v0.1.0) ·
+[MIT License](LICENSE)
+
 ## Current status
 
 V0 as of 2026-10-05: semantic tokens, local fonts, light/dark/system themes,

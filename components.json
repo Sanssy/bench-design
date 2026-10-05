@@ -1753,6 +1753,49 @@
       ]
     },
     {
+      "name": "IconTile",
+      "import": "import { IconTile } from \"bench-design\";",
+      "description": "Display a decorative or named image without introducing an action.",
+      "props": [
+        {
+          "name": "icon",
+          "type": "\"arrow-left\" | \"arrow-right\" | \"arrow-up-right\" | \"arrow-up\" | \"asterisk\" | \"bike\" | \"bin\" | \"briefcase\" | \"calendar\" | \"check\" | \"chevron-down\" | \"chevron-right\" | \"download\" | \"file-text\" | \"grip\" | \"heart\" | \"home\" | \"info\" | \"layers\" | \"layout-grid\" | \"link\" | \"list\" | \"menu\" | \"pen\" | \"plus\" | \"scan\" | \"search\" | \"settings\" | \"shopping-bag\" | \"triangle-alert\" | \"upload\" | \"user\" | \"wallet\" | \"x\"",
+          "required": true,
+          "description": "Icon from the shared catalogue."
+        },
+        {
+          "name": "tone",
+          "type": "| \"neutral\"\n    | \"accent\"\n    | \"green\"\n    | \"orange\"\n    | \"violet\"\n    | \"magenta\"\n    | \"teal\"\n    | \"blue\"",
+          "required": false,
+          "description": "Surface tone; color alone must not convey meaning.",
+          "default": "\"neutral\""
+        },
+        {
+          "name": "size",
+          "type": "\"sm\" | \"md\"",
+          "required": false,
+          "description": "Tokenized square: sm is 48 px, md is 64 px.",
+          "default": "\"md\""
+        },
+        {
+          "name": "label",
+          "type": "string",
+          "required": false,
+          "description": "Image name; omit when adjacent content supplies the meaning."
+        }
+      ],
+      "stories": [
+        {
+          "name": "SearchIllustration",
+          "href": "./?path=/story/media-icontile--search-illustration"
+        },
+        {
+          "name": "CategoryMarkers",
+          "href": "./?path=/story/media-icontile--category-markers"
+        }
+      ]
+    },
+    {
       "name": "Inline",
       "import": "import { Inline } from \"bench-design\";",
       "description": "Arrange content in a wrapping horizontal flow.",

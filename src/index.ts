@@ -123,6 +123,8 @@ export type { ToggleButtonProps } from "./toggle-button/ToggleButton.js";
 export { ToggleButton } from "./toggle-button/ToggleButton.js";
 export type { ToolbarProps } from "./toolbar/Toolbar.js";
 export { Toolbar } from "./toolbar/Toolbar.js";
+export type { TopNavProps } from "./top-nav/TopNav.js";
+export { TopNav } from "./top-nav/TopNav.js";
 export type { TreeNode, TreeProps } from "./tree/Tree.js";
 export { Tree } from "./tree/Tree.js";
 export type { ValueProps } from "./value/Value.js";

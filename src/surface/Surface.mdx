@@ -16,6 +16,8 @@ Use `tone="inverse"` for a contrasting introduction or call to action: dark on a
 
 Keep content concise and leave room for focus outlines. Use ordinary text, links and buttons with their native semantics. Avoid using inverse to signal status, selection or urgency. It adds no landmark or meaning by itself. Overlays rendered through portals outside the Surface do not inherit this local context; do not assume inverse is a universal theme provider.
 
+Raised Surface uses soft content elevation in light contexts and no soft shadow in dark contexts. Subtle and inverse roots have no shadow. Descendants inside inverse resolve elevation from their local theme. Keep hard offset elevation for actions and dialogs.
+
 ## API
 
 <ManifestProps component="Surface" />

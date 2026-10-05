@@ -11,6 +11,20 @@ for (const theme of ["light", "dark"]) {
       );
       await expect(page.locator("html")).toHaveAttribute("data-theme", theme);
       await expect(page.locator(".bd-inspector")).toBeVisible();
+      await expect(page.locator(".bd-inspector")).toHaveCSS(
+        "box-shadow",
+        theme === "light" ? "rgba(24, 32, 28, 0.086) 2px 2px 9px 0px" : "none",
+      );
+      await expect(page.locator(".bd-inspector")).toHaveCSS("display", "flex");
+      await expect(page.locator(".bd-inspector")).toHaveCSS(
+        "flex-direction",
+        "column",
+      );
+      await expect(page.locator(".bd-inspector")).toHaveCSS("gap", "24px");
+      await expect(page.locator(".bd-inspector")).toHaveCSS(
+        "min-inline-size",
+        "0px",
+      );
       await page.evaluate(() => document.fonts.ready);
       if (story === "resource-details") {
         await expect(page.locator(".bd-inspector-eyebrow")).toHaveCSS(

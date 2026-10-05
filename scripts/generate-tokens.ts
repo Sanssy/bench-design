@@ -9,10 +9,10 @@ function baseValue(token: BaseToken) {
     if ("offsetX" in value) {
       const dimension = (part: { value: number; unit: string }) =>
         `${part.value}${part.unit}`;
-      const color = value.color.replace(
-        /^\{(?:light|dark)\.(.+)\}$/,
-        "var(--bd-$1)",
-      );
+      const color =
+        typeof value.color === "string"
+          ? value.color.replace(/^\{(?:light|dark)\.(.+)\}$/, "var(--bd-$1)")
+          : `rgba(${value.color.components.map((channel) => Math.round(channel * 255)).join(", ")}, ${value.color.alpha})`;
       return [
         dimension(value.offsetX),
         dimension(value.offsetY),
@@ -26,6 +26,14 @@ function baseValue(token: BaseToken) {
   const metadata = token.$extensions["org.bench-design"];
   return `${value}${"cssUnit" in metadata ? metadata.cssUnit : ""}`;
 }
+function themeValue(token: BaseToken, theme: "light" | "dark") {
+  const metadata = token.$extensions["org.bench-design"];
+  if (theme === "dark" && "darkValue" in metadata) {
+    const value = metadata.darkValue;
+    return typeof value === "string" ? value : `${value.value}${value.unit}`;
+  }
+  return baseValue(token);
+}
 const declarations = (theme: "light" | "dark") =>
   Object.keys(tokens[theme]).map(
     (name) => `--bd-${name}: var(--bd-color-${theme}-${name});`,
@@ -34,7 +42,7 @@ const dark = [
   ...Object.entries(tokens.base).flatMap(([name, token]) => {
     const metadata = token.$extensions["org.bench-design"];
     return "darkValue" in metadata
-      ? [`--bd-${name}: ${metadata.darkValue.value}${metadata.darkValue.unit};`]
+      ? [`--bd-${name}: ${themeValue(token, "dark")};`]
       : [];
   }),
   ...declarations("dark"),
@@ -71,10 +79,8 @@ const css = `:root {\n${indent(
 const inverseContext = (theme: "light" | "dark") => [
   ...Object.entries(tokens.base).flatMap(([name, token]) => {
     const metadata = token.$extensions["org.bench-design"];
-    return "darkValue" in metadata
-      ? [
-          `--bd-${name}: ${theme === "dark" ? `${metadata.darkValue.value}${metadata.darkValue.unit}` : baseValue(token)};`,
-        ]
+    return "darkValue" in metadata && token.$type !== "shadow"
+      ? [`--bd-${name}: ${themeValue(token, theme)};`]
       : [];
   }),
   ...declarations(theme),
@@ -87,7 +93,7 @@ const inverseContext = (theme: "light" | "dark") => [
       ([, token]) =>
         typeof token.$value === "object" && "offsetX" in token.$value,
     )
-    .map(([name, token]) => `--bd-${name}: ${baseValue(token)};`),
+    .map(([name, token]) => `--bd-${name}: ${themeValue(token, theme)};`),
   `color-scheme: ${theme};`,
 ];
 const inverseCss = `
@@ -110,6 +116,11 @@ const types = `/** Generated from tokens.json; run pnpm tokens:generate. */
 export type SpaceToken = ${Object.keys(tokens.base)
   .filter((name) => name.startsWith("space-"))
   .map((name) => name.slice(6))
+  .join(" | ")};
+/** Shared elevation roles; their CSS values follow the local theme. */
+export type ElevationToken = ${Object.entries(tokens.base)
+  .filter(([, token]) => token.$type === "shadow")
+  .map(([name]) => JSON.stringify(name))
   .join(" | ")};
 `;
 const typesPath =

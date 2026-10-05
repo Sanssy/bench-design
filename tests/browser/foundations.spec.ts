@@ -1,3 +1,4 @@
+import AxeBuilder from "@axe-core/playwright";
 import { expect, test } from "@playwright/test";
 import tokens from "../../src/tokens.json" with { type: "json" };
 
@@ -64,6 +65,14 @@ for (const theme of ["light", "dark"] as const) {
         `${space}px`,
       );
     }
+    await expect(page.locator("[data-elevation-soft]")).toHaveCSS(
+      "box-shadow",
+      theme === "light" ? "rgba(24, 32, 28, 0.086) 2px 2px 9px 0px" : "none",
+    );
+    expect(
+      (await new AxeBuilder({ page }).withTags(["wcag2a", "wcag2aa"]).analyze())
+        .violations,
+    ).toEqual([]);
     const geometry = await page
       .locator("[data-geometry]")
       .evaluate((sample) => {
@@ -96,4 +105,20 @@ test("system theme follows OS live in the iframe", {
   await expect(
     page.locator('[data-role="text"] [data-contrast]'),
   ).toContainText("14.07");
+});
+
+test("soft elevation follows the system theme live", {
+  tag: "@theme:system",
+}, async ({ page }) => {
+  await page.emulateMedia({ colorScheme: "light" });
+  await page.goto(
+    "/iframe.html?id=foundations-spacing-geometry--scale&globals=theme:system",
+  );
+  const relief = page.locator("[data-elevation-soft]");
+  await expect(relief).toHaveCSS(
+    "box-shadow",
+    "rgba(24, 32, 28, 0.086) 2px 2px 9px 0px",
+  );
+  await page.emulateMedia({ colorScheme: "dark" });
+  await expect(relief).toHaveCSS("box-shadow", "none");
 });

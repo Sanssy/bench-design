@@ -1,3 +1,4 @@
+import AxeBuilder from "@axe-core/playwright";
 import { expect, test } from "@playwright/test";
 
 for (const theme of ["light", "dark"] as const) {
@@ -10,6 +11,10 @@ for (const theme of ["light", "dark"] as const) {
     await expect(page.locator("html")).toHaveAttribute("data-theme", theme);
     const component = page.locator(".bd-card");
     await expect(component).toBeVisible();
+    await expect(component).toHaveCSS(
+      "box-shadow",
+      theme === "light" ? "rgba(24, 32, 28, 0.086) 2px 2px 9px 0px" : "none",
+    );
     const result = await component.evaluate((element) => {
       const actual = getComputedStyle(element);
       const probe = document.createElement("span");
@@ -37,6 +42,10 @@ for (const theme of ["light", "dark"] as const) {
     expect(result.border).toBe("solid");
     expect(result.borderColor).toBe(result.expectedBorderColor);
     expect(result.width).toBe(result.expectedWidth);
+    expect(
+      (await new AxeBuilder({ page }).withTags(["wcag2a", "wcag2aa"]).analyze())
+        .violations,
+    ).toEqual([]);
   });
 }
 test("Card geometry uses spacing and typography tokens", {

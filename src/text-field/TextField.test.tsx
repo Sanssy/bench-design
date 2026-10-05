@@ -84,3 +84,12 @@ test("TextField displays custom validation after submit", async () => {
     screen.getByRole("textbox", { name: "Collection" }),
   ).toHaveAccessibleDescription("Choose another value");
 });
+
+test("TextField limits native editing to maxLength", async () => {
+  const user = userEvent.setup();
+  render(<TextField label="Name" isRequired maxLength={5} />);
+  const input = screen.getByRole("textbox", { name: "Name" });
+  await user.type(input, "1234567");
+  expect(input).toHaveValue("12345");
+  expect(input).toHaveAttribute("maxlength", "5");
+});

@@ -20,6 +20,8 @@ export interface TextFieldProps extends FieldProps {
   type?: "text" | "email" | "url" | "tel" | "password";
   /** Browser autofill hint. */
   autoComplete?: string;
+  /** Maximum native input character count. */
+  maxLength?: number;
 }
 /** A React Aria input retaining native form validation. */
 export function TextField({
@@ -37,6 +39,7 @@ export function TextField({
   validate,
   type = "text",
   autoComplete,
+  maxLength,
 }: TextFieldProps) {
   return (
     <AriaTextField
@@ -58,6 +61,7 @@ export function TextField({
       />
       <Input
         className="bd-field-control"
+        {...(maxLength === undefined ? {} : { maxLength })}
         {...(placeholder === undefined ? {} : { placeholder })}
       />
       <FieldMessages

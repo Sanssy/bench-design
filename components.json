@@ -2900,6 +2900,10 @@
         {
           "name": "Wrapped",
           "href": "./?path=/story/form-segmentedcontrol--wrapped"
+        },
+        {
+          "name": "FacetsWithCounts",
+          "href": "./?path=/story/form-segmentedcontrol--facets-with-counts"
         }
       ]
     },

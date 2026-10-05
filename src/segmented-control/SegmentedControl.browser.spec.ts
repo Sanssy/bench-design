@@ -47,11 +47,50 @@ for (const theme of ["light", "dark"]) {
     const controls = disabled.getByRole("radio");
     await expect(controls.first()).toBeVisible();
     await expect(controls.first()).toBeDisabled();
+    // Counts last: pointer clicks change React Aria's interaction modality.
+    for (const story of ["facets-with-counts", "wrapped"]) {
+      await page.goto(
+        `/iframe.html?id=form-segmentedcontrol--${story}&viewMode=story&globals=a11y.manual:!true;theme:${theme}`,
+      );
+      const housing = page.getByRole("radio", { name: "Housing, 5" });
+      const count = housing.locator(".bd-segment-count");
+      await expect(count).toHaveText("5");
+      const roles = await page.evaluate(() => {
+        const probe = document.createElement("span");
+        document.body.append(probe);
+        probe.style.color = "var(--bd-text-muted)";
+        probe.style.fontFamily = "var(--bd-font-mono)";
+        probe.style.fontSize = "var(--bd-size-meta)";
+        const css = getComputedStyle(probe);
+        const result = {
+          muted: css.color,
+          font: css.fontFamily,
+          size: css.fontSize,
+          selected: "",
+        };
+        probe.style.color = "var(--bd-on-accent)";
+        result.selected = getComputedStyle(probe).color;
+        probe.remove();
+        return result;
+      });
+      await expect(count).toHaveCSS("color", roles.muted);
+      await expect(count).toHaveCSS("font-family", roles.font);
+      await expect(count).toHaveCSS("font-size", roles.size);
+      await housing.click();
+      await expect(count).toHaveCSS("color", roles.selected);
+      await page.getByRole("radio", { name: /^All,/ }).click();
+      await expect(count).toHaveCSS("color", roles.muted);
+    }
   });
   test(`SegmentedControl axe A and AA in ${theme}`, {
     tag: ["@component:segmented-control", `@theme:${theme}`],
   }, async ({ page }) => {
-    for (const story of ["default", "review", "wrapped"]) {
+    for (const story of [
+      "default",
+      "review",
+      "wrapped",
+      "facets-with-counts",
+    ]) {
       await page.goto(
         `/iframe.html?id=form-segmentedcontrol--${story}&viewMode=story&globals=a11y.manual:!true;theme:${theme}`,
       );

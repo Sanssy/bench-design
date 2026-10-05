@@ -470,6 +470,12 @@
   background: var(--bd-accent);
   color: var(--bd-on-accent);
 }
+.bd-segment-count {
+  color: var(--bd-text-muted);
+}
+.bd-segment[data-selected] .bd-segment-count {
+  color: var(--bd-on-accent);
+}
 .bd-slider-heading {
   display: flex;
   align-items: center;

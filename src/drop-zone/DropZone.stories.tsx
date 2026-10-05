@@ -1,4 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
+import { useState } from "react";
+import { Button } from "../button/Button.js";
 import { DropZone } from "./DropZone.js";
 
 export default {
@@ -15,6 +17,18 @@ export const UploadDocuments: Story = {
     maxSize: 10000000,
     allowsMultiple: true,
     onDrop: () => {},
+  },
+  render: function UploadDocuments(args) {
+    const [files, setFiles] = useState<File[]>([]);
+    return (
+      <>
+        <DropZone {...args} onDrop={setFiles} />
+        <p role="status">{files.map((file) => file.name).join(", ")}</p>
+        {files.length > 0 && (
+          <Button onPress={() => setFiles([])}>Clear files</Button>
+        )}
+      </>
+    );
   },
 };
 export const Unavailable: Story = {

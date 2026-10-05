@@ -238,6 +238,9 @@
 
 .bd-category-label {
   display: inline-flex;
+  /* A label keeps its own width inside stretching stacks and grids. */
+  inline-size: fit-content;
+  max-inline-size: 100%;
   align-items: center;
   gap: calc(var(--bd-space-8) - var(--bd-hair));
   min-block-size: var(--bd-space-24);

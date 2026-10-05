@@ -43,3 +43,17 @@ for (const theme of ["light", "dark"]) {
     }
   });
 }
+test("CategoryLabel keeps its width in a stretching stack", {
+  tag: ["@component:category-label", "@theme:light"],
+}, async ({ page }) => {
+  await page.goto(
+    "/iframe.html?id=recipes-choice--confirm-selection&viewMode=story&globals=a11y.manual:!true;theme:light",
+  );
+  const label = page.locator(".bd-category-label").first();
+  await expect(label).toBeVisible();
+  const widths = await label.evaluate((element) => [
+    element.getBoundingClientRect().width,
+    (element.parentElement as HTMLElement).getBoundingClientRect().width,
+  ]);
+  expect(widths[0]).toBeLessThan((widths[1] ?? 0) / 2);
+});

@@ -16,8 +16,7 @@
   --bd-action-target: calc(var(--bd-space-32) + var(--bd-space-12));
 }
 .bd-search-clear,
-.bd-number-step,
-.bd-reorder-handle {
+.bd-number-step {
   box-sizing: border-box;
   flex: 0 0 var(--bd-action-target);
   inline-size: var(--bd-action-target);
@@ -29,24 +28,19 @@
   padding-inline-end: 0;
 }
 
-/* Dense actions extend within their row/tag, rather than into adjacent rows. */
+/* Dense actions extend within their row/tag, rather than into adjacent rows.
+   Reorder handles need no rule: React Aria drags the whole row by pointer and
+   keeps the handle for keyboard and assistive technology only. */
 .bd-tree-chevron,
-.bd-tree-content .bd-reorder-handle,
 .bd-tag-remove {
   position: relative;
   --bd-dense-target-width: var(--bd-space-24);
   --bd-dense-target-height: calc(var(--bd-space-32) + var(--bd-space-4));
 }
-.bd-tree-content .bd-reorder-handle {
-  flex-basis: var(--bd-space-24);
-  inline-size: var(--bd-space-24);
-  block-size: var(--bd-space-24);
-}
 .bd-tag-remove {
   --bd-dense-target-height: calc(var(--bd-space-24) + var(--bd-space-4));
 }
 .bd-tree-chevron::after,
-.bd-tree-content .bd-reorder-handle::after,
 .bd-tag-remove::after {
   content: "";
   position: absolute;

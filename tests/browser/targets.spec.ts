@@ -86,12 +86,19 @@ for (const theme of ["light", "dark"]) {
           "20",
         );
       }
+      if (component === "search-field") {
+        // The clear button is pointer-only; Escape clears from the keyboard.
+        await actions.first().click({ position: { x: 2, y: 2 } });
+        await expect(input).toHaveValue("");
+        await input.fill("Notes");
+        await page.keyboard.press("Escape");
+        await expect(input).toHaveValue("");
+        return;
+      }
       await actions.first().focus();
       await expect(actions.first()).toBeFocused();
       await page.keyboard.press("Enter");
-      if (component === "search-field") await expect(input).toHaveValue("");
-      else if (component === "number-field")
-        await expect(input).toHaveValue("1");
+      if (component === "number-field") await expect(input).toHaveValue("1");
       else {
         await expect(page.getByRole("listbox")).toBeVisible();
         await page.keyboard.press("Escape");
@@ -131,8 +138,12 @@ for (const theme of ["light", "dark"]) {
     await page.keyboard.press("Enter");
     await expect(page.getByText("Field notes", { exact: true })).toBeVisible();
   });
-  for (const component of ["grid-list", "table", "tree"]) {
-    test(`${component} reorder targets ${theme}`, {
+  for (const [component, row, height] of [
+    ["grid-list", ".bd-grid-list-item", 44],
+    ["table", ".bd-table-row", 44],
+    ["tree", ".bd-tree-content", 36],
+  ] as const) {
+    test(`${component} reorder rows are the pointer targets ${theme}`, {
       tag: [`@component:${component}`, `@theme:${theme}`],
     }, async ({ page }) => {
       await openStory(
@@ -140,19 +151,11 @@ for (const theme of ["light", "dark"]) {
         `collections-${component.replaceAll("-", "")}--reorderable-resources`,
         theme,
       );
+      // React Aria drags the whole row by pointer; the handle serves the keyboard.
       const handles = page.locator(".bd-reorder-handle");
-      await targets(
-        handles,
-        component === "tree" ? 24 : 44,
-        component === "tree" ? 36 : 44,
-      );
-      await handles.first().focus();
-      await page.keyboard.press("Enter");
-      await expect(
-        page.locator(".bd-reorder-indicator[data-drop-target]"),
-      ).toHaveCount(1);
-      await page.keyboard.press("Escape");
-      await expect(page.locator("[data-dragging]")).toHaveCount(0);
+      await expect(handles.first()).toHaveCSS("pointer-events", "none");
+      await targets(page.locator(`${row}:has(.bd-reorder-handle)`), 44, height);
+      // Keyboard reordering stays covered by src/collections/reorder.browser.spec.ts.
     });
   }
   for (const [component, story, selector] of [

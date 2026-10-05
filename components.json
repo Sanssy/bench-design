@@ -268,6 +268,18 @@
           "required": true
         },
         {
+          "name": "navigate",
+          "type": "(href: string, options?: unknown) => void",
+          "required": false,
+          "description": "Client router navigation; omitted to retain native or inherited routing."
+        },
+        {
+          "name": "useHref",
+          "type": "(href: string) => string",
+          "required": false,
+          "description": "Router hook resolving a route to an anchor URL; used with navigate."
+        },
+        {
           "name": "locale",
           "type": "string",
           "required": false,
@@ -288,6 +300,10 @@
         {
           "name": "EnglishProfile",
           "href": "./?path=/story/foundations-benchprovider--english-profile"
+        },
+        {
+          "name": "ClientRouting",
+          "href": "./?path=/story/foundations-benchprovider--client-routing"
         }
       ]
     },

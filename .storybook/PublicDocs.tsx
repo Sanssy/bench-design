@@ -146,6 +146,22 @@ export function SaveAction() {
         </pre>
       </section>
       <section>
+        <h2>Client routing</h2>
+        <p>
+          Connect any client router through BenchProvider. Supply navigate and,
+          if needed, useHref to resolve route URLs. React Aria links share the
+          configuration; Ctrl/Cmd clicks and new-tab links retain native
+          behavior. Without navigate, native or inherited routing is preserved.
+        </p>
+        <pre>
+          <code>
+            {
+              'const navigate = (href: string) => router.navigate(href);\nconst useHref = (href: string) => router.useHref(href);\n\n<BenchProvider navigate={navigate} useHref={useHref}>\n  <Link href="/guide">Read the guide</Link>\n</BenchProvider>'
+            }
+          </code>
+        </pre>
+      </section>
+      <section>
         <h2>Work in the repository</h2>
         <p>Pinned runtime: Node 24.21.0 and pnpm 12.8.1.</p>
         <pre>

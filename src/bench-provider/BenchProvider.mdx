@@ -30,6 +30,22 @@ Count messages receive a number and a context with `number` and `plural` helpers
 
 Internal copy covers optional fields, close actions, external links, search feedback and retry, selection summaries, filters, values and file-import feedback. React Aria continues to own its built-in accessible messages and validation. The provider adds no DOM element, styling or keyboard interaction.
 
+## Client routing
+
+Pass your router's navigation function as `navigate` and, when needed, its URL-resolution hook as `useHref`. The callbacks use React Aria's router types. `useHref` is used only when `navigate` is supplied. Keep hook order stable when configuring the provider.
+
+```tsx
+// Adapt any client router to these two functions.
+const navigate = (href: string) => router.navigate(href);
+const useHref = (href: string) => router.useHref(href);
+
+<BenchProvider navigate={navigate} useHref={useHref}>
+  <Link href="/guide">Read the guide</Link>
+</BenchProvider>
+```
+
+React Aria links in the subtree share this configuration without changes to their component APIs. Ordinary same-origin clicks use the client router; Ctrl/Cmd clicks and links opening a new tab retain native behavior. Without `navigate`, native navigation or an enclosing router is preserved. A nested provider used only for locale or messages inherits routing.
+
 ## API
 
 <ManifestProps component="BenchProvider" />
@@ -39,5 +55,6 @@ Internal copy covers optional fields, close actions, external links, search feed
 
 <Canvas of={Stories.EnglishProfile} />
 <Canvas of={Stories.FrenchProfile} />
+<Canvas of={Stories.ClientRouting} />
 
 Use the theme selector to inspect both themes.

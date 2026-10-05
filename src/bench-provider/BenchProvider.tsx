@@ -1,5 +1,5 @@
 import { createContext, type ReactNode, useContext } from "react";
-import { I18nProvider, useLocale } from "react-aria-components";
+import { I18nProvider, RouterProvider, useLocale } from "react-aria-components";
 import { type BenchMessages, en, fr } from "./messages.js";
 
 export type { BenchMessages } from "./messages.js";
@@ -8,6 +8,10 @@ const MessagesContext = createContext<Partial<BenchMessages>>({});
 /** Optional locale and partial internal-copy configuration. Consumer labels remain application-owned. */
 export interface BenchProviderProps {
   children: ReactNode;
+  /** Client router navigation; omitted to retain native or inherited routing. */
+  navigate?: (href: string, options?: unknown) => void;
+  /** Router hook resolving a route to an anchor URL; used with navigate. */
+  useHref?: (href: string) => string;
   /** BCP 47 locale; inherits the surrounding React Aria locale when omitted. */
   locale?: string;
   /** Partial overrides, inherited and merged by nested providers. */
@@ -18,6 +22,8 @@ export function BenchProvider({
   children,
   locale,
   messages,
+  navigate,
+  useHref,
 }: BenchProviderProps) {
   const parent = useContext(MessagesContext);
   const content = (
@@ -25,10 +31,20 @@ export function BenchProvider({
       {children}
     </MessagesContext.Provider>
   );
-  return locale === undefined ? (
-    content
+  const routed = navigate ? (
+    <RouterProvider
+      navigate={navigate}
+      {...(useHref === undefined ? {} : { useHref })}
+    >
+      {content}
+    </RouterProvider>
   ) : (
-    <I18nProvider locale={locale}>{content}</I18nProvider>
+    content
+  );
+  return locale === undefined ? (
+    routed
+  ) : (
+    <I18nProvider locale={locale}>{routed}</I18nProvider>
   );
 }
 export function useBenchMessages() {

@@ -1,6 +1,6 @@
 import { render, screen } from "@testing-library/react";
 import { I18nProvider } from "react-aria-components";
-import { expect, test } from "vitest";
+import { expect, test, vi } from "vitest";
 import { FieldLabel } from "../forms/FieldContent";
 import { Link } from "../link/Link";
 
@@ -239,4 +239,90 @@ test("French checkbox and file refusals use internal copy", () => {
   expect(screen.getByRole("alert")).toHaveTextContent(
     "ce fichier dépasse 4 octets.",
   );
+});
+
+function clickLink(options: MouseEventInit = {}) {
+  const event = new MouseEvent("click", {
+    bubbles: true,
+    cancelable: true,
+    ...options,
+  });
+  fireEvent(screen.getByRole("link"), event);
+  return event;
+}
+
+test("client navigation intercepts an ordinary Link click", () => {
+  const navigate = vi.fn();
+  render(
+    <BenchProvider navigate={navigate}>
+      <Link href="/guide">Guide</Link>
+    </BenchProvider>,
+  );
+  expect(clickLink().defaultPrevented).toBe(true);
+  expect(navigate).toHaveBeenCalledWith("/guide", undefined);
+});
+
+test("useHref resolves the anchor while navigate receives the original route", () => {
+  const navigate = vi.fn();
+  render(
+    <BenchProvider navigate={navigate} useHref={(href) => `/base${href}`}>
+      <Link href="/guide">Guide</Link>
+    </BenchProvider>,
+  );
+  expect(screen.getByRole("link")).toHaveAttribute("href", "/base/guide");
+  clickLink();
+  expect(navigate).toHaveBeenCalledWith("/guide", undefined);
+});
+
+test.each([{ ctrlKey: true }, { metaKey: true }])(
+  "modified clicks retain native navigation: %j",
+  (modifier) => {
+    const navigate = vi.fn();
+    render(
+      <BenchProvider navigate={navigate}>
+        <Link href="#guide">Guide</Link>
+      </BenchProvider>,
+    );
+    expect(clickLink(modifier).defaultPrevented).toBe(false);
+    expect(navigate).not.toHaveBeenCalled();
+  },
+);
+
+test.each([false, true])(
+  "native anchors work without router configuration (provider: %s)",
+  (provider) => {
+    const link = <Link href="#guide">Guide</Link>;
+    render(provider ? <BenchProvider>{link}</BenchProvider> : link);
+    expect(screen.getByRole("link").tagName).toBe("A");
+    expect(screen.getByRole("link")).toHaveAttribute("href", "#guide");
+    expect(clickLink().defaultPrevented).toBe(false);
+  },
+);
+
+test("copy-only nested providers inherit client routing and locale", () => {
+  const navigate = vi.fn();
+  render(
+    <BenchProvider locale="fr-FR" navigate={navigate}>
+      <BenchProvider messages={{ optional: "Option" }}>
+        <Link href="/guide">Guide</Link>
+        <FieldLabel label="Nom" />
+      </BenchProvider>
+    </BenchProvider>,
+  );
+  clickLink();
+  expect(navigate).toHaveBeenCalledWith("/guide", undefined);
+  expect(screen.getByText("Option")).toBeInTheDocument();
+});
+
+test("external new-tab links keep native navigation with a client router", () => {
+  const navigate = vi.fn();
+  render(
+    <BenchProvider navigate={navigate}>
+      <Link href="https://example.com" external>
+        Guide
+      </Link>
+    </BenchProvider>,
+  );
+  expect(clickLink().defaultPrevented).toBe(false);
+  expect(navigate).not.toHaveBeenCalled();
 });

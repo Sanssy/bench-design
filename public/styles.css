@@ -10,3 +10,60 @@
 @import "./overlays.css";
 @import "./forms.css";
 @import "./filters.css";
+
+/* Shared action geometry (UX-05); existing glyph sizes remain independent. */
+:root {
+  --bd-action-target: calc(var(--bd-space-32) + var(--bd-space-12));
+}
+.bd-search-clear,
+.bd-number-step,
+.bd-reorder-handle {
+  box-sizing: border-box;
+  flex: 0 0 var(--bd-action-target);
+  inline-size: var(--bd-action-target);
+  block-size: var(--bd-action-target);
+}
+.bd-search-control:not(.bd-multi-control),
+.bd-number-control {
+  padding-block: 0;
+  padding-inline-end: 0;
+}
+
+/* Dense actions extend within their row/tag, rather than into adjacent rows. */
+.bd-tree-chevron,
+.bd-tree-content .bd-reorder-handle,
+.bd-tag-remove {
+  position: relative;
+  --bd-dense-target-width: var(--bd-space-24);
+  --bd-dense-target-height: calc(var(--bd-space-32) + var(--bd-space-4));
+}
+.bd-tree-content .bd-reorder-handle {
+  flex-basis: var(--bd-space-24);
+  inline-size: var(--bd-space-24);
+  block-size: var(--bd-space-24);
+}
+.bd-tag-remove {
+  --bd-dense-target-height: calc(var(--bd-space-24) + var(--bd-space-4));
+}
+.bd-tree-chevron::after,
+.bd-tree-content .bd-reorder-handle::after,
+.bd-tag-remove::after {
+  content: "";
+  position: absolute;
+  inline-size: var(--bd-dense-target-width);
+  block-size: var(--bd-dense-target-height);
+  inset-inline-start: calc((100% - var(--bd-dense-target-width)) / 2);
+  inset-block-start: calc((100% - var(--bd-dense-target-height)) / 2);
+}
+
+.bd-slider-track {
+  block-size: var(--bd-action-target);
+}
+.bd-slider-thumb::after {
+  content: "";
+  position: absolute;
+  inline-size: var(--bd-action-target);
+  block-size: var(--bd-action-target);
+  inset-inline-start: calc((100% - var(--bd-action-target)) / 2);
+  inset-block-start: calc((100% - var(--bd-action-target)) / 2);
+}

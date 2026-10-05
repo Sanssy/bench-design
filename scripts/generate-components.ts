@@ -47,10 +47,11 @@ export function generateComponents(entry = "src/index.ts") {
       )
         throw new Error(`Unsupported API: ${name}`);
       const propsName =
-        parameter?.typeAnnotation?.type === "TSTypeAnnotation"
+        parameter?.typeAnnotation?.type === "TSTypeAnnotation" &&
+        parameter.typeAnnotation.typeAnnotation.type === "TSTypeReference"
           ? source.slice(
-              parameter.typeAnnotation.typeAnnotation.start ?? 0,
-              parameter.typeAnnotation.typeAnnotation.end ?? 0,
+              parameter.typeAnnotation.typeAnnotation.typeName.start ?? 0,
+              parameter.typeAnnotation.typeAnnotation.typeName.end ?? 0,
             )
           : "";
       const api = code.program.body.find(

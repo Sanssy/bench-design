@@ -1156,6 +1156,97 @@
       ]
     },
     {
+      "name": "GridList",
+      "import": "import { GridList } from \"bench-design\";",
+      "description": "An accessible grid or list with React Aria navigation and selection.",
+      "props": [
+        {
+          "name": "label",
+          "type": "string",
+          "required": true,
+          "description": "Accessible collection name."
+        },
+        {
+          "name": "items",
+          "type": "readonly T[]",
+          "required": true,
+          "description": "Ordered collection items."
+        },
+        {
+          "name": "getKey",
+          "type": "(item: T) => string",
+          "required": false,
+          "description": "Stable key extractor; defaults to each item's string id."
+        },
+        {
+          "name": "layout",
+          "type": "\"grid\" | \"list\"",
+          "required": false,
+          "description": "Grid uses two-dimensional arrow navigation; list uses vertical arrows.",
+          "default": "\"grid\""
+        },
+        {
+          "name": "selectionMode",
+          "type": "\"none\" | \"single\" | \"multiple\"",
+          "required": false,
+          "description": "Allowed selection cardinality.",
+          "default": "\"none\""
+        },
+        {
+          "name": "selectedKeys",
+          "type": "readonly string[]",
+          "required": false,
+          "description": "Controlled selected keys."
+        },
+        {
+          "name": "defaultSelectedKeys",
+          "type": "readonly string[]",
+          "required": false,
+          "description": "Initial uncontrolled selected keys."
+        },
+        {
+          "name": "onSelectionChange",
+          "type": "(keys: string[]) => void",
+          "required": false,
+          "description": "Called with the complete selected key list."
+        },
+        {
+          "name": "onAction",
+          "type": "(key: string) => void",
+          "required": false,
+          "description": "Called when an item is activated."
+        },
+        {
+          "name": "renderItem",
+          "type": "(item: T) => ReactNode",
+          "required": true,
+          "description": "Consumer-owned item content; include readable text for typeahead."
+        },
+        {
+          "name": "renderEmpty",
+          "type": "() => ReactNode",
+          "required": false,
+          "description": "Content for an empty collection."
+        },
+        {
+          "name": "selectionBar",
+          "type": "(keys: string[]) => ReactNode",
+          "required": false,
+          "description": "Actions shown when one or more items are selected."
+        }
+      ],
+      "stories": [
+        {
+          "name": "ResourceCards",
+          "href": "./?path=/story/collections-gridlist--resource-cards"
+        },
+        {
+          "name": "ResourceList",
+          "href": "./?path=/story/collections-gridlist--resource-list"
+        }
+      ]
+    },
+    {
       "name": "Heading",
       "import": "import { Heading } from \"bench-design\";",
       "description": "A native heading. Choose level for document structure and size for emphasis.",

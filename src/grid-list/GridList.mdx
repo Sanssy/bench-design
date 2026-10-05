@@ -1,0 +1,24 @@
+import { Meta, Canvas } from '@storybook/addon-docs/blocks';
+import { ManifestProps } from "../../.storybook/ManifestProps";
+import * as Stories from './GridList.stories';
+
+<Meta of={Stories} />
+
+# GridList
+
+Import `GridList` from `bench-design` and load `bench-design/styles.css` once.
+
+## Usage and accessibility
+
+Use for consumer-rendered cards or rows with stable string identifiers. Provide getKey when items have no string id. Keep readable text directly in renderItem for typeahead; opaque components cannot supply that text automatically. Provide selectionBar actions and renderEmpty content. Arrow keys navigate items; Tab enters internal controls. Enter activates before selection. React Aria toggle selection suppresses actions while a selection exists; Space selects. Avoid embedding a second independent selection control.
+
+## API
+
+<ManifestProps component="GridList" />
+
+## Examples
+
+<Canvas of={Stories.ResourceCards} />
+<Canvas of={Stories.ResourceList} />
+
+Use the theme selector to inspect both examples in light and dark themes.

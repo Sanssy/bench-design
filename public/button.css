@@ -81,7 +81,8 @@
   flex-shrink: 0;
 }
 
-.bd-toggle-button[data-selected]:not([data-disabled]) {
+/* Selected stays visible when disabled, as in SegmentedControl. */
+.bd-toggle-button[data-selected] {
   background: var(--bd-accent);
   color: var(--bd-on-accent);
 }

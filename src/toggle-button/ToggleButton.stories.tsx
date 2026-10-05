@@ -13,6 +13,7 @@ export const Guides: Story = {};
 export const ViewOptions: Story = {
   render: () => (
     <Stack gap={16}>
+      <ToggleButton label="Show guides" />
       <ToggleButton label="Show guides" defaultSelected />
       <ToggleButton label="Show guides" isDisabled />
       <ToggleButton label="Show guides" defaultSelected isDisabled />

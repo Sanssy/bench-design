@@ -7,6 +7,7 @@ import {
 } from "react";
 import { Tab, TabList, TabPanel, Tabs } from "react-aria-components";
 
+import { AppHeaderInShell } from "../app-header/AppHeader.js";
 import { useBenchMessages } from "../bench-provider/BenchProvider.js";
 
 const wideQuery = "(min-width: 960px)";
@@ -64,7 +65,11 @@ export function AppShell({
       >
         {messages.skipToMain}
       </a>
-      <header className="bd-app-shell-header">{header}</header>
+      <header className="bd-app-shell-header">
+        <AppHeaderInShell.Provider value={true}>
+          {header}
+        </AppHeaderInShell.Provider>
+      </header>
       <Tabs
         className="bd-app-shell-workspace"
         selectedKey={active}

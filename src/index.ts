@@ -5,6 +5,8 @@ export type {
   ActionListProps,
 } from "./action-list/ActionList.js";
 export { ActionList } from "./action-list/ActionList.js";
+export type { AppHeaderProps } from "./app-header/AppHeader.js";
+export { AppHeader } from "./app-header/AppHeader.js";
 export type { AppShellProps } from "./app-shell/AppShell.js";
 export { AppShell } from "./app-shell/AppShell.js";
 export type { AvatarProps } from "./avatar/Avatar.js";

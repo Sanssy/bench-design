@@ -1,0 +1,33 @@
+import { Meta, Canvas } from '@storybook/addon-docs/blocks';
+import { ManifestProps } from "../../.storybook/ManifestProps";
+import * as Stories from './AppHeader.stories';
+
+<Meta of={Stories} />
+
+# AppHeader
+
+A shared application banner. Import `AppHeader` from `bench-design` and load `bench-design/styles.css` once.
+
+## Usage
+
+Supply `brand` and `navigation`. The application owns the brand, destination labels, routing and optional `actions` and `meta`. Use Link for the brand and TopNav with an accessible landmark name for page navigation. Do not use Tabs for page destinations or add another header inside a slot.
+
+On desktop, the slots share one row. Below 640 px, brand and utilities occupy the first row and navigation spans the second. Labels wrap instead of being truncated. Keep actions concise and allow supplied content to shrink and wrap.
+
+Pass AppHeader to AppShell's `header` slot. AppShell owns the banner in this composition; AppHeader supplies its inner structure without nesting headers. Standalone AppHeader owns its own native header. No `className` or style override is exposed.
+
+## TypeScript API
+
+<ManifestProps component="AppHeader" />
+
+## Examples
+
+<Canvas of={Stories.Basic} />
+<Canvas of={Stories.WithUtilities} />
+<Canvas of={Stories.Workspace} />
+
+Use the theme selector for light and dark examples.
+
+## Keyboard and ARIA
+
+The composition exposes one banner and preserves the supplied navigation name and current-page state. Tab visits brand links, navigation links and actions in source order; Shift+Tab reverses it. The mobile visual arrangement keeps navigation on the second row, while keyboard order remains brand, navigation, actions. Link and button behavior belongs to React Aria; AppHeader adds no keyboard handlers.

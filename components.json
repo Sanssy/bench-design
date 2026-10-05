@@ -1076,6 +1076,95 @@
       ]
     },
     {
+      "name": "Composer",
+      "import": "import { Composer } from \"bench-design\";",
+      "description": "Composes shared TextArea and Button without conversation state or positioning.",
+      "props": [
+        {
+          "name": "label",
+          "type": "string",
+          "required": true,
+          "description": "Accessible field name."
+        },
+        {
+          "name": "hideLabel",
+          "type": "boolean",
+          "required": false,
+          "description": "Visually hide the linked label.",
+          "default": "false"
+        },
+        {
+          "name": "value",
+          "type": "string",
+          "required": false,
+          "description": "Controlled message."
+        },
+        {
+          "name": "defaultValue",
+          "type": "string",
+          "required": false,
+          "description": "Initial uncontrolled message.",
+          "default": "\"\""
+        },
+        {
+          "name": "onChange",
+          "type": "(value: string) => void",
+          "required": false,
+          "description": "Called on each edit."
+        },
+        {
+          "name": "onSubmit",
+          "type": "(value: string) => void",
+          "required": true,
+          "description": "Called for a nonblank message; does not clear the field."
+        },
+        {
+          "name": "placeholder",
+          "type": "string",
+          "required": false,
+          "description": "Input hint, never a replacement for the label."
+        },
+        {
+          "name": "isPending",
+          "type": "boolean",
+          "required": false,
+          "description": "Announce sending and block edits and repeat submission.",
+          "default": "false"
+        },
+        {
+          "name": "isDisabled",
+          "type": "boolean",
+          "required": false,
+          "description": "Disable editing and submission.",
+          "default": "false"
+        },
+        {
+          "name": "errorMessage",
+          "type": "string",
+          "required": false,
+          "description": "Application-owned validation feedback."
+        }
+      ],
+      "stories": [
+        {
+          "name": "Default",
+          "href": "./?path=/story/form-composer--default"
+        },
+        {
+          "name": "Pending",
+          "href": "./?path=/story/form-composer--pending"
+        },
+        {
+          "name": "Disabled",
+          "href": "./?path=/story/form-composer--disabled"
+        },
+        {
+          "name": "Invalid",
+          "href": "./?path=/story/form-composer--invalid"
+        }
+      ]
+    },
+    {
       "name": "Dialog",
       "import": "import { Dialog } from \"bench-design\";",
       "description": "A named modal with React Aria focus containment, Escape and focus restoration.",
@@ -3271,6 +3360,13 @@
           "type": "boolean",
           "required": false,
           "description": "Display an externally determined validation error."
+        },
+        {
+          "name": "hideLabel",
+          "type": "boolean",
+          "required": false,
+          "description": "Visually hide the associated label.",
+          "default": "false"
         },
         {
           "name": "name",

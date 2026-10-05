@@ -1,0 +1,29 @@
+import { Meta, Canvas } from '@storybook/addon-docs/blocks';
+import { ManifestProps } from "../../.storybook/ManifestProps";
+import * as Stories from './Composer.stories';
+
+<Meta of={Stories} />
+
+# Composer
+
+## Usage
+
+Import `Composer` from `bench-design` and load `bench-design/styles.css` once.
+Supply `label` and `onSubmit`; `hideLabel` keeps the accessible name. Choose controlled `value`/`onChange` or uncontrolled `defaultValue`. Submission preserves exact text and does not clear the field. The consumer owns delivery, clearing, errors and pending state. Keep conversation logic outside; placeholders never replace labels. Pending blocks edits and repeat sends; whitespace-only text cannot be sent. Send/Sending copy follows `BenchProvider`. Growth is bounded at six lines.
+
+## TypeScript API
+
+<ManifestProps component="Composer" />
+
+## Examples
+
+<Canvas of={Stories.Default} />
+<Canvas of={Stories.Pending} />
+<Canvas of={Stories.Disabled} />
+<Canvas of={Stories.Invalid} />
+
+Use the theme selector. For a sticky footer, keep a wrapper in document flow with `position: sticky; inset-block-end: 0`. Reserve content end margin/padding equal to its measured height, including errors and safe-area insets; update as it grows. Verify the final item and focused controls remain visible at 320 px and at zoom.
+
+## Keyboard and ARIA
+
+Tab reaches available controls with visible focus. Enter sends; Shift+Enter adds a newline. IME confirmation never sends. Labels/errors stay associated with the textarea. Pending is announced in a polite live region.

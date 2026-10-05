@@ -9,6 +9,8 @@ export interface BenchMessages {
   close: string;
   noResults: string;
   loading: string;
+  send: string;
+  sending: string;
   loadingResults: string;
   loadError: string;
   retry: string;
@@ -39,6 +41,8 @@ export const en: BenchMessages = {
   close: "Close",
   noResults: "No results. Try a different search.",
   loading: "Loading…",
+  send: "Send",
+  sending: "Sending…",
   loadingResults: "Loading results…",
   loadError: "Could not load results.",
   retry: "Try again",
@@ -71,6 +75,8 @@ export const fr: BenchMessages = {
   close: "Fermer",
   noResults: "Aucun résultat. Essayez une autre recherche.",
   loading: "Chargement…",
+  send: "Envoyer",
+  sending: "Envoi en cours…",
   loadingResults: "Chargement des résultats…",
   loadError: "Impossible de charger les résultats.",
   retry: "Réessayer",

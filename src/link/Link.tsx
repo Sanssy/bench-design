@@ -1,5 +1,6 @@
 import type { ReactNode, Ref } from "react";
 import { Link as AriaLink } from "react-aria-components";
+import { useBenchMessages } from "../bench-provider/BenchProvider.js";
 
 /** Explicit navigation API; interaction is delegated to React Aria. */
 export interface LinkProps {
@@ -22,6 +23,7 @@ export function Link({
   ref,
   "aria-label": ariaLabel,
 }: LinkProps) {
+  const { messages: m } = useBenchMessages();
   return (
     <AriaLink
       className="bd-link"
@@ -32,7 +34,7 @@ export function Link({
         ? {}
         : {
             "aria-label": external
-              ? `${ariaLabel} (opens in a new tab)`
+              ? `${ariaLabel} ${m.externalLink}`
               : ariaLabel,
           })}
     >
@@ -40,7 +42,7 @@ export function Link({
       {external && (
         <>
           {" "}
-          <span className="bd-link-announcement">(opens in a new tab)</span>
+          <span className="bd-link-announcement">{m.externalLink}</span>
         </>
       )}
     </AriaLink>

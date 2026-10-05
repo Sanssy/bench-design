@@ -1,5 +1,5 @@
 import { CheckboxButton, CheckboxField } from "react-aria-components";
-import { FieldMessages } from "../forms/FieldContent.js";
+import { FieldMessages, FieldOptional } from "../forms/FieldContent.js";
 import type { FieldProps } from "../forms/FieldProps.js";
 import { Icon } from "../icon/Icon.js";
 
@@ -48,9 +48,7 @@ export function Checkbox({
         </span>
         <span className="bd-field-label">
           {label}
-          {!isRequired && (
-            <span className="bd-field-optional"> (optional)</span>
-          )}
+          {!isRequired && <FieldOptional />}
         </span>
       </CheckboxButton>
       <FieldMessages

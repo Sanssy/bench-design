@@ -149,6 +149,40 @@
       ]
     },
     {
+      "name": "BenchProvider",
+      "import": "import { BenchProvider } from \"bench-design\";",
+      "description": "Configures internal copy and React Aria formatting for a subtree.",
+      "props": [
+        {
+          "name": "children",
+          "type": "ReactNode",
+          "required": true
+        },
+        {
+          "name": "locale",
+          "type": "string",
+          "required": false,
+          "description": "BCP 47 locale; inherits the surrounding React Aria locale when omitted."
+        },
+        {
+          "name": "messages",
+          "type": "Partial<BenchMessages>",
+          "required": false,
+          "description": "Partial overrides, inherited and merged by nested providers."
+        }
+      ],
+      "stories": [
+        {
+          "name": "FrenchProfile",
+          "href": "./?path=/story/foundations-benchprovider--french-profile"
+        },
+        {
+          "name": "EnglishProfile",
+          "href": "./?path=/story/foundations-benchprovider--english-profile"
+        }
+      ]
+    },
+    {
       "name": "Button",
       "import": "import { Button } from \"bench-design\";",
       "description": "A visible-label action with React Aria activation and native button semantics. Defaults to the secondary variant and type=\"button\"; submit and reset are native. Use the DOM ref to restore focus. Explicit accessible names must include the visible label; prefer children alone when no additional context is needed.",
@@ -968,8 +1002,7 @@
         {
           "name": "buttonLabel",
           "type": "string",
-          "required": false,
-          "default": "\"Add files\""
+          "required": false
         }
       ],
       "stories": [
@@ -3157,7 +3190,7 @@
           "name": "label",
           "type": "string",
           "required": false,
-          "description": "Overrides the generated English accessible name."
+          "description": "Overrides the generated localized accessible name."
         }
       ],
       "stories": [

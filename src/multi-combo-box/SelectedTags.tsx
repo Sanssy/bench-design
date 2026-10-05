@@ -1,5 +1,6 @@
 import { useLayoutEffect, useRef, useState } from "react";
 import { Button, Tag, TagGroup, TagList } from "react-aria-components";
+import { useBenchMessages } from "../bench-provider/BenchProvider.js";
 import type { FieldOption } from "../forms/FieldProps.js";
 import { Icon } from "../icon/Icon.js";
 
@@ -12,8 +13,11 @@ export function SelectedTags({
   isDisabled: boolean;
   onRemove(keys: Set<string | number>): void;
 }) {
+  const { messages: m, context: c } = useBenchMessages();
   const probe = useRef<HTMLDivElement>(null);
   const [visibleCount, setVisibleCount] = useState(items.length);
+  const summaryText = m.more(items.length, c);
+  // biome-ignore lint/correctness/useExhaustiveDependencies: Re-measure when localized summary text changes its rendered width.
   useLayoutEffect(() => {
     const element = probe.current;
     if (!element) return;
@@ -66,7 +70,7 @@ export function SelectedTags({
       active = false;
       observer.disconnect();
     };
-  }, [items]);
+  }, [items, summaryText]);
   const count = Math.min(visibleCount, items.length);
   const hiddenCount = items.length - count;
   return (
@@ -84,11 +88,11 @@ export function SelectedTags({
             </span>
           </span>
         ))}
-        <span className="bd-tag-summary">+{items.length}</span>
+        <span className="bd-tag-summary">{summaryText}</span>
       </div>
       <div className="bd-tag-display">
         <TagGroup
-          aria-label="Selected choices"
+          aria-label={m.selectedChoices}
           onRemove={onRemove}
           className="bd-tag-group"
           disabledKeys={isDisabled ? items.map((item) => item.id) : []}
@@ -121,9 +125,9 @@ export function SelectedTags({
           <span
             className="bd-tag-summary"
             role="img"
-            aria-label={`${hiddenCount} more selected choices`}
+            aria-label={m.moreSelected(hiddenCount, c)}
           >
-            +{hiddenCount}
+            {m.more(hiddenCount, c)}
           </span>
         )}
       </div>

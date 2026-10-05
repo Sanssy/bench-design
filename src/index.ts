@@ -6,6 +6,11 @@ export type { AvatarGroupProps } from "./avatar-group/AvatarGroup.js";
 export { AvatarGroup } from "./avatar-group/AvatarGroup.js";
 export type { BadgeProps } from "./badge/Badge.js";
 export { Badge } from "./badge/Badge.js";
+export type {
+  BenchMessages,
+  BenchProviderProps,
+} from "./bench-provider/BenchProvider.js";
+export { BenchProvider } from "./bench-provider/BenchProvider.js";
 export type { ButtonProps } from "./button/Button.js";
 export { Button } from "./button/Button.js";
 export type { CardProps } from "./card/Card.js";

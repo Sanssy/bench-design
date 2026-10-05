@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { DropZone as AriaDropZone } from "react-aria-components";
+import { useBenchMessages } from "../bench-provider/BenchProvider.js";
 import { Button } from "../button/Button.js";
 import { FileTrigger } from "../file-trigger/FileTrigger.js";
 /** A rejected file and the applicable refusal reason. */
@@ -34,23 +35,11 @@ function matches(file: File, types: string[]) {
   );
 }
 /** "application/pdf" → "PDF", ".heic" → "HEIC", "image/*" → "Images". */
-function typeLabel(type: string) {
+function typeLabel(type: string, kindLabel: (kind: string) => string) {
   if (type.startsWith(".")) return type.slice(1).toUpperCase();
   const [kind = "", subtype = ""] = type.split("/");
-  if (subtype === "*")
-    return `${kind[0]?.toUpperCase() ?? ""}${kind.slice(1)}s`;
+  if (subtype === "*") return kindLabel(kind);
   return (subtype === "jpeg" ? "jpg" : subtype).toUpperCase();
-}
-/** Decimal units, as file managers show them. */
-function sizeLabel(bytes: number) {
-  const units = ["bytes", "KB", "MB", "GB"];
-  let value = bytes;
-  let unit = 0;
-  while (value >= 1000 && unit < units.length - 1) {
-    value /= 1000;
-    unit += 1;
-  }
-  return `${Number.isInteger(value) ? value : value.toFixed(1)} ${units[unit]}`;
 }
 /** Validate picker and dragged files with the same acceptance policy. */
 export function DropZone({
@@ -62,8 +51,21 @@ export function DropZone({
   onDrop,
   onReject,
   isDisabled = false,
-  buttonLabel = "Add files",
+  buttonLabel,
 }: DropZoneProps) {
+  const { messages: m, number } = useBenchMessages();
+  const types = acceptedFileTypes
+    .map((type) => typeLabel(type, m.fileKind))
+    .join(", ");
+  function sizeLabel(bytes: number) {
+    let value = bytes;
+    let unit = 0;
+    while (value >= 1000 && unit < 3) {
+      value /= 1000;
+      unit++;
+    }
+    return m.fileSize(number(Math.round(value * 10) / 10), unit);
+  }
   const [rejections, setRejections] = useState<FileRejection[]>([]);
   function receive(files: File[]) {
     if (isDisabled) return;
@@ -106,14 +108,14 @@ export function DropZone({
         onSelect={receive}
       >
         <Button variant="primary" isDisabled={isDisabled}>
-          {buttonLabel}
+          {buttonLabel ?? m.addFiles}
         </Button>
       </FileTrigger>
       {(acceptedFileTypes.length > 0 || maxSize !== undefined) && (
         <p className="bd-drop-zone__meta">
-          {acceptedFileTypes.map(typeLabel).join(", ")}
+          {types}
           {maxSize !== undefined &&
-            `${acceptedFileTypes.length > 0 ? " · " : ""}${sizeLabel(maxSize)} max.`}
+            `${acceptedFileTypes.length > 0 ? " · " : ""}${m.maximumSize(sizeLabel(maxSize))}`}
         </p>
       )}
       {rejections.length > 0 && (
@@ -122,8 +124,8 @@ export function DropZone({
             <li key={file.name}>
               ✕ {file.name}:{" "}
               {reason === "type"
-                ? `this format is not accepted.${acceptedFileTypes.length > 0 ? ` Use ${acceptedFileTypes.map(typeLabel).join(", ")}.` : ""}`
-                : `this file is larger than ${sizeLabel(maxSize ?? 0)}.`}
+                ? m.rejectedType(types)
+                : m.rejectedSize(sizeLabel(maxSize ?? 0))}
             </li>
           ))}
         </ul>

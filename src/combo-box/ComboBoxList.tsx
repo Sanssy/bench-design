@@ -10,6 +10,7 @@ import {
   useFilter,
   Virtualizer,
 } from "react-aria-components";
+import { useBenchMessages } from "../bench-provider/BenchProvider.js";
 import { Button as DesignButton } from "../button/Button.js";
 import { Icon } from "../icon/Icon.js";
 import type { useComboBoxSearch } from "./useComboBoxSearch.js";
@@ -42,14 +43,13 @@ export function ComboBoxList({
   search: ReturnType<typeof useComboBoxSearch>;
   footer?: ReactNode;
 }) {
+  const { messages: m } = useBenchMessages();
   const { items, query, loading, hasError, status, remote, loadItems } = search;
   const listBox = (
     <ListBox
       className={`bd-option-list bd-data-list${items.length >= 100 ? " bd-data-list-virtual" : ""}`}
       dependencies={[query]}
-      renderEmptyState={() =>
-        loading || hasError ? null : "No results. Try a different search."
-      }
+      renderEmptyState={() => (loading || hasError ? null : m.noResults)}
     >
       <Collection items={items} dependencies={[query]}>
         {(option) => (
@@ -89,14 +89,14 @@ export function ComboBoxList({
       {loading && (
         <span className="bd-list-loading">
           <span className="bd-loading-indicator" aria-hidden="true" />
-          Loading…
+          {m.loading}
         </span>
       )}
       {hasError && (
         <div className="bd-list-message">
-          Could not load results.{" "}
+          {m.loadError}{" "}
           <DesignButton variant="secondary" onPress={remote.retry}>
-            Try again
+            {m.retry}
           </DesignButton>
         </div>
       )}

@@ -1,5 +1,6 @@
 import { type ReactNode, useContext, useSyncExternalStore } from "react";
 import { OverlayTriggerStateContext } from "react-aria-components";
+import { useBenchMessages } from "../bench-provider/BenchProvider.js";
 import { Button } from "../button/Button.js";
 import { Dialog } from "../dialog/Dialog.js";
 
@@ -30,15 +31,14 @@ function getSnapshot() {
   );
 }
 function ShowResults({ count }: { count: number }) {
+  const { messages: m, context: c } = useBenchMessages();
   const dialog = useContext(OverlayTriggerStateContext);
   return (
     <Button variant="primary" onPress={() => dialog?.close()}>
-      Show {results(count)}
+      {m.showResults(m.results(count, c))}
     </Button>
   );
 }
-const results = (count: number) =>
-  `${count} ${count === 1 ? "result" : "results"}`;
 
 /** A live result summary and one set of controls, moved into a mobile Dialog. */
 export function FilterBar({
@@ -48,6 +48,7 @@ export function FilterBar({
   search,
   children,
 }: FilterBarProps) {
+  const { messages: m, context: c, number } = useBenchMessages();
   const mobile = useSyncExternalStore(subscribe, getSnapshot, () => false);
   const controls = (
     <div className="bd-filter-bar-controls">
@@ -57,9 +58,9 @@ export function FilterBar({
   );
   const summary = (
     <div className="bd-filter-bar-summary">
-      <span role="status">{results(resultCount)}</span>
+      <span role="status">{m.results(resultCount, c)}</span>
       {activeCount > 0 ? (
-        <Button onPress={onClearFilters}>Clear filters</Button>
+        <Button onPress={onClearFilters}>{m.clearFilters}</Button>
       ) : null}
     </div>
   );
@@ -67,8 +68,12 @@ export function FilterBar({
     <div className="bd-filter-bar">
       {mobile ? (
         <Dialog
-          title="Filters"
-          trigger={<Button>Filters {activeCount}</Button>}
+          title={m.filters}
+          trigger={
+            <Button>
+              {m.filters} {number(activeCount)}
+            </Button>
+          }
           actions={<ShowResults count={resultCount} />}
         >
           <div className="bd-filter-bar-sheet">

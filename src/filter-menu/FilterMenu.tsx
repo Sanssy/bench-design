@@ -5,6 +5,7 @@ import {
   DialogTrigger,
   Popover,
 } from "react-aria-components";
+import { useBenchMessages } from "../bench-provider/BenchProvider.js";
 import { Button } from "../button/Button.js";
 import type { FieldOption } from "../forms/FieldProps.js";
 import {
@@ -35,6 +36,7 @@ export function FilterMenu({
   defaultValue,
   onApply,
 }: FilterMenuProps) {
+  const { messages: m, context: c } = useBenchMessages();
   const [uncontrolled, setUncontrolled] = useState<readonly FieldOption[]>(
     defaultValue ?? [],
   );
@@ -67,7 +69,9 @@ export function FilterMenu({
               .map((option) => option.label)
               .join(", ")}
             {applied.length > 2 && (
-              <span className="bd-filter-count">+{applied.length - 2}</span>
+              <span className="bd-filter-count">
+                {m.more(applied.length - 2, c)}
+              </span>
             )}
           </>
         )}
@@ -82,9 +86,9 @@ export function FilterMenu({
             {...(loadItems === undefined ? {} : { loadItems })}
           />
           <div className="bd-filter-actions">
-            <Button onPress={() => apply([])}>Clear</Button>
+            <Button onPress={() => apply([])}>{m.clear}</Button>
             <Button variant="primary" onPress={() => apply(draft)}>
-              Apply
+              {m.apply}
             </Button>
           </div>
         </Dialog>

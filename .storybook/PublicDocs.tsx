@@ -16,6 +16,22 @@ function Page({ title, children }: { title: string; children: ReactNode }) {
 export function GettingStarted() {
   return (
     <Page title="Getting started">
+      <h2>Localization</h2>
+      <p>
+        Internal labels and feedback follow the React Aria locale, with English
+        and French copy. BenchProvider is optional: set locale to configure a
+        subtree and messages to override selected internal messages. Consumer
+        labels remain application-owned. Unsupported languages fall back to
+        English copy.
+      </p>
+      <pre>
+        <code>
+          {
+            '<BenchProvider locale="fr-FR" messages={{ close: "Fermer la fenêtre" }}><App /></BenchProvider>'
+          }
+        </code>
+      </pre>
+
       <section>
         <h2>Available today</h2>
         <p>

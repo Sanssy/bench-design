@@ -135,3 +135,38 @@ test("overlay tokens preserve alpha, depth and motion", () => {
   assert.match(css, /--bd-veil-blur: 3px/);
   assert.match(css, /--bd-veil-blur: 0px/);
 });
+
+test("category hues match the palette and retain graphical contrast in both themes", () => {
+  const tokens = JSON.parse(readFileSync("src/tokens.json", "utf8"));
+  const luminance = (hex: string) =>
+    [0.2126, 0.7152, 0.0722].reduce((sum, weight, i) => {
+      const c = Number.parseInt(hex.slice(1 + i * 2, 3 + i * 2), 16) / 255;
+      return (
+        sum + weight * (c <= 0.04045 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4)
+      );
+    }, 0);
+  const expected = {
+    light: ["#2b7f8c", "#b03a73", "#b85a22", "#6650a8", "#4a7d36", "#3666a3"],
+    dark: ["#5fb8c4", "#e07aac", "#e3925a", "#a594e3", "#8bbf76", "#7ea6e0"],
+  };
+  for (const theme of ["light", "dark"] as const) {
+    ["teal", "magenta", "orange", "violet", "green", "blue"].forEach(
+      (name, i) => {
+        const token = tokens[theme][`category-${name}`];
+        assert.equal(token?.$value.hex, expected[theme][i]);
+        assert.match(
+          token.$extensions["org.bench-design"].usage,
+          /Never use color alone/,
+        );
+        for (const surface of ["surface", "surface-raised"]) {
+          const a = luminance(token.$value.hex),
+            b = luminance(tokens[theme][surface].$value.hex);
+          assert.ok(
+            (Math.max(a, b) + 0.05) / (Math.min(a, b) + 0.05) >= 3,
+            `${theme} ${name} on ${surface}`,
+          );
+        }
+      },
+    );
+  }
+});

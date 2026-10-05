@@ -255,6 +255,35 @@
       ]
     },
     {
+      "name": "CategoryLabel",
+      "import": "import { CategoryLabel } from \"bench-design\";",
+      "description": "Noninteractive category text with a decorative color square.",
+      "props": [
+        {
+          "name": "category",
+          "type": "\"teal\" | \"magenta\" | \"orange\" | \"violet\" | \"green\" | \"blue\"",
+          "required": true,
+          "description": "Category hue; the consuming product assigns its meaning."
+        },
+        {
+          "name": "children",
+          "type": "string",
+          "required": true,
+          "description": "Visible label; color must never carry the meaning alone."
+        }
+      ],
+      "stories": [
+        {
+          "name": "Research",
+          "href": "./?path=/story/data-categorylabel--research"
+        },
+        {
+          "name": "Categories",
+          "href": "./?path=/story/data-categorylabel--categories"
+        }
+      ]
+    },
+    {
       "name": "Checkbox",
       "import": "import { Checkbox } from \"bench-design\";",
       "description": "A boolean control with an integrated description and error.",
@@ -1951,6 +1980,13 @@
           "description": "Ordered choices with unique stable values."
         },
         {
+          "name": "variant",
+          "type": "\"list\" | \"cards\"",
+          "required": false,
+          "description": "Presentation of the choices; list is the default.",
+          "default": "\"list\""
+        },
+        {
           "name": "name",
           "type": "string",
           "required": false,
@@ -1989,6 +2025,14 @@
         {
           "name": "Review",
           "href": "./?path=/story/form-radiogroup--review"
+        },
+        {
+          "name": "Cards",
+          "href": "./?path=/story/form-radiogroup--cards"
+        },
+        {
+          "name": "CardsReview",
+          "href": "./?path=/story/form-radiogroup--cards-review"
         }
       ]
     },

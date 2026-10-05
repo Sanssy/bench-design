@@ -6,6 +6,8 @@ import type { FieldOption, FieldProps } from "../forms/FieldProps.js";
 export interface RadioGroupProps extends FieldProps {
   /** Ordered choices with unique stable values. */
   options: readonly FieldOption[];
+  /** Presentation of the choices; list is the default. */
+  variant?: "list" | "cards";
   /** Form submission name. */
   name?: string;
   /** Controlled selection. */
@@ -26,6 +28,7 @@ export function RadioGroup({
   isDisabled,
   isInvalid,
   options,
+  variant = "list",
   name,
   value,
   defaultValue,
@@ -35,6 +38,7 @@ export function RadioGroup({
   return (
     <AriaRadioGroup
       className="bd-field"
+      data-variant={variant}
       {...(name === undefined ? {} : { name })}
       {...(value === undefined ? {} : { value })}
       {...(defaultValue === undefined ? {} : { defaultValue })}
@@ -54,12 +58,22 @@ export function RadioGroup({
             key={option.id}
             className="bd-radio"
             value={option.id}
+            aria-label={
+              option.detail === undefined
+                ? option.label
+                : `${option.label} ${option.detail}`
+            }
             isDisabled={option.isDisabled ?? false}
           >
             <span className="bd-choice-box">
               <span className="bd-radio-dot" />
             </span>
-            <span>{option.label}</span>
+            <span className="bd-radio-content">
+              <span className="bd-radio-label">{option.label}</span>
+              {option.detail !== undefined && (
+                <span className="bd-radio-detail"> {option.detail}</span>
+              )}
+            </span>
           </Radio>
         ))}
       </div>

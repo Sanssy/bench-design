@@ -34,3 +34,26 @@ export const Review: Story = {
     </Stack>
   ),
 };
+
+export const Cards: Story = {
+  args: {
+    label: "Include illustrations?",
+    description: "Choose an edition format",
+    variant: "cards",
+    options: [
+      { id: "yes", label: "Yes", detail: "42 %" },
+      { id: "no", label: "No", detail: "58 %" },
+      { id: "later", label: "Later", detail: "Unavailable", isDisabled: true },
+    ],
+    defaultValue: "yes",
+  },
+};
+export const CardsReview: Story = {
+  ...Cards,
+  render: (args) => (
+    <Stack gap={24}>
+      <RadioGroup {...args} isInvalid errorMessage="Review this choice" />
+      <RadioGroup {...args} label="Archived edition" isDisabled />
+    </Stack>
+  ),
+};

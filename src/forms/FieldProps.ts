@@ -21,6 +21,8 @@ export interface FieldOption {
   label: string;
   /** Optional supporting text displayed on a second line in searchable lists. */
   description?: string;
+  /** Supporting text included in the radio option accessible name. */
+  detail?: string;
   /** Prevent this option from being selected. */
   isDisabled?: boolean;
 }

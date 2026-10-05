@@ -14,7 +14,7 @@ export default {
     label: "Documents",
     description: "Search the document library",
     isRequired: true,
-    defaultSelectedOptions: documents.slice(0, 2),
+    defaultValue: documents.slice(0, 2),
     options: documents,
   },
   parameters: { layout: "centered" },
@@ -28,7 +28,7 @@ export const ServerSearch: Story = {
         {...args}
         label="Remote documents"
         options={[]}
-        defaultSelectedOptions={[{ id: "42", label: "Document 00042" }]}
+        defaultValue={[{ id: "42", label: "Document 00042" }]}
         loadItems={async ({ query, signal, cursor }) => {
           await new Promise<void>((resolve, reject) => {
             const timer = setTimeout(resolve, 400);

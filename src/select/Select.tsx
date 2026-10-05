@@ -17,11 +17,11 @@ export interface SelectProps extends FieldProps {
   /** Form submission name. */
   name?: string;
   /** Controlled selected identifier; null clears selection. */
-  selectedKey?: string | null;
+  value?: string | null;
   /** Initial uncontrolled selected identifier. */
-  defaultSelectedKey?: string;
+  defaultValue?: string | null;
   /** Called with the selected identifier, or null when cleared. */
-  onSelectionChange?: (key: string | null) => void;
+  onChange?: (key: string | null) => void;
   /** Hint shown until an option is selected. */
   placeholder?: string;
   /** Custom validation message; return null for a valid selection. */
@@ -37,9 +37,9 @@ export function Select({
   isInvalid,
   options,
   name,
-  selectedKey,
-  defaultSelectedKey,
-  onSelectionChange,
+  value,
+  defaultValue,
+  onChange,
   placeholder,
   validate,
 }: SelectProps) {
@@ -47,11 +47,9 @@ export function Select({
     <AriaSelect
       className="bd-field"
       {...(name === undefined ? {} : { name })}
-      {...(selectedKey === undefined ? {} : { selectedKey })}
-      {...(defaultSelectedKey === undefined ? {} : { defaultSelectedKey })}
-      onSelectionChange={(key) =>
-        onSelectionChange?.(key == null ? null : String(key))
-      }
+      {...(value === undefined ? {} : { value })}
+      {...(defaultValue === undefined ? {} : { defaultValue })}
+      onChange={(key) => onChange?.(key == null ? null : String(key))}
       {...(placeholder === undefined ? {} : { placeholder })}
       validate={(key) => validate?.(key == null ? null : String(key)) ?? null}
       {...(isRequired === undefined ? {} : { isRequired })}

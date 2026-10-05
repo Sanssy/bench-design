@@ -25,7 +25,7 @@ The counter shows “N loaded” while more pages exist, then “N results”.
 Local counts are exact. Errors offer “Try again”; empty searches suggest a
 new query. Lists virtualize at 100 options and show at most seven 44 px rows.
 
-Selection uses `selectedOption` / `onSelectionChange`, or `defaultSelectedOption`
+Selection uses `value` / `onChange`, or `defaultValue`
 for an uncontrolled field. Supply a full `FieldOption`, including its saved label.
 The callback returns the option or `null`; form submission sends its `id`.
 Saved choices need no additional server lookup.

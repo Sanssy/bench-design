@@ -795,19 +795,19 @@
           "description": "Form submission name."
         },
         {
-          "name": "selectedOption",
+          "name": "value",
           "type": "FieldOption | null",
           "required": false,
           "description": "Controlled selected option, including its saved label; null clears selection."
         },
         {
-          "name": "defaultSelectedOption",
-          "type": "FieldOption",
+          "name": "defaultValue",
+          "type": "FieldOption | null",
           "required": false,
           "description": "Initial uncontrolled selected option, including its saved label."
         },
         {
-          "name": "onSelectionChange",
+          "name": "onChange",
           "type": "(option: FieldOption | null) => void",
           "required": false,
           "description": "Called with the selected option, or null when cleared."
@@ -1779,19 +1779,19 @@
           "description": "Form submission name."
         },
         {
-          "name": "selectedOptions",
+          "name": "value",
           "type": "readonly FieldOption[]",
           "required": false,
           "description": "Controlled selected options, including saved labels; an empty array clears selection."
         },
         {
-          "name": "defaultSelectedOptions",
+          "name": "defaultValue",
           "type": "readonly FieldOption[]",
           "required": false,
           "description": "Initial uncontrolled selected options, including saved labels."
         },
         {
-          "name": "onSelectionChange",
+          "name": "onChange",
           "type": "(options: FieldOption[]) => void",
           "required": false,
           "description": "Called with every selected option, or an empty array when cleared."
@@ -2349,19 +2349,19 @@
           "description": "Form submission name."
         },
         {
-          "name": "selectedKey",
+          "name": "value",
           "type": "string | null",
           "required": false,
           "description": "Controlled selected identifier; null clears selection."
         },
         {
-          "name": "defaultSelectedKey",
-          "type": "string",
+          "name": "defaultValue",
+          "type": "string | null",
           "required": false,
           "description": "Initial uncontrolled selected identifier."
         },
         {
-          "name": "onSelectionChange",
+          "name": "onChange",
           "type": "(key: string | null) => void",
           "required": false,
           "description": "Called with the selected identifier, or null when cleared."

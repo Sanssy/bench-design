@@ -31,48 +31,44 @@ const options = [
 ];
 test("selects multiple choices without replacing the earlier choice", async () => {
   const user = userEvent.setup();
-  const onSelectionChange = vi.fn();
+  const onChange = vi.fn();
   render(
-    <MultiComboBox
-      label="Collections"
-      options={options}
-      onSelectionChange={onSelectionChange}
-    />,
+    <MultiComboBox label="Collections" options={options} onChange={onChange} />,
   );
   await user.click(screen.getByRole("button", { name: /Collections/ }));
   await user.click(screen.getByRole("option", { name: "Reading" }));
   await user.click(screen.getByRole("option", { name: "Research" }));
-  expect(onSelectionChange).toHaveBeenLastCalledWith(options);
+  expect(onChange).toHaveBeenLastCalledWith(options);
 });
 test("removes a selected choice with its pointer button", async () => {
   const user = userEvent.setup();
-  const onSelectionChange = vi.fn();
+  const onChange = vi.fn();
   render(
     <MultiComboBox
       label="Collections"
       options={options}
-      defaultSelectedOptions={options}
-      onSelectionChange={onSelectionChange}
+      defaultValue={options}
+      onChange={onChange}
     />,
   );
   await user.click(screen.getByRole("button", { name: "Remove Reading" }));
-  expect(onSelectionChange).toHaveBeenLastCalledWith([options[1]]);
+  expect(onChange).toHaveBeenLastCalledWith([options[1]]);
 });
 for (const key of ["{Delete}", "{Backspace}"]) {
   test(`removes a focused tag with ${key}`, async () => {
     const user = userEvent.setup();
-    const onSelectionChange = vi.fn();
+    const onChange = vi.fn();
     render(
       <MultiComboBox
         label="Collections"
         options={options}
-        defaultSelectedOptions={options}
-        onSelectionChange={onSelectionChange}
+        defaultValue={options}
+        onChange={onChange}
       />,
     );
     screen.getByRole("row", { name: "Reading" }).focus();
     await user.keyboard(key);
-    expect(onSelectionChange).toHaveBeenLastCalledWith([options[1]]);
+    expect(onChange).toHaveBeenLastCalledWith([options[1]]);
     expect(
       screen.queryByRole("row", { name: "Reading" }),
     ).not.toBeInTheDocument();
@@ -80,18 +76,18 @@ for (const key of ["{Delete}", "{Backspace}"]) {
 }
 test("clears every choice from the list footer", async () => {
   const user = userEvent.setup();
-  const onSelectionChange = vi.fn();
+  const onChange = vi.fn();
   render(
     <MultiComboBox
       label="Collections"
       options={options}
-      defaultSelectedOptions={options}
-      onSelectionChange={onSelectionChange}
+      defaultValue={options}
+      onChange={onChange}
     />,
   );
   await user.click(screen.getByRole("button", { name: /Show suggestions/ }));
   await user.click(screen.getByRole("button", { name: "Clear all" }));
-  expect(onSelectionChange).toHaveBeenLastCalledWith([]);
+  expect(onChange).toHaveBeenLastCalledWith([]);
   await user.keyboard("{Escape}");
   expect(screen.queryAllByRole("row")).toHaveLength(0);
 });
@@ -102,7 +98,7 @@ test("submits one form value per selected identifier", () => {
         label="Collections"
         name="collections"
         options={options}
-        defaultSelectedOptions={options}
+        defaultValue={options}
       />
     </form>,
   );
@@ -120,7 +116,7 @@ test("validates the selected identifiers on form submission", async () => {
       <MultiComboBox
         label="Collections"
         options={options}
-        defaultSelectedOptions={options.slice(0, 1)}
+        defaultValue={options.slice(0, 1)}
         validate={(keys) => (keys.length < 2 ? "Choose two collections" : null)}
       />
       <button type="submit">Save</button>
@@ -132,25 +128,25 @@ test("validates the selected identifiers on form submission", async () => {
 });
 test("respects controlled selection and disabled tags", async () => {
   const user = userEvent.setup();
-  const onSelectionChange = vi.fn();
+  const onChange = vi.fn();
   const { rerender } = render(
     <MultiComboBox
       label="Collections"
       options={options}
-      selectedOptions={options.slice(0, 1)}
-      onSelectionChange={onSelectionChange}
+      value={options.slice(0, 1)}
+      onChange={onChange}
     />,
   );
   await user.click(screen.getByRole("button", { name: "Remove Reading" }));
-  expect(onSelectionChange).toHaveBeenLastCalledWith([]);
+  expect(onChange).toHaveBeenLastCalledWith([]);
   expect(screen.getByRole("row", { name: "Reading" })).toBeInTheDocument();
   rerender(
     <MultiComboBox
       label="Collections"
       options={options}
-      selectedOptions={options.slice(0, 1)}
+      value={options.slice(0, 1)}
       isDisabled
-      onSelectionChange={onSelectionChange}
+      onChange={onChange}
     />,
   );
   expect(screen.getByRole("combobox")).toBeDisabled();
@@ -178,11 +174,7 @@ test("summarizes choices that would exceed two tag lines", () => {
     label: `Choice ${i}`,
   }));
   render(
-    <MultiComboBox
-      label="Collections"
-      options={many}
-      defaultSelectedOptions={many}
-    />,
+    <MultiComboBox label="Collections" options={many} defaultValue={many} />,
   );
   expect(screen.getByText("+3")).toBeInTheDocument();
   expect(screen.getAllByRole("row")).toHaveLength(3);
@@ -194,7 +186,7 @@ test("keeps selected tags while searching a different local result", async () =>
     <MultiComboBox
       label="Collections"
       options={options}
-      defaultSelectedOptions={options.slice(0, 1)}
+      defaultValue={options.slice(0, 1)}
     />,
   );
   await user.type(screen.getByRole("combobox"), "research");
@@ -231,7 +223,7 @@ test("makes selected tags inert only while the list is open", async () => {
     <MultiComboBox
       label="Collections"
       options={options}
-      defaultSelectedOptions={options.slice(0, 1)}
+      defaultValue={options.slice(0, 1)}
     />,
   );
   const tags = screen
@@ -249,7 +241,7 @@ test("describes the input with field messages rather than the tag group", () => 
     <MultiComboBox
       label="Collections"
       options={options}
-      defaultSelectedOptions={options.slice(0, 1)}
+      defaultValue={options.slice(0, 1)}
       description="Search collections"
       isInvalid
       errorMessage="Choose an available collection"
@@ -313,9 +305,7 @@ for (const controlled of [false, true]) {
           label="Saved"
           name="documents"
           loadItems={loadItems}
-          {...(controlled
-            ? { selectedOptions: [saved] }
-            : { defaultSelectedOptions: [saved] })}
+          {...(controlled ? { value: [saved] } : { defaultValue: [saved] })}
         />
       </form>,
     );
@@ -336,7 +326,7 @@ for (const controlled of [false, true]) {
             label="Saved"
             name="documents"
             loadItems={loadItems}
-            selectedOptions={[renamed]}
+            value={[renamed]}
           />
         </form>,
       );
@@ -349,7 +339,7 @@ for (const controlled of [false, true]) {
             label="Saved"
             name="documents"
             loadItems={loadItems}
-            selectedOptions={[]}
+            value={[]}
           />
         </form>,
       );
@@ -361,19 +351,19 @@ for (const controlled of [false, true]) {
 test("returns saved server options alongside newly selected results", async () => {
   const user = userEvent.setup();
   const saved = { id: "doc-42", label: "Saved document" };
-  const onSelectionChange = vi.fn();
+  const onChange = vi.fn();
   render(
     <MultiComboBox
       label="Saved"
-      defaultSelectedOptions={[saved]}
+      defaultValue={[saved]}
       loadItems={async () => ({ items: options })}
-      onSelectionChange={onSelectionChange}
+      onChange={onChange}
     />,
   );
   await user.click(screen.getByRole("button", { name: /Show suggestions/ }));
   await user.click(await screen.findByRole("option", { name: "Reading" }));
-  expect(onSelectionChange).toHaveBeenLastCalledWith([saved, options[0]]);
+  expect(onChange).toHaveBeenLastCalledWith([saved, options[0]]);
   await user.keyboard("{Escape}");
   await user.click(screen.getByRole("button", { name: "Remove Reading" }));
-  expect(onSelectionChange).toHaveBeenLastCalledWith([saved]);
+  expect(onChange).toHaveBeenLastCalledWith([saved]);
 });

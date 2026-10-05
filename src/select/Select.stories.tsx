@@ -14,7 +14,7 @@ export default {
       { id: "two", label: "Research" },
       { id: "three", label: "Archive", isDisabled: true },
     ],
-    defaultSelectedKey: "one",
+    defaultValue: "one",
   },
   parameters: { layout: "centered" },
 } satisfies Meta<typeof Select>;

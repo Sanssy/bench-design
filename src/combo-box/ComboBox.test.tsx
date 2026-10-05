@@ -220,7 +220,7 @@ test("connects help and error and prevents disabled editing", () => {
 });
 test("reports a selection and prevents disabled options", async () => {
   const user = userEvent.setup();
-  const onSelectionChange = vi.fn();
+  const onChange = vi.fn();
   render(
     <ComboBox
       label="Collection"
@@ -228,7 +228,7 @@ test("reports a selection and prevents disabled options", async () => {
         ...options,
         { id: "disabled", label: "Archive", isDisabled: true },
       ]}
-      onSelectionChange={onSelectionChange}
+      onChange={onChange}
     />,
   );
   await user.click(screen.getByRole("button"));
@@ -237,7 +237,7 @@ test("reports a selection and prevents disabled options", async () => {
     "true",
   );
   await user.click(screen.getByRole("option", { name: /Reading/ }));
-  expect(onSelectionChange).toHaveBeenCalledWith(options[0]);
+  expect(onChange).toHaveBeenCalledWith(options[0]);
   expect(screen.getByRole("combobox")).toHaveValue("Reading");
 });
 
@@ -298,9 +298,7 @@ for (const controlled of [false, true]) {
           label="Saved"
           name="documents"
           loadItems={loadItems}
-          {...(controlled
-            ? { selectedOption: saved }
-            : { defaultSelectedOption: saved })}
+          {...(controlled ? { value: saved } : { defaultValue: saved })}
         />
       </form>,
     );
@@ -319,7 +317,7 @@ for (const controlled of [false, true]) {
             label="Saved"
             name="documents"
             loadItems={loadItems}
-            selectedOption={renamed}
+            value={renamed}
           />
         </form>,
       );
@@ -330,7 +328,7 @@ for (const controlled of [false, true]) {
             label="Saved"
             name="documents"
             loadItems={loadItems}
-            selectedOption={null}
+            value={null}
           />
         </form>,
       );
@@ -342,18 +340,18 @@ for (const controlled of [false, true]) {
 test("keeps a controlled server choice until the owner accepts another option", async () => {
   const user = userEvent.setup();
   const saved = { id: "doc-42", label: "Saved document" };
-  const onSelectionChange = vi.fn();
+  const onChange = vi.fn();
   render(
     <ComboBox
       label="Saved"
-      selectedOption={saved}
+      value={saved}
       loadItems={async () => ({ items: options })}
-      onSelectionChange={onSelectionChange}
+      onChange={onChange}
     />,
   );
   await user.click(screen.getByRole("button"));
   await user.click(await screen.findByRole("option", { name: /Reading/ }));
-  expect(onSelectionChange).toHaveBeenLastCalledWith(options[0]);
+  expect(onChange).toHaveBeenLastCalledWith(options[0]);
   expect(screen.getByRole("combobox")).toHaveValue("Saved document");
 });
 test("restores a saved server label when a search is dismissed", async () => {
@@ -361,7 +359,7 @@ test("restores a saved server label when a search is dismissed", async () => {
   render(
     <ComboBox
       label="Saved"
-      defaultSelectedOption={{ id: "doc-42", label: "Saved document" }}
+      defaultValue={{ id: "doc-42", label: "Saved document" }}
       loadItems={async () => ({ items: [] })}
     />,
   );
@@ -375,21 +373,21 @@ test("restores a saved server label when a search is dismissed", async () => {
 
 test("clears a saved server selection when the input is emptied", async () => {
   const user = userEvent.setup();
-  const onSelectionChange = vi.fn();
+  const onChange = vi.fn();
   const { container } = render(
     <form>
       <ComboBox
         label="Saved"
         name="document"
-        defaultSelectedOption={{ id: "doc-42", label: "Saved document" }}
+        defaultValue={{ id: "doc-42", label: "Saved document" }}
         loadItems={async () => ({ items: [] })}
-        onSelectionChange={onSelectionChange}
+        onChange={onChange}
       />
     </form>,
   );
   await user.clear(screen.getByRole("combobox"));
   await user.tab();
-  expect(onSelectionChange).toHaveBeenLastCalledWith(null);
+  expect(onChange).toHaveBeenLastCalledWith(null);
   expect(screen.getByRole("combobox")).toHaveValue("");
   expect(
     new FormData(container.querySelector("form") as HTMLFormElement).get(
@@ -403,7 +401,7 @@ test("keeps typed text when a parent re-renders an equal selected option", async
   const view = (
     <ComboBox
       label="City"
-      selectedOption={{ id: "a", label: "Paris" }}
+      value={{ id: "a", label: "Paris" }}
       options={[{ id: "a", label: "Paris" }]}
     />
   );
@@ -415,7 +413,7 @@ test("keeps typed text when a parent re-renders an equal selected option", async
   rerender(
     <ComboBox
       label="City"
-      selectedOption={{ id: "a", label: "Paris" }}
+      value={{ id: "a", label: "Paris" }}
       options={[{ id: "a", label: "Paris" }]}
     />,
   );

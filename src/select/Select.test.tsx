@@ -88,7 +88,7 @@ test("Select displays and connects required validation on submit", async () => {
 });
 test("Select opens, selects and reports a choice", async () => {
   const user = userEvent.setup();
-  const onSelectionChange = vi.fn();
+  const onChange = vi.fn();
   render(
     <Select
       label="Collection"
@@ -97,7 +97,7 @@ test("Select opens, selects and reports a choice", async () => {
         { id: "one", label: "One" },
         { id: "two", label: "Two", isDisabled: true },
       ]}
-      onSelectionChange={onSelectionChange}
+      onChange={onChange}
     />,
   );
   await user.click(screen.getByRole("button", { name: /Collection/ }));
@@ -106,7 +106,7 @@ test("Select opens, selects and reports a choice", async () => {
     "true",
   );
   await user.click(screen.getByRole("option", { name: "One" }));
-  expect(onSelectionChange).toHaveBeenCalledWith("one");
+  expect(onChange).toHaveBeenCalledWith("one");
   const trigger = screen.getByRole("button", { name: /Collection/ });
   expect(trigger).toHaveTextContent("One");
   // The trigger shows the option text only, never its check icon.
@@ -121,7 +121,7 @@ test("Select displays custom selection validation", async () => {
         label="Collection"
         isRequired
         options={[{ id: "one", label: "One" }]}
-        defaultSelectedKey={"one"}
+        defaultValue={"one"}
         validate={() => "Choose another value"}
       />
       <button type="submit">Save</button>

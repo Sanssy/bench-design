@@ -27,11 +27,11 @@ export interface MultiComboBoxProps extends FieldProps {
   /** Form submission name. */
   name?: string;
   /** Controlled selected options, including saved labels; an empty array clears selection. */
-  selectedOptions?: readonly FieldOption[];
+  value?: readonly FieldOption[];
   /** Initial uncontrolled selected options, including saved labels. */
-  defaultSelectedOptions?: readonly FieldOption[];
+  defaultValue?: readonly FieldOption[];
   /** Called with every selected option, or an empty array when cleared. */
-  onSelectionChange?: (options: FieldOption[]) => void;
+  onChange?: (options: FieldOption[]) => void;
   /** Hint displayed until the user types or chooses an option. */
   placeholder?: string;
   /** Custom validation message; return null for a valid selection. */
@@ -49,16 +49,16 @@ export function MultiComboBox({
   options = [],
   loadItems,
   name,
-  selectedOptions,
-  defaultSelectedOptions,
-  onSelectionChange,
+  value,
+  defaultValue,
+  onChange,
   placeholder,
   validate,
 }: MultiComboBoxProps) {
   const [uncontrolledOptions, setUncontrolledOptions] = useState<
     readonly FieldOption[]
-  >(defaultSelectedOptions ?? []);
-  const selected = selectedOptions ?? uncontrolledOptions;
+  >(defaultValue ?? []);
+  const selected = value ?? uncontrolledOptions;
   const search = useComboBoxSearch(options, loadItems);
   const { items } = search;
   return (
@@ -86,7 +86,7 @@ export function MultiComboBox({
           return option ? [option] : [];
         });
         setUncontrolledOptions(next);
-        onSelectionChange?.(next);
+        onChange?.(next);
       }}
       validate={({ value }) => validate?.(value.map(String)) ?? null}
       disabledKeys={items

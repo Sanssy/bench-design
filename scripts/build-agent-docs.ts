@@ -64,6 +64,14 @@ no npm release is available.
 - Serve fonts/ assets relative to the styles, including their licenses.
 - Do not import src/, internal files or components that are not exported.
 
+## Form selection API
+
+Select, ComboBox and MultiComboBox use value/defaultValue/onChange.
+Select values are string identifiers or null; ComboBox values are complete
+FieldOption objects or null; MultiComboBox values are FieldOption arrays.
+Use null for an empty single choice and an empty array for multiple choices.
+FilterMenu keeps value/onApply; collection selection APIs remain unchanged.
+
 ## Components
 
 ${componentGuide}
@@ -117,7 +125,7 @@ if (site) {
   ] as const;
   writeFileSync(
     `${site}/llms.txt`,
-    `# bench-design\n\n> React design system: foundations, DTCG tokens, local fonts and themes.\n\nPrivate package: exported components are described in the API manifest; npm release deferred.\n\n## Documentation\n\n${pages.map(([label, id]) => `- [${label}](./?path=/story/${encodeURIComponent(id)})`).join("\n")}\n\n## Components\n\n${components.map((component) => `- [${component.name}](./?path=/docs/${encodeURIComponent(component.docsId)})`).join("\n")}\n\n- [Component API manifest](./components.json): imports, props, defaults and stories.\n- [DTCG tokens](./tokens.json): values, descriptions and usage rules.\n`,
+    `# bench-design\n\n> React design system: foundations, DTCG tokens, local fonts and themes.\n\nPrivate package: exported components are described in the API manifest; npm release deferred.\n\n## Form selection API\n\nSelect, ComboBox and MultiComboBox use value/defaultValue/onChange. Select takes string identifiers or null; ComboBox takes complete FieldOption objects or null; MultiComboBox takes FieldOption arrays (empty to clear). FilterMenu keeps value/onApply; collection selection APIs remain unchanged.\n\n## Documentation\n\n${pages.map(([label, id]) => `- [${label}](./?path=/story/${encodeURIComponent(id)})`).join("\n")}\n\n## Components\n\n${components.map((component) => `- [${component.name}](./?path=/docs/${encodeURIComponent(component.docsId)})`).join("\n")}\n\n- [Component API manifest](./components.json): imports, props, defaults and stories.\n- [DTCG tokens](./tokens.json): values, descriptions and usage rules.\n`,
   );
   copyFileSync("src/tokens.json", `${site}/tokens.json`);
   copyFileSync("components.json", `${site}/components.json`);

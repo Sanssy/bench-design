@@ -279,3 +279,39 @@ for (const theme of ["light", "dark"]) {
     }
   }
 }
+
+for (const theme of ["light", "dark"]) {
+  test(`pending keeps width and static indicator in ${theme}`, {
+    tag: [`@theme:${theme}`, "@component:button"],
+  }, async ({ page }) => {
+    await page.emulateMedia({ reducedMotion: "reduce" });
+    const url = `/iframe.html?id=form-button--pending&viewMode=story&globals=theme:${theme}`;
+    await page.goto(`${url}&args=isPending:!false`);
+    const button = page.getByRole("button", { name: "Save", exact: true });
+    await expect(button).toBeVisible();
+    await page.evaluate(() => document.fonts.ready);
+    const before = await button.boundingBox();
+    if (!before) throw new Error("Button has no bounds");
+    await page.goto(url);
+    await expect(button).toHaveAttribute("data-pending", "true");
+    await expect(button).toHaveAttribute("aria-disabled", "true");
+    await page.evaluate(() => document.fonts.ready);
+    const after = await button.boundingBox();
+    if (!after) throw new Error("Pending Button has no bounds");
+    expect(after.width).toBe(before.width);
+    expect(after.height).toBe(before.height);
+    const mark = await button.evaluate((element) => {
+      const style = getComputedStyle(element, "::after");
+      return {
+        position: style.position,
+        animation: style.animationName,
+        border: parseFloat(style.borderBottomWidth),
+      };
+    });
+    expect(mark.position).toBe("absolute");
+    expect(mark.animation).toBe("none");
+    expect(mark.border).toBeGreaterThan(0);
+    await page.keyboard.press("Tab");
+    await expect(button).toBeFocused();
+  });
+}

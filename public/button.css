@@ -97,3 +97,18 @@
   border-radius: var(--bd-radius);
   overflow-wrap: anywhere;
 }
+
+/* A static activity mark keeps the label and intrinsic width intact. */
+.bd-button[data-pending] {
+  position: relative;
+}
+
+.bd-button[data-pending]::after {
+  content: "";
+  position: absolute;
+  inset-block-end: var(--bd-space-4);
+  inset-inline-start: 50%;
+  transform: translateX(-50%);
+  inline-size: var(--bd-space-16);
+  border-block-end: var(--bd-strong) solid currentColor;
+}

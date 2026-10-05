@@ -39,3 +39,11 @@ export const WithIcon: Story = {
   name: "With icon",
   args: { icon: "plus", children: "Add item" },
 };
+
+export const IconEnd: Story = {
+  args: { icon: "plus", iconPosition: "end", children: "Add item" },
+};
+
+export const Pending: Story = {
+  args: { isPending: true, children: "Save" },
+};

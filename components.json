@@ -1502,7 +1502,7 @@
     {
       "name": "IconButton",
       "import": "import { IconButton } from \"bench-design\";",
-      "description": "A 48px square action; label supplies its accessible name and native tooltip.",
+      "description": "A 48px square action; label supplies its accessible name and tooltip.",
       "props": [
         {
           "name": "onPress",
@@ -1542,7 +1542,7 @@
           "name": "label",
           "type": "string",
           "required": true,
-          "description": "Required action name, used for aria-label and the native title."
+          "description": "Required action name, used for aria-label and the tooltip."
         }
       ],
       "stories": [

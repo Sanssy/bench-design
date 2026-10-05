@@ -1,3 +1,4 @@
+import AxeBuilder from "@axe-core/playwright";
 import { expect, test } from "@playwright/test";
 
 for (const theme of ["light", "dark"]) {
@@ -48,5 +49,41 @@ for (const theme of ["light", "dark"]) {
     const button = page.getByRole("button", { name: "Add item" });
     await expect(button).toHaveCSS("column-gap", "8px");
     await expect(button.locator("svg")).toHaveCSS("width", "20px");
+  });
+}
+
+for (const theme of ["light", "dark"]) {
+  test(`IconButton tooltip keyboard, hover and axe in ${theme}`, {
+    tag: [`@theme:${theme}`, "@component:icon-button"],
+  }, async ({ page }) => {
+    await page.goto(
+      `/iframe.html?id=form-iconbutton--secondary&viewMode=story&globals=theme:${theme}`,
+    );
+    await expect(page.locator("html")).toHaveAttribute("data-theme", theme);
+    const button = page.getByRole("button", {
+      name: "Search documents",
+      exact: true,
+    });
+    await expect(button).toBeVisible();
+    await expect(button).not.toHaveAttribute("title");
+    await page.keyboard.press("Tab");
+    await expect(button).toBeFocused();
+    const tooltip = page.getByRole("tooltip");
+    await expect(tooltip).toHaveText("Search documents");
+    const result = await new AxeBuilder({ page })
+      .withTags(["wcag2a", "wcag2aa"])
+      .analyze();
+    expect(result.violations).toEqual([]);
+    await page.keyboard.press("Escape");
+    await expect(tooltip).toBeHidden();
+    await expect(button).toBeFocused();
+    await page.keyboard.press("Tab");
+    // React Aria shows hover tooltips once the pointer is the active
+    // modality, as it is after any real mouse interaction.
+    await page.mouse.click(1, 1);
+    await button.hover();
+    await expect(tooltip).toHaveText("Search documents");
+    await page.mouse.move(0, 0);
+    await expect(tooltip).toBeHidden();
   });
 }

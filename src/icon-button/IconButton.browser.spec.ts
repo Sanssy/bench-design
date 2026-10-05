@@ -57,7 +57,7 @@ for (const theme of ["light", "dark"]) {
     tag: [`@theme:${theme}`, "@component:icon-button"],
   }, async ({ page }) => {
     await page.goto(
-      `/iframe.html?id=form-iconbutton--secondary&viewMode=story&globals=theme:${theme}`,
+      `/iframe.html?id=form-iconbutton--secondary&viewMode=story&globals=a11y.manual:!true;theme:${theme}`,
     );
     await expect(page.locator("html")).toHaveAttribute("data-theme", theme);
     const button = page.getByRole("button", {

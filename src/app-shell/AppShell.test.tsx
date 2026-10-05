@@ -153,3 +153,18 @@ test("AppShell localizes its skip link and accepts internal message overrides", 
     screen.getByRole("link", { name: "Passer au document" }),
   ).toBeInTheDocument();
 });
+
+test("a controlled Dialog inside AppShell opens once", async () => {
+  const { Dialog } = await import("../dialog/Dialog.js");
+  render(
+    <AppShell
+      header={<h1>Workspace</h1>}
+      start={{ label: "Library", content: <p>List</p> }}
+    >
+      <Dialog title="Details" isOpen onOpenChange={() => {}}>
+        <p>Body</p>
+      </Dialog>
+    </AppShell>,
+  );
+  expect(await screen.findAllByRole("dialog")).toHaveLength(1);
+});

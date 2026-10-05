@@ -44,7 +44,9 @@ for (const theme of ["light", "dark"]) {
     )
       await page.keyboard.press("Tab");
     await expect(all).toBeFocused();
+    // SegmentedControl: arrows move focus, Space selects.
     await page.keyboard.press("ArrowRight");
+    await page.keyboard.press("Space");
     await expect(
       page.getByRole("radio", { name: "Invoices, 2" }),
     ).toBeChecked();

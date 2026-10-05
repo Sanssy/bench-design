@@ -1,4 +1,10 @@
-import { type ReactNode, useId } from "react";
+import {
+  type ReactNode,
+  useId,
+  useLayoutEffect,
+  useRef,
+  useState,
+} from "react";
 import {
   Dialog as AriaDialog,
   DialogTrigger,
@@ -90,7 +96,7 @@ export function Dialog({
     </ModalOverlay>
   );
   return trigger === undefined ? (
-    overlay
+    <MountedOnly>{overlay}</MountedOnly>
   ) : (
     <DialogTrigger
       {...(isOpen === undefined ? {} : { isOpen })}
@@ -100,4 +106,19 @@ export function Dialog({
       {overlay}
     </DialogTrigger>
   );
+}
+
+/**
+ * Collection components (for example the Tabs inside AppShell) render a hidden
+ * copy of their children to build their collection. A controlled overlay would
+ * portal out of that copy and open twice; DialogTrigger already guards against
+ * this, so the controlled path renders only once its marker is in the document.
+ */
+function MountedOnly({ children }: { children: ReactNode }) {
+  const marker = useRef<HTMLSpanElement>(null);
+  const [mounted, setMounted] = useState(false);
+  useLayoutEffect(() => {
+    setMounted(Boolean(marker.current?.isConnected));
+  }, []);
+  return mounted ? children : <span ref={marker} hidden />;
 }

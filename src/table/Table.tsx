@@ -9,6 +9,8 @@ import {
   TableHeader,
 } from "react-aria-components";
 import { collectionKey, selectionKeys } from "../collections/keys.js";
+import { ReorderHandle, useCollectionReorder } from "../collections/reorder.js";
+import type { ReorderHandler } from "../collections/reorder-types.js";
 import { Icon } from "../icon/Icon.js";
 
 /** A column's presentation and sorting capability. */
@@ -33,6 +35,10 @@ export interface TableSortDescriptor {
 }
 /** An accessible table with consumer-rendered cells. */
 export interface TableProps<T> {
+  /** Request reordering; consumers apply the new order to their data. */
+  onReorder?: ReorderHandler;
+  /** Readable item name for dragging and announcements. */
+  getItemLabel?: (item: T) => string;
   /** Accessible table name. */
   label: string;
   /** Ordered visible columns. */
@@ -61,6 +67,8 @@ export interface TableProps<T> {
 /** A React Aria table that contains horizontal overflow within its own frame. */
 export function Table<T>({
   label,
+  onReorder,
+  getItemLabel,
   columns,
   rows,
   getKey,
@@ -73,9 +81,18 @@ export function Table<T>({
   stickyHeader = true,
   renderEmpty,
 }: TableProps<T>) {
+  const dragAndDropHooks = useCollectionReorder(
+    rows.map((row) => ({
+      key: collectionKey(row, getKey),
+      label: getItemLabel?.(row) ?? collectionKey(row, getKey),
+    })),
+    onReorder,
+  );
   return (
     <div className="bd-table-frame" data-sticky={stickyHeader || undefined}>
       <AriaTable
+        key={onReorder ? "reorder" : "static"}
+        {...(dragAndDropHooks ? { dragAndDropHooks } : {})}
         aria-label={label}
         className="bd-table"
         selectionMode={selectionMode}
@@ -97,6 +114,7 @@ export function Table<T>({
         }
       >
         <TableHeader>
+          {onReorder && <Column className="bd-table-drag" />}
           {selectionMode === "multiple" && (
             <Column className="bd-table-selection">
               <Checkbox slot="selection" className="bd-checkbox">
@@ -140,7 +158,13 @@ export function Table<T>({
               key={collectionKey(row, getKey)}
               id={collectionKey(row, getKey)}
               className="bd-table-row"
+              textValue={getItemLabel?.(row) ?? collectionKey(row, getKey)}
             >
+              {onReorder && (
+                <Cell className="bd-table-drag" focusMode="child">
+                  <ReorderHandle />
+                </Cell>
+              )}
               {selectionMode === "multiple" && (
                 <Cell className="bd-table-selection">
                   <Checkbox slot="selection" className="bd-checkbox">

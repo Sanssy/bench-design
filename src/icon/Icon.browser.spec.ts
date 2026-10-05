@@ -10,7 +10,7 @@ test("Icon inherits parent color in both themes", {
     );
     await expect(page.locator("html")).toHaveAttribute("data-theme", theme);
     const icons = page.locator("#storybook-root svg");
-    await expect(icons).toHaveCount(16);
+    await expect(icons).toHaveCount(17);
     for (const icon of await icons.all()) {
       const actual = await icon.evaluate((element) => ({
         parent: getComputedStyle(element.parentElement as Element).color,
@@ -22,5 +22,6 @@ test("Icon inherits parent color in both themes", {
       colors.push(actual.stroke);
     }
   }
-  expect(colors[0]).not.toBe(colors[16]);
+  // First light icon against first dark icon.
+  expect(colors[0]).not.toBe(colors[colors.length / 2]);
 });

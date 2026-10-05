@@ -23,11 +23,11 @@ for (const [rule, source] of [
     assert.throws(() => checkIcon(source, "invalid.svg"), /invalid.svg:/);
   });
 }
-test("all sixteen Keyline SVGs pass", () => {
+test("all seventeen Keyline SVGs pass", () => {
   const files = readdirSync("src/icon/svg").filter((name) =>
     name.endsWith(".svg"),
   );
-  assert.equal(files.length, 16);
+  assert.equal(files.length, 17);
   for (const file of files)
     checkIcon(readFileSync(`src/icon/svg/${file}`, "utf8"), file);
   assert.match(readFileSync("src/icon/svg/LICENSE", "utf8"), /MIT/);

@@ -1,0 +1,24 @@
+import { Meta, Canvas } from '@storybook/addon-docs/blocks';
+import { ManifestProps } from "../../.storybook/ManifestProps";
+import * as Stories from './Inspector.stories';
+
+<Meta of={Stories} />
+
+# Inspector
+
+Import `Inspector` from `bench-design` and load `bench-design/styles.css` once.
+
+## Usage and accessibility
+
+Compose selected-item details using Disclosure sections. Put MetaList in section content for term/detail pairs; meta is the short text beside the disclosure title. EmptyState appears when sections are absent or empty. The optional title is a second-level heading; place the inspector in a named workspace panel. Tab reaches disclosure triggers; Enter or Space toggles them. Avoid adding product rules to the inspector.
+
+## API
+
+<ManifestProps component="Inspector" />
+
+## Examples
+
+<Canvas of={Stories.ResourceDetails} />
+<Canvas of={Stories.NoSelection} />
+
+Use the theme selector to inspect both examples in light and dark themes.

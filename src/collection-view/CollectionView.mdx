@@ -1,0 +1,24 @@
+import { Meta, Canvas } from '@storybook/addon-docs/blocks';
+import { ManifestProps } from "../../.storybook/ManifestProps";
+import * as Stories from './CollectionView.stories';
+
+<Meta of={Stories} />
+
+# CollectionView
+
+Import `CollectionView` from `bench-design` and load `bench-design/styles.css` once.
+
+## Usage and accessibility
+
+Compose search, filters, view controls, a collection and a result footer. The consumer calculates counts and applies filtering and sorting. Provide EmptyState and isEmpty for no matches; children are replaced but tools and footer remain. The toolbar sticks within its nearest scrolling ancestor. Use an appropriate surrounding heading hierarchy: the title is a second-level heading. Avoid nesting collection regions with the same name.
+
+## API
+
+<ManifestProps component="CollectionView" />
+
+## Examples
+
+<Canvas of={Stories.ResourceLibrary} />
+<Canvas of={Stories.EmptyLibrary} />
+
+Use the theme selector to inspect both examples in light and dark themes.

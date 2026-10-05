@@ -5,10 +5,16 @@ import {
   GridListItem,
 } from "react-aria-components";
 import { collectionKey, selectionKeys } from "../collections/keys.js";
+import { ReorderHandle, useCollectionReorder } from "../collections/reorder.js";
+import type { ReorderHandler } from "../collections/reorder-types.js";
 import { Icon } from "../icon/Icon.js";
 
 /** A consumer-rendered collection with stable string keys. */
 export interface GridListProps<T> {
+  /** Request reordering; consumers apply the new order to their data. */
+  onReorder?: ReorderHandler;
+  /** Readable item name for dragging and announcements. */
+  getItemLabel?: (item: T) => string;
   /** Accessible collection name. */
   label: string;
   /** Ordered collection items. */
@@ -48,6 +54,8 @@ function itemText(content: ReactNode): string {
 /** An accessible grid or list with React Aria navigation and selection. */
 export function GridList<T>({
   label,
+  onReorder,
+  getItemLabel,
   items,
   getKey,
   layout = "grid",
@@ -64,12 +72,23 @@ export function GridList<T>({
     ...(defaultSelectedKeys ?? []),
   ]);
   const keys = selectedKeys ?? uncontrolledKeys;
+  const renderedItems = items.map((item) => {
+    const content = renderItem(item);
+    return {
+      key: collectionKey(item, getKey),
+      content,
+      label: getItemLabel?.(item) ?? itemText(content),
+    };
+  });
+  const dragAndDropHooks = useCollectionReorder(renderedItems, onReorder);
   return (
     <div className="bd-grid-list-frame">
       {selectionMode === "multiple" && keys.length > 0 && selectionBar && (
         <div className="bd-selection-bar">{selectionBar([...keys])}</div>
       )}
       <AriaGridList
+        key={onReorder ? "reorder" : "static"}
+        {...(dragAndDropHooks ? { dragAndDropHooks } : {})}
         aria-label={label}
         className="bd-grid-list"
         layout={layout === "grid" ? "grid" : "stack"}
@@ -86,18 +105,16 @@ export function GridList<T>({
         }}
         {...(renderEmpty ? { renderEmptyState: renderEmpty } : {})}
       >
-        {items.map((item) => {
-          const content = renderItem(item);
+        {renderedItems.map(({ key, content, label: itemLabel }) => {
           return (
             <GridListItem
-              textValue={itemText(content)}
-              {...(onAction
-                ? { onAction: () => onAction(collectionKey(item, getKey)) }
-                : {})}
-              key={collectionKey(item, getKey)}
-              id={collectionKey(item, getKey)}
+              textValue={itemLabel}
+              {...(onAction ? { onAction: () => onAction(key) } : {})}
+              key={key}
+              id={key}
               className="bd-grid-list-item"
             >
+              {onReorder && <ReorderHandle />}
               {selectionMode === "multiple" && (
                 <Checkbox slot="selection" className="bd-checkbox">
                   <span className="bd-choice-box">

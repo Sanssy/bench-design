@@ -35,3 +35,23 @@ for (const name of Object.keys(icons) as IconName[]) {
     expect(svg.children.length).toBeGreaterThan(0);
   });
 }
+
+test("grip contains six points on the Keyline grid with stroke two", () => {
+  render(<Icon name="grip" label="Drag" />);
+  const svg = screen.getByRole("img", { name: "Drag" });
+  expect(svg).toHaveAttribute("stroke-width", "2");
+  expect(svg.querySelectorAll("circle")).toHaveLength(6);
+  expect(
+    [...svg.querySelectorAll("circle")].map((point) => [
+      point.getAttribute("cx"),
+      point.getAttribute("cy"),
+    ]),
+  ).toEqual([
+    ["9", "5"],
+    ["15", "5"],
+    ["9", "12"],
+    ["15", "12"],
+    ["9", "19"],
+    ["15", "19"],
+  ]);
+});

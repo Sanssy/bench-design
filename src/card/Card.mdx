@@ -14,6 +14,8 @@ Use for a static group of related content. Put actions inside the card rather th
 
 Card uses soft content elevation in light contexts and no soft shadow in dark contexts. Keep hard offset elevation for actions and dialogs; it is not a card variant.
 
+Use `media` for an edge-to-edge preview above the content. Provide alternative text for informative images. `padding` controls only the content spacing using existing spacing tokens. Choose `variant="outlined"` for a stronger border without a soft shadow; the default remains `raised`.
+
 ## API
 
 <ManifestProps component="Card" />
@@ -26,6 +28,9 @@ Card uses soft content elevation in light contexts and no soft shadow in dark co
 
 <Canvas of={Stories.SavedCollection} />
 <Canvas of={Stories.CollectionSummary} />
+<Canvas of={Stories.Outlined} />
+<Canvas of={Stories.MediaPreview} />
+<Canvas of={Stories.OutlinedMedia} />
 
 Use the theme selector to inspect light and dark themes.
 

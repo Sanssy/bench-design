@@ -55,3 +55,23 @@ export const CollectionSummary: Story = {
     ),
   },
 };
+
+export const Outlined: Story = {
+  ...CollectionSummary,
+  args: { ...CollectionSummary.args, variant: "outlined", padding: 24 },
+};
+export const MediaPreview: Story = {
+  ...SavedCollection,
+  args: {
+    media: (
+      <img
+        alt="Abstract document preview"
+        src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 120'%3E%3Crect width='400' height='120' fill='currentColor'/%3E%3C/svg%3E"
+      />
+    ),
+  },
+};
+export const OutlinedMedia: Story = {
+  ...MediaPreview,
+  args: { ...MediaPreview.args, variant: "outlined", padding: 24 },
+};

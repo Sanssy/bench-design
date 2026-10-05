@@ -17,9 +17,26 @@
 }
 .bd-card {
   border: var(--bd-hair) solid var(--bd-divider);
-  padding: var(--bd-space-12);
+  --bd-card-padding: var(--bd-space-12);
+  padding: var(--bd-card-padding);
   background: var(--bd-surface-raised);
   color: var(--bd-text);
+}
+.bd-card[data-variant="outlined"] {
+  border-color: var(--bd-border);
+  box-shadow: none;
+}
+.bd-card-with-media {
+  padding: 0;
+}
+.bd-card-content {
+  padding: var(--bd-card-padding);
+}
+.bd-card-media > img,
+.bd-card-media > video {
+  display: block;
+  width: 100%;
+  height: auto;
 }
 .bd-empty-state {
   border: var(--bd-hair) dashed var(--bd-border);

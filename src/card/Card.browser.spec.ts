@@ -74,3 +74,50 @@ test("Card geometry uses spacing and typography tokens", {
   );
   for (const [actual, expected] of values) expect(actual).toBe(expected);
 });
+
+for (const theme of ["light", "dark"] as const) {
+  test(`Card outlined media geometry and accessibility ${theme}`, {
+    tag: ["@component:card", `@theme:${theme}`],
+  }, async ({ page }) => {
+    await page.goto(
+      `/iframe.html?id=surfaces-card--outlined-media&viewMode=story&globals=a11y.manual:!true;theme:${theme}`,
+    );
+    const card = page.locator(".bd-card");
+    await expect(page.locator("html")).toHaveAttribute("data-theme", theme);
+    await expect(card).toHaveCSS("box-shadow", "none");
+    await expect(card).toHaveCSS("padding-top", "0px");
+    const geometry = await card.evaluate((element) => {
+      const probe = document.createElement("span");
+      probe.style.border = "var(--bd-hair) solid var(--bd-border)";
+      probe.style.padding = "var(--bd-space-24)";
+      element.append(probe);
+      const expected = getComputedStyle(probe);
+      const content = element.querySelector(".bd-card-content") as HTMLElement;
+      const media = element.querySelector(".bd-card-media") as HTMLElement;
+      const image = media.querySelector("img") as HTMLElement;
+      const result = {
+        border: getComputedStyle(element).borderTopColor,
+        expectedBorder: expected.borderTopColor,
+        padding: getComputedStyle(content).paddingTop,
+        expectedPadding: expected.paddingTop,
+        mediaWidth: media.getBoundingClientRect().width,
+        imageWidth: image.getBoundingClientRect().width,
+      };
+      probe.remove();
+      return result;
+    });
+    expect(geometry.border).toBe(geometry.expectedBorder);
+    expect(geometry.padding).toBe(geometry.expectedPadding);
+    expect(geometry.imageWidth).toBe(geometry.mediaWidth);
+    await page
+      .getByRole("button", { name: "Open collection", exact: true })
+      .click();
+    await expect(page.getByRole("status")).toHaveText(
+      "Collection opened: Field notes",
+    );
+    expect(
+      (await new AxeBuilder({ page }).withTags(["wcag2a", "wcag2aa"]).analyze())
+        .violations,
+    ).toEqual([]);
+  });
+}

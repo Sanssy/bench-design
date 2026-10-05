@@ -305,6 +305,25 @@
           "required": true
         },
         {
+          "name": "media",
+          "type": "ReactNode",
+          "required": false,
+          "description": "Edge-to-edge preview above the content."
+        },
+        {
+          "name": "variant",
+          "type": "\"raised\" | \"outlined\"",
+          "required": false,
+          "description": "Raised by default; outlined uses the border token without a shadow.",
+          "default": "\"raised\""
+        },
+        {
+          "name": "padding",
+          "type": "4 | 8 | 12 | 16 | 24 | 32 | 48 | 64 | 96",
+          "required": false,
+          "description": "Content padding from the spacing scale; defaults to 12."
+        },
+        {
           "name": "as",
           "type": "\"article\" | \"section\" | \"div\"",
           "required": false,
@@ -319,6 +338,18 @@
         {
           "name": "CollectionSummary",
           "href": "./?path=/story/surfaces-card--collection-summary"
+        },
+        {
+          "name": "Outlined",
+          "href": "./?path=/story/surfaces-card--outlined"
+        },
+        {
+          "name": "MediaPreview",
+          "href": "./?path=/story/surfaces-card--media-preview"
+        },
+        {
+          "name": "OutlinedMedia",
+          "href": "./?path=/story/surfaces-card--outlined-media"
         }
       ]
     },

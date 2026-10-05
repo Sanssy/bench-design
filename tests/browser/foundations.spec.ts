@@ -1,3 +1,4 @@
+import AxeBuilder from "@axe-core/playwright";
 import { expect, test } from "@playwright/test";
 import tokens from "../../src/tokens.json" with { type: "json" };
 
@@ -9,7 +10,7 @@ for (const theme of ["light", "dark"] as const) {
       colorScheme: theme === "light" ? "dark" : "light",
     });
     await page.goto(
-      `/iframe.html?id=foundations-colors--palette&globals=theme:${theme}`,
+      `/iframe.html?id=foundations-colors--palette&globals=a11y.manual:!true;theme:${theme}`,
     );
     await expect(page.locator("html")).toHaveAttribute("data-theme", theme);
     await expect(page.getByRole("heading", { name: "Colors" })).toBeVisible();
@@ -25,7 +26,7 @@ for (const theme of ["light", "dark"] as const) {
       theme === "light" ? "#d6d8ce" : "#303b33",
     );
     await page.goto(
-      `/iframe.html?id=foundations-typography--scale&globals=theme:${theme}`,
+      `/iframe.html?id=foundations-typography--scale&globals=a11y.manual:!true;theme:${theme}`,
     );
     await expect(page.locator("[data-family]")).toHaveCount(3);
     await page.evaluate(() => document.fonts.ready);
@@ -56,7 +57,7 @@ for (const theme of ["light", "dark"] as const) {
       "500",
     );
     await page.goto(
-      `/iframe.html?id=foundations-spacing-geometry--scale&globals=theme:${theme}`,
+      `/iframe.html?id=foundations-spacing-geometry--scale&globals=a11y.manual:!true;theme:${theme}`,
     );
     for (const space of [4, 8, 12, 16, 24, 32, 48, 64, 96]) {
       await expect(page.locator(`[data-space="${space}"]`)).toHaveCSS(
@@ -64,6 +65,14 @@ for (const theme of ["light", "dark"] as const) {
         `${space}px`,
       );
     }
+    await expect(page.locator("[data-elevation-soft]")).toHaveCSS(
+      "box-shadow",
+      theme === "light" ? "rgba(24, 32, 28, 0.086) 2px 2px 9px 0px" : "none",
+    );
+    expect(
+      (await new AxeBuilder({ page }).withTags(["wcag2a", "wcag2aa"]).analyze())
+        .violations,
+    ).toEqual([]);
     const geometry = await page
       .locator("[data-geometry]")
       .evaluate((sample) => {
@@ -80,7 +89,7 @@ test("system theme follows OS live in the iframe", {
 }, async ({ page }) => {
   await page.emulateMedia({ colorScheme: "light" });
   await page.goto(
-    "/iframe.html?id=foundations-colors--palette&globals=theme:system",
+    "/iframe.html?id=foundations-colors--palette&globals=a11y.manual:!true;theme:system",
   );
   await expect(page.getByRole("heading", { name: "Colors" })).toBeVisible();
   await expect(page.locator("html")).not.toHaveAttribute("data-theme");
@@ -96,4 +105,20 @@ test("system theme follows OS live in the iframe", {
   await expect(
     page.locator('[data-role="text"] [data-contrast]'),
   ).toContainText("14.07");
+});
+
+test("soft elevation follows the system theme live", {
+  tag: "@theme:system",
+}, async ({ page }) => {
+  await page.emulateMedia({ colorScheme: "light" });
+  await page.goto(
+    "/iframe.html?id=foundations-spacing-geometry--scale&globals=a11y.manual:!true;theme:system",
+  );
+  const relief = page.locator("[data-elevation-soft]");
+  await expect(relief).toHaveCSS(
+    "box-shadow",
+    "rgba(24, 32, 28, 0.086) 2px 2px 9px 0px",
+  );
+  await page.emulateMedia({ colorScheme: "dark" });
+  await expect(relief).toHaveCSS("box-shadow", "none");
 });

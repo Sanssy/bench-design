@@ -325,6 +325,9 @@
   color: var(--bd-text-muted);
   font: var(--bd-size-meta) / var(--bd-line-normal) var(--bd-font-mono);
 }
+.bd-inspector {
+  box-shadow: var(--bd-elevation-soft);
+}
 .bd-inspector-header,
 .bd-inspector-sections {
   display: flex;

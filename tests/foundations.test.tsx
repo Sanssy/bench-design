@@ -24,6 +24,16 @@ describe("foundation documentation", () => {
     region.focus();
     expect(region).toHaveFocus();
   });
+  it("documents soft content relief separately from offset elevation", () => {
+    render(<Geometry />);
+    expect(
+      screen.getByRole("heading", { name: "Soft content relief" }),
+    ).toBeVisible();
+    expect(screen.getByText("--bd-elevation-soft")).toBeVisible();
+    expect(
+      screen.getByText(/Card, raised Surface and Inspector/),
+    ).toBeVisible();
+  });
   it("provides a keyboard focus target", () => {
     render(<Geometry />);
     expect(screen.getByRole("button", { name: "Explore focus" })).toBeVisible();

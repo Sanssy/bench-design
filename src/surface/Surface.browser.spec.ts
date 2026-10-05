@@ -11,6 +11,10 @@ for (const theme of ["light", "dark"] as const) {
     await expect(page.locator("html")).toHaveAttribute("data-theme", theme);
     const component = page.locator(".bd-surface");
     await expect(component).toBeVisible();
+    await expect(component).toHaveCSS(
+      "box-shadow",
+      theme === "light" ? "rgba(24, 32, 28, 0.086) 2px 2px 9px 0px" : "none",
+    );
     const result = await component.evaluate((element) => {
       const actual = getComputedStyle(element);
       const probe = document.createElement("span");
@@ -36,6 +40,10 @@ for (const theme of ["light", "dark"] as const) {
     expect(result.color).toBe(result.expectedColor);
     expect(result.background).toBe(result.expectedBackground);
     expect(result.border).toBe("none");
+    expect(
+      (await new AxeBuilder({ page }).withTags(["wcag2a", "wcag2aa"]).analyze())
+        .violations,
+    ).toEqual([]);
   });
 }
 for (const theme of ["light", "dark"] as const) {
@@ -48,6 +56,7 @@ for (const theme of ["light", "dark"] as const) {
     await expect(page.locator("html")).toHaveAttribute("data-theme", theme);
     const component = page.locator(".bd-surface");
     await expect(component).toBeVisible();
+    await expect(component).toHaveCSS("box-shadow", "none");
     const result = await component.evaluate((element) => {
       const actual = getComputedStyle(element);
       const probe = document.createElement("span");
@@ -115,6 +124,11 @@ for (const theme of ["light", "dark"] as const) {
     await expect(page.locator("html")).toHaveAttribute("data-theme", theme);
     const surface = page.locator('.bd-surface[data-tone="inverse"]').first();
     await expect(surface).toBeVisible();
+    await expect(surface).toHaveCSS("box-shadow", "none");
+    await expect(surface.locator('.bd-surface[data-tone="raised"]')).toHaveCSS(
+      "box-shadow",
+      theme === "dark" ? "rgba(24, 32, 28, 0.086) 2px 2px 9px 0px" : "none",
+    );
     const result = await surface.evaluate(
       (element, localTheme) => {
         const read = (el: Element) => {

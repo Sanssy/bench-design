@@ -96,7 +96,7 @@ export type { SidePanelProps } from "./side-panel/SidePanel.js";
 export { SidePanel } from "./side-panel/SidePanel.js";
 export type { SliderProps } from "./slider/Slider.js";
 export { Slider } from "./slider/Slider.js";
-export type { SpaceToken } from "./space-tokens.js";
+export type { ElevationToken, SpaceToken } from "./space-tokens.js";
 export type { StackProps } from "./stack/Stack.js";
 export { Stack } from "./stack/Stack.js";
 export type { StatusProps } from "./status/Status.js";

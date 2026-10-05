@@ -304,6 +304,20 @@ export function Geometry() {
               {tokens.base.radius.$value}
             </p>
           </div>
+          <div
+            className="geometry-card"
+            data-elevation-soft
+            style={{ boxShadow: "var(--bd-elevation-soft)" }}
+          >
+            <h3>Soft content relief</h3>
+            <p>
+              {
+                tokens.base["elevation-soft"].$extensions["org.bench-design"]
+                  .usage
+              }
+            </p>
+            <code>--bd-elevation-soft</code>
+          </div>
           <div className="relief" data-geometry>
             <h3>Lemon with depth</h3>
             <p>

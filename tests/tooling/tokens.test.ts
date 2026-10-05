@@ -197,3 +197,63 @@ test("inverse surfaces remap semantic roles for explicit and system themes", () 
     assert.ok(block.includes(`color-scheme: ${theme};`));
   }
 });
+
+test("soft elevation generates a composite shadow and theme overrides", () => {
+  const result = spawnSync(
+    process.execPath,
+    ["scripts/generate-tokens.ts", "--stdout"],
+    { encoding: "utf8" },
+  );
+  assert.equal(result.status, 0, result.stderr);
+  const css = result.stdout;
+  assert.match(
+    css,
+    /--bd-elevation-soft: 2px 2px 9px 0px rgba\(24, 32, 28, 0\.086\);/,
+  );
+  for (const selector of [
+    ':root[data-theme="dark"]',
+    ":root:not([data-theme])",
+    '.bd-surface[data-tone="inverse"]',
+  ]) {
+    const start = css.indexOf(`${selector} {`);
+    assert.match(
+      css.slice(start, css.indexOf("}", start)),
+      /--bd-elevation-soft: none;/,
+    );
+  }
+  for (const selector of [
+    ':root[data-theme="dark"] .bd-surface[data-tone="inverse"]',
+    ':root:not([data-theme]) .bd-surface[data-tone="inverse"]',
+  ]) {
+    const start = css.indexOf(`${selector} {`);
+    assert.match(
+      css.slice(start, css.indexOf("}", start)),
+      /--bd-elevation-soft: 2px 2px 9px 0px rgba\(24, 32, 28, 0\.086\);/,
+    );
+  }
+  assert.ok(
+    readFileSync("src/space-tokens.ts", "utf8").includes(
+      'export type ElevationToken = "elevation-dialog" | "elevation-soft";',
+    ),
+  );
+});
+
+test("soft elevation is limited to the three approved surface roots", () => {
+  const css = ["public/surfaces.css", "public/data.css"]
+    .map((path) => readFileSync(path, "utf8"))
+    .join("\n");
+  const selectors = Array.from(
+    css.matchAll(
+      /([^{}]+)\{[^{}]*box-shadow: var\(--bd-elevation-soft\);[^{}]*\}/g,
+    ),
+  )
+    .flatMap((match) =>
+      (match[1] ?? "").split(",").map((selector) => selector.trim()),
+    )
+    .sort();
+  assert.deepEqual(selectors, [
+    ".bd-card",
+    ".bd-inspector",
+    '.bd-surface[data-tone="raised"]',
+  ]);
+});

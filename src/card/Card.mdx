@@ -12,6 +12,8 @@ Import `Card` from `bench-design` and load `bench-design/styles.css` once.
 
 Use for a static group of related content. Put actions inside the card rather than making the whole card clickable. Choose the semantic element for the document structure. Avoid selected or interactive card behavior; this API does not provide it.
 
+Card uses soft content elevation in light contexts and no soft shadow in dark contexts. Keep hard offset elevation for actions and dialogs; it is not a card variant.
+
 ## API
 
 <ManifestProps component="Card" />

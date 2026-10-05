@@ -97,6 +97,7 @@ export const EditInPanel: StoryObj = {
                 aria-hidden="true"
               />
               <Text>
+                {/* Keeps the announced status text spaced around the swatch. */}{" "}
                 {color} · {opacity}% opacity
               </Text>
             </Inline>

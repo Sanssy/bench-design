@@ -398,6 +398,14 @@
   padding-inline-end: var(--bd-space-4);
   gap: var(--bd-space-4);
 }
+.bd-number-control > .bd-field-mono {
+  /* The unit keeps one line; the input yields width instead. */
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+.bd-number-control > .bd-search-input {
+  min-inline-size: 0;
+}
 .bd-number-step {
   display: flex;
   justify-content: center;

@@ -80,6 +80,15 @@ for (const theme of ["light", "dark"]) {
       if (component === "number-field") {
         await expect(actions.first()).toHaveText("−");
         await expect(actions.nth(1)).toHaveText("+");
+        // Wider steps must not squeeze the unit onto two lines.
+        const unitLines = await page
+          .locator(".bd-number-control > .bd-field-mono")
+          .evaluate((element) => {
+            const range = document.createRange();
+            range.selectNodeContents(element);
+            return range.getClientRects().length;
+          });
+        expect(unitLines).toBe(1);
       } else {
         await expect(actions.first().locator("svg")).toHaveAttribute(
           "width",

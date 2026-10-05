@@ -103,5 +103,7 @@ export type { ToastController, ToastOptions } from "./toast/Toast.js";
 export { ToastRegion, useToast } from "./toast/Toast.js";
 export type { ToolbarProps } from "./toolbar/Toolbar.js";
 export { Toolbar } from "./toolbar/Toolbar.js";
+export type { TreeNode, TreeProps } from "./tree/Tree.js";
+export { Tree } from "./tree/Tree.js";
 export type { ValueProps } from "./value/Value.js";
 export { Value } from "./value/Value.js";

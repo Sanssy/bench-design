@@ -2849,6 +2849,78 @@
       ]
     },
     {
+      "name": "Tree",
+      "import": "import { Tree } from \"bench-design\";",
+      "description": "A React Aria tree; hierarchy state and keyboard behavior stay with React Aria.",
+      "props": [
+        {
+          "name": "label",
+          "type": "string",
+          "required": true,
+          "description": "Accessible hierarchy name."
+        },
+        {
+          "name": "items",
+          "type": "readonly TreeNode[]",
+          "required": true,
+          "description": "Root nodes in display order."
+        },
+        {
+          "name": "expandedKeys",
+          "type": "readonly string[]",
+          "required": false,
+          "description": "Controlled expanded identifiers."
+        },
+        {
+          "name": "defaultExpandedKeys",
+          "type": "readonly string[]",
+          "required": false,
+          "description": "Initially expanded identifiers."
+        },
+        {
+          "name": "onExpandedChange",
+          "type": "(keys: string[]) => void",
+          "required": false,
+          "description": "Called with the complete expanded key list."
+        },
+        {
+          "name": "selectionMode",
+          "type": "\"none\" | \"single\" | \"multiple\"",
+          "required": false,
+          "description": "Allowed selection cardinality.",
+          "default": "\"none\""
+        },
+        {
+          "name": "selectedKeys",
+          "type": "readonly string[]",
+          "required": false,
+          "description": "Controlled selected identifiers."
+        },
+        {
+          "name": "onSelectionChange",
+          "type": "(keys: string[]) => void",
+          "required": false,
+          "description": "Called with the complete selected key list."
+        },
+        {
+          "name": "onAction",
+          "type": "(id: string) => void",
+          "required": false,
+          "description": "Called when a node is activated."
+        }
+      ],
+      "stories": [
+        {
+          "name": "ResourceFolders",
+          "href": "./?path=/story/collections-tree--resource-folders"
+        },
+        {
+          "name": "ExpandedFolders",
+          "href": "./?path=/story/collections-tree--expanded-folders"
+        }
+      ]
+    },
+    {
       "name": "Value",
       "import": "import { Value } from \"bench-design\";",
       "description": "Displays a value as one named image; defaults to surrounding text size.",

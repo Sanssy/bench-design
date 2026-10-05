@@ -38,3 +38,10 @@ export const EnglishProfile: Story = {
     ),
   },
 };
+
+export const ClientRouting: Story = {
+  args: {
+    navigate: (href) => window.history.pushState(null, "", href),
+    children: <Link href="#guide">Read the guide</Link>,
+  },
+};

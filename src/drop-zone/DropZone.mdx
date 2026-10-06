@@ -12,9 +12,9 @@ Import `DropZone` from `bench-design` and load `bench-design/styles.css` once.
 
 Use for local file import. maxSize uses bytes. MIME types, wildcard MIME types and filename extensions are supported. Type refusals precede size refusals; valid files are delivered alongside refusals. A new selection clears old feedback. For a single-file zone only the first accepted file is delivered. Never use color as the only refusal signal. The visible message includes the filename and reason.
 
-Use `variant="editorial"` for a prominent import area. Optional `eyebrow` metadata uses the mono typeface and `icon` uses a decorative neutral IconTile. The title defaults to heading level 2; choose `headingLevel` for the surrounding document structure. The primary picker button defaults to the upload icon; `buttonIcon` and `buttonIconPosition` can customize it.
+Use `variant="editorial"` for a prominent import area. Optional `eyebrow` metadata uses the mono typeface and `icon` uses a decorative neutral IconTile. Use `align="start"` to align the content to the start edge, with the tile and eyebrow in a header row. The default `align="center"` preserves the centered desktop presentation. The title defaults to heading level 2; choose `headingLevel` for the surrounding document structure. The primary picker button defaults to the upload icon; `buttonIcon` and `buttonIconPosition` can customize it.
 
-Below 640 px, the editorial layout becomes compact: the tile and eyebrow are hidden while the title, help, formats, accessible name and keyboard picker remain. This viewport breakpoint is an explicit exception for the touch layout. The default variant retains its existing presentation and file acceptance policy.
+Below 640 px, the editorial layout becomes compact: the tile and eyebrow are hidden while the title, help and formats remain. A 48 px upload IconButton sits to the right of the text; its accessible name and tooltip use `buttonLabel` (or the localized default). Only the visible picker participates in keyboard navigation. This viewport breakpoint is an explicit exception for the touch layout. The default variant retains its existing presentation and file acceptance policy.
 
 ## API
 
@@ -26,6 +26,8 @@ Below 640 px, the editorial layout becomes compact: the tile and eyebrow are hid
 <Canvas of={Stories.Unavailable} />
 <Canvas of={Stories.Editorial} />
 <Canvas of={Stories.EditorialUnavailable} />
+<Canvas of={Stories.EditorialStart} />
+<Canvas of={Stories.EditorialStartUnavailable} />
 
 Use the theme selector to inspect all examples in light and dark themes.
 

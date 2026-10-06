@@ -5,6 +5,7 @@ import { Button } from "../button/Button.js";
 import { FileTrigger } from "../file-trigger/FileTrigger.js";
 import { Heading } from "../heading/Heading.js";
 import type { IconName } from "../icon/icons.js";
+import { IconButton } from "../icon-button/IconButton.js";
 import { IconTile } from "../icon-tile/IconTile.js";
 /** A rejected file and the applicable refusal reason. */
 export interface FileRejection {
@@ -16,6 +17,8 @@ export interface DropZoneProps {
   label: string;
   /** Editorial presentation automatically compacts below 640 px. */
   variant?: "default" | "editorial";
+  /** Editorial content alignment; defaults to center. */
+  align?: "center" | "start";
   /** Optional metadata above the editorial title. */
   eyebrow?: string;
   /** Decorative neutral tile in the editorial presentation. */
@@ -60,6 +63,7 @@ function typeLabel(type: string, kindLabel: (kind: string) => string) {
 export function DropZone({
   label,
   variant = "default",
+  align = "center",
   eyebrow,
   icon,
   headingLevel,
@@ -112,6 +116,7 @@ export function DropZone({
     <AriaDropZone
       className="bd-drop-zone"
       data-variant={variant}
+      data-align={align}
       aria-label={label}
       isDisabled={isDisabled}
       data-rejected={rejections.length > 0 || undefined}
@@ -124,13 +129,15 @@ export function DropZone({
         receive(files);
       }}
     >
-      {variant === "editorial" && icon && (
-        <span className="bd-drop-zone__icon">
-          <IconTile icon={icon} tone="neutral" />
-        </span>
-      )}
-      {variant === "editorial" && eyebrow && (
-        <p className="bd-drop-zone__eyebrow">{eyebrow}</p>
+      {variant === "editorial" && (icon || eyebrow) && (
+        <div className="bd-drop-zone__header">
+          {icon && (
+            <span className="bd-drop-zone__icon">
+              <IconTile icon={icon} tone="neutral" />
+            </span>
+          )}
+          {eyebrow && <p className="bd-drop-zone__eyebrow">{eyebrow}</p>}
+        </div>
       )}
       {variant === "editorial" || headingLevel ? (
         <div className="bd-drop-zone__title">
@@ -145,20 +152,40 @@ export function DropZone({
         <strong className="bd-drop-zone__title">{label}</strong>
       )}
       {description && <p className="bd-drop-zone__help">{description}</p>}
-      <FileTrigger
-        acceptedFileTypes={acceptedFileTypes}
-        allowsMultiple={allowsMultiple}
-        onSelect={receive}
-      >
-        <Button
-          variant="primary"
-          isDisabled={isDisabled}
-          {...(pickerIcon ? { icon: pickerIcon } : {})}
-          {...(buttonIconPosition ? { iconPosition: buttonIconPosition } : {})}
+      <span className="bd-drop-zone__picker">
+        <FileTrigger
+          acceptedFileTypes={acceptedFileTypes}
+          allowsMultiple={allowsMultiple}
+          onSelect={receive}
         >
-          {buttonLabel ?? m.addFiles}
-        </Button>
-      </FileTrigger>
+          <Button
+            variant="primary"
+            isDisabled={isDisabled}
+            {...(pickerIcon ? { icon: pickerIcon } : {})}
+            {...(buttonIconPosition
+              ? { iconPosition: buttonIconPosition }
+              : {})}
+          >
+            {buttonLabel ?? m.addFiles}
+          </Button>
+        </FileTrigger>
+      </span>
+      {variant === "editorial" && (
+        <span className="bd-drop-zone__compact-picker">
+          <FileTrigger
+            acceptedFileTypes={acceptedFileTypes}
+            allowsMultiple={allowsMultiple}
+            onSelect={receive}
+          >
+            <IconButton
+              icon="upload"
+              label={buttonLabel ?? m.addFiles}
+              variant="primary"
+              isDisabled={isDisabled}
+            />
+          </FileTrigger>
+        </span>
+      )}
       {(acceptedFileTypes.length > 0 || maxSize !== undefined) && (
         <p className="bd-drop-zone__meta">
           {types}

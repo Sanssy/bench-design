@@ -1452,6 +1452,13 @@
           "default": "\"default\""
         },
         {
+          "name": "align",
+          "type": "\"center\" | \"start\"",
+          "required": false,
+          "description": "Editorial content alignment; defaults to center.",
+          "default": "\"center\""
+        },
+        {
           "name": "eyebrow",
           "type": "string",
           "required": false,
@@ -1541,6 +1548,14 @@
         {
           "name": "EditorialUnavailable",
           "href": "./?path=/story/import-dropzone--editorial-unavailable"
+        },
+        {
+          "name": "EditorialStart",
+          "href": "./?path=/story/import-dropzone--editorial-start"
+        },
+        {
+          "name": "EditorialStartUnavailable",
+          "href": "./?path=/story/import-dropzone--editorial-start-unavailable"
         }
       ]
     },

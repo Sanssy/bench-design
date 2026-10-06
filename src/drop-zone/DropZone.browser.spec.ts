@@ -10,6 +10,8 @@ for (const theme of ["light", "dark"]) {
       "unavailable",
       "editorial",
       "editorial-unavailable",
+      "editorial-start",
+      "editorial-start-unavailable",
     ]) {
       await page.goto(
         `/iframe.html?id=import-dropzone--${story}&viewMode=story&globals=a11y.manual:!true;theme:${theme}`,
@@ -131,7 +133,7 @@ for (const theme of ["light", "dark"]) {
       exact: true,
     });
     const picker = page.getByRole("button", { name: "Add files" });
-    for (const width of [640, 639, 320]) {
+    for (const width of [960, 640, 639, 320]) {
       await page.setViewportSize({ width, height: 800 });
       await expect(zone).toBeVisible();
       await expect(
@@ -147,6 +149,17 @@ for (const theme of ["light", "dark"]) {
       ).toBeVisible();
       await expect(page.getByText("TXT, PDF · 10 MB max.")).toBeVisible();
       await expect(picker).toBeVisible();
+      await expect(picker).toHaveCount(1);
+      if (width < 640) {
+        const bounds = await picker.boundingBox();
+        const title = await page.locator(".bd-drop-zone__title").boundingBox();
+        expect(bounds?.width).toBeCloseTo(48, 1);
+        expect(bounds?.height).toBeCloseTo(48, 1);
+        expect(bounds?.x).toBeGreaterThanOrEqual(
+          (title?.x ?? 0) + (title?.width ?? 0),
+        );
+        await expect(picker).toHaveText("");
+      }
       if (width < 640) {
         await expect(page.locator(".bd-icon-tile")).toBeHidden();
         await expect(page.getByText("01 / IMPORT")).toBeHidden();
@@ -178,3 +191,31 @@ for (const theme of ["light", "dark"]) {
     expect(results.violations).toEqual([]);
   });
 }
+
+test("start editorial header and compact action", {
+  tag: ["@component:drop-zone", "@theme:light"],
+}, async ({ page }) => {
+  await page.goto(
+    `/iframe.html?id=import-dropzone--editorial-start&globals=a11y.manual:!true;theme:light`,
+  );
+  await page.setViewportSize({ width: 960, height: 800 });
+  const header = page.locator(".bd-drop-zone__header");
+  const title = page.locator(".bd-drop-zone__title");
+  await expect(header).toHaveCSS("flex-direction", "row");
+  const head = await header.boundingBox(),
+    text = await title.boundingBox();
+  expect(Math.abs((head?.x ?? 0) - (text?.x ?? 0))).toBeLessThanOrEqual(1);
+  await page.setViewportSize({ width: 320, height: 800 });
+  const picker = page.getByRole("button", { name: "Add files", exact: true });
+  await expect(picker).toHaveCount(1);
+  await expect(picker).toHaveText("");
+  await picker.focus();
+  const chooser = page.waitForEvent("filechooser");
+  await page.keyboard.press("Enter");
+  await (await chooser).setFiles({
+    name: "note.txt",
+    mimeType: "text/plain",
+    buffer: Buffer.from("ok"),
+  });
+  await expect(page.getByRole("status")).toHaveText("note.txt");
+});

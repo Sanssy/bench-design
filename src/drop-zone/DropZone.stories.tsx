@@ -54,3 +54,11 @@ export const Editorial: Story = {
 export const EditorialUnavailable: Story = {
   args: { ...Editorial.args, isDisabled: true },
 };
+
+export const EditorialStart: Story = {
+  ...Editorial,
+  args: { ...Editorial.args, align: "start" },
+};
+export const EditorialStartUnavailable: Story = {
+  args: { ...EditorialStart.args, isDisabled: true },
+};

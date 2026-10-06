@@ -4,14 +4,14 @@ import userEvent from "@testing-library/user-event";
 import { expect, test, vi } from "vitest";
 import { DropZone } from "./DropZone.js";
 
-for (const variant of ["default", "editorial"] as const)
+for (const variant of ["default", "editorial", "compact"] as const)
   test(`picker ${variant} rejects type and size, accepts valid files and clears rejection`, () => {
     const drop = vi.fn(),
       reject = vi.fn();
     const { container } = render(
       <DropZone
         label="Upload files"
-        variant={variant}
+        variant={variant === "compact" ? "editorial" : variant}
         acceptedFileTypes={[".txt"]}
         maxSize={4}
         allowsMultiple
@@ -19,7 +19,11 @@ for (const variant of ["default", "editorial"] as const)
         onReject={reject}
       />,
     );
-    const input = container.querySelector('input[type="file"]');
+    const input = container.querySelector(
+      variant === "compact"
+        ? ".bd-drop-zone__compact-picker input"
+        : 'input[type="file"]',
+    );
     expect(input).not.toBeNull();
     if (!input) throw new Error("Missing file input");
     const type = new File(["x"], "image.png"),
@@ -207,9 +211,74 @@ test("editorial picker opens with keyboard and has a decorative upload icon", as
   );
   const input = container.querySelector("input[type=file]") as HTMLInputElement;
   const click = vi.spyOn(input, "click");
-  const button = screen.getByRole("button", { name: "Add files" });
+  const button = container.querySelector(
+    ".bd-drop-zone__picker button",
+  ) as HTMLButtonElement;
   expect(button.querySelector("svg")).toHaveAttribute("aria-hidden", "true");
   button.focus();
   await user.keyboard("{Enter}");
   expect(click).toHaveBeenCalledOnce();
+});
+
+test("start editorial groups the tile and eyebrow above the title", () => {
+  const { container } = render(
+    <DropZone
+      variant="editorial"
+      align="start"
+      label="Import"
+      icon="file-text"
+      eyebrow="01 / IMPORT"
+      onDrop={vi.fn()}
+    />,
+  );
+  const zone = container.querySelector(".bd-drop-zone");
+  expect(zone).toHaveAttribute("data-align", "start");
+  const header = container.querySelector(".bd-drop-zone__header");
+  expect(header).toContainElement(screen.getByText("01 / IMPORT"));
+  expect(header).toContainElement(
+    container.querySelector(".bd-icon-tile") as HTMLElement,
+  );
+});
+
+test("compact editorial picker retains the action name and keyboard alternative", async () => {
+  const user = userEvent.setup();
+  const { container } = render(
+    <DropZone
+      variant="editorial"
+      label="Import"
+      buttonLabel="Choose documents"
+      onDrop={vi.fn()}
+    />,
+  );
+  const picker = container.querySelector(
+    ".bd-icon-button",
+  ) as HTMLButtonElement;
+  expect(picker).not.toBeNull();
+  expect(picker).toHaveAccessibleName("Choose documents");
+  expect(picker).toHaveTextContent("");
+  const input = container.querySelector(
+    ".bd-drop-zone__compact-picker input",
+  ) as HTMLInputElement;
+  const click = vi.spyOn(input, "click");
+  picker.focus();
+  await user.keyboard("{Enter}");
+  expect(click).toHaveBeenCalledOnce();
+});
+
+test("disabled editorial prevents both picker alternatives", () => {
+  const { container } = render(
+    <DropZone
+      variant="editorial"
+      label="Unavailable"
+      isDisabled
+      onDrop={vi.fn()}
+    />,
+  );
+  expect(container.querySelector(".bd-drop-zone")).toHaveAttribute(
+    "data-align",
+    "center",
+  );
+  for (const picker of screen.getAllByRole("button", { name: "Add files" })) {
+    expect(picker).toBeDisabled();
+  }
 });

@@ -57,3 +57,32 @@ export const DocumentSections: Story = {
     })),
   },
 };
+
+export const RichSections: Story = {
+  args: {
+    orientation: "vertical",
+    listWidth: "sidebar-width",
+    stickyList: true,
+    items: [
+      "Overview",
+      "Contents",
+      "References",
+      "Annotations",
+      "Versions",
+      "Activity",
+    ].map((title) => ({
+      id: title.toLowerCase(),
+      title,
+      icon: "file-text",
+      description: `${title} details`,
+      content: `${title} for this document.`,
+    })),
+  },
+};
+export const VerticalDocumentSections: Story = {
+  args: {
+    ...DocumentSections.args,
+    orientation: "vertical",
+    listWidth: "panel-width",
+  },
+};

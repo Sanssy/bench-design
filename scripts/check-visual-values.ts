@@ -13,6 +13,31 @@ export interface VisualException {
 }
 export const exceptions: VisualException[] = [
   {
+    file: "dist/navigation.css",
+    selector: "@media",
+    property: "condition",
+    value: "(width>=640px)",
+    reason:
+      "Vertical tabs leave the mobile chip grid from 640px; CSS variables cannot define media conditions.",
+  },
+  {
+    file: "dist/navigation.css",
+    selector: "@media",
+    property: "condition",
+    value: "(width>=960px)",
+    reason:
+      "Vertical tab lists become sticky from the 960px wide breakpoint; CSS variables cannot define media conditions.",
+  },
+  {
+    file: "dist/navigation.css",
+    selector:
+      '.bd-tabs[data-orientation="vertical"][data-sticky-list] .bd-tab-list',
+    property: "max-block-size",
+    value: "calc(100dvh - var(--bd-space-32))",
+    reason:
+      "A sticky tab list stays within the viewport height; the viewport unit has no token.",
+  },
+  {
     file: "dist/layout.css",
     selector: "@media",
     property: "condition",

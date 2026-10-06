@@ -12,6 +12,10 @@ A named list of tabs and their associated content panels. Import `Tabs` from `be
 
 Supply unique stable item identifiers, short titles and panel content. Use `defaultSelectedKey` for an initial selection, or `selectedKey` with `onSelectionChange` for application-controlled panels. Use `orientation="vertical"` for a side list. Keep routing and business state in the consumer. Do not use tabs for unrelated destinations. General `className` and `style` overrides are excluded.
 
+For vertical lists, add a decorative `icon` and a short `description` to each item. The accessible name includes the title and description, even when the description is hidden on mobile. Keep both concise. `listWidth="sidebar-width"` uses the compact navigation token; `"panel-width"` uses the wider panel token. Omitting it preserves intrinsic sizing. `stickyList` keeps the list visible at 960px and above; document scrolling belongs to the consumer.
+
+Below 640px, vertical lists become a chip grid: two columns for up to four items, three for five or six. Longer lists scroll horizontally. The vertical keyboard axis stays unchanged. Avoid long titles in compact grids.
+
 ## TypeScript API
 
 <ManifestProps component="Tabs" />
@@ -21,6 +25,8 @@ Supply unique stable item identifiers, short titles and panel content. Use `defa
 <Canvas of={Stories.LibrarySections} />
 <Canvas of={Stories.VerticalSections} />
 <Canvas of={Stories.ControlledSections} />
+<Canvas of={Stories.RichSections} />
+<Canvas of={Stories.VerticalDocumentSections} />
 
 Use the theme selector to view light and dark examples.
 

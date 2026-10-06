@@ -8,6 +8,8 @@ export interface AppHeaderProps {
   brand: ReactNode;
   /** Named page navigation, typically TopNav. */
   navigation: ReactNode;
+  /** Desktop navigation alignment; defaults to start. Center uses equal side columns. */
+  navigationAlign?: "start" | "center";
   /** Optional application actions. */
   actions?: ReactNode;
   /** Optional contextual metadata. */
@@ -17,12 +19,13 @@ export interface AppHeaderProps {
 export function AppHeader({
   brand,
   navigation,
+  navigationAlign = "start",
   actions,
   meta,
 }: AppHeaderProps) {
   const Root = useContext(AppHeaderInShell) ? "div" : "header";
   return (
-    <Root className="bd-app-header">
+    <Root className="bd-app-header" data-navigation-align={navigationAlign}>
       <div className="bd-app-header-brand">{brand}</div>
       <div className="bd-app-header-navigation">{navigation}</div>
       {(actions != null || meta != null) && (

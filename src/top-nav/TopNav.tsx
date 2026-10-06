@@ -17,11 +17,13 @@ export interface TopNavProps {
   }[];
   /** Identifier of the current page; omitted when none matches. */
   currentId?: string;
+  /** Show the full-width separator rail; defaults to true. Current-page underline remains. */
+  rail?: boolean;
 }
 /** Page links; routing remains owned by the consuming application (React Aria links, ready for a client router). */
-export function TopNav({ label, items, currentId }: TopNavProps) {
+export function TopNav({ label, items, currentId, rail = true }: TopNavProps) {
   return (
-    <nav className="bd-top-nav" aria-label={label}>
+    <nav className="bd-top-nav" aria-label={label} data-rail={rail}>
       <ul className="bd-top-nav-list">
         {items.map((item) => (
           <li key={item.id}>

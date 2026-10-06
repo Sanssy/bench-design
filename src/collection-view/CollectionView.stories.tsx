@@ -19,8 +19,8 @@ const resources = [
   { id: "images", label: "Reference images", format: "Image" },
   { id: "reading", label: "Reading list", format: "Text" },
 ];
-export const ResourceLibrary: Story = {
-  render: () => {
+export const ResourceLibrary = {
+  render: (args) => {
     const [query, setQuery] = useState("");
     const [textOnly, setTextOnly] = useState(false);
     const [layout, setLayout] = useState<"grid" | "list">("grid");
@@ -31,19 +31,20 @@ export const ResourceLibrary: Story = {
         (!textOnly || item.format === "Text"),
     );
     const shown = reversed ? [...matches].reverse() : matches;
+    const search = (
+      <SearchField label="Search resources" value={query} onChange={setQuery} />
+    );
     return (
       <div style={{ width: "min(var(--bd-measure), calc(100vw - 2rem))" }}>
         <CollectionView
+          stickyToolbar={args.stickyToolbar ?? true}
+          actions={args.stickyToolbar === false ? search : undefined}
           label="Resource library"
           count={resources.length}
           isEmpty={shown.length === 0}
           toolbar={
             <>
-              <SearchField
-                label="Search resources"
-                value={query}
-                onChange={setQuery}
-              />
+              {args.stickyToolbar !== false && search}
               <FilterChip
                 label="Text only"
                 isSelected={textOnly}
@@ -100,7 +101,7 @@ export const ResourceLibrary: Story = {
       </div>
     );
   },
-};
+} satisfies Story;
 export const EmptyLibrary: Story = {
   render: () => (
     <CollectionView
@@ -122,4 +123,9 @@ export const EmptyLibrary: Story = {
       <GridList label="Resources" items={[]} renderItem={String} />
     </CollectionView>
   ),
+};
+
+export const TitleSearch: Story = {
+  render: ResourceLibrary.render,
+  args: { stickyToolbar: false },
 };

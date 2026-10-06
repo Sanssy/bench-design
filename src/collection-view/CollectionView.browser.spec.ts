@@ -5,7 +5,7 @@ for (const theme of ["light", "dark"]) {
   test(`CollectionView examples and sticky tools ${theme}`, {
     tag: ["@component:collection-view", `@theme:${theme}`],
   }, async ({ page }) => {
-    for (const story of ["resource-library", "empty-library"]) {
+    for (const story of ["resource-library", "empty-library", "title-search"]) {
       await page.goto(
         `/iframe.html?id=collections-collectionview--${story}&globals=a11y.manual:!true;theme:${theme}`,
       );
@@ -47,6 +47,22 @@ for (const theme of ["light", "dark"]) {
           "position",
           "sticky",
         );
+      }
+      if (story === "title-search") {
+        await expect(page.locator(".bd-collection-view-toolbar")).toHaveCSS(
+          "position",
+          "static",
+        );
+        const search = page.getByRole("searchbox", {
+          name: "Search resources",
+        });
+        await expect(
+          page.locator(".bd-collection-view-header").getByRole("searchbox"),
+        ).toBeVisible();
+        await search.fill("unknown");
+        await expect(
+          page.getByRole("heading", { name: "No matching resources" }),
+        ).toBeVisible();
       }
       expect(
         (

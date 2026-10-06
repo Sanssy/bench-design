@@ -115,6 +115,13 @@
           "description": "Named page navigation, typically TopNav."
         },
         {
+          "name": "navigationAlign",
+          "type": "\"start\" | \"center\"",
+          "required": false,
+          "description": "Desktop navigation alignment; defaults to start. Center uses equal side columns.",
+          "default": "\"start\""
+        },
+        {
           "name": "actions",
           "type": "ReactNode",
           "required": false,
@@ -139,6 +146,10 @@
         {
           "name": "Workspace",
           "href": "./?path=/story/layout-appheader--workspace"
+        },
+        {
+          "name": "CenteredNavigation",
+          "href": "./?path=/story/layout-appheader--centered-navigation"
         }
       ]
     },
@@ -755,7 +766,7 @@
     {
       "name": "CollectionView",
       "import": "import { CollectionView } from \"bench-design\";",
-      "description": "A named collection region with a sticky tools slot and a result footer.",
+      "description": "A named collection region with an optionally sticky tools slot and a result footer.",
       "props": [
         {
           "name": "label",
@@ -788,6 +799,19 @@
           "type": "ReactNode",
           "required": false,
           "description": "Search, filters and view controls supplied by the consumer."
+        },
+        {
+          "name": "stickyToolbar",
+          "type": "boolean",
+          "required": false,
+          "description": "Keep the toolbar sticky within its scrolling ancestor; defaults to true.",
+          "default": "true"
+        },
+        {
+          "name": "actions",
+          "type": "ReactNode",
+          "required": false,
+          "description": "Consumer actions beside the title, outside the accessible region name."
         },
         {
           "name": "footer",
@@ -823,6 +847,10 @@
         {
           "name": "EmptyLibrary",
           "href": "./?path=/story/collections-collectionview--empty-library"
+        },
+        {
+          "name": "TitleSearch",
+          "href": "./?path=/story/collections-collectionview--title-search"
         }
       ]
     },
@@ -4018,6 +4046,13 @@
           "type": "string",
           "required": false,
           "description": "Identifier of the current page; omitted when none matches."
+        },
+        {
+          "name": "rail",
+          "type": "boolean",
+          "required": false,
+          "description": "Show the full-width separator rail; defaults to true. Current-page underline remains.",
+          "default": "true"
         }
       ],
       "stories": [
@@ -4028,6 +4063,10 @@
         {
           "name": "LongLabels",
           "href": "./?path=/story/navigation-topnav--long-labels"
+        },
+        {
+          "name": "WithoutRail",
+          "href": "./?path=/story/navigation-topnav--without-rail"
         }
       ]
     },

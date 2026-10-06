@@ -39,3 +39,5 @@ export const LongLabels: Story = {
     ],
   },
 };
+
+export const WithoutRail: Story = { args: { rail: false } };

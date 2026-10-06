@@ -14,6 +14,8 @@ Compose search, filters, view controls, a collection and a result footer. The co
 
 The optional count, including zero, is announced with the title and region name. Use `countVariant="outlined"` for a bordered metadata counter; the default is `plain`.
 
+Set `stickyToolbar={false}` to keep tools in document flow. The default remains sticky. Supply `actions` for controls beside the title, such as search; they wrap on narrow screens and remain outside the region name. The toolbar keeps its surface and separator in both modes.
+
 ## API
 
 <ManifestProps component="CollectionView" />
@@ -24,3 +26,5 @@ The optional count, including zero, is announced with the title and region name.
 <Canvas of={Stories.EmptyLibrary} />
 
 Use the theme selector to inspect both examples in light and dark themes.
+
+<Canvas of={Stories.TitleSearch} />

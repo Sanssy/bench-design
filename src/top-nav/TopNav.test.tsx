@@ -61,3 +61,16 @@ test("all destinations participate in native Tab order", async () => {
     expect(link).toHaveFocus();
   }
 });
+
+test("rail is optional without changing current-page semantics", () => {
+  const { rerender } = render(
+    <TopNav label="Pages" items={items} currentId="browse" rail={false} />,
+  );
+  expect(screen.getByRole("navigation")).toHaveAttribute("data-rail", "false");
+  expect(screen.getByRole("link", { name: "Browse 0" })).toHaveAttribute(
+    "aria-current",
+    "page",
+  );
+  rerender(<TopNav label="Pages" items={items} />);
+  expect(screen.getByRole("navigation")).toHaveAttribute("data-rail", "true");
+});

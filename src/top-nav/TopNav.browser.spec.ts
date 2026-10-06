@@ -55,5 +55,18 @@ for (const theme of ["light", "dark"]) {
       (await new AxeBuilder({ page }).withTags(["wcag2a", "wcag2aa"]).analyze())
         .violations,
     ).toEqual([]);
+    await page.goto(
+      `/iframe.html?id=navigation-topnav--without-rail&viewMode=story&globals=theme:${theme}`,
+    );
+    await expect(page.getByRole("navigation").locator("ul")).toHaveCSS(
+      "border-bottom-style",
+      "none",
+    );
+    const current = page.getByRole("link", { name: "Browse 0" });
+    await expect(current).toHaveAttribute("aria-current", "page");
+    await expect(current).toHaveCSS("border-bottom-style", "solid");
+    await page.keyboard.press("Tab");
+    await expect(current).toBeFocused();
+    await expect(current).toHaveCSS("outline-style", "solid");
   });
 }

@@ -333,6 +333,14 @@
 .bd-collection-view-header > div {
   min-inline-size: 0;
 }
+.bd-collection-view-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--bd-space-12);
+  margin-inline-start: auto;
+  max-inline-size: 100%;
+}
 .bd-collection-view-count {
   display: inline-block;
   vertical-align: middle;
@@ -352,6 +360,10 @@
   padding-block: var(--bd-space-12);
   background: var(--bd-surface);
   border-block-end: var(--bd-hair) solid var(--bd-border);
+}
+.bd-collection-view-toolbar[data-sticky="false"] {
+  position: static;
+  z-index: auto;
 }
 .bd-collection-view-toolbar > .bd-filter-chip {
   min-block-size: var(--bd-space-48);

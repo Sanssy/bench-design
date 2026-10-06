@@ -12,6 +12,10 @@ export interface CollectionViewProps {
   countVariant?: "plain" | "outlined";
   /** Search, filters and view controls supplied by the consumer. */
   toolbar?: ReactNode;
+  /** Keep the toolbar sticky within its scrolling ancestor; defaults to true. */
+  stickyToolbar?: boolean;
+  /** Consumer actions beside the title, outside the accessible region name. */
+  actions?: ReactNode;
   /** Consumer-owned result summary and sorting controls. */
   footer?: ReactNode;
   /** Replace collection content with the empty state. */
@@ -21,13 +25,15 @@ export interface CollectionViewProps {
   /** Rendered collection; the consumer owns its data and state. */
   children: ReactNode;
 }
-/** A named collection region with a sticky tools slot and a result footer. */
+/** A named collection region with an optionally sticky tools slot and a result footer. */
 export function CollectionView({
   label,
   headingLevel = 2,
   count,
   countVariant = "plain",
   toolbar,
+  stickyToolbar = true,
+  actions,
   footer,
   isEmpty = false,
   emptyState,
@@ -53,9 +59,14 @@ export function CollectionView({
             )}
           </Heading>
         </div>
+        {actions != null && (
+          <div className="bd-collection-view-actions">{actions}</div>
+        )}
       </header>
       {toolbar != null && (
-        <div className="bd-collection-view-toolbar">{toolbar}</div>
+        <div className="bd-collection-view-toolbar" data-sticky={stickyToolbar}>
+          {toolbar}
+        </div>
       )}
       <div className="bd-collection-view-content">
         {isEmpty ? emptyState : children}

@@ -14,6 +14,8 @@ Supply a landmark `label`, unique item identifiers, destination labels and nativ
 
 Use TopNav for page destinations and Tabs for panels within one page. Do not replace native links with click handlers. No router dependency, `onNavigate`, `className` or style override is exposed. Links wrap into additional rows on narrow screens; long words wrap without hiding label text.
 
+Set `rail={false}` when an enclosing header supplies the separator. This removes only the full-width rail; the current-page underline and focus outline remain. The default is `true`.
+
 ## TypeScript API
 
 <ManifestProps component="TopNav" />
@@ -28,3 +30,5 @@ Use the theme selector for light and dark examples.
 ## Keyboard and ARIA
 
 The navigation landmark has the supplied accessible name. The current link has `aria-current="page"`. Tab and Shift+Tab visit every link; Enter follows its native destination. Links retain browser context menus and modified-click behavior. Focus uses the shared visible outline. There are no tab or tabpanel roles and no custom arrow-key navigation.
+
+<Canvas of={Stories.WithoutRail} />

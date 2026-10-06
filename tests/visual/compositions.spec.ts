@@ -4,6 +4,9 @@ const recipes = [
   "recipes-library--browse-and-inspect",
   "recipes-workspace--edit-in-panel",
   "recipes-choice--confirm-selection",
+  "recipes-document-library--browse-documents",
+  "recipes-ask-with-sources--ask-and-read",
+  "recipes-overview--personal-records",
 ];
 const components = [
   "surfaces-card--collection-summary",

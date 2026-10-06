@@ -6,7 +6,7 @@ React Aria is encapsulated behind a small component API.
 
 **[Website](https://sanssy.github.io/bench-design/)** ·
 [Storybook](https://sanssy.github.io/bench-design/storybook/) ·
-[Release v0.1.0](https://github.com/Sanssy/bench-design/releases/tag/v0.1.0) ·
+[Release v0.2.0](https://github.com/Sanssy/bench-design/releases/tag/v0.2.0) ·
 [MIT License](LICENSE)
 
 ## Current status
@@ -16,12 +16,11 @@ foundation documentation and the components listed in [components.json](componen
 The current families cover typography, layout, surfaces, data and status,
 forms and filters, navigation, overlays, collections, import and feedback.
 The manifest is the source of truth for exports and props.
-The source package version is 0.2.0. Select, ComboBox and MultiComboBox use
-`value` / `defaultValue` / `onChange`, with no aliases for the previous API.
-Select uses string identifiers (or null); ComboBox uses complete FieldOption
-objects (or null); MultiComboBox uses FieldOption arrays (empty to clear).
-FilterMenu keeps `value` / `onApply`; collections keep their selection APIs.
-The release download below remains the published 0.1.0 artifact.
+Since 0.2.0, Select, ComboBox and MultiComboBox use `value` / `defaultValue` /
+`onChange`: Select uses string identifiers (or null), ComboBox complete
+FieldOption objects (or null), MultiComboBox FieldOption arrays (empty to
+clear). FilterMenu keeps `value` / `onApply`; collections keep their selection
+APIs. See the release notes for the full list of changes.
 The [public repository](https://github.com/Sanssy/bench-design) is licensed under MIT.
 The package is distributed as a release tarball and is not published to npm. Visual
 references require explicit human approval; implementation is not approval.
@@ -30,10 +29,10 @@ references require explicit human approval; implementation is not approval.
 
 Use Node 24.21.0 and pnpm 12.8.1 for development. The package requires Node
 >=24.21.0 and React/React DOM ^19.3.0 as peer dependencies.
-Download `bench-design-0.1.0.tgz` from [Release v0.1.0](https://github.com/Sanssy/bench-design/releases/tag/v0.1.0), then install it in your React application:
+Download `bench-design-0.2.0.tgz` from [Release v0.2.0](https://github.com/Sanssy/bench-design/releases/tag/v0.2.0), then install it in your React application:
 
 ```sh
-pnpm add ./bench-design-0.1.0.tgz
+pnpm add ./bench-design-0.2.0.tgz
 ```
 
 To build a tarball from source, run `pnpm install --frozen-lockfile`,

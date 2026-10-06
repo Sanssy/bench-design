@@ -1,9 +1,12 @@
 import { useRef, useState } from "react";
 import { useBenchMessages } from "../bench-provider/BenchProvider.js";
 import { Button } from "../button/Button.js";
+import { IconButton } from "../icon-button/IconButton.js";
 import { TextArea } from "../text-area/TextArea.js";
 /** Multiline message entry; the consumer owns delivery and pending state. */
 export interface ComposerProps {
+  /** Card surface with an icon-only send action; default preserves the plain layout. */
+  variant?: "default" | "card";
   /** Accessible field name. */
   label: string;
   /** Visually hide the linked label. */
@@ -27,6 +30,7 @@ export interface ComposerProps {
 }
 /** Composes shared TextArea and Button without conversation state or positioning. */
 export function Composer({
+  variant = "default",
   label,
   hideLabel = false,
   value,
@@ -50,6 +54,7 @@ export function Composer({
     // biome-ignore lint/a11y/noStaticElementInteractions: delegates textarea-only keyboard and IME events; Button owns its activation.
     <div
       className="bd-composer"
+      data-variant={variant}
       onCompositionStart={() => {
         composing.current = true;
       }}
@@ -86,14 +91,24 @@ export function Composer({
         {...(placeholder === undefined ? {} : { placeholder })}
         {...(errorMessage === undefined ? {} : { errorMessage })}
       />
-      <Button
-        variant="primary"
-        isPending={isPending}
-        isDisabled={isDisabled || current.trim().length === 0}
-        onPress={submit}
-      >
-        {m.send}
-      </Button>
+      {variant === "card" ? (
+        <IconButton
+          icon="arrow-up"
+          label={m.send}
+          variant="primary"
+          isDisabled={unavailable}
+          onPress={submit}
+        />
+      ) : (
+        <Button
+          variant="primary"
+          isPending={isPending}
+          isDisabled={isDisabled || current.trim().length === 0}
+          onPress={submit}
+        >
+          {m.send}
+        </Button>
+      )}
       <span className="bd-field-hidden-label" role="status" aria-live="polite">
         {isPending ? m.sending : ""}
       </span>

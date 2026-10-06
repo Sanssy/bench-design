@@ -1100,6 +1100,13 @@
       "description": "Composes shared TextArea and Button without conversation state or positioning.",
       "props": [
         {
+          "name": "variant",
+          "type": "\"default\" | \"card\"",
+          "required": false,
+          "description": "Card surface with an icon-only send action; default preserves the plain layout.",
+          "default": "\"default\""
+        },
+        {
           "name": "label",
           "type": "string",
           "required": true,
@@ -1180,6 +1187,22 @@
         {
           "name": "Invalid",
           "href": "./?path=/story/form-composer--invalid"
+        },
+        {
+          "name": "Card",
+          "href": "./?path=/story/form-composer--card"
+        },
+        {
+          "name": "CardPending",
+          "href": "./?path=/story/form-composer--card-pending"
+        },
+        {
+          "name": "CardDisabled",
+          "href": "./?path=/story/form-composer--card-disabled"
+        },
+        {
+          "name": "CardInvalid",
+          "href": "./?path=/story/form-composer--card-invalid"
         }
       ]
     },

@@ -26,3 +26,23 @@ export const Invalid: Story = {
     errorMessage: "Could not send. Try again.",
   },
 };
+
+export const Card: Story = { args: { variant: "card", hideLabel: true } };
+export const CardPending: Story = {
+  args: {
+    variant: "card",
+    hideLabel: true,
+    defaultValue: "Please review these notes.",
+    isPending: true,
+  },
+};
+export const CardDisabled: Story = {
+  args: { variant: "card", isDisabled: true },
+};
+export const CardInvalid: Story = {
+  args: {
+    variant: "card",
+    defaultValue: "Please review these notes.",
+    errorMessage: "Could not send. Try again.",
+  },
+};

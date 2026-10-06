@@ -259,6 +259,8 @@ test("Controlled Dialog restores origin focus and passes axe at 320px in both th
 test("End sheets keep the header visible and contain focus across themes and sizes", {
   tag: ["@component:dialog", "@theme:light", "@theme:dark"],
 }, async ({ page }) => {
+  // Two themes and several sizes in one test: allow for slower engines.
+  test.slow();
   for (const theme of ["light", "dark"]) {
     for (const width of [320, 1000]) {
       for (const [story, trigger, title] of [

@@ -154,3 +154,25 @@ test("Rich vertical tabs include descriptions in their name and keep icons decor
     screen.getByRole("tabpanel", { name: "Saved — Your bookmarks" }),
   ).toHaveTextContent("Bookmarks");
 });
+
+test("framed navigation keeps guidance outside tabs and retains keyboard selection", async () => {
+  const user = userEvent.setup();
+  render(
+    <Tabs
+      label="Sections"
+      items={items}
+      orientation="vertical"
+      variant="cards"
+      listHeader={<p>Browse sections</p>}
+      listFooter={<p>Supporting records</p>}
+    />,
+  );
+  const list = screen.getByRole("tablist");
+  expect(list).not.toContainElement(screen.getByText("Supporting records"));
+  expect(screen.getByText("Browse sections")).toBeVisible();
+  await user.tab();
+  await user.keyboard("{ArrowDown}");
+  expect(screen.getByRole("tabpanel", { name: "Saved" })).toHaveTextContent(
+    "Saved collections",
+  );
+});

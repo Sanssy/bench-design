@@ -73,3 +73,21 @@ test("custom trailing content is decorative and description IDs are unique", () 
     screen.getByRole("link", { name: "Two" }).querySelector("svg"),
   ).toBeNull();
 });
+
+test("editorial source label stays within a single destination", async () => {
+  const user = userEvent.setup();
+  render(
+    <ActionCard
+      href="#archive"
+      title="Field notes"
+      variant="editorial"
+      tone="green"
+      supportingText="4 source records"
+    />,
+  );
+  const link = screen.getByRole("link", { name: "Field notes" });
+  expect(link).toContainElement(screen.getByText("4 source records"));
+  expect(screen.getAllByRole("link")).toHaveLength(1);
+  await user.tab();
+  expect(link).toHaveFocus();
+});

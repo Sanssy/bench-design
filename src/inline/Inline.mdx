@@ -16,6 +16,8 @@ Use for action rows and short groups. Items wrap when space runs out; align and 
 - Avoid visual overrides or using layout to change reading order.
 - For ul/ol, supply li children; section content should have an appropriate heading.
 
+Use `wrap={false}` for a compact identity that stays together; its text may wrap within the row.
+
 ## API
 
 <ManifestProps component="Inline" />
@@ -28,6 +30,8 @@ Use for action rows and short groups. Items wrap when space runs out; align and 
 
 <Canvas of={Stories.Actions} />
 <Canvas of={Stories.Labels} />
+
+<Canvas of={Stories.CompactIdentity} />
 
 Use the theme selector to inspect light and dark themes.
 

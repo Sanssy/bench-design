@@ -3,6 +3,8 @@ import type { SpaceToken } from "../space-tokens.js";
 /** Approved structural layout options; visual overrides are excluded. */
 export interface InlineProps {
   children: ReactNode;
+  /** Keep compact groups together; text children may still wrap internally. */
+  wrap?: boolean;
   gap?: SpaceToken;
   as?: "div" | "section" | "ul" | "ol";
   align?: "start" | "center" | "end" | "stretch";
@@ -17,6 +19,7 @@ export interface InlineProps {
 /** Arrange content in a wrapping horizontal flow. */
 export function Inline({
   gap,
+  wrap,
   align,
   justify,
   as: Tag = "div",
@@ -25,6 +28,7 @@ export function Inline({
   return (
     <Tag
       className="bd-inline"
+      data-wrap={wrap}
       style={
         {
           "--bd-gap": gap === undefined ? undefined : `var(--bd-space-${gap})`,

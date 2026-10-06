@@ -60,3 +60,21 @@ test("nested Stack does not inherit its parent's gap or alignment", {
     });
   expect(inner).toEqual(["normal", "stretch"]);
 });
+
+test("responsive action group becomes a full-width mobile row", {
+  tag: ["@component:stack", "@theme:light"],
+}, async ({ page }) => {
+  await page.goto(
+    "/iframe.html?id=layout-stack--responsive-actions&globals=a11y.manual:!true;theme:light",
+  );
+  const stack = page.locator(".bd-stack");
+  await page.setViewportSize({ width: 1280, height: 900 });
+  await expect(stack).toHaveCSS("flex-direction", "column");
+  await page.setViewportSize({ width: 320, height: 900 });
+  await expect(stack).toHaveCSS("flex-direction", "row");
+  expect(
+    await page.evaluate(
+      () => document.documentElement.scrollWidth <= innerWidth,
+    ),
+  ).toBe(true);
+});

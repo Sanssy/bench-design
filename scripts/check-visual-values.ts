@@ -13,6 +13,15 @@ export interface VisualException {
 }
 export const exceptions: VisualException[] = [
   {
+    file: "dist/navigation.css",
+    selector:
+      '.bd-tabs[data-orientation="vertical"][data-sticky-list] .bd-tabs-sidebar',
+    property: "max-block-size",
+    value: "calc(100dvh - var(--bd-space-48))",
+    reason:
+      "A sticky card sidebar stays within the viewport height; the viewport unit has no token.",
+  },
+  {
     file: "dist/data.css",
     selector: "@media",
     property: "condition",

@@ -44,3 +44,13 @@ export const ReadingList: Story = {
     ),
   },
 };
+
+export const ResponsiveActions: Story = {
+  args: { gap: 12, align: "end", mobileDirection: "row" },
+  render: (args) => (
+    <Stack {...args}>
+      <Button>Save</Button>
+      <Button variant="secondary">Cancel</Button>
+    </Stack>
+  ),
+};

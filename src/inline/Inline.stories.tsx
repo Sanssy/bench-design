@@ -56,3 +56,16 @@ export const Labels: Story = {
     ),
   },
 };
+
+export const CompactIdentity: Story = {
+  args: {
+    wrap: false,
+    gap: 12,
+    children: (
+      <>
+        <Text variant="label">AM</Text>
+        <Text>Alex Morgan — person connected to these records</Text>
+      </>
+    ),
+  },
+};

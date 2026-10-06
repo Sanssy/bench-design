@@ -22,7 +22,13 @@ test("zero total is preserved with sign and unit", () => {
     "±0/0pts",
   );
 });
-for (const mode of ["hero", "indexed", "dense", "plain"] as const) {
+for (const mode of [
+  "hero",
+  "indexed",
+  "dense",
+  "plain",
+  "editorial",
+] as const) {
   test(`explicit label overrides the generated name in ${mode} mode`, () => {
     render(
       <Value

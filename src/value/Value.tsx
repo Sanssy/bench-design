@@ -7,7 +7,7 @@ export interface ValueProps {
   unit?: string;
   /** Applies to a positive magnitude; do not include a sign in value. */
   sign?: "+" | "-" | "±";
-  mode?: "hero" | "indexed" | "dense" | "plain";
+  mode?: "hero" | "indexed" | "dense" | "plain" | "editorial";
   /** Overrides the generated localized accessible name. */
   label?: string;
 }

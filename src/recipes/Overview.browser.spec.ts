@@ -26,15 +26,17 @@ for (const theme of ["light", "dark"]) {
     await tabTo(page, page.getByRole("link", { name: "Skip to main content" }));
     await page.keyboard.press("Enter");
     await expect(page.getByRole("main")).toBeFocused();
-    await tabTo(page, page.getByRole("radio", { name: "Housing, 4" }));
-    await page.keyboard.press("ArrowRight");
-    await page.keyboard.press("Space");
+    await tabTo(
+      page,
+      page.getByRole("tab", { name: "Housing — Home and cover" }),
+    );
+    await page.keyboard.press("ArrowDown");
     await expect(
       page.getByRole("link", { name: "City bicycle" }),
     ).toBeVisible();
     await tabTo(page, page.getByRole("link", { name: "City bicycle" }));
-    await tabTo(page, page.getByRole("link", { name: "Purchase receipt" }));
-    await tabTo(page, page.getByRole("link", { name: "Service record" }));
+    await tabTo(page, page.getByRole("link", { name: /Purchase receipt/ }));
+    await tabTo(page, page.getByRole("link", { name: /Service record/ }));
     await tabTo(
       page,
       page.getByRole("link", { name: "Understand the change" }),
@@ -42,10 +44,8 @@ for (const theme of ["light", "dark"]) {
     await expect(
       page.getByRole("link", { name: "Understand the change" }),
     ).toBeFocused();
-    await tabTo(
-      page,
-      page.getByRole("link", { name: "Read the first record" }),
-    );
+    await tabTo(page, page.getByRole("link", { name: "Bicycle purchased" }));
+    await page.getByRole("tab", { name: "Housing — Home and cover" }).click();
     for (const width of [1280, 320]) {
       await page.setViewportSize({ width, height: 900 });
       expect(
@@ -61,9 +61,10 @@ for (const theme of ["light", "dark"]) {
         ).violations,
       ).toEqual([]);
     }
-    await page.getByRole("radio", { name: "Vehicle, 2" }).focus();
-    await page.keyboard.press("ArrowRight");
-    await page.keyboard.press("Space");
+    await page
+      .getByRole("tab", { name: "Vehicle — Purchase and service" })
+      .focus();
+    await page.keyboard.press("ArrowDown");
     await expect(
       page.getByRole("heading", { name: "No records yet" }),
     ).toBeVisible();
@@ -79,5 +80,49 @@ for (const theme of ["light", "dark"]) {
         () => document.documentElement.scrollWidth <= innerWidth,
       ),
     ).toBe(true);
+  });
+}
+
+for (const width of [390, 1280]) {
+  test(`Overview amount typography and identity at ${width}px`, {
+    tag: ["@component:overview"],
+  }, async ({ page }) => {
+    await page.setViewportSize({ width, height: 900 });
+    await page.goto(
+      "/iframe.html?id=recipes-overview--personal-records&globals=a11y.manual:!true;theme:light",
+    );
+    await page.evaluate(() => document.fonts.ready);
+    const amount = page.getByRole("img", { name: "840 EUR / month" });
+    for (const part of [".bd-value__number", ".bd-value__unit"]) {
+      const style = await amount.locator(part).evaluate((el) => ({
+        font: getComputedStyle(el).fontFamily,
+        weight: getComputedStyle(el).fontWeight,
+      }));
+      expect(style.font).toContain("Fraunces");
+      expect(Number(style.weight)).toBeGreaterThanOrEqual(700);
+    }
+    const identity = page.getByText("Alex Morgan", { exact: true });
+    const avatar = page.locator("main .bd-avatar");
+    const a = await avatar.boundingBox();
+    const n = await identity.boundingBox();
+    expect(a).not.toBeNull();
+    expect(n).not.toBeNull();
+    if (!a || !n) throw new Error("Identity geometry unavailable");
+    expect(n.x).toBeGreaterThan(a.x + a.width);
+    expect(Math.abs(n.y - a.y)).toBeLessThan(a.height);
+    if (width === 390) {
+      const badge = await page
+        .getByText("Monthly", { exact: true })
+        .boundingBox();
+      const source = await page
+        .locator('a[href="#agreement"]')
+        .filter({ hasText: "1 source record" })
+        .last()
+        .boundingBox();
+      expect(badge).not.toBeNull();
+      expect(source).not.toBeNull();
+      if (!badge || !source) throw new Error("Expense geometry unavailable");
+      expect(Math.abs(badge.y - source.y)).toBeLessThan(12);
+    }
   });
 }

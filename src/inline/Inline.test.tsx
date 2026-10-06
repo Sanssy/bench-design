@@ -58,3 +58,8 @@ for (const justify of [
     ).toBe(justify);
   });
 }
+
+test("a compact identity can stay in one row", () => {
+  render(<Inline wrap={false}>Identity</Inline>);
+  expect(screen.getByText("Identity")).toHaveAttribute("data-wrap", "false");
+});

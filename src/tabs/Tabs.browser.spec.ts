@@ -5,7 +5,7 @@ test("Tabs selects panels with arrows and Home/End", {
   tag: ["@component:tabs", "@theme:light"],
 }, async ({ page }) => {
   await page.goto(
-    "/iframe.html?id=navigation-tabs--library-sections&viewMode=story&globals=theme:light",
+    "/iframe.html?id=navigation-tabs--library-sections&viewMode=story&globals=a11y.manual:!true;theme:light",
   );
   const assets = page.getByRole("tab", { name: "Assets", exact: true });
   await expect(assets).toBeVisible();
@@ -37,7 +37,7 @@ for (const theme of ["light", "dark"]) {
     tag: ["@component:tabs", `@theme:${theme}`],
   }, async ({ page }) => {
     await page.goto(
-      `/iframe.html?id=navigation-tabs--library-sections&viewMode=story&globals=theme:${theme}`,
+      `/iframe.html?id=navigation-tabs--library-sections&viewMode=story&globals=a11y.manual:!true;theme:${theme}`,
     );
     await expect(page.locator("html")).toHaveAttribute("data-theme", theme);
     const tab = page.getByRole("tab", { name: "Assets", exact: true });
@@ -82,7 +82,7 @@ test("Tabs geometry uses the ratified tokens", {
   tag: ["@component:tabs", "@theme:light"],
 }, async ({ page }) => {
   await page.goto(
-    "/iframe.html?id=navigation-tabs--library-sections&viewMode=story&globals=theme:light",
+    "/iframe.html?id=navigation-tabs--library-sections&viewMode=story&globals=a11y.manual:!true;theme:light",
   );
   const tab = page.getByRole("tab", { name: "Assets", exact: true });
   await expect(tab).toBeVisible();

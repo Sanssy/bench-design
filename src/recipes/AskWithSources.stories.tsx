@@ -4,6 +4,6 @@ import { AskWithSourcesRecipe } from "./AskWithSources.js";
 export default {
   title: "Recipes/Ask with sources",
   component: AskWithSourcesRecipe,
-  parameters: { layout: "fullscreen" },
+  parameters: { fullWidth: true, layout: "fullscreen" },
 } satisfies Meta<typeof AskWithSourcesRecipe>;
 export const AskAndRead: StoryObj<typeof AskWithSourcesRecipe> = {};

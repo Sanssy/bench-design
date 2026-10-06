@@ -7,6 +7,7 @@ import { TopNav } from "../top-nav/TopNav.js";
 import { AppHeader } from "./AppHeader.js";
 
 export default {
+  parameters: { fullWidth: true },
   title: "Layout/AppHeader",
   component: AppHeader,
   args: {

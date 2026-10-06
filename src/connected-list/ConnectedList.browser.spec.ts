@@ -8,7 +8,7 @@ for (const theme of ["light", "dark"] as const) {
     }, async ({ page }) => {
       await page.setViewportSize({ width, height: 800 });
       await page.goto(
-        `/iframe.html?id=data-connectedlist--related-resources&viewMode=story&globals=theme:${theme}`,
+        `/iframe.html?id=data-connectedlist--related-resources&viewMode=story&globals=a11y.manual:!true;theme:${theme}`,
       );
       const list = page.getByRole("list", { name: "Related resources" });
       await expect(list).toBeVisible();

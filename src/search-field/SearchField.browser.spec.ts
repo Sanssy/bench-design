@@ -6,7 +6,7 @@ for (const theme of ["light", "dark"]) {
     tag: [`@theme:${theme}`, "@component:search-field"],
   }, async ({ page }) => {
     await page.goto(
-      `/iframe.html?id=form-searchfield--default&viewMode=story&globals=theme:${theme}`,
+      `/iframe.html?id=form-searchfield--default&viewMode=story&globals=a11y.manual:!true;theme:${theme}`,
     );
     await expect(page.locator("html")).toHaveAttribute("data-theme", theme);
     const control = page.locator(".bd-field-control").first();
@@ -41,7 +41,7 @@ for (const theme of ["light", "dark"]) {
     tag: [`@theme:${theme}`, "@component:search-field"],
   }, async ({ page }) => {
     await page.goto(
-      `/iframe.html?id=form-searchfield--review&viewMode=story&globals=theme:${theme}`,
+      `/iframe.html?id=form-searchfield--review&viewMode=story&globals=a11y.manual:!true;theme:${theme}`,
     );
     await expect(page.locator("html")).toHaveAttribute("data-theme", theme);
     const control = page.locator(".bd-field-control").first();
@@ -104,7 +104,7 @@ for (const theme of ["light", "dark"]) {
     tag: [`@theme:${theme}`, "@component:search-field"],
   }, async ({ page }) => {
     await page.goto(
-      `/iframe.html?id=form-searchfield--underlined&viewMode=story&globals=theme:${theme}`,
+      `/iframe.html?id=form-searchfield--underlined&viewMode=story&globals=a11y.manual:!true;theme:${theme}`,
     );
     await expect(page.locator("html")).toHaveAttribute("data-theme", theme);
     const input = page.getByRole("searchbox", { name: "Search documents" });

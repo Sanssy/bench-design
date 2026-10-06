@@ -15,7 +15,7 @@ for (const theme of ["light", "dark"]) {
   }, async ({ page }) => {
     await page.setViewportSize({ width: 1280, height: 900 });
     await page.goto(
-      `/iframe.html?id=recipes-overview--personal-records&globals=theme:${theme}`,
+      `/iframe.html?id=recipes-overview--personal-records&globals=a11y.manual:!true;theme:${theme}`,
     );
     await expect(page.locator("html")).toHaveAttribute("data-theme", theme);
     await page.evaluate(() => document.fonts.ready);

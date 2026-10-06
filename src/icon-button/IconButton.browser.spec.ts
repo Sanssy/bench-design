@@ -7,7 +7,7 @@ for (const theme of ["light", "dark"]) {
   }, async ({ page }) => {
     for (const variant of ["primary", "secondary"]) {
       await page.goto(
-        `/iframe.html?id=form-iconbutton--${variant}&viewMode=story&globals=theme:${theme}`,
+        `/iframe.html?id=form-iconbutton--${variant}&viewMode=story&globals=a11y.manual:!true;theme:${theme}`,
       );
       await expect(page.locator("html")).toHaveAttribute("data-theme", theme);
       const button = page.getByRole("button", { name: "Search documents" });
@@ -43,7 +43,7 @@ for (const theme of ["light", "dark"]) {
     tag: [`@theme:${theme}`, "@component:button"],
   }, async ({ page }) => {
     await page.goto(
-      `/iframe.html?id=form-button--with-icon&viewMode=story&globals=theme:${theme}`,
+      `/iframe.html?id=form-button--with-icon&viewMode=story&globals=a11y.manual:!true;theme:${theme}`,
     );
     await expect(page.locator("html")).toHaveAttribute("data-theme", theme);
     const button = page.getByRole("button", { name: "Add item" });

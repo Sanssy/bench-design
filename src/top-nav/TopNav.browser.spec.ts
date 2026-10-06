@@ -7,7 +7,7 @@ for (const theme of ["light", "dark"]) {
   }, async ({ page }) => {
     await page.setViewportSize({ width: 320, height: 640 });
     await page.goto(
-      `/iframe.html?id=navigation-topnav--long-labels&viewMode=story&globals=theme:${theme}`,
+      `/iframe.html?id=navigation-topnav--long-labels&viewMode=story&globals=a11y.manual:!true;theme:${theme}`,
     );
     await expect(page.locator("html")).toHaveAttribute("data-theme", theme);
     const nav = page.getByRole("navigation", { name: "Main pages" });

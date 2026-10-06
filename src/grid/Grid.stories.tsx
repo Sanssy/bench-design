@@ -4,6 +4,7 @@ import { Button } from "../button/Button";
 import { Text } from "../text/Text";
 import { Grid } from "./Grid";
 export default {
+  parameters: { fullWidth: true },
   title: "Layout/Grid",
   component: Grid,
   argTypes: {

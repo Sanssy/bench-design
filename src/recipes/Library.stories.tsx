@@ -11,7 +11,7 @@ import { Stack } from "../stack/Stack.js";
 
 export default {
   title: "Recipes/Library",
-  parameters: { layout: "padded" },
+  parameters: { fullWidth: true, layout: "padded" },
 } satisfies Meta;
 const resources = [
   { id: "notes", label: "Field notes", format: "Text" },

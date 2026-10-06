@@ -12,7 +12,7 @@ const items = [
 export default {
   title: "Collections/GridList",
   component: GridList,
-  parameters: { layout: "centered" },
+  parameters: { fullWidth: true, layout: "centered" },
 } satisfies Meta<typeof GridList>;
 type Story = StoryObj<typeof GridList>;
 export const ResourceCards: Story = {

@@ -7,7 +7,7 @@ for (const theme of ["light", "dark"] as const) {
   }, async ({ page }) => {
     await page.setViewportSize({ width: 320, height: 800 });
     await page.goto(
-      `/iframe.html?id=data-referencelist--references&viewMode=story&globals=theme:${theme}`,
+      `/iframe.html?id=data-referencelist--references&viewMode=story&globals=a11y.manual:!true;theme:${theme}`,
     );
     const root = page.locator(".bd-reference-list");
     await expect(root).toBeVisible();

@@ -11,7 +11,7 @@ import { CollectionView } from "./CollectionView.js";
 export default {
   title: "Collections/CollectionView",
   component: CollectionView,
-  parameters: { layout: "centered" },
+  parameters: { fullWidth: true, layout: "centered" },
 } satisfies Meta<typeof CollectionView>;
 type Story = StoryObj<typeof CollectionView>;
 const resources = [

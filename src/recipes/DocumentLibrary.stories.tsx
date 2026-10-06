@@ -3,6 +3,6 @@ import { DocumentLibrary } from "./DocumentLibrary.js";
 export default {
   title: "Recipes/Document library",
   component: DocumentLibrary,
-  parameters: { layout: "fullscreen" },
+  parameters: { fullWidth: true, layout: "fullscreen" },
 } satisfies Meta<typeof DocumentLibrary>;
 export const BrowseDocuments: StoryObj<typeof DocumentLibrary> = {};

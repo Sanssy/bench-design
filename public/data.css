@@ -662,3 +662,14 @@
   display: flex;
   flex-direction: column;
 }
+
+.bd-action-list[data-variant="outlined"] {
+  display: grid;
+  gap: var(--bd-space-12);
+}
+.bd-action-list[data-variant="outlined"] > li + li {
+  border-block-start: 0;
+}
+.bd-action-list[data-variant="outlined"] .bd-action-list__row {
+  border: var(--bd-hair) solid var(--bd-border-strong);
+}

@@ -32,8 +32,14 @@ test("Enter announces waiting, then exposes a response and reachable sources", a
   expect(screen.getByRole("region", { name: "Answer" })).toHaveTextContent(
     "Sample answer ready.",
   );
+  expect(
+    screen.getByRole("button", { name: "What should I prepare?" }),
+  ).toBeVisible();
+  expect(screen.getByRole("region", { name: "Answer" })).toHaveTextContent(
+    "What should I prepare?",
+  );
   expect(input).not.toBeDisabled();
-  expect(input).toHaveValue("What should I prepare?");
+  expect(input).toHaveValue("");
   vi.useRealTimers();
   const user = userEvent.setup();
   input.focus();
@@ -46,7 +52,7 @@ test("Enter announces waiting, then exposes a response and reachable sources", a
   );
 });
 test.each([false, true])(
-  "A suggestion fills an editable draft without sending it (mobile=%s)",
+  "A suggestion sends directly and remains available (mobile=%s)",
   async (mobile) => {
     vi.stubGlobal("matchMedia", (query: string) => ({
       matches: mobile && query.includes("640"),
@@ -58,8 +64,34 @@ test.each([false, true])(
       .setup()
       .click(screen.getByRole("button", { name: "What should I prepare?" }));
     expect(screen.getByRole("textbox", { name: "Your question" })).toHaveValue(
-      "What should I prepare?",
+      "",
     );
-    expect(screen.getByRole("status")).toBeEmptyDOMElement();
+    expect(screen.getByRole("status")).toHaveTextContent("Sending…");
+    expect(
+      screen.getByRole("button", { name: "What should I prepare?" }),
+    ).toBeVisible();
   },
 );
+
+test("The composer stays in flow until an answer is available", () => {
+  vi.useFakeTimers();
+  render(<AskWithSourcesRecipe />);
+  const input = screen.getByRole("textbox", { name: "Your question" });
+  const container = input.closest(".bd-composer")?.parentElement;
+  expect(container).toHaveStyle({ position: "static" });
+  fireEvent.change(input, { target: { value: "A question" } });
+  fireEvent.keyDown(input, { key: "Enter" });
+  expect(container).toHaveStyle({ position: "static" });
+  act(() => vi.advanceTimersByTime(1000));
+  expect(container).toHaveStyle({ position: "sticky" });
+});
+
+test("The header exposes the three example pages with Ask current", () => {
+  render(<AskWithSourcesRecipe />);
+  expect(screen.getByRole("link", { name: /Library/ })).toBeVisible();
+  expect(screen.getByRole("link", { name: "Overview" })).toBeVisible();
+  expect(screen.getByRole("link", { name: "Ask" })).toHaveAttribute(
+    "aria-current",
+    "page",
+  );
+});

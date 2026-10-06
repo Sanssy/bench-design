@@ -9,6 +9,12 @@ export interface ActionCardContent {
   /** Stack eyebrow above the title with the trailing content at the bottom. */
   layout?: "row" | "stacked";
   title: string;
+  /** Editorial typography for a prominent entity card. */
+  variant?: "default" | "editorial";
+  /** Optional category background; defaults to the raised surface. */
+  tone?: "green" | "orange" | "violet" | "magenta" | "teal" | "blue";
+  /** Noninteractive supporting label within the single card target. */
+  supportingText?: string;
   description?: string;
   /** Presentational content only; never include controls or focusable elements. */
   media?: ReactNode;
@@ -30,6 +36,9 @@ export function ActionCard(props: ActionCardProps): ReactElement;
 export function ActionCard({
   title,
   layout = "row",
+  variant = "default",
+  tone,
+  supportingText,
   description,
   media,
   eyebrow,
@@ -55,6 +64,9 @@ export function ActionCard({
             {description}
           </span>
         )}
+        {supportingText && (
+          <span className="bd-action-card__supporting">{supportingText}</span>
+        )}
       </span>
       <span className="bd-action-card__trailing" aria-hidden="true">
         {trailingIcon === undefined && href !== undefined ? (
@@ -71,12 +83,20 @@ export function ActionCard({
     ...(description ? { "aria-describedby": `${id}-description` } : {}),
   };
   return href !== undefined ? (
-    <Link className="bd-action-card" href={href} {...accessible}>
+    <Link
+      className="bd-action-card"
+      data-variant={variant}
+      data-tone={tone}
+      href={href}
+      {...accessible}
+    >
       {content}
     </Link>
   ) : (
     <Button
       className="bd-action-card"
+      data-variant={variant}
+      data-tone={tone}
       type="button"
       {...(onPress ? { onPress } : {})}
       isDisabled={isDisabled ?? false}

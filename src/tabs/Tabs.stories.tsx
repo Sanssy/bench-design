@@ -86,3 +86,12 @@ export const VerticalDocumentSections: Story = {
     listWidth: "panel-width",
   },
 };
+
+export const FramedSections: Story = {
+  args: {
+    ...RichSections.args,
+    variant: "cards",
+    listHeader: <p>In this collection</p>,
+    listFooter: <p>Each section leads to its supporting records.</p>,
+  },
+};

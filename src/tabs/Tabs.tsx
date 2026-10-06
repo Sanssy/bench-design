@@ -34,6 +34,12 @@ export interface TabsProps {
   orientation?: "horizontal" | "vertical";
   /** Optional vertical list width token; omitted keeps intrinsic sizing. */
   listWidth?: "sidebar-width" | "panel-width";
+  /** Framed vertical cards with a compact chip grid on mobile. */
+  variant?: "default" | "cards";
+  /** Content above the list, outside tab semantics; vertical only. */
+  listHeader?: ReactNode;
+  /** Supporting content below the list; vertical only. */
+  listFooter?: ReactNode;
   /** Keep the vertical list visible from 960px; defaults to false. */
   stickyList?: boolean;
 }
@@ -47,12 +53,16 @@ export function Tabs({
   orientation = "horizontal",
   listWidth,
   stickyList = false,
+  variant = "default",
+  listHeader,
+  listFooter,
 }: TabsProps) {
   return (
     <AriaTabs
       className="bd-tabs"
       orientation={orientation}
       data-list-width={listWidth}
+      data-variant={variant}
       data-sticky-list={stickyList || undefined}
       data-mobile-grid={
         orientation === "vertical" && items.length <= 6
@@ -67,7 +77,26 @@ export function Tabs({
         : { onSelectionChange: (key) => onSelectionChange(String(key)) })}
       {...(defaultSelectedKey === undefined ? {} : { defaultSelectedKey })}
     >
-      <ScrollingTabList label={label} items={items} orientation={orientation} />
+      {orientation === "vertical" &&
+      (variant === "cards" || listHeader || listFooter) ? (
+        <div className="bd-tabs-sidebar">
+          {listHeader}
+          <ScrollingTabList
+            label={label}
+            items={items}
+            orientation={orientation}
+            variant={variant}
+          />
+          {listFooter}
+        </div>
+      ) : (
+        <ScrollingTabList
+          label={label}
+          items={items}
+          orientation={orientation}
+          variant={variant}
+        />
+      )}
       {items.map((item) => (
         <TabPanel className="bd-tab-panel" key={item.id} id={item.id}>
           {item.content}
@@ -81,7 +110,8 @@ function ScrollingTabList({
   label,
   items,
   orientation,
-}: Pick<TabsProps, "label" | "items" | "orientation">) {
+  variant,
+}: Pick<TabsProps, "label" | "items" | "orientation" | "variant">) {
   const selectedKey = useContext(TabListStateContext)?.selectedKey;
   const ref = useRef<HTMLDivElement>(null);
   useLayoutEffect(() => {
@@ -126,6 +156,11 @@ function ScrollingTabList({
             </span>
           ) : (
             item.title
+          )}
+          {orientation === "vertical" && variant === "cards" && (
+            <span className="bd-tab-chevron">
+              <Icon name="chevron-right" size={16} />
+            </span>
           )}
         </Tab>
       )}

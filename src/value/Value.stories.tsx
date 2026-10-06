@@ -6,7 +6,10 @@ export default {
   parameters: { layout: "centered" },
   component: Value,
   argTypes: {
-    mode: { control: "select", options: ["hero", "indexed", "dense", "plain"] },
+    mode: {
+      control: "select",
+      options: ["hero", "indexed", "dense", "plain", "editorial"],
+    },
   },
 } satisfies Meta<typeof Value>;
 type Story = StoryObj<typeof Value>;
@@ -18,4 +21,8 @@ export const InlineStats: Story = {
       Attendance increased by <Value {...args} /> this month.
     </Text>
   ),
+};
+
+export const RecordedAmount: Story = {
+  args: { value: 840, unit: "EUR / month", mode: "editorial" },
 };

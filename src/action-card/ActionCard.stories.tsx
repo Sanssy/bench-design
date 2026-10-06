@@ -48,3 +48,12 @@ export const SuggestedReading: Story = {
     layout: "stacked",
   },
 };
+
+export const EditorialEntity: Story = {
+  args: {
+    ...Archive.args,
+    variant: "editorial",
+    tone: "green",
+    supportingText: "4 source records",
+  },
+};

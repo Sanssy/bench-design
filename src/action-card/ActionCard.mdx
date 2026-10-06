@@ -32,3 +32,9 @@ Use the theme selector for light and dark themes.
 ## Accessibility
 
 The title supplies the accessible name; description is linked with aria-describedby. Media and eyebrow do not change the name. React Aria owns keyboard and pointer interaction: Enter follows links, Enter and Space activate actions. Disabled actions cannot activate or receive tab focus. Hover and visible focus add offset elevation without moving the card. Action buttons do not submit forms.
+
+## Editorial entities
+
+Use `variant="editorial"` for editorial title typography and `tone` for a category background from the theme tokens. `supportingText` adds a visible source or context label within the same card target; it does not create a second link. Applications own the label and destination.
+
+<Canvas of={Stories.EditorialEntity} />

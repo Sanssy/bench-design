@@ -51,6 +51,8 @@ meaning; ownership depends on the element, not just the attribute name.
 | `data-rail` | TopNav full-width separator visibility (`true`, `false`). |
 
 | `data-list-width` | Tabs optional vertical list width token. |
+| `data-wrap` | Inline optional non-wrapping compact group. |
+| `data-mobile-direction` | Stack optional full-width wrapping row below 640px. |
 | `data-mobile-grid` | Tabs vertical mobile chip grid (`two`, `three` columns). |
 | `data-sticky-list` | Tabs optional desktop sticky list. |
 | `data-mode` | Value formatting (`plain`, `dense`, `indexed`). |

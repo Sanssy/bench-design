@@ -33,6 +33,25 @@
           "required": true
         },
         {
+          "name": "variant",
+          "type": "\"default\" | \"editorial\"",
+          "required": false,
+          "description": "Editorial typography for a prominent entity card.",
+          "default": "\"default\""
+        },
+        {
+          "name": "tone",
+          "type": "\"green\" | \"orange\" | \"violet\" | \"magenta\" | \"teal\" | \"blue\"",
+          "required": false,
+          "description": "Optional category background; defaults to the raised surface."
+        },
+        {
+          "name": "supportingText",
+          "type": "string",
+          "required": false,
+          "description": "Noninteractive supporting label within the single card target."
+        },
+        {
           "name": "description",
           "type": "string",
           "required": false
@@ -71,6 +90,10 @@
         {
           "name": "SuggestedReading",
           "href": "./?path=/story/surfaces-actioncard--suggested-reading"
+        },
+        {
+          "name": "EditorialEntity",
+          "href": "./?path=/story/surfaces-actioncard--editorial-entity"
         }
       ]
     },
@@ -2244,6 +2267,12 @@
           "required": true
         },
         {
+          "name": "wrap",
+          "type": "boolean",
+          "required": false,
+          "description": "Keep compact groups together; text children may still wrap internally."
+        },
+        {
           "name": "gap",
           "type": "4 | 8 | 12 | 16 | 24 | 32 | 48 | 64 | 96",
           "required": false
@@ -2273,6 +2302,10 @@
         {
           "name": "Labels",
           "href": "./?path=/story/layout-inline--labels"
+        },
+        {
+          "name": "CompactIdentity",
+          "href": "./?path=/story/layout-inline--compact-identity"
         }
       ]
     },
@@ -3402,6 +3435,12 @@
           "default": "\"div\""
         },
         {
+          "name": "mobileDirection",
+          "type": "\"row\"",
+          "required": false,
+          "description": "Reflow a vertical action group into a full-width wrapping row below 640px."
+        },
+        {
           "name": "align",
           "type": "\"start\" | \"center\" | \"end\" | \"stretch\"",
           "required": false,
@@ -3416,6 +3455,10 @@
         {
           "name": "ReadingList",
           "href": "./?path=/story/layout-stack--reading-list"
+        },
+        {
+          "name": "ResponsiveActions",
+          "href": "./?path=/story/layout-stack--responsive-actions"
         }
       ]
     },
@@ -3656,6 +3699,25 @@
           "description": "Optional vertical list width token; omitted keeps intrinsic sizing."
         },
         {
+          "name": "variant",
+          "type": "\"default\" | \"cards\"",
+          "required": false,
+          "description": "Framed vertical cards with a compact chip grid on mobile.",
+          "default": "\"default\""
+        },
+        {
+          "name": "listHeader",
+          "type": "ReactNode",
+          "required": false,
+          "description": "Content above the list, outside tab semantics; vertical only."
+        },
+        {
+          "name": "listFooter",
+          "type": "ReactNode",
+          "required": false,
+          "description": "Supporting content below the list; vertical only."
+        },
+        {
           "name": "stickyList",
           "type": "boolean",
           "required": false,
@@ -3687,6 +3749,10 @@
         {
           "name": "VerticalDocumentSections",
           "href": "./?path=/story/navigation-tabs--vertical-document-sections"
+        },
+        {
+          "name": "FramedSections",
+          "href": "./?path=/story/navigation-tabs--framed-sections"
         }
       ]
     },
@@ -4311,7 +4377,7 @@
         },
         {
           "name": "mode",
-          "type": "\"hero\" | \"indexed\" | \"dense\" | \"plain\"",
+          "type": "\"hero\" | \"indexed\" | \"dense\" | \"plain\" | \"editorial\"",
           "required": false,
           "default": "\"plain\""
         },
@@ -4330,6 +4396,10 @@
         {
           "name": "InlineStats",
           "href": "./?path=/story/data-value--inline-stats"
+        },
+        {
+          "name": "RecordedAmount",
+          "href": "./?path=/story/data-value--recorded-amount"
         }
       ]
     }

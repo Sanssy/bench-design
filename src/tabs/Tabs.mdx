@@ -33,3 +33,9 @@ Use the theme selector to view light and dark examples.
 ## Keyboard and ARIA
 
 Tab enters the selected tab. Left and Right arrows select adjacent tabs; Up and Down select adjacent tabs in vertical orientation; Home and End reach the first and last. React Aria connects tablist, tab and tabpanel roles, names and selection states. Keyboard focus uses the shared visible focus treatment.
+
+## Framed side navigation
+
+Use `variant="cards"` with vertical orientation for framed items and the shared selection shadow. `listHeader` and `listFooter` render outside the tablist, stick with the list and are hidden in the compact mobile grid. Keep these slots informational, without additional navigation controls.
+
+<Canvas of={Stories.FramedSections} />

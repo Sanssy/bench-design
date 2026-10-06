@@ -9,7 +9,7 @@ Use an editorial title, a small domain selector and related records to explain a
 
 ## Composition
 
-AppShell and AppHeader provide landmarks; TopNav marks the current page. SegmentedControl wraps at most six counted domains. ActionCard is a single destination outside a collection, with a decorative IconTile and separate MetaList. ConnectedList keeps caller order, Timeline displays caller-provided dates, and Value displays amounts without calculating a budget. Surface inverse and Link inherit the active palette.
+Page and AppHeader provide landmarks; TopNav marks the current page. Vertical Tabs presents framed domains, with informational sidebar slots and a compact mobile chip grid. ActionCard is a single destination outside a collection, with a decorative IconTile and supporting source label. ConnectedList keeps caller order, Timeline displays caller-provided dates, and Value displays amounts without calculating a budget. Surface inverse and Link inherit the active palette.
 
 ## Application responsibilities
 
@@ -17,6 +17,6 @@ Replace the fictitious data and fragment destinations. Applications own domain c
 
 ## Keyboard, themes and reflow
 
-Tab through the skip link, page navigation, domain selector and record links. Arrow keys move between domains; Space selects the focused domain. Enter follows links. Use the theme selector for light and dark; no theme is forced. Existing layout primitives collapse at narrow widths, including 320 px. Keep interactive elements outside ActionCard.
+Tab through the skip link, page navigation, domain selector and record links. Arrow keys move between domains and select their panels. Enter follows links. Use the theme selector for light and dark; no theme is forced. Existing layout primitives collapse at narrow widths, including 320 px. Keep interactive elements outside ActionCard.
 
 <Canvas of={Stories.PersonalRecords} />

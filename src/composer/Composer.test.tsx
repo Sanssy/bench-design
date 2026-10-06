@@ -79,3 +79,36 @@ test("Composer announces pending and restores availability", () => {
   expect(screen.getByRole("status")).toBeEmptyDOMElement();
   expect(send()).not.toHaveAttribute("aria-disabled", "true");
 });
+
+test("Composer card uses a named icon action and preserves its hidden field label", async () => {
+  const submit = vi.fn();
+  const { container } = mount({
+    variant: "card",
+    hideLabel: true,
+    defaultValue: "Hello",
+    onSubmit: submit,
+  });
+  expect(container.querySelector(".bd-composer")).toHaveAttribute(
+    "data-variant",
+    "card",
+  );
+  expect(send()).toHaveClass("bd-icon-button");
+  expect(send().querySelector("svg")).toBeInTheDocument();
+  await userEvent.setup().click(send());
+  expect(submit).toHaveBeenCalledExactlyOnceWith("Hello");
+  expect(input()).toHaveValue("Hello");
+});
+test("Composer card announces pending and blocks pointer and keyboard submission", async () => {
+  const submit = vi.fn();
+  mount({
+    variant: "card",
+    isPending: true,
+    defaultValue: "Hello",
+    onSubmit: submit,
+  });
+  expect(send()).toBeDisabled();
+  expect(screen.getByRole("status")).toHaveTextContent("Sending…");
+  fireEvent.keyDown(input(), { key: "Enter" });
+  await userEvent.setup().click(send());
+  expect(submit).not.toHaveBeenCalled();
+});

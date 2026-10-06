@@ -669,6 +669,7 @@
 
 /* Message composition shares field surfaces, growth and button geometry. */
 .bd-composer {
+  box-sizing: border-box;
   display: flex;
   align-items: flex-end;
   gap: var(--bd-space-12);
@@ -698,4 +699,15 @@
   max-inline-size: 100%;
   padding-block: var(--bd-space-8);
   overflow-wrap: anywhere;
+}
+
+.bd-composer[data-variant="card"] {
+  padding: var(--bd-space-12);
+  border: var(--bd-hair) solid var(--bd-border-strong);
+  background: var(--bd-surface);
+  box-shadow: var(--bd-offset) var(--bd-offset) 0 var(--bd-shadow);
+}
+.bd-composer[data-variant="card"] .bd-field:not([data-invalid]) .bd-textarea {
+  border-color: transparent;
+  background: transparent;
 }

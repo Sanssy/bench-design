@@ -21,8 +21,14 @@ Supply `label` and `onSubmit`; `hideLabel` keeps the accessible name. Choose con
 <Canvas of={Stories.Pending} />
 <Canvas of={Stories.Disabled} />
 <Canvas of={Stories.Invalid} />
+<Canvas of={Stories.Card} />
+<Canvas of={Stories.CardPending} />
+<Canvas of={Stories.CardDisabled} />
+<Canvas of={Stories.CardInvalid} />
 
-Use the theme selector. For a sticky footer, keep a wrapper in document flow with `position: sticky; inset-block-end: 0`. Reserve content end margin/padding equal to its measured height, including errors and safe-area insets; update as it grows. Verify the final item and focused controls remain visible at 320 px and at zoom.
+Use `variant="card"` for an opaque bordered surface with an offset shadow and a 48 px arrow send action. `hideLabel` remains optional; its accessible name is preserved.
+
+Use the theme selector. For a sticky footer, keep a wrapper in document flow with `position: sticky; inset-block-end: 0`. Reserve content end margin/padding equal to its measured height, including errors and safe-area insets; update as it grows. Set `scroll-padding-block-end` on the scroll container to at least the measured sticky height plus its bottom offset and focus-ring clearance; update it when the field grows or errors appear. This helps keep focused content unobscured (WCAG 2.4.11). Keep any supporting note outside the sticky wrapper. Verify the final item and focused controls remain visible at 320 px and at zoom.
 
 ## Keyboard and ARIA
 

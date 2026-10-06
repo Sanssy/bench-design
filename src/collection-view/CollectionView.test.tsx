@@ -1,5 +1,6 @@
 import { render, screen } from "@testing-library/react";
-import { expect, test } from "vitest";
+import userEvent from "@testing-library/user-event";
+import { expect, test, vi } from "vitest";
 import { CollectionView } from "./CollectionView.js";
 
 test("names the collection and keeps consumer tools, zero count and footer", () => {
@@ -71,4 +72,44 @@ test("outlined count is announced with the chosen heading level", () => {
     screen.getByRole("heading", { name: "Resources 12", level: 3 }),
   ).toBeVisible();
   expect(screen.getByRole("region", { name: "Resources 12" })).toBeVisible();
+});
+
+test("title actions remain interactive outside the region name", async () => {
+  const activate = vi.fn();
+  render(
+    <CollectionView
+      label="Resources"
+      actions={
+        <button type="button" onClick={activate}>
+          Add resource
+        </button>
+      }
+    >
+      Content
+    </CollectionView>,
+  );
+  expect(screen.getByRole("region", { name: "Resources" })).toBeVisible();
+  await userEvent
+    .setup()
+    .click(screen.getByRole("button", { name: "Add resource" }));
+  expect(activate).toHaveBeenCalledOnce();
+});
+
+test("toolbar stickiness is optional and defaults to sticky", () => {
+  const { container, rerender } = render(
+    <CollectionView label="Resources" toolbar="Tools">
+      Content
+    </CollectionView>,
+  );
+  expect(
+    container.querySelector(".bd-collection-view-toolbar"),
+  ).toHaveAttribute("data-sticky", "true");
+  rerender(
+    <CollectionView label="Resources" toolbar="Tools" stickyToolbar={false}>
+      Content
+    </CollectionView>,
+  );
+  expect(
+    container.querySelector(".bd-collection-view-toolbar"),
+  ).toHaveAttribute("data-sticky", "false");
 });

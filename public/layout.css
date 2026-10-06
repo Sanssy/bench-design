@@ -216,6 +216,14 @@
   font-size: var(--bd-size-meta);
   color: var(--bd-text-muted);
 }
+@media (width >= 640px) {
+  .bd-app-header[data-navigation-align="center"] {
+    grid-template-columns: minmax(0, 1fr) minmax(0, auto) minmax(0, 1fr);
+  }
+  .bd-app-header[data-navigation-align="center"] .bd-app-header-navigation {
+    max-inline-size: 100%;
+  }
+}
 @media (width < 640px) {
   .bd-app-header {
     grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);

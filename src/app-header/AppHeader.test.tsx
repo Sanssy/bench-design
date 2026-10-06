@@ -48,3 +48,25 @@ test("integrates into AppShell with exactly one header and banner", () => {
     vi.unstubAllGlobals();
   }
 });
+
+test("centered navigation preserves source keyboard order", async () => {
+  const { rerender } = render(
+    <AppHeader {...header.props} navigationAlign="center" />,
+  );
+  expect(screen.getByRole("banner")).toHaveAttribute(
+    "data-navigation-align",
+    "center",
+  );
+  const user = userEvent.setup();
+  for (const name of ["Workspace", "Browse", "Account"]) {
+    await user.tab();
+    expect(
+      screen.getByRole(name === "Account" ? "button" : "link", { name }),
+    ).toHaveFocus();
+  }
+  rerender(header);
+  expect(screen.getByRole("banner")).toHaveAttribute(
+    "data-navigation-align",
+    "start",
+  );
+});

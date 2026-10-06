@@ -123,6 +123,9 @@
   padding: 0;
   border-block-end: var(--bd-hair) solid var(--bd-divider);
 }
+.bd-top-nav[data-rail="false"] .bd-top-nav-list {
+  border-block-end: none;
+}
 .bd-top-nav-list > li {
   min-inline-size: 0;
   max-inline-size: 100%;

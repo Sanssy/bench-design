@@ -90,6 +90,39 @@ for (const theme of ["light", "dark"]) {
             .analyze()
         ).violations,
       ).toEqual([]);
+      await page.goto(
+        `/iframe.html?id=layout-appheader--centered-navigation&viewMode=story&globals=theme:${theme}`,
+      );
+      const centered = page.getByRole("banner");
+      const centeredNav = centered.getByRole("navigation");
+      await expect(centeredNav).toBeVisible();
+      await page.evaluate(() => document.fonts.ready);
+      if (width === 1280) {
+        const headerBox = await centered.boundingBox();
+        const navBox = await centeredNav.boundingBox();
+        if (!headerBox || !navBox) throw new Error("Missing centered bounds");
+        expect(
+          Math.abs(
+            navBox.x + navBox.width / 2 - headerBox.x - headerBox.width / 2,
+          ),
+        ).toBeLessThanOrEqual(1);
+      } else {
+        const brandBox = await centered
+          .getByRole("link", { name: "Research workspace" })
+          .boundingBox();
+        const navBox = await centeredNav.boundingBox();
+        if (!brandBox || !navBox) throw new Error("Missing mobile bounds");
+        expect(navBox.y).toBeGreaterThanOrEqual(brandBox.y + brandBox.height);
+      }
+      await expect(centeredNav.locator("ul")).toHaveCSS(
+        "border-bottom-style",
+        "none",
+      );
+      expect(
+        await page.evaluate(
+          () => document.documentElement.scrollWidth <= innerWidth,
+        ),
+      ).toBe(true);
     });
   }
 }

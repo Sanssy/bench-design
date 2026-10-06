@@ -43,6 +43,8 @@ meaning; ownership depends on the element, not just the attribute name.
 | `data-direction` | Table sort indicator direction (`descending` selector). |
 | `data-disabled` | SegmentedControl and ColorSwatchPicker field wrapper state. |
 | `data-invalid` | SegmentedControl and ColorSwatchPicker field wrapper validation state. |
+| `data-navigation-align` | AppHeader desktop navigation alignment (`start`, `center`). |
+| `data-rail` | TopNav full-width separator visibility (`true`, `false`). |
 | `data-mode` | Value formatting (`plain`, `dense`, `indexed`). |
 | `data-padding` | GridList item inset (`default`, `none`); produced by the DS. |
 | `data-rejected` | DropZone has rejected files. |
@@ -50,6 +52,8 @@ meaning; ownership depends on the element, not just the attribute name.
 | `data-size` | Heading/Text typography role and Avatar size. |
 | `data-sticky` | Table frame enables a sticky header. |
 | `data-template` | Grid named track proportions (`equal`, `hero`, `sidebar`, `marker`). |
+
+| `data-sticky` | Table frame enables a sticky header; CollectionView toolbar stickiness (`true`, `false`). |
 | `data-tone` | Surface, Badge, Status, Notice, Text and Toast semantic tone. |
 | `data-variant` | Button/IconButton/ToggleButton, Badge, Text and RadioGroup presentation; GridList selection treatment. |
 

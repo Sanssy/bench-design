@@ -64,3 +64,26 @@ export const Workspace: Story = {
     </AppShell>
   ),
 };
+
+export const CenteredNavigation: Story = {
+  parameters: { layout: "fullscreen" },
+  args: {
+    navigationAlign: "center",
+    brand: <Link href="#home">Research workspace</Link>,
+    navigation: (
+      <TopNav
+        label="Main pages"
+        currentId="browse"
+        rail={false}
+        items={[
+          { id: "browse", label: "Browse", href: "#browse" },
+          { id: "saved", label: "Saved", href: "#saved" },
+        ]}
+      />
+    ),
+    actions: <Button variant="secondary">Account</Button>,
+  },
+  render: (args) => (
+    <AppShell header={<AppHeader {...args} />}>Your collections</AppShell>
+  ),
+};

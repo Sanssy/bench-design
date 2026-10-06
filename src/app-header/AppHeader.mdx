@@ -16,6 +16,8 @@ On desktop, the slots share one row. Below 640 px, brand and utilities occupy th
 
 Pass AppHeader to AppShell's `header` slot. AppShell owns the banner in this composition; AppHeader supplies its inner structure without nesting headers. Standalone AppHeader owns its own native header. No `className` or style override is exposed.
 
+Set `navigationAlign="center"` to center desktop navigation within the banner using equal side columns. Keep side content concise and navigation labels short; long content wraps. Below 640 px, navigation still spans the second row. The default remains `"start"`. Combine this option with `TopNav rail={false}` when the enclosing header already supplies a separator.
+
 ## TypeScript API
 
 <ManifestProps component="AppHeader" />
@@ -31,3 +33,5 @@ Use the theme selector for light and dark examples.
 ## Keyboard and ARIA
 
 The composition exposes one banner and preserves the supplied navigation name and current-page state. Tab visits brand links, navigation links and actions in source order; Shift+Tab reverses it. The mobile visual arrangement keeps navigation on the second row, while keyboard order remains brand, navigation, actions. Link and button behavior belongs to React Aria; AppHeader adds no keyboard handlers.
+
+<Canvas of={Stories.CenteredNavigation} />

@@ -13,6 +13,14 @@ export interface VisualException {
 }
 export const exceptions: VisualException[] = [
   {
+    file: "dist/layout.css",
+    selector: "@media",
+    property: "condition",
+    value: "(width>=640px)",
+    reason:
+      "AppHeader centres its navigation from 640px, below which navigation takes its own row; CSS variables cannot define media conditions.",
+  },
+  {
     file: "dist/surfaces.css",
     selector: "@media",
     property: "condition",

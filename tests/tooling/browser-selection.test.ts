@@ -8,14 +8,15 @@ import {
 } from "../../scripts/select-browser-tests.ts";
 
 test("component edits include its browser and axe scenarios only", () => {
-  const plan = selectBrowserTests(["src/link/Link.tsx"]);
+  // Tree has no visual capture and no captured importer.
+  const plan = selectBrowserTests(["src/tree/Tree.tsx"]);
   assert.equal(plan.mode, "scoped");
   assert.equal(plan.visual, false);
   const grep = new RegExp(plan.args[1] ?? "");
-  assert(grep.test("Link focus @component:link @theme:dark"));
-  assert(grep.test("WCAG story @component:link"));
+  assert(grep.test("Tree focus @component:tree @theme:dark"));
+  assert(grep.test("WCAG story @component:tree"));
   assert(!grep.test("Text @component:text"));
-  assert(!grep.test("Other @component:link-extra"));
+  assert(!grep.test("Other @component:tree-extra"));
 });
 test("a component edit also selects the components that import it", () => {
   const plan = selectBrowserTests(["src/text/Text.tsx"], {
@@ -51,7 +52,8 @@ test("IconButton edits compare visual captures too", () => {
     selectBrowserTests(["src/icon-button/IconButton.tsx"]).visual,
     true,
   );
-  assert.equal(selectBrowserTests(["src/link/Link.tsx"]).visual, false);
+  assert.equal(selectBrowserTests(["src/tree/Tree.tsx"]).visual, false);
+  assert.equal(selectBrowserTests(["src/link/Link.tsx"]).visual, true);
 });
 test("browser file edits select that file and union with component edits", () => {
   const plan = selectBrowserTests([

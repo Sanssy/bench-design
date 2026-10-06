@@ -136,7 +136,7 @@
         min(
           100%,
           max(
-            var(--bd-panel-width),
+            var(--bd-grid-list-min-column, var(--bd-panel-width)),
             calc(
               (
                 100% -
@@ -160,9 +160,15 @@
   border: var(--bd-hair) solid var(--bd-border);
   background: var(--bd-surface-raised);
 }
+.bd-grid-list-item[data-padding="none"] {
+  padding: 0;
+}
 .bd-grid-list-content {
   min-inline-size: 0;
   overflow-wrap: anywhere;
+}
+.bd-grid-list-item[data-padding="none"] .bd-grid-list-content {
+  flex: 1;
 }
 .bd-grid-list-item[data-selected] {
   background: var(--bd-accent);

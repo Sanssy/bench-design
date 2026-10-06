@@ -44,6 +44,7 @@ meaning; ownership depends on the element, not just the attribute name.
 | `data-disabled` | SegmentedControl and ColorSwatchPicker field wrapper state. |
 | `data-invalid` | SegmentedControl and ColorSwatchPicker field wrapper validation state. |
 | `data-mode` | Value formatting (`plain`, `dense`, `indexed`). |
+| `data-padding` | GridList item inset (`default`, `none`); produced by the DS. |
 | `data-rejected` | DropZone has rejected files. |
 | `data-selected` | FilterMenu trigger has applied selections. |
 | `data-size` | Heading/Text typography role and Avatar size. |

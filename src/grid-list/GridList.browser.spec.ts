@@ -154,8 +154,10 @@ test(`wide cards collapse and strong selection stays visible ${theme}`, {
   await page.keyboard.press("ArrowDown");
   await expect(page.getByRole("row", { name: "Source index" })).toBeFocused();
   for (const [width, count] of [
-    [800, 2],
-    [360, 1],
+    [1280, 4],
+    [800, 4],
+    [390, 2],
+    [320, 1],
   ] as const) {
     await page.setViewportSize({ width, height: 900 });
     await expect.poll(columnCount).toBe(count);
@@ -164,6 +166,22 @@ test(`wide cards collapse and strong selection stays visible ${theme}`, {
     );
     expect(fits).toBe(true);
   }
+  await page.setViewportSize({ width: 390, height: 900 });
+  await page.goto(
+    `/iframe.html?id=collections-gridlist--media-cards&globals=a11y.manual:!true;theme:${theme}`,
+  );
+  const mediaGrid = page.getByRole("grid", { name: "Resource previews" });
+  await expect(mediaGrid).toBeVisible();
+  const firstMedia = mediaGrid.getByRole("row").first();
+  await expect(firstMedia).toHaveCSS("padding", "0px");
+  const sizes = await firstMedia.evaluate((element) => {
+    const content = element.querySelector(".bd-grid-list-content");
+    return [
+      element.clientWidth,
+      content?.getBoundingClientRect().width,
+    ] as const;
+  });
+  expect(Math.abs(sizes[0] - (sizes[1] ?? 0))).toBeLessThanOrEqual(1);
   expect(
     (
       await new AxeBuilder({ page })

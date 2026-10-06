@@ -1835,8 +1835,14 @@
           "name": "columns",
           "type": "number",
           "required": false,
-          "description": "Maximum grid columns; defaults to two and collapses to fit the container.",
-          "default": "2"
+          "description": "Maximum grid columns; explicit values use the card minimum, omission keeps two with the panel minimum."
+        },
+        {
+          "name": "itemPadding",
+          "type": "\"default\" | \"none\"",
+          "required": false,
+          "description": "Item inset; none lets consumer media reach the item edges.",
+          "default": "\"default\""
         },
         {
           "name": "selectionMode",
@@ -1911,6 +1917,10 @@
         {
           "name": "WideResourceCards",
           "href": "./?path=/story/collections-gridlist--wide-resource-cards"
+        },
+        {
+          "name": "MediaCards",
+          "href": "./?path=/story/collections-gridlist--media-cards"
         }
       ]
     },

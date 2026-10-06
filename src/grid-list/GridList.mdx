@@ -14,11 +14,15 @@ Use for consumer-rendered cards or rows with stable string identifiers. Provide 
 
 ## Layout and selection
 
-`columns` sets the maximum number of grid columns (default: 2). Columns fit the container using the panel-width token as a minimum, then collapse to one column on narrow screens. List layout remains vertical. Use positive integers.
+`columns` sets the maximum number of grid columns (default: 2). Explicit columns fit the container using `card-min-width` (160px) as a minimum. Omitting `columns` preserves the two-column layout with the `panel-width` minimum. Tracks can shrink below the minimum to fit very narrow containers. List layout remains vertical. Use positive integers.
 
 `selectionVariant="strong"` uses the theme-aware strong selection tokens; `"accent"` keeps the default treatment. Item activation stays on GridList via `onAction`.
 
 <Canvas of={Stories.WideResourceCards} />
+
+Use `itemPadding="none"` for edge-to-edge media. The default keeps the item inset. Consumer content owns its internal spacing; selection and reorder controls remain part of the item.
+
+<Canvas of={Stories.MediaCards} />
 
 ## API
 

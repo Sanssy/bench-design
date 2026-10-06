@@ -122,3 +122,33 @@ export const WideResourceCards: Story = {
     </div>
   ),
 };
+
+export const MediaCards: Story = {
+  render: () => (
+    <div
+      style={{ width: "min(calc(var(--bd-measure) * 2), calc(100vw - 2rem))" }}
+    >
+      <GridList
+        label="Resource previews"
+        items={items}
+        columns={4}
+        itemPadding="none"
+        renderItem={(item) => (
+          <>
+            <div
+              style={{
+                background: "var(--bd-surface-subtle)",
+                padding: "var(--bd-space-24)",
+              }}
+            >
+              <strong>{item.label}</strong>
+            </div>
+            <div style={{ padding: "var(--bd-space-12)" }}>
+              <strong>{item.label}</strong>
+            </div>
+          </>
+        )}
+      />
+    </div>
+  ),
+};

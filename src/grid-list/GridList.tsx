@@ -29,8 +29,10 @@ export interface GridListProps<T> {
   getKey?: (item: T) => string;
   /** Grid uses two-dimensional arrow navigation; list uses vertical arrows. */
   layout?: "grid" | "list";
-  /** Maximum grid columns; defaults to two and collapses to fit the container. */
+  /** Maximum grid columns; explicit values use the card minimum, omission keeps two with the panel minimum. */
   columns?: number;
+  /** Item inset; none lets consumer media reach the item edges. */
+  itemPadding?: "default" | "none";
   /** Allowed selection cardinality. */
   selectionMode?: "none" | "single" | "multiple";
   /** Selected item treatment; accent is the default. */
@@ -69,7 +71,8 @@ export function GridList<T>({
   items,
   getKey,
   layout = "grid",
-  columns = 2,
+  columns,
+  itemPadding = "default",
   selectionMode = "none",
   selectionVariant = "accent",
   selectedKeys,
@@ -106,7 +109,11 @@ export function GridList<T>({
         data-variant={selectionVariant}
         style={
           {
-            "--bd-grid-list-columns": Math.max(1, Math.floor(columns)),
+            "--bd-grid-list-columns": Math.max(1, Math.floor(columns ?? 2)),
+            "--bd-grid-list-min-column":
+              columns === undefined
+                ? "var(--bd-panel-width)"
+                : "var(--bd-card-min-width)",
           } as CSSProperties
         }
         layout={layout === "grid" ? "grid" : "stack"}
@@ -131,6 +138,7 @@ export function GridList<T>({
               key={key}
               id={key}
               className="bd-grid-list-item"
+              data-padding={itemPadding}
             >
               {onReorder && <ReorderHandle />}
               {selectionMode === "multiple" && (

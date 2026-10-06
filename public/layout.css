@@ -27,8 +27,18 @@
   display: grid;
   grid-template-columns: repeat(var(--bd-columns), minmax(0, 1fr));
 }
+.bd-grid[data-template="hero"] {
+  grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+}
+.bd-grid[data-template="sidebar"] {
+  grid-template-columns: var(--bd-grid-sidebar-width) minmax(0, 1fr);
+}
+.bd-grid[data-template="marker"] {
+  grid-template-columns: var(--bd-grid-marker-width) minmax(0, 1fr) auto;
+}
 @media (width < 640px) {
-  .bd-grid {
+  .bd-grid,
+  .bd-grid[data-template] {
     grid-template-columns: minmax(0, 1fr);
   }
 }

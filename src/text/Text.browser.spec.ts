@@ -80,3 +80,26 @@ test("Text typography and theme colors", {
     }
   }
 });
+
+test("Text logical and centered alignment", {
+  tag: ["@component:text", "@theme:light"],
+}, async ({ page }) => {
+  for (const [story, expected] of [
+    ["start", "start"],
+    ["centered", "center"],
+    ["paragraph", "end"],
+  ] as const) {
+    await page.goto(
+      `/iframe.html?id=typography-text--${story}&viewMode=story&globals=a11y.manual:!true;theme:light`,
+    );
+    const element = page.locator(".bd-text");
+    await expect(element).toBeVisible();
+    await element.evaluate((node) => {
+      const parent = node.parentElement;
+      if (!parent) throw new Error("Missing story container");
+      parent.style.textAlign = "end";
+      parent.dir = "rtl";
+    });
+    await expect(element).toHaveCSS("text-align", expected);
+  }
+});

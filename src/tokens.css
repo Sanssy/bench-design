@@ -45,6 +45,8 @@
   --bd-ease-out: cubic-bezier(0, 0, 0.58, 1);
   --bd-page-width: 1168px;
   --bd-page-width-narrow: 920px;
+  --bd-grid-sidebar-width: 232px;
+  --bd-grid-marker-width: 136px;
   --bd-panel-width: 288px;
   --bd-color-light-surface: #f5f4ef;
   --bd-color-light-surface-raised: #fffef9;

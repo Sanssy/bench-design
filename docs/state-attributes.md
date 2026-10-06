@@ -38,7 +38,7 @@ meaning; ownership depends on the element, not just the attribute name.
 | --- | --- |
 | `data-width` | Page content measure (`default`, `narrow`). |
 | `data-active-panel` | AppShell active mobile panel (`start`, `end`). |
-| `data-align` | Table cell alignment (`end` selector). |
+| `data-align` | Table cell alignment (`end`); Heading/Text line alignment (`start`, `center`). |
 | `data-category` | CategoryLabel category color. |
 | `data-direction` | Table sort indicator direction (`descending` selector). |
 | `data-disabled` | SegmentedControl and ColorSwatchPicker field wrapper state. |
@@ -48,6 +48,7 @@ meaning; ownership depends on the element, not just the attribute name.
 | `data-selected` | FilterMenu trigger has applied selections. |
 | `data-size` | Heading/Text typography role and Avatar size. |
 | `data-sticky` | Table frame enables a sticky header. |
+| `data-template` | Grid named track proportions (`equal`, `hero`, `sidebar`, `marker`). |
 | `data-tone` | Surface, Badge, Status, Notice, Text and Toast semantic tone. |
 | `data-variant` | Button/IconButton/ToggleButton, Badge, Text and RadioGroup presentation; GridList selection treatment. |
 

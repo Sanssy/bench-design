@@ -24,3 +24,21 @@ for (const size of ["display", "heading", "lead", "ui"] as const) {
     );
   });
 }
+
+for (const value of ["start", "center"] as const) {
+  test(`explicit align ${value}`, () => {
+    render(
+      <Heading level={2} align={value}>
+        Aligned content
+      </Heading>,
+    );
+    expect(screen.getByText("Aligned content")).toHaveAttribute(
+      "data-align",
+      value,
+    );
+  });
+}
+test("omitted align preserves the existing default", () => {
+  render(<Heading level={2}>Default content</Heading>);
+  expect(screen.getByText("Default content")).not.toHaveAttribute("data-align");
+});

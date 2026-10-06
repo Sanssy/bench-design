@@ -16,6 +16,9 @@ Size defaults to ui; label and mono always use meta size.
 - Do use muted text for secondary information.
 - Avoid label styling for long passages; it renders uppercase metadata.
 
+Use `align="center"` for centered lines or `align="start"` for logical start alignment.
+Omitting `align` inherits the surrounding text alignment. Use paragraph Text to align lines; inline spans follow the surrounding line layout.
+
 ## API
 
 <ManifestProps component="Text" />
@@ -29,6 +32,9 @@ Size defaults to ui; label and mono always use meta size.
 <Canvas of={Stories.Muted} />
 <Canvas of={Stories.Label} />
 <Canvas of={Stories.Mono} />
+
+<Canvas of={Stories.Centered} />
+<Canvas of={Stories.Start} />
 
 Use the theme selector to inspect light and dark themes.
 

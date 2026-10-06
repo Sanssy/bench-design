@@ -10,7 +10,12 @@ Import `Grid` from `bench-design` and load `bench-design/styles.css` once.
 
 ## Usage
 
-Use for equal-width collections with two, three or four columns. Below 640px, the collection uses one column.
+Use for equal-width collections with two, three or four columns. Below 640px, every template uses one column.
+
+`template="equal"` (or omitted) uses `columns`. Asymmetric templates override `columns`:
+`hero` uses 7fr / 5fr, `sidebar` uses the 232px sidebar token / remaining space,
+and `marker` uses the 136px marker token / remaining space / an auto-sized action.
+Supply two children for hero/sidebar and three for marker. These templates preserve document order.
 
 - Do choose spacing from the approved token scale; omitting gap adds no spacing.
 - Avoid visual overrides or using layout to change reading order.
@@ -28,6 +33,10 @@ Use for equal-width collections with two, three or four columns. Below 640px, th
 
 <Canvas of={Stories.Collection} />
 <Canvas of={Stories.Gallery} />
+
+<Canvas of={Stories.Hero} />
+<Canvas of={Stories.Sidebar} />
+<Canvas of={Stories.Marker} />
 
 Use the theme selector to inspect light and dark themes.
 

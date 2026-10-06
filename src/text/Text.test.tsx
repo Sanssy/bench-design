@@ -31,3 +31,17 @@ for (const size of ["meta", "ui", "body", "lead"] as const) {
     }
   }
 }
+
+for (const value of ["start", "center"] as const) {
+  test(`explicit align ${value}`, () => {
+    render(<Text align={value}>Aligned content</Text>);
+    expect(screen.getByText("Aligned content")).toHaveAttribute(
+      "data-align",
+      value,
+    );
+  });
+}
+test("omitted align preserves the existing default", () => {
+  render(<Text>Default content</Text>);
+  expect(screen.getByText("Default content")).not.toHaveAttribute("data-align");
+});

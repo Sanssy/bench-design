@@ -2,6 +2,9 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { Text } from "./Text";
 export default {
   title: "Typography/Text",
+  argTypes: {
+    align: { control: "select", options: [undefined, "start", "center"] },
+  },
   component: Text,
   args: { children: "Read the next chapter." },
 } satisfies Meta<typeof Text>;
@@ -13,3 +16,6 @@ export const Lead: Story = { args: { size: "lead" } };
 export const Muted: Story = { args: { tone: "muted" } };
 export const Label: Story = { args: { variant: "label" } };
 export const Mono: Story = { args: { variant: "mono", as: "span" } };
+
+export const Centered: Story = { args: { align: "center" } };
+export const Start: Story = { args: { align: "start" } };

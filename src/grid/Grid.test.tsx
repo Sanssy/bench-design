@@ -44,3 +44,23 @@ for (const columns of [2, 3, 4] as const) {
     ).toBe(String(columns));
   });
 }
+
+for (const value of ["equal", "hero", "sidebar", "marker"] as const) {
+  test(`explicit template ${value}`, () => {
+    render(
+      <Grid columns={2} template={value}>
+        Aligned content
+      </Grid>,
+    );
+    expect(screen.getByText("Aligned content")).toHaveAttribute(
+      "data-template",
+      value,
+    );
+  });
+}
+test("omitted template preserves the existing default", () => {
+  render(<Grid columns={2}>Default content</Grid>);
+  expect(screen.getByText("Default content")).not.toHaveAttribute(
+    "data-template",
+  );
+});

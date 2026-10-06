@@ -67,3 +67,12 @@
 :where([class^="bd-"], [class*=" bd-"]) {
   overflow-wrap: anywhere;
 }
+
+.bd-heading[data-align="start"],
+.bd-text[data-align="start"] {
+  text-align: start;
+}
+.bd-heading[data-align="center"],
+.bd-text[data-align="center"] {
+  text-align: center;
+}

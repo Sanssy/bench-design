@@ -16,6 +16,9 @@ Levels 1, 2, 3 default to display, heading, lead; levels 4–6 use ui.
 - Do follow a logical heading hierarchy.
 - Avoid choosing a level only for its appearance.
 
+Use `align="center"` for centered lines or `align="start"` for logical start alignment.
+Omitting `align` inherits the surrounding text alignment.
+
 ## API
 
 <ManifestProps component="Heading" />
@@ -27,6 +30,9 @@ Levels 1, 2, 3 default to display, heading, lead; levels 4–6 use ui.
 <Canvas of={Stories.Subsection} />
 <Canvas of={Stories.Detail} />
 <Canvas of={Stories.Display} />
+
+<Canvas of={Stories.Centered} />
+<Canvas of={Stories.Start} />
 
 Use the theme selector to inspect light and dark themes.
 

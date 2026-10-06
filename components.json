@@ -1736,7 +1736,7 @@
     {
       "name": "Grid",
       "import": "import { Grid } from \"bench-design\";",
-      "description": "Arrange content in equal columns, collapsing below 640px.",
+      "description": "Arrange content in equal or named columns, collapsing below 640px.",
       "props": [
         {
           "name": "children",
@@ -1755,6 +1755,12 @@
           "default": "\"div\""
         },
         {
+          "name": "template",
+          "type": "\"equal\" | \"hero\" | \"sidebar\" | \"marker\"",
+          "required": false,
+          "description": "Named track proportions; overrides columns when asymmetric."
+        },
+        {
           "name": "columns",
           "type": "2 | 3 | 4",
           "required": true
@@ -1768,6 +1774,18 @@
         {
           "name": "Gallery",
           "href": "./?path=/story/layout-grid--gallery"
+        },
+        {
+          "name": "Hero",
+          "href": "./?path=/story/layout-grid--hero"
+        },
+        {
+          "name": "Sidebar",
+          "href": "./?path=/story/layout-grid--sidebar"
+        },
+        {
+          "name": "Marker",
+          "href": "./?path=/story/layout-grid--marker"
         }
       ]
     },
@@ -1912,6 +1930,12 @@
           "required": false
         },
         {
+          "name": "align",
+          "type": "\"start\" | \"center\"",
+          "required": false,
+          "description": "Logical line alignment; omitted alignment inherits from the parent."
+        },
+        {
           "name": "children",
           "type": "ReactNode",
           "required": true
@@ -1937,6 +1961,14 @@
         {
           "name": "Display",
           "href": "./?path=/story/typography-heading--display"
+        },
+        {
+          "name": "Centered",
+          "href": "./?path=/story/typography-heading--centered"
+        },
+        {
+          "name": "Start",
+          "href": "./?path=/story/typography-heading--start"
         }
       ]
     },
@@ -3514,6 +3546,12 @@
           "default": "\"p\""
         },
         {
+          "name": "align",
+          "type": "\"start\" | \"center\"",
+          "required": false,
+          "description": "Logical line alignment; omitted alignment inherits from the parent."
+        },
+        {
           "name": "children",
           "type": "ReactNode",
           "required": true
@@ -3547,6 +3585,14 @@
         {
           "name": "Mono",
           "href": "./?path=/story/typography-text--mono"
+        },
+        {
+          "name": "Centered",
+          "href": "./?path=/story/typography-text--centered"
+        },
+        {
+          "name": "Start",
+          "href": "./?path=/story/typography-text--start"
         }
       ]
     },

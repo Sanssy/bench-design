@@ -72,3 +72,26 @@ test("Heading typography and theme colors", {
     }
   }
 });
+
+test("Heading logical and centered alignment", {
+  tag: ["@component:heading", "@theme:light"],
+}, async ({ page }) => {
+  for (const [story, expected] of [
+    ["start", "start"],
+    ["centered", "center"],
+    ["article", "end"],
+  ] as const) {
+    await page.goto(
+      `/iframe.html?id=typography-heading--${story}&viewMode=story&globals=a11y.manual:!true;theme:light`,
+    );
+    const element = page.locator(".bd-heading");
+    await expect(element).toBeVisible();
+    await element.evaluate((node) => {
+      const parent = node.parentElement;
+      if (!parent) throw new Error("Missing story container");
+      parent.style.textAlign = "end";
+      parent.dir = "rtl";
+    });
+    await expect(element).toHaveCSS("text-align", expected);
+  }
+});

@@ -55,3 +55,41 @@ const theme = "light";
     });
   }
 }
+
+for (const template of ["hero", "sidebar", "marker"] as const) {
+  test(`Grid ${template} proportions and mobile fallback`, {
+    tag: ["@component:grid", "@theme:light"],
+  }, async ({ page }) => {
+    await page.goto(
+      `/iframe.html?id=layout-grid--${template}&viewMode=story&globals=a11y.manual:!true;theme:light`,
+    );
+    const grid = page.locator(".bd-grid");
+    await expect(grid).toBeVisible();
+    for (const width of [639, 640, 1200]) {
+      await page.setViewportSize({ width, height: 800 });
+      const tracks = await grid.evaluate((element) =>
+        getComputedStyle(element)
+          .gridTemplateColumns.split(" ")
+          .map(Number.parseFloat),
+      );
+      if (width < 640) {
+        expect(tracks).toHaveLength(1);
+      } else {
+        expect(tracks).toHaveLength(template === "marker" ? 3 : 2);
+        if (template === "hero")
+          expect(
+            Math.abs((tracks[0] ?? 0) / (tracks[1] ?? 1) - 7 / 5),
+          ).toBeLessThan(0.01);
+        else expect(tracks[0]).toBe(template === "sidebar" ? 232 : 136);
+        if (template === "marker") {
+          const action = await page
+            .getByRole("button", { name: "Open chapter" })
+            .boundingBox();
+          expect(
+            Math.abs((tracks[2] ?? 0) - (action?.width ?? 0)),
+          ).toBeLessThan(1);
+        }
+      }
+    }
+  });
+}

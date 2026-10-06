@@ -8,6 +8,10 @@ export default {
   title: "Layout/Grid",
   component: Grid,
   argTypes: {
+    template: {
+      control: "select",
+      options: [undefined, "equal", "hero", "sidebar", "marker"],
+    },
     columns: { control: "select", options: [2, 3, 4] },
     gap: {
       control: "select",
@@ -85,6 +89,43 @@ export const Gallery: Story = {
           <Text>Design</Text>
           <Text tone="muted">Objects with purpose.</Text>
         </li>
+      </>
+    ),
+  },
+};
+
+export const Hero: Story = {
+  args: {
+    template: "hero",
+    columns: 2,
+    children: (
+      <>
+        <Text size="lead">Ideas for the next chapter</Text>
+        <Text>A place to collect and connect your notes.</Text>
+      </>
+    ),
+  },
+};
+export const Sidebar: Story = {
+  args: {
+    template: "sidebar",
+    columns: 2,
+    children: (
+      <>
+        <Text variant="label">Contents</Text>
+        <Text>Explore essays, observations and conversations.</Text>
+      </>
+    ),
+  },
+};
+export const Marker: Story = {
+  args: {
+    template: "marker",
+    children: (
+      <>
+        <Text variant="mono">Chapter 01</Text>
+        <Text>Reading the landscape</Text>
+        <Button>Open chapter</Button>
       </>
     ),
   },

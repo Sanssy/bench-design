@@ -44,6 +44,28 @@ for (const theme of ["light", "dark"] as const) {
       (await new AxeBuilder({ page }).withTags(["wcag2a", "wcag2aa"]).analyze())
         .violations,
     ).toEqual([]);
+    await page.goto(
+      `/iframe.html?id=surfaces-surface--category-preview&globals=a11y.manual:!true;theme:${theme}`,
+    );
+    await expect(page.locator("html")).toHaveAttribute("data-theme", theme);
+    const categorySurface = page.locator(".bd-surface");
+    await expect(categorySurface).toHaveCSS("box-shadow", "none");
+    const colors = await categorySurface.evaluate((element) => {
+      const probe = document.createElement("span");
+      probe.style.backgroundColor = "var(--bd-category-green-subtle)";
+      element.append(probe);
+      const result = [
+        getComputedStyle(element).backgroundColor,
+        getComputedStyle(probe).backgroundColor,
+      ];
+      probe.remove();
+      return result;
+    });
+    expect(colors[0]).toBe(colors[1]);
+    expect(
+      (await new AxeBuilder({ page }).withTags(["wcag2a", "wcag2aa"]).analyze())
+        .violations,
+    ).toEqual([]);
   });
 }
 for (const theme of ["light", "dark"] as const) {

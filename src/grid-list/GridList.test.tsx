@@ -197,3 +197,44 @@ test("item padding can be removed without changing the default", () => {
     "default",
   );
 });
+
+test("ruled list rows retain activation", async () => {
+  const action = vi.fn();
+  render(
+    <GridList
+      label="Items"
+      items={items}
+      layout="list"
+      itemVariant="ruled"
+      onAction={action}
+      renderItem={(item) => item.label}
+    />,
+  );
+  expect(screen.getByRole("grid", { name: "Items" })).toHaveAttribute(
+    "data-item-variant",
+    "ruled",
+  );
+  await userEvent.click(screen.getByRole("row", { name: "Alpha" }));
+  expect(action).toHaveBeenCalledWith("a");
+});
+
+test("preview and footer frame content without replacing activation", async () => {
+  const action = vi.fn();
+  render(
+    <GridList
+      label="Previews"
+      items={items}
+      onAction={action}
+      renderItem={(item) => item.label}
+      renderPreview={() => <span>Preview</span>}
+      renderFooter={() => <span>Footer</span>}
+    />,
+  );
+  const row = screen.getByRole("row", { name: /Alpha/ });
+  expect(row.querySelector(".bd-grid-list-preview")).toHaveTextContent(
+    "Preview",
+  );
+  expect(row.querySelector(".bd-grid-list-footer")).toHaveTextContent("Footer");
+  await userEvent.click(row);
+  expect(action).toHaveBeenCalledWith("a");
+});

@@ -1911,6 +1911,13 @@
           "default": "\"default\""
         },
         {
+          "name": "itemVariant",
+          "type": "\"outlined\" | \"ruled\"",
+          "required": false,
+          "description": "Ruled removes side borders and gaps in list layout; grid remains outlined.",
+          "default": "\"outlined\""
+        },
+        {
           "name": "selectionMode",
           "type": "\"none\" | \"single\" | \"multiple\"",
           "required": false,
@@ -1955,6 +1962,18 @@
           "description": "Consumer-owned item content; include readable text for typeahead."
         },
         {
+          "name": "renderPreview",
+          "type": "(item: T) => ReactNode",
+          "required": false,
+          "description": "Decorative fixed-height preview, shown only in grid layout."
+        },
+        {
+          "name": "renderFooter",
+          "type": "(item: T) => ReactNode",
+          "required": false,
+          "description": "Metadata anchored at the bottom of each grid item."
+        },
+        {
           "name": "renderEmpty",
           "type": "() => ReactNode",
           "required": false,
@@ -1987,6 +2006,10 @@
         {
           "name": "MediaCards",
           "href": "./?path=/story/collections-gridlist--media-cards"
+        },
+        {
+          "name": "RuledResources",
+          "href": "./?path=/story/collections-gridlist--ruled-resources"
         }
       ]
     },
@@ -2673,6 +2696,13 @@
           "name": "children",
           "type": "ReactNode",
           "required": true
+        },
+        {
+          "name": "size",
+          "type": "\"default\" | \"compact\"",
+          "required": false,
+          "description": "compact suits thumbnails, such as card previews: smaller inset, words kept whole.",
+          "default": "\"default\""
         }
       ],
       "stories": [
@@ -3417,6 +3447,12 @@
           "required": false
         },
         {
+          "name": "category",
+          "type": "\"green\" | \"orange\" | \"violet\" | \"magenta\" | \"teal\" | \"blue\"",
+          "required": false,
+          "description": "Optional category background; the consumer supplies its meaning and a visible label."
+        },
+        {
           "name": "as",
           "type": "\"div\" | \"section\" | \"article\" | \"aside\"",
           "required": false,
@@ -3435,6 +3471,10 @@
         {
           "name": "Inverse",
           "href": "./?path=/story/surfaces-surface--inverse"
+        },
+        {
+          "name": "CategoryPreview",
+          "href": "./?path=/story/surfaces-surface--category-preview"
         }
       ]
     },

@@ -2511,6 +2511,52 @@
       ]
     },
     {
+      "name": "Page",
+      "import": "import { Page } from \"bench-design\";",
+      "description": "A centered document frame with natural scrolling and a localized skip link.",
+      "props": [
+        {
+          "name": "header",
+          "type": "ReactNode",
+          "required": false,
+          "description": "Optional banner content, typically AppHeader."
+        },
+        {
+          "name": "children",
+          "type": "ReactNode",
+          "required": false,
+          "description": "Primary document content."
+        },
+        {
+          "name": "footer",
+          "type": "ReactNode",
+          "required": false,
+          "description": "Optional footer content, kept in document flow."
+        },
+        {
+          "name": "width",
+          "type": "\"default\" | \"narrow\"",
+          "required": false,
+          "description": "Centered content measure. Defaults to default.",
+          "default": "\"default\""
+        }
+      ],
+      "stories": [
+        {
+          "name": "Document",
+          "href": "./?path=/story/layout-page--document"
+        },
+        {
+          "name": "Narrow",
+          "href": "./?path=/story/layout-page--narrow"
+        },
+        {
+          "name": "ContentOnly",
+          "href": "./?path=/story/layout-page--content-only"
+        }
+      ]
+    },
+    {
       "name": "Paper",
       "import": "import { Paper } from \"bench-design\";",
       "description": "A raised, bordered document sheet constrained to the reading measure.",

@@ -97,6 +97,8 @@ export type { NoticeProps } from "./notice/Notice.js";
 export { Notice } from "./notice/Notice.js";
 export type { NumberFieldProps } from "./number-field/NumberField.js";
 export { NumberField } from "./number-field/NumberField.js";
+export type { PageProps } from "./page/Page.js";
+export { Page } from "./page/Page.js";
 export type { PaperProps } from "./paper/Paper.js";
 export { Paper } from "./paper/Paper.js";
 export type { PopoverProps } from "./popover/Popover.js";

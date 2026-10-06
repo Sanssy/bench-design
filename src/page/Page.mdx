@@ -1,0 +1,36 @@
+import { Meta, Canvas, Controls } from '@storybook/addon-docs/blocks';
+import { ManifestProps } from "../../.storybook/ManifestProps";
+import * as Stories from './Page.stories';
+
+<Meta of={Stories} />
+
+# Page
+
+Import `Page` from `bench-design` and load `bench-design/styles.css` once.
+
+## Usage
+
+Use Page for a document with a static optional header, centered content and an optional footer in document flow. The browser document scrolls at every viewport size. All regions share the surface background.
+
+- Do supply AppHeader in the header slot and headings in the content.
+- Do use `width="narrow"` for a narrower reading column; header and footer retain the default measure.
+- Avoid nesting Page inside a viewport workspace or adding internal scroll containers.
+
+The default content maximum is `page-width` (1168px); narrow uses `page-width-narrow` (920px). Gutters use `space-24` below 960px and `space-64` from 960px.
+
+## API
+
+<ManifestProps component="Page" />
+<Controls of={Stories.Document} />
+
+## Examples
+
+<Canvas of={Stories.Document} />
+<Canvas of={Stories.Narrow} />
+<Canvas of={Stories.ContentOnly} />
+
+Use the theme selector to inspect light and dark themes.
+
+## Accessibility
+
+Use one Page per document. The first keyboard stop is the localized “Skip to main content” link, revealed on focus. Enter focuses main without changing the URL hash. Main is not a regular tab stop. BenchProvider supplies English/French messages and supports a `messages.skipToMain` override. AppHeader inside the header slot shares the single banner landmark. The footer follows main in DOM order and scrolls with the document.

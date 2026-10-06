@@ -36,6 +36,7 @@ meaning; ownership depends on the element, not just the attribute name.
 
 | Attribute | Meaning / current producer |
 | --- | --- |
+| `data-width` | Page content measure (`default`, `narrow`). |
 | `data-active-panel` | AppShell active mobile panel (`start`, `end`). |
 | `data-align` | Table cell alignment (`end` selector). |
 | `data-category` | CategoryLabel category color. |

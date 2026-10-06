@@ -45,6 +45,10 @@ meaning; ownership depends on the element, not just the attribute name.
 | `data-invalid` | SegmentedControl and ColorSwatchPicker field wrapper validation state. |
 | `data-navigation-align` | AppHeader desktop navigation alignment (`start`, `center`). |
 | `data-rail` | TopNav full-width separator visibility (`true`, `false`). |
+
+| `data-list-width` | Tabs optional vertical list width token. |
+| `data-mobile-grid` | Tabs vertical mobile chip grid (`two`, `three` columns). |
+| `data-sticky-list` | Tabs optional desktop sticky list. |
 | `data-mode` | Value formatting (`plain`, `dense`, `indexed`). |
 | `data-padding` | GridList item inset (`default`, `none`); produced by the DS. |
 | `data-rejected` | DropZone has rejected files. |

@@ -150,6 +150,46 @@ for (const theme of ["light", "dark"] as const) {
       return pairs;
     });
     for (const [actual, expected] of pairs) expect(actual).toBe(expected);
+    const list = page.getByRole("tablist");
+    await expect(list).toHaveCSS("display", "grid");
+    expect(
+      await list.evaluate(
+        (el) => getComputedStyle(el).gridTemplateColumns.split(" ").length,
+      ),
+    ).toBe(2);
+    await page.goto(
+      `/iframe.html?id=navigation-tabs--rich-sections&viewMode=story&globals=a11y.manual:!true;theme:${theme}`,
+    );
+    const rich = page.getByRole("tab", {
+      name: "Overview — Overview details",
+      exact: true,
+    });
+    await expect(rich).toBeVisible();
+    expect(
+      await list.evaluate(
+        (el) => getComputedStyle(el).gridTemplateColumns.split(" ").length,
+      ),
+    ).toBe(3);
+    await page.keyboard.press("Tab");
+    await page.keyboard.press("End");
+    await expect(
+      page.getByRole("tab", { name: "Activity — Activity details" }),
+    ).toBeFocused();
+    expect(
+      await page.evaluate(
+        () => document.documentElement.scrollWidth <= window.innerWidth,
+      ),
+    ).toBe(true);
+    expect(
+      (await new AxeBuilder({ page }).withTags(["wcag2a", "wcag2aa"]).analyze())
+        .violations,
+    ).toEqual([]);
+    await page.setViewportSize({ width: 640, height: 640 });
+    await expect(list).toHaveCSS("display", "flex");
+    await expect(list).toHaveCSS("position", "static");
+    await expect(list).toHaveCSS("width", "240px");
+    await page.setViewportSize({ width: 960, height: 640 });
+    await expect(list).toHaveCSS("position", "sticky");
     expect(
       (await new AxeBuilder({ page }).withTags(["wcag2a", "wcag2aa"]).analyze())
         .violations,
@@ -241,4 +281,20 @@ test("Horizontal Tabs overflow stays local at 320px", {
     (await new AxeBuilder({ page }).withTags(["wcag2a", "wcag2aa"]).analyze())
       .violations,
   ).toEqual([]);
+  await page.goto(
+    "/iframe.html?id=navigation-tabs--vertical-document-sections&viewMode=story&globals=a11y.manual:!true;theme:light",
+  );
+  const vertical = page.getByRole("tablist");
+  await expect(vertical).toHaveAttribute("aria-orientation", "vertical");
+  await expect(vertical).toHaveCSS("overflow-x", "auto");
+  expect(await vertical.evaluate((el) => el.scrollWidth > el.clientWidth)).toBe(
+    true,
+  );
+  await page.keyboard.press("Tab");
+  await page.keyboard.press("End");
+  await expect(
+    page.getByRole("tab", { name: "Activity", exact: true }),
+  ).toBeFocused();
+  await expect.poll(focusFits).toBe(true);
+  expect(await pageFits()).toBe(true);
 });

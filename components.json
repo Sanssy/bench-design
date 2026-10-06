@@ -3543,7 +3543,7 @@
         },
         {
           "name": "items",
-          "type": "readonly { id: string; title: string; content: ReactNode }[]",
+          "type": "readonly {\n    id: string;\n    title: string;\n    content: ReactNode;\n    /** Decorative catalogue icon. */\n    icon?: IconName;\n    /** Short supporting text, included in the accessible tab name. */\n    description?: string;\n  }[]",
           "required": true,
           "description": "Ordered tabs with unique stable identifiers and their panel content."
         },
@@ -3571,6 +3571,19 @@
           "required": false,
           "description": "Tab list axis and corresponding arrow navigation.",
           "default": "\"horizontal\""
+        },
+        {
+          "name": "listWidth",
+          "type": "\"sidebar-width\" | \"panel-width\"",
+          "required": false,
+          "description": "Optional vertical list width token; omitted keeps intrinsic sizing."
+        },
+        {
+          "name": "stickyList",
+          "type": "boolean",
+          "required": false,
+          "description": "Keep the vertical list visible from 960px; defaults to false.",
+          "default": "false"
         }
       ],
       "stories": [
@@ -3589,6 +3602,14 @@
         {
           "name": "DocumentSections",
           "href": "./?path=/story/navigation-tabs--document-sections"
+        },
+        {
+          "name": "RichSections",
+          "href": "./?path=/story/navigation-tabs--rich-sections"
+        },
+        {
+          "name": "VerticalDocumentSections",
+          "href": "./?path=/story/navigation-tabs--vertical-document-sections"
         }
       ]
     },

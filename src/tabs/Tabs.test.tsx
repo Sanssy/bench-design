@@ -119,3 +119,38 @@ test.each([400, -80])(
     }
   },
 );
+
+test("Rich vertical tabs include descriptions in their name and keep icons decorative", async () => {
+  const user = userEvent.setup();
+  render(
+    <Tabs
+      label="Sections"
+      orientation="vertical"
+      items={[
+        {
+          id: "assets",
+          title: "Assets",
+          description: "Reusable files",
+          icon: "file-text",
+          content: "Files",
+        },
+        {
+          id: "saved",
+          title: "Saved",
+          description: "Your bookmarks",
+          content: "Bookmarks",
+        },
+      ]}
+    />,
+  );
+  const first = screen.getByRole("tab", { name: "Assets — Reusable files" });
+  expect(first.querySelector("svg")).toHaveAttribute("aria-hidden", "true");
+  await user.tab();
+  await user.keyboard("{ArrowDown}");
+  expect(
+    screen.getByRole("tab", { name: "Saved — Your bookmarks" }),
+  ).toHaveFocus();
+  expect(
+    screen.getByRole("tabpanel", { name: "Saved — Your bookmarks" }),
+  ).toHaveTextContent("Bookmarks");
+});

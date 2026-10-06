@@ -7,12 +7,23 @@ import {
   TabPanel,
 } from "react-aria-components";
 
+import { Icon } from "../icon/Icon.js";
+import type { IconName } from "../icon/icons.js";
+
 /** A named set of tabs with their associated content panels. */
 export interface TabsProps {
   /** Accessible name of the tab list. */
   label: string;
   /** Ordered tabs with unique stable identifiers and their panel content. */
-  items: readonly { id: string; title: string; content: ReactNode }[];
+  items: readonly {
+    id: string;
+    title: string;
+    content: ReactNode;
+    /** Decorative catalogue icon. */
+    icon?: IconName;
+    /** Short supporting text, included in the accessible tab name. */
+    description?: string;
+  }[];
   /** Initially selected identifier; defaults to the first item. */
   defaultSelectedKey?: string;
   /** Controlled selected identifier. */
@@ -21,6 +32,10 @@ export interface TabsProps {
   onSelectionChange?: (key: string) => void;
   /** Tab list axis and corresponding arrow navigation. */
   orientation?: "horizontal" | "vertical";
+  /** Optional vertical list width token; omitted keeps intrinsic sizing. */
+  listWidth?: "sidebar-width" | "panel-width";
+  /** Keep the vertical list visible from 960px; defaults to false. */
+  stickyList?: boolean;
 }
 /** Tab navigation and panels managed together by React Aria. */
 export function Tabs({
@@ -30,11 +45,22 @@ export function Tabs({
   selectedKey,
   onSelectionChange,
   orientation = "horizontal",
+  listWidth,
+  stickyList = false,
 }: TabsProps) {
   return (
     <AriaTabs
       className="bd-tabs"
       orientation={orientation}
+      data-list-width={listWidth}
+      data-sticky-list={stickyList || undefined}
+      data-mobile-grid={
+        orientation === "vertical" && items.length <= 6
+          ? items.length <= 4
+            ? "two"
+            : "three"
+          : undefined
+      }
       {...(selectedKey === undefined ? {} : { selectedKey })}
       {...(onSelectionChange === undefined
         ? {}
@@ -59,11 +85,15 @@ function ScrollingTabList({
   const selectedKey = useContext(TabListStateContext)?.selectedKey;
   const ref = useRef<HTMLDivElement>(null);
   useLayoutEffect(() => {
-    if (orientation !== "horizontal" || selectedKey == null || !items.length)
-      return;
+    if (selectedKey == null || !items.length) return;
     const list = ref.current;
     const selected = list?.querySelector('[role="tab"][aria-selected="true"]');
     if (!list || !selected) return;
+    if (
+      getComputedStyle(list).overflowX !== "auto" &&
+      orientation !== "horizontal"
+    )
+      return;
     const bounds = list.getBoundingClientRect();
     const tab = selected.getBoundingClientRect();
     const style = getComputedStyle(list);
@@ -75,8 +105,28 @@ function ScrollingTabList({
   return (
     <TabList ref={ref} className="bd-tab-list" aria-label={label} items={items}>
       {(item) => (
-        <Tab className="bd-tab" id={item.id}>
-          {item.title}
+        <Tab
+          className="bd-tab"
+          id={item.id}
+          aria-label={
+            item.description
+              ? `${item.title} — ${item.description}`
+              : item.title
+          }
+        >
+          {item.icon || item.description ? (
+            <span className="bd-tab-content">
+              {item.icon && <Icon name={item.icon} size={20} />}
+              <span className="bd-tab-copy">
+                <span>{item.title}</span>
+                {item.description && (
+                  <span className="bd-tab-description">{item.description}</span>
+                )}
+              </span>
+            </span>
+          ) : (
+            item.title
+          )}
         </Tab>
       )}
     </TabList>

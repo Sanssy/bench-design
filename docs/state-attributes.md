@@ -23,6 +23,8 @@ Boolean state selectors test presence, not a particular string value.
 | `data-hovered` | Hovered interactive control or option. |
 | `data-invalid` | Invalid field/control; also emitted by DS field wrappers below. |
 | `data-layout` | GridList layout (`grid` or `stack` selectors), Timeline layout (`stacked` or `columns`). |
+
+| `data-layout` | GridList layout (`grid` selector), Timeline layout (`stacked` or `columns`); ActionCard layout (`row` or `stacked`). |
 | `data-orientation` | Tabs axis (`vertical` selector). |
 | `data-placeholder` | Select value displaying its placeholder. |
 | `data-pending` | Button activity; React Aria blocks activation and retains focus. |
@@ -62,7 +64,7 @@ meaning; ownership depends on the element, not just the attribute name.
 
 | `data-sticky` | Table frame enables a sticky header; CollectionView toolbar stickiness (`true`, `false`). |
 | `data-tone` | Surface, Badge, Status, Notice, Text and Toast semantic tone. |
-| `data-variant` | Button/IconButton/ToggleButton, Badge, Text and RadioGroup presentation; GridList selection treatment. |
+| `data-variant` | Button/IconButton/ToggleButton, Badge, Text and RadioGroup presentation; GridList selection treatment; ActionList presentation (`plain` or `outlined`). |
 
 ## Maintenance
 

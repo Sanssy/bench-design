@@ -21,6 +21,13 @@
           "required": false
         },
         {
+          "name": "layout",
+          "type": "\"row\" | \"stacked\"",
+          "required": false,
+          "description": "Stack eyebrow above the title with the trailing content at the bottom.",
+          "default": "\"row\""
+        },
+        {
           "name": "title",
           "type": "string",
           "required": true
@@ -60,6 +67,10 @@
         {
           "name": "Unavailable",
           "href": "./?path=/story/surfaces-actioncard--unavailable"
+        },
+        {
+          "name": "SuggestedReading",
+          "href": "./?path=/story/surfaces-actioncard--suggested-reading"
         }
       ]
     },
@@ -84,6 +95,13 @@
           "required": false,
           "description": "Show decorative numbers without imposing ordered-list semantics.",
           "default": "false"
+        },
+        {
+          "name": "variant",
+          "type": "\"plain\" | \"outlined\"",
+          "required": false,
+          "description": "Individually outlined rows, or a plain list with separators.",
+          "default": "\"plain\""
         }
       ],
       "stories": [
@@ -94,6 +112,10 @@
         {
           "name": "NumberedActions",
           "href": "./?path=/story/navigation-actionlist--numbered-actions"
+        },
+        {
+          "name": "OutlinedSteps",
+          "href": "./?path=/story/navigation-actionlist--outlined-steps"
         }
       ]
     },

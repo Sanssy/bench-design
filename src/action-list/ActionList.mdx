@@ -18,6 +18,8 @@ Use for a short list of destinations or immediate actions. Each row has exactly 
 - Avoid selectable options or nested interactive content. Use a selection component for persistent choices.
 - Optional numbers are visual content; the list retains unordered semantics.
 
+Use `variant="outlined"` for separated, individually framed rows. Supply an item `trailingIcon` for a decorative end icon on actions or links; omitted links keep their default arrow.
+
 ## API
 
 <ManifestProps component="ActionList" />
@@ -30,6 +32,8 @@ Use for a short list of destinations or immediate actions. Each row has exactly 
 
 <Canvas of={Stories.Resources} />
 <Canvas of={Stories.NumberedActions} />
+
+<Canvas of={Stories.OutlinedSteps} />
 
 Use the theme selector to inspect light and dark themes.
 

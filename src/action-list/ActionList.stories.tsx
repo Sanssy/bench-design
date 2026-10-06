@@ -44,3 +44,25 @@ export const NumberedActions: Story = {
     ],
   },
 };
+
+export const OutlinedSteps: Story = {
+  args: {
+    label: "Reading steps",
+    variant: "outlined",
+    numbered: true,
+    items: [
+      {
+        id: "guide",
+        title: "Read the introduction",
+        href: "#guide",
+        trailingIcon: "arrow-up-right",
+      },
+      {
+        id: "notes",
+        title: "Review the field notes",
+        href: "#notes",
+        trailingIcon: "arrow-up-right",
+      },
+    ],
+  },
+};

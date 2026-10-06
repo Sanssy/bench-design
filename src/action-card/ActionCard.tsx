@@ -6,6 +6,8 @@ export interface ActionCardContent {
   href?: string;
   onPress?: () => void;
   isDisabled?: boolean;
+  /** Stack eyebrow above the title with the trailing content at the bottom. */
+  layout?: "row" | "stacked";
   title: string;
   description?: string;
   /** Presentational content only; never include controls or focusable elements. */
@@ -27,6 +29,7 @@ export function ActionCard(props: ActionCardProps): ReactElement;
 /** A single accessible card target: href OR onPress. Do not nest controls or use inside GridList. */
 export function ActionCard({
   title,
+  layout = "row",
   description,
   media,
   eyebrow,
@@ -63,6 +66,7 @@ export function ActionCard({
     </>
   );
   const accessible = {
+    "data-layout": layout,
     "aria-labelledby": `${id}-title`,
     ...(description ? { "aria-describedby": `${id}-description` } : {}),
   };

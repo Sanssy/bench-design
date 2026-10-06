@@ -27,11 +27,20 @@ test("actions activate once by pointer, Enter and Space without submitting", asy
     <form onSubmit={submit}>
       <ActionList
         label="Actions"
-        items={[{ id: "a", title: "Create draft", onPress }]}
+        variant="outlined"
+        items={[
+          {
+            id: "a",
+            title: "Create draft",
+            onPress,
+            trailingIcon: "arrow-up-right",
+          },
+        ]}
       />
     </form>,
   );
   const button = screen.getByRole("button", { name: "Create draft" });
+  expect(button.querySelector("svg")).toHaveAttribute("aria-hidden", "true");
   await user.click(button);
   await user.keyboard("{Enter}");
   await user.keyboard(" ");

@@ -10,6 +10,8 @@ export type ActionListItem = {
   title: string;
   description?: string;
   icon?: IconName;
+  /** Decorative end icon; omitted links retain their destination arrow. */
+  trailingIcon?: IconName;
 } & (
   | { href: string; external?: boolean; onPress?: never }
   | { href?: never; external?: never; onPress: () => void }
@@ -20,17 +22,20 @@ export interface ActionListProps {
   items: ActionListItem[];
   /** Show decorative numbers without imposing ordered-list semantics. */
   numbered?: boolean;
+  /** Individually outlined rows, or a plain list with separators. */
+  variant?: "plain" | "outlined";
 }
 /** Full-row React Aria links and buttons with optional supporting text. */
 export function ActionList({
   label,
   items,
   numbered = false,
+  variant = "plain",
 }: ActionListProps) {
   const prefix = useId();
   const { messages } = useBenchMessages();
   return (
-    <ul className="bd-action-list" aria-label={label}>
+    <ul className="bd-action-list" data-variant={variant} aria-label={label}>
       {items.map((item, index) => {
         const titleId = `${prefix}-${index}-title`;
         const descriptionId = `${prefix}-${index}-description`;
@@ -65,9 +70,12 @@ export function ActionList({
                 </span>
               )}
             </span>
-            {item.href !== undefined && (
+            {(item.trailingIcon || item.href !== undefined) && (
               <Icon
-                name={item.external ? "arrow-up-right" : "chevron-right"}
+                name={
+                  item.trailingIcon ??
+                  (item.external ? "arrow-up-right" : "chevron-right")
+                }
                 size={20}
               />
             )}

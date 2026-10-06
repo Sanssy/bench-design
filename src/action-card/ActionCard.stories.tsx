@@ -39,3 +39,12 @@ export const Unavailable: Story = {
     isDisabled: true,
   },
 };
+
+export const SuggestedReading: Story = {
+  args: {
+    href: "#guide",
+    title: "Where should I start?",
+    eyebrow: "01",
+    layout: "stacked",
+  },
+};

@@ -4,7 +4,7 @@ import { Overview } from "./Overview.js";
 export default {
   title: "Recipes/Overview",
   component: Overview,
-  parameters: { layout: "fullscreen" },
+  parameters: { fullWidth: true, layout: "fullscreen" },
 } satisfies Meta<typeof Overview>;
 
 export const PersonalRecords: StoryObj<typeof Overview> = {};

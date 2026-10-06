@@ -19,7 +19,7 @@ const columns: TableColumn[] = [
 export default {
   title: "Collections/Table",
   component: Table,
-  parameters: { layout: "centered" },
+  parameters: { fullWidth: true, layout: "centered" },
 } satisfies Meta<typeof Table>;
 type Story = StoryObj<typeof Table>;
 export const ResourceInventory: Story = {

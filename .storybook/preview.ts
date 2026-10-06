@@ -1,5 +1,6 @@
 import type { Preview } from "@storybook/react-vite";
 import { manifestControls } from "./manifest-controls.js";
+import { storyWidth } from "./story-width.js";
 import "../dist/styles.css";
 import "./foundations.css";
 
@@ -37,6 +38,7 @@ const preview: Preview = {
     },
   },
   decorators: [
+    storyWidth,
     (Story, { globals }) => {
       const root = document.documentElement;
       if (globals.theme === "light" || globals.theme === "dark")

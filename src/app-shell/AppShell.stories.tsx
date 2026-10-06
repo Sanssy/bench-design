@@ -7,7 +7,7 @@ import { AppShell } from "./AppShell";
 export default {
   title: "Layout/AppShell",
   component: AppShell,
-  parameters: { layout: "fullscreen" },
+  parameters: { fullWidth: true, layout: "fullscreen" },
   args: {
     header: (
       <Heading level={1} size="lead">

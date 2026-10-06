@@ -15,7 +15,7 @@ import { TextField } from "../text-field/TextField.js";
 
 export default {
   title: "Recipes/Workspace",
-  parameters: { layout: "fullscreen" },
+  parameters: { fullWidth: true, layout: "fullscreen" },
 } satisfies Meta;
 export const EditInPanel: StoryObj = {
   render: () => {

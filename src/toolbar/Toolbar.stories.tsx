@@ -5,7 +5,7 @@ import { IconButton } from "../icon-button/IconButton.js";
 import { Toolbar } from "./Toolbar.js";
 export default {
   title: "Navigation/Toolbar",
-  parameters: { layout: "centered" },
+  parameters: { fullWidth: true, layout: "centered" },
   component: Toolbar,
 } satisfies Meta<typeof Toolbar>;
 type Story = StoryObj<typeof Toolbar>;

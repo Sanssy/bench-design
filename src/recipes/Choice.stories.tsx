@@ -12,7 +12,7 @@ import { Value } from "../value/Value.js";
 
 export default {
   title: "Recipes/Choice",
-  parameters: { layout: "padded" },
+  parameters: { fullWidth: true, layout: "padded" },
 } satisfies Meta;
 const options = [
   { id: "compact", label: "Compact", detail: "4 items" },

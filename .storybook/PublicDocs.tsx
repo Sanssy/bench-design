@@ -163,6 +163,11 @@ export function SaveAction() {
       </section>
       <section>
         <h2>Work in the repository</h2>
+        <p>
+          Storybook examples use a left-aligned container capped at 720 px; set
+          parameters.fullWidth to true at story or component level to opt out,
+          while fullscreen stories always use the available canvas width.
+        </p>
         <p>Pinned runtime: Node 24.21.0 and pnpm 12.8.1.</p>
         <pre>
           <code>

@@ -154,3 +154,46 @@ test("strong selection keeps item activation and selection", async () => {
     "true",
   );
 });
+
+test("explicit columns use the card minimum while defaults keep the panel minimum", () => {
+  const { rerender } = render(
+    <GridList
+      label="Items"
+      items={items}
+      columns={4}
+      renderItem={(item) => item.label}
+    />,
+  );
+  const grid = screen.getByRole("grid", { name: "Items" });
+  expect(grid.style.getPropertyValue("--bd-grid-list-min-column")).toBe(
+    "var(--bd-card-min-width)",
+  );
+  rerender(
+    <GridList label="Items" items={items} renderItem={(item) => item.label} />,
+  );
+  expect(grid.style.getPropertyValue("--bd-grid-list-min-column")).toBe(
+    "var(--bd-panel-width)",
+  );
+});
+
+test("item padding can be removed without changing the default", () => {
+  const { rerender } = render(
+    <GridList
+      label="Items"
+      items={items}
+      itemPadding="none"
+      renderItem={(item) => item.label}
+    />,
+  );
+  expect(screen.getByRole("row", { name: "Alpha" })).toHaveAttribute(
+    "data-padding",
+    "none",
+  );
+  rerender(
+    <GridList label="Items" items={items} renderItem={(item) => item.label} />,
+  );
+  expect(screen.getByRole("row", { name: "Alpha" })).toHaveAttribute(
+    "data-padding",
+    "default",
+  );
+});

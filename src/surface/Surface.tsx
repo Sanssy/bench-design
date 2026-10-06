@@ -6,6 +6,8 @@ export interface SurfaceProps {
   /** Inverse uses the opposite global theme; nested inverse surfaces do not toggle it. */
   tone?: "raised" | "subtle" | "inverse";
   padding?: SpaceToken;
+  /** Optional category background; the consumer supplies its meaning and a visible label. */
+  category?: "green" | "orange" | "violet" | "magenta" | "teal" | "blue";
   as?: "div" | "section" | "article" | "aside";
 }
 /** Group content on a raised, subtle or inverse background without a border. */
@@ -13,12 +15,14 @@ export function Surface({
   children,
   tone = "raised",
   padding,
+  category,
   as: Tag = "div",
 }: SurfaceProps) {
   return (
     <Tag
       className="bd-surface"
       data-tone={tone}
+      data-category={category}
       style={
         {
           "--bd-surface-padding":

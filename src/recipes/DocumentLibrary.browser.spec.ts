@@ -25,7 +25,65 @@ for (const theme of ["light", "dark"]) {
         ).violations,
       ).toEqual([]);
     }
+    for (const [width, columns] of [
+      [1280, 4],
+      [390, 2],
+    ] as const) {
+      await page.setViewportSize({ width, height: 900 });
+      await page.evaluate(() => document.fonts.ready);
+      const grid = page.getByRole("grid", { name: "Documents" });
+      await expect
+        .poll(() =>
+          grid.evaluate(
+            (el) => getComputedStyle(el).gridTemplateColumns.split(" ").length,
+          ),
+        )
+        .toBe(columns);
+      const geometry = await grid.getByRole("row").evaluateAll((rows) =>
+        rows.map((row) => ({
+          top: row.getBoundingClientRect().top,
+          height: row.getBoundingClientRect().height,
+          preview: row
+            .querySelector(".bd-grid-list-preview")
+            ?.getBoundingClientRect().height,
+          footer: row
+            .querySelector(".bd-grid-list-footer")
+            ?.getBoundingClientRect().bottom,
+          bottom: row.getBoundingClientRect().bottom,
+        })),
+      );
+      for (const item of geometry) {
+        expect(item.preview).toBe(192);
+        // Sub-pixel layout in Firefox: allow up to 1.5 px.
+        expect(Math.abs((item.footer ?? 0) - item.bottom)).toBeLessThanOrEqual(
+          1.5,
+        );
+        for (const peer of geometry.filter(
+          (other) => Math.abs(other.top - item.top) < 1,
+        )) {
+          expect(Math.abs(peer.height - item.height)).toBeLessThanOrEqual(1);
+        }
+      }
+      for (const label of await page
+        .locator('.bd-page-footer .bd-text[data-variant="mono"]')
+        .all()) {
+        await expect(label).toHaveCSS("overflow-wrap", "normal");
+        await expect(label).toHaveCSS("word-break", "normal");
+      }
+      await check();
+      await page.screenshot({
+        path: `../fid-after/library-3-${width}-${theme}.png`,
+        fullPage: true,
+      });
+    }
+    await page.setViewportSize({ width: 320, height: 900 });
     await check();
+    await expect(page.getByRole("contentinfo")).toContainText("Document space");
+    await expect(page.locator(".bd-collection-view-toolbar")).toHaveCSS(
+      "position",
+      "static",
+    );
+    await expect(page.locator(".bd-app-shell")).toHaveCount(0);
     await expect(page.getByRole("row").locator(".bd-card")).toHaveCount(0);
     const search = page.getByRole("searchbox", { name: /Search documents/ });
     await search.focus();
@@ -36,7 +94,7 @@ for (const theme of ["light", "dark"]) {
     await check();
     await page.keyboard.press("ControlOrMeta+A");
     await page.keyboard.press("Backspace");
-    const all = page.getByRole("radio", { name: "All, 4" });
+    const all = page.getByRole("radio", { name: "All, 10" });
     for (
       let step = 0;
       step < 5 && !(await all.evaluate((el) => el === document.activeElement));
@@ -50,7 +108,18 @@ for (const theme of ["light", "dark"]) {
     await expect(
       page.getByRole("radio", { name: "Invoices, 2" }),
     ).toBeChecked();
-    await expect(page.getByText("2 of 4 documents shown")).toBeVisible();
+    await expect(page.getByText("2 of 10 documents shown")).toBeVisible();
+    await page.keyboard.press("Tab");
+    const gridView = page.getByRole("radio", { name: "Grid view" });
+    await expect(gridView).toBeFocused();
+    await page.keyboard.press("ArrowRight");
+    await page.keyboard.press("Space");
+    await expect(page.getByRole("radio", { name: "List view" })).toBeChecked();
+    await expect(page.getByRole("grid", { name: "Documents" })).toHaveAttribute(
+      "data-layout",
+      "stack",
+    );
+    await check();
     await page.keyboard.press("Tab");
     const row = page.getByRole("row", { name: "Energy invoice" });
     await expect(row).toBeFocused();

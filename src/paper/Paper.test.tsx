@@ -13,3 +13,8 @@ test("preserves document content and native highlighted passages", () => {
   expect(screen.getByText("Keep a copy.").tagName).toBe("MARK");
   expect(screen.getByText(/Highlighted passage:/)).toBeVisible();
 });
+
+test("compact paper is marked for thumbnail styling", () => {
+  const { container } = render(<Paper size="compact">Preview</Paper>);
+  expect(container.firstElementChild).toHaveAttribute("data-size", "compact");
+});

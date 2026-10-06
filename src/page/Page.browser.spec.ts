@@ -8,7 +8,7 @@ for (const theme of ["light", "dark"] as const) {
     }, async ({ page }) => {
       await page.setViewportSize({ width, height: 844 });
       await page.goto(
-        `/iframe.html?id=layout-page--document&viewMode=story&globals=theme:${theme}`,
+        `/iframe.html?id=layout-page--document&viewMode=story&globals=a11y.manual:!true;theme:${theme}`,
       );
       await page.evaluate(() => document.fonts.ready);
       const main = page.getByRole("main");
@@ -60,7 +60,7 @@ for (const theme of ["light", "dark"] as const) {
   }, async ({ page }) => {
     await page.setViewportSize({ width: 1440, height: 900 });
     await page.goto(
-      `/iframe.html?id=layout-page--narrow&viewMode=story&globals=theme:${theme}`,
+      `/iframe.html?id=layout-page--narrow&viewMode=story&globals=a11y.manual:!true;theme:${theme}`,
     );
     const main = page.getByRole("main");
     await expect(main).toHaveCSS("max-inline-size", "920px");

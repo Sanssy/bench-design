@@ -470,6 +470,10 @@
   font: var(--bd-size-body) / var(--bd-line-reading) var(--bd-font-ui);
   overflow-wrap: anywhere;
 }
+.bd-paper[data-size="compact"] {
+  padding: var(--bd-space-12);
+  overflow-wrap: break-word;
+}
 .bd-paper mark {
   background: var(--bd-accent);
   color: var(--bd-on-accent);
@@ -612,4 +616,30 @@
 }
 .bd-reference-list[data-marker="accent"] .bd-reference-body > .bd-link {
   font-weight: var(--bd-weight-semibold);
+}
+
+/* Category backgrounds use the shared palette, without changing inverse contexts. */
+.bd-surface[data-category="green"]:not([data-tone="inverse"]) {
+  background: var(--bd-category-green-subtle);
+  box-shadow: none;
+}
+.bd-surface[data-category="orange"]:not([data-tone="inverse"]) {
+  background: var(--bd-category-orange-subtle);
+  box-shadow: none;
+}
+.bd-surface[data-category="violet"]:not([data-tone="inverse"]) {
+  background: var(--bd-category-violet-subtle);
+  box-shadow: none;
+}
+.bd-surface[data-category="magenta"]:not([data-tone="inverse"]) {
+  background: var(--bd-category-magenta-subtle);
+  box-shadow: none;
+}
+.bd-surface[data-category="teal"]:not([data-tone="inverse"]) {
+  background: var(--bd-category-teal-subtle);
+  box-shadow: none;
+}
+.bd-surface[data-category="blue"]:not([data-tone="inverse"]) {
+  background: var(--bd-category-blue-subtle);
+  box-shadow: none;
 }

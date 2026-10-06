@@ -22,7 +22,7 @@ Boolean state selectors test presence, not a particular string value.
 | `data-focused` | Focused input or collection option. |
 | `data-hovered` | Hovered interactive control or option. |
 | `data-invalid` | Invalid field/control; also emitted by DS field wrappers below. |
-| `data-layout` | GridList layout (`grid` selector), Timeline layout (`stacked` or `columns`). |
+| `data-layout` | GridList layout (`grid` or `stack` selectors), Timeline layout (`stacked` or `columns`). |
 | `data-orientation` | Tabs axis (`vertical` selector). |
 | `data-placeholder` | Select value displaying its placeholder. |
 | `data-pending` | Button activity; React Aria blocks activation and retains focus. |
@@ -41,7 +41,7 @@ meaning; ownership depends on the element, not just the attribute name.
 | `data-marker` | ReferenceList numbering (`number` or `accent`). |
 | `data-active-panel` | AppShell active mobile panel (`start`, `end`). |
 | `data-align` | Table cell alignment (`end`); Heading/Text line alignment (`start`, `center`). |
-| `data-category` | CategoryLabel category color. |
+| `data-category` | CategoryLabel color and Surface category background. |
 | `data-direction` | Table sort indicator direction (`descending` selector). |
 | `data-disabled` | SegmentedControl and ColorSwatchPicker field wrapper state. |
 | `data-invalid` | SegmentedControl and ColorSwatchPicker field wrapper validation state. |
@@ -52,6 +52,7 @@ meaning; ownership depends on the element, not just the attribute name.
 | `data-mobile-grid` | Tabs vertical mobile chip grid (`two`, `three` columns). |
 | `data-sticky-list` | Tabs optional desktop sticky list. |
 | `data-mode` | Value formatting (`plain`, `dense`, `indexed`). |
+| `data-item-variant` | GridList row presentation (`outlined`, `ruled`); ruled applies only to list layout. |
 | `data-padding` | GridList item inset (`default`, `none`); produced by the DS. |
 | `data-rejected` | DropZone has rejected files. |
 | `data-selected` | FilterMenu trigger has applied selections. |

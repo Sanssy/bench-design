@@ -18,6 +18,8 @@ Keep content concise and leave room for focus outlines. Use ordinary text, links
 
 Raised Surface uses soft content elevation in light contexts and no soft shadow in dark contexts. Subtle and inverse roots have no shadow. Descendants inside inverse resolve elevation from their local theme. Keep hard offset elevation for actions and dialogs.
 
+Use `category` for a background from the category palette. The consumer assigns its meaning and supplies a visible category label; color alone must not identify content. Category backgrounds have no elevation. `tone="inverse"` takes precedence.
+
 ## API
 
 <ManifestProps component="Surface" />
@@ -30,6 +32,7 @@ Raised Surface uses soft content elevation in light contexts and no soft shadow 
 
 <Canvas of={Stories.Workspace} />
 <Canvas of={Stories.Notice} />
+<Canvas of={Stories.CategoryPreview} />
 <Canvas of={Stories.Inverse} />
 
 Use the theme selector to inspect light and dark themes.

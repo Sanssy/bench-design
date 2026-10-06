@@ -165,7 +165,9 @@
 }
 .bd-grid-list-content {
   min-inline-size: 0;
-  overflow-wrap: anywhere;
+  /* break-word keeps words whole when a line can hold them, unlike anywhere,
+     which also shrinks min-content and splits words in narrow cards. */
+  overflow-wrap: break-word;
 }
 .bd-grid-list-item[data-padding="none"] .bd-grid-list-content {
   flex: 1;
@@ -627,4 +629,36 @@
   .bd-timeline[data-layout="columns"] .bd-timeline-content {
     grid-column: 2;
   }
+}
+
+.bd-grid-list[data-layout="stack"][data-item-variant="ruled"] {
+  gap: 0;
+}
+.bd-grid-list[data-layout="stack"][data-item-variant="ruled"]
+  > .bd-grid-list-item {
+  border: 0;
+  border-block-end: var(--bd-hair) solid var(--bd-border);
+}
+.bd-grid-list[data-layout="stack"][data-item-variant="ruled"]
+  > .bd-grid-list-item:first-child {
+  border-block-start: var(--bd-hair) solid var(--bd-border);
+}
+
+.bd-grid-list-preview {
+  block-size: calc(var(--bd-space-96) * 2);
+  flex: none;
+  overflow: hidden;
+}
+.bd-grid-list-preview > * {
+  box-sizing: border-box;
+  block-size: 100%;
+}
+.bd-grid-list-footer {
+  margin-block-start: auto;
+}
+
+.bd-grid-list-content-framed {
+  align-self: stretch;
+  display: flex;
+  flex-direction: column;
 }

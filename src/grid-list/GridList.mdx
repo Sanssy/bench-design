@@ -24,6 +24,10 @@ Use `itemPadding="none"` for edge-to-edge media. The default keeps the item inse
 
 <Canvas of={Stories.MediaCards} />
 
+Use `itemVariant="ruled"` for a list with horizontal separators and no gaps. Grid layout retains its outlined cards. Selection, focus and activation semantics are unchanged.
+
+<Canvas of={Stories.RuledResources} />
+
 ## API
 
 <ManifestProps component="GridList" />
@@ -42,3 +46,5 @@ Provide `onReorder` to enable the six-dot drag handle. The callback receives str
 Tab into the collection and reach the drag handle. Enter starts dragging, arrows move between insertion points, Enter drops and Escape cancels. React Aria supplies the live announcements. Keep the reorder capability stable: toggling whether `onReorder` exists remounts the Aria collection; control selection and expansion if they must survive that toggle.
 
 <Canvas of={Stories.ReorderableResources} />
+
+Use `renderPreview` for a decorative, fixed-height grid preview (hidden from assistive technology). Keep meaningful information in `renderItem`. `renderFooter` anchors metadata at the bottom of stretched grid items; list layout omits the preview. The minimum card track is 144px, allowing two columns inside a Page at 390px and one at 320px.

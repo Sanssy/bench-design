@@ -33,6 +33,8 @@ export interface GridListProps<T> {
   columns?: number;
   /** Item inset; none lets consumer media reach the item edges. */
   itemPadding?: "default" | "none";
+  /** Ruled removes side borders and gaps in list layout; grid remains outlined. */
+  itemVariant?: "outlined" | "ruled";
   /** Allowed selection cardinality. */
   selectionMode?: "none" | "single" | "multiple";
   /** Selected item treatment; accent is the default. */
@@ -47,6 +49,10 @@ export interface GridListProps<T> {
   onAction?: (key: string) => void;
   /** Consumer-owned item content; include readable text for typeahead. */
   renderItem: (item: T) => ReactNode;
+  /** Decorative fixed-height preview, shown only in grid layout. */
+  renderPreview?: (item: T) => ReactNode;
+  /** Metadata anchored at the bottom of each grid item. */
+  renderFooter?: (item: T) => ReactNode;
   /** Content for an empty collection. */
   renderEmpty?: () => ReactNode;
   /** Actions shown when one or more items are selected. */
@@ -73,6 +79,7 @@ export function GridList<T>({
   layout = "grid",
   columns,
   itemPadding = "default",
+  itemVariant = "outlined",
   selectionMode = "none",
   selectionVariant = "accent",
   selectedKeys,
@@ -80,6 +87,8 @@ export function GridList<T>({
   onSelectionChange,
   onAction,
   renderItem,
+  renderPreview,
+  renderFooter,
   renderEmpty,
   selectionBar,
 }: GridListProps<T>) {
@@ -92,6 +101,8 @@ export function GridList<T>({
     return {
       key: collectionKey(item, getKey),
       content,
+      preview: layout === "grid" ? renderPreview?.(item) : undefined,
+      footer: renderFooter?.(item),
       label: getItemLabel?.(item) ?? itemText(content),
     };
   });
@@ -107,6 +118,7 @@ export function GridList<T>({
         aria-label={label}
         className="bd-grid-list"
         data-variant={selectionVariant}
+        data-item-variant={itemVariant}
         style={
           {
             "--bd-grid-list-columns": Math.max(1, Math.floor(columns ?? 2)),
@@ -130,28 +142,46 @@ export function GridList<T>({
         }}
         {...(renderEmpty ? { renderEmptyState: renderEmpty } : {})}
       >
-        {renderedItems.map(({ key, content, label: itemLabel }) => {
-          return (
-            <GridListItem
-              textValue={itemLabel}
-              {...(onAction ? { onAction: () => onAction(key) } : {})}
-              key={key}
-              id={key}
-              className="bd-grid-list-item"
-              data-padding={itemPadding}
-            >
-              {onReorder && <ReorderHandle />}
-              {selectionMode === "multiple" && (
-                <Checkbox slot="selection" className="bd-checkbox">
-                  <span className="bd-choice-box">
-                    <Icon name="check" size={16} />
-                  </span>
-                </Checkbox>
-              )}
-              <div className="bd-grid-list-content">{content}</div>
-            </GridListItem>
-          );
-        })}
+        {renderedItems.map(
+          ({ key, content, preview, footer, label: itemLabel }) => {
+            return (
+              <GridListItem
+                textValue={itemLabel}
+                {...(onAction ? { onAction: () => onAction(key) } : {})}
+                key={key}
+                id={key}
+                className="bd-grid-list-item"
+                data-padding={itemPadding}
+              >
+                {onReorder && <ReorderHandle />}
+                {selectionMode === "multiple" && (
+                  <Checkbox slot="selection" className="bd-checkbox">
+                    <span className="bd-choice-box">
+                      <Icon name="check" size={16} />
+                    </span>
+                  </Checkbox>
+                )}
+                <div
+                  className={
+                    preview != null || footer != null
+                      ? "bd-grid-list-content bd-grid-list-content-framed"
+                      : "bd-grid-list-content"
+                  }
+                >
+                  {preview != null && (
+                    <div className="bd-grid-list-preview" aria-hidden="true">
+                      {preview}
+                    </div>
+                  )}
+                  {content}
+                  {footer != null && (
+                    <div className="bd-grid-list-footer">{footer}</div>
+                  )}
+                </div>
+              </GridListItem>
+            );
+          },
+        )}
       </AriaGridList>
     </div>
   );

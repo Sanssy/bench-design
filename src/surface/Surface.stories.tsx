@@ -75,3 +75,11 @@ export const Inverse: Story = {
     ),
   },
 };
+
+export const CategoryPreview: Story = {
+  args: {
+    category: "green",
+    padding: 24,
+    children: <Text>Housing documents · category label remains visible.</Text>,
+  },
+};

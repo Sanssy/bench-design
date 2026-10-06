@@ -133,22 +133,22 @@ export const MediaCards: Story = {
         items={items}
         columns={4}
         itemPadding="none"
-        renderItem={(item) => (
-          <>
-            <div
-              style={{
-                background: "var(--bd-surface-subtle)",
-                padding: "var(--bd-space-24)",
-              }}
-            >
-              <strong>{item.label}</strong>
-            </div>
-            <div style={{ padding: "var(--bd-space-12)" }}>
-              <strong>{item.label}</strong>
-            </div>
-          </>
-        )}
+        renderPreview={(item) => <strong>{item.label}</strong>}
+        renderItem={(item) => <strong>{item.label}</strong>}
+        renderFooter={() => <span>Updated today</span>}
       />
     </div>
+  ),
+};
+
+export const RuledResources: Story = {
+  render: () => (
+    <GridList
+      label="Resources"
+      items={items}
+      layout="list"
+      itemVariant="ruled"
+      renderItem={(item) => item.label}
+    />
   ),
 };

@@ -24,3 +24,11 @@ test("Surface defaults to a raised div without an inline padding override", () =
   expect(surface).toHaveAttribute("data-tone", "raised");
   expect(surface.style.getPropertyValue("--bd-surface-padding")).toBe("");
 });
+
+test("category surfaces use a consumer-selected hue without changing their semantics", () => {
+  render(<Surface category="green">Category preview</Surface>);
+  expect(screen.getByText("Category preview")).toHaveAttribute(
+    "data-category",
+    "green",
+  );
+});

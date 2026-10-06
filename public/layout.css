@@ -270,3 +270,13 @@
     padding-inline: var(--bd-space-64);
   }
 }
+
+.bd-page-footer .bd-text[data-variant="mono"] {
+  overflow-wrap: normal;
+  word-break: normal;
+  max-inline-size: 100%;
+}
+.bd-page-footer .bd-inline > * {
+  flex-shrink: 0;
+  max-inline-size: 100%;
+}

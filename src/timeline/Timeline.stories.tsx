@@ -37,3 +37,26 @@ export const PublicationHistory: Story = {
     ],
   },
 };
+
+export const EventColumns: Story = {
+  args: {
+    label: "Event history",
+    layout: "columns",
+    items: [
+      {
+        id: "draft",
+        marker: "September 2026",
+        title: "Draft prepared",
+        href: "#draft",
+      },
+      {
+        id: "review",
+        marker: "October 2026",
+        title: "Reviewed with contributors",
+        href: "#review",
+        children: "Supporting material updated.",
+      },
+      { id: "next", marker: "Date unknown", title: "Next edition planned" },
+    ],
+  },
+};

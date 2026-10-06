@@ -53,3 +53,20 @@ test("an empty timeline retains its named list without invented entries", () => 
   render(<Timeline label="History" items={[]} />);
   expect(screen.getByRole("list", { name: "History" })).toBeEmptyDOMElement();
 });
+
+test("item href makes its title keyboard navigable", async () => {
+  const user = userEvent.setup();
+  render(
+    <Timeline
+      label="History"
+      layout="columns"
+      items={[
+        { id: "one", marker: "Today", title: "Published", href: "/source" },
+      ]}
+    />,
+  );
+  const link = screen.getByRole("link", { name: "Published" });
+  expect(link).toHaveAttribute("href", "/source");
+  await user.tab();
+  expect(link).toHaveFocus();
+});

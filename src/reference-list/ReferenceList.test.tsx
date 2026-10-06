@@ -48,3 +48,29 @@ test("linked references retain keyboard access and optional descriptions", async
     screen.getByRole("list", { name: "References" }),
   ).toBeEmptyDOMElement();
 });
+
+test("renders caller-owned end metadata", () => {
+  render(
+    <ReferenceList
+      label="References"
+      items={[{ id: "one", title: "Guide", meta: "p. 3" }]}
+    />,
+  );
+  expect(screen.getByText("p. 3")).toBeVisible();
+});
+
+test("accent references show decorative numbers in caller order", () => {
+  render(
+    <ReferenceList
+      label="References"
+      marker="accent"
+      items={[
+        { id: "a", title: "Guide" },
+        { id: "b", title: "Archive" },
+      ]}
+    />,
+  );
+  expect(screen.getByText("1")).toHaveAttribute("aria-hidden", "true");
+  expect(screen.getByText("2")).toHaveAttribute("aria-hidden", "true");
+  expect(screen.getAllByRole("listitem")).toHaveLength(2);
+});

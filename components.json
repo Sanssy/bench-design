@@ -2839,8 +2839,15 @@
           "description": "Accessible name of the ordered list."
         },
         {
+          "name": "marker",
+          "type": "\"number\" | \"accent\"",
+          "required": false,
+          "description": "Decimal numbering by default; accent tiles when requested.",
+          "default": "\"number\""
+        },
+        {
           "name": "items",
-          "type": "{\n    /** Stable unique identifier. */\n    id: string;\n    title: string;\n    href?: string;\n    description?: string;\n  }[]",
+          "type": "{\n    /** Stable unique identifier. */\n    id: string;\n    title: string;\n    href?: string;\n    description?: string;\n    /** Caller-owned end metadata, such as a page reference. */\n    meta?: string;\n  }[]",
           "required": true
         }
       ],
@@ -2848,6 +2855,14 @@
         {
           "name": "References",
           "href": "./?path=/story/data-referencelist--references"
+        },
+        {
+          "name": "AccentReferences",
+          "href": "./?path=/story/data-referencelist--accent-references"
+        },
+        {
+          "name": "NumberedMetadata",
+          "href": "./?path=/story/data-referencelist--numbered-metadata"
         }
       ]
     },
@@ -3933,8 +3948,15 @@
           "description": "Accessible name of the ordered list."
         },
         {
+          "name": "layout",
+          "type": "\"stacked\" | \"columns\"",
+          "required": false,
+          "description": "Stacked rail by default; ruled columns from 640px when requested.",
+          "default": "\"stacked\""
+        },
+        {
           "name": "items",
-          "type": "{\n    /** Stable unique identifier. */\n    id: string;\n    /** Visible date, period or step; never parsed or sorted. */\n    marker: string;\n    title: ReactNode;\n    children?: ReactNode;\n  }[]",
+          "type": "{\n    /** Stable unique identifier. */\n    id: string;\n    /** Visible date, period or step; never parsed or sorted. */\n    marker: string;\n    title: ReactNode;\n    /** Optional navigation destination for the title. */\n    href?: string;\n    children?: ReactNode;\n  }[]",
           "required": true
         }
       ],
@@ -3942,6 +3964,10 @@
         {
           "name": "PublicationHistory",
           "href": "./?path=/story/data-timeline--publication-history"
+        },
+        {
+          "name": "EventColumns",
+          "href": "./?path=/story/data-timeline--event-columns"
         }
       ]
     },

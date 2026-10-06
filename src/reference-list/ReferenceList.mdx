@@ -23,9 +23,16 @@ Use references in caller order with stable unique identifiers and a descriptive 
 ## Examples
 
 <Canvas of={Stories.References} />
+<Canvas of={Stories.AccentReferences} />
+<Canvas of={Stories.NumberedMetadata} />
+
+Use optional item `meta` for caller-owned end metadata, such as a page number.
+Set `marker="accent"` for numbered accent tiles and ruled rows. The default
+`marker="number"` preserves decimal list markers.
 
 Use the theme selector to inspect light and dark themes.
 
 ## Accessibility
 
-A named native ordered list provides visible decimal numbering. Linked titles use the shared React Aria Link and support Tab focus and Enter activation. Unlinked references do not become focusable.
+A named native ordered list provides visible numbering. Accent tile numbers are
+decorative; the ordered list retains its semantics. Linked titles use the shared React Aria Link and support Tab focus and Enter activation. Unlinked references do not become focusable.

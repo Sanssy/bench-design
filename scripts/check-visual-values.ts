@@ -13,6 +13,14 @@ export interface VisualException {
 }
 export const exceptions: VisualException[] = [
   {
+    file: "dist/data.css",
+    selector: "@media",
+    property: "condition",
+    value: "(width>=640px)",
+    reason:
+      "Timeline switches to its column layout from 640px; CSS variables cannot define media conditions.",
+  },
+  {
     file: "dist/navigation.css",
     selector: "@media",
     property: "condition",

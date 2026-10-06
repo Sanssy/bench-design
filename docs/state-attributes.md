@@ -22,7 +22,7 @@ Boolean state selectors test presence, not a particular string value.
 | `data-focused` | Focused input or collection option. |
 | `data-hovered` | Hovered interactive control or option. |
 | `data-invalid` | Invalid field/control; also emitted by DS field wrappers below. |
-| `data-layout` | GridList layout (`grid` selector). |
+| `data-layout` | GridList layout (`grid` selector), Timeline layout (`stacked` or `columns`). |
 | `data-orientation` | Tabs axis (`vertical` selector). |
 | `data-placeholder` | Select value displaying its placeholder. |
 | `data-pending` | Button activity; React Aria blocks activation and retains focus. |
@@ -37,6 +37,8 @@ meaning; ownership depends on the element, not just the attribute name.
 | Attribute | Meaning / current producer |
 | --- | --- |
 | `data-width` | Page content measure (`default`, `narrow`). |
+
+| `data-marker` | ReferenceList numbering (`number` or `accent`). |
 | `data-active-panel` | AppShell active mobile panel (`start`, `end`). |
 | `data-align` | Table cell alignment (`end`); Heading/Text line alignment (`start`, `center`). |
 | `data-category` | CategoryLabel category color. |

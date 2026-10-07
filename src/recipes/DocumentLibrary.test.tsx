@@ -23,10 +23,15 @@ test("search and facet combine, then recover from no matching documents", async 
   expect(
     screen.getByRole("heading", { name: "No matching documents" }),
   ).toBeVisible();
-  await user.clear(search);
-  expect(screen.getAllByRole("row")).toHaveLength(2);
-  await user.click(screen.getByRole("radio", { name: "All, 6" }));
+  await user.click(screen.getByRole("button", { name: "Show all documents" }));
+  expect(search).toHaveValue("");
+  expect(screen.getByRole("radio", { name: "All, 6" })).toHaveAttribute(
+    "aria-checked",
+    "true",
+  );
   expect(screen.getAllByRole("row")).toHaveLength(6);
+  await user.click(screen.getByRole("radio", { name: "Invoices, 2" }));
+  expect(screen.getAllByRole("row")).toHaveLength(2);
 });
 
 test("document previews highlight a short passage within readable context", () => {
@@ -64,6 +69,19 @@ test("list view retains search and document activation", async () => {
   );
   await user.click(screen.getByRole("row", { name: "Energy invoice" }));
   expect(screen.getByRole("dialog", { name: "Energy invoice" })).toBeVisible();
+});
+
+test("import dialog presents a titled drop zone and supported formats", async () => {
+  const user = userEvent.setup();
+  render(<DocumentLibrary />);
+  await user.click(
+    screen.getAllByRole("button", { name: "Add documents" })[0] as HTMLElement,
+  );
+  const dialog = screen.getByRole("dialog", { name: "Add your documents" });
+  expect(
+    within(dialog).getByRole("heading", { name: "Drop your files here" }),
+  ).toBeVisible();
+  expect(within(dialog).getByText("PDF, TXT · 20 MB max.")).toBeVisible();
 });
 
 test("accepted files open the import dialog and become readable documents", async () => {

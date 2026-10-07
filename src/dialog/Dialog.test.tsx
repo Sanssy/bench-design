@@ -105,3 +105,99 @@ test("End Dialog keeps a rich accessible title and restores focus after Escape",
   expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
   await vi.waitFor(() => expect(origin).toHaveFocus());
 });
+
+test.each(["center", "end"] as const)(
+  "Dialog %s moves focus to each new view title and keeps Escape dismissal",
+  async (placement) => {
+    const user = userEvent.setup();
+    function Views() {
+      const [detail, setDetail] = useState(false);
+      return (
+        <Dialog
+          trigger={<Button>Open views</Button>}
+          placement={placement}
+          title={detail ? "Detail" : "Overview"}
+          {...(detail
+            ? { backLabel: "Back to overview", onBack: () => setDetail(false) }
+            : {})}
+        >
+          {detail ? (
+            "Detail content"
+          ) : (
+            <Button onPress={() => setDetail(true)}>Read detail</Button>
+          )}
+        </Dialog>
+      );
+    }
+    render(<Views />);
+    const origin = screen.getByRole("button", { name: "Open views" });
+    await user.click(origin);
+    expect(
+      screen.queryByRole("button", { name: "Back to overview" }),
+    ).not.toBeInTheDocument();
+    await user.click(screen.getByRole("button", { name: "Read detail" }));
+    expect(screen.getByRole("heading", { name: "Detail" })).toHaveFocus();
+    await user.tab({ shift: true });
+    expect(
+      screen.getByRole("button", { name: "Back to overview" }),
+    ).toHaveFocus();
+    await user.keyboard("{Enter}");
+    expect(screen.getByRole("heading", { name: "Overview" })).toHaveFocus();
+    expect(screen.getByRole("dialog", { name: "Overview" })).toHaveTextContent(
+      "Read detail",
+    );
+    await user.keyboard("{Escape}");
+    expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
+    await vi.waitFor(() => expect(origin).toHaveFocus());
+  },
+);
+
+test("Dialog requires both back props and preserves focus when its title is unchanged", async () => {
+  const user = userEvent.setup();
+  const props = {
+    title: "Details",
+    isOpen: true,
+    children: <Button>Read</Button>,
+  };
+  const { rerender } = render(<Dialog {...props} backLabel="Back" />);
+  expect(
+    screen.queryByRole("button", { name: "Back" }),
+  ).not.toBeInTheDocument();
+  rerender(<Dialog {...props} onBack={vi.fn()} />);
+  expect(screen.getAllByRole("button")).toHaveLength(2);
+  await user.click(screen.getByRole("button", { name: "Read" }));
+  rerender(<Dialog {...props} backLabel="Back" onBack={vi.fn()} />);
+  expect(screen.getByRole("button", { name: "Back" })).toBeVisible();
+  expect(screen.getByRole("button", { name: "Read" })).toHaveFocus();
+});
+
+test("Dialog keeps focus when a rich title re-renders with the same text", async () => {
+  const user = userEvent.setup();
+  const view = (
+    <Dialog
+      isOpen
+      title={
+        <>
+          Same <em>title</em>
+        </>
+      }
+    >
+      <Button>Read</Button>
+    </Dialog>
+  );
+  const { rerender } = render(view);
+  await user.click(screen.getByRole("button", { name: "Read" }));
+  rerender(
+    <Dialog
+      isOpen
+      title={
+        <>
+          Same <em>title</em>
+        </>
+      }
+    >
+      <Button>Read</Button>
+    </Dialog>,
+  );
+  expect(screen.getByRole("button", { name: "Read" })).toHaveFocus();
+});

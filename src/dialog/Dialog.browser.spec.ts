@@ -322,4 +322,28 @@ test("End sheets keep the header visible and contain focus across themes and siz
       }
     }
   }
+  for (const theme of ["light", "dark"]) {
+    await page.goto(
+      `/iframe.html?id=overlays-dialog--view-navigation&viewMode=story&globals=a11y.manual:!true;theme:${theme}`,
+    );
+    const origin = page.getByRole("button", { name: "Open overview" });
+    await origin.click();
+    await page.getByRole("button", { name: "Read source" }).click();
+    await expect(
+      page.getByRole("heading", { name: "Source details" }),
+    ).toBeFocused();
+    await page.keyboard.press("Shift+Tab");
+    await expect(
+      page.getByRole("button", { name: "Back to overview" }),
+    ).toBeFocused();
+    await page.keyboard.press("Enter");
+    await expect(page.getByRole("heading", { name: "Overview" })).toBeFocused();
+    expect(
+      (await new AxeBuilder({ page }).withTags(["wcag2a", "wcag2aa"]).analyze())
+        .violations,
+    ).toEqual([]);
+    await page.keyboard.press("Escape");
+    await expect(page.getByRole("dialog")).toHaveCount(0);
+    await expect(origin).toBeFocused();
+  }
 });

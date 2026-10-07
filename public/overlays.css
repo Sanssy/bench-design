@@ -166,3 +166,21 @@
   outline: var(--bd-strong) solid var(--bd-focus);
   outline-offset: var(--bd-space-4);
 }
+
+.bd-dialog-back {
+  display: flex;
+  align-items: center;
+  gap: var(--bd-space-8);
+  margin-block-end: var(--bd-space-12);
+  padding: 0;
+  border: 0;
+  background: transparent;
+  font-family: var(--bd-font-ui);
+  font-size: var(--bd-size-meta);
+  font-weight: var(--bd-weight-semibold);
+  cursor: pointer;
+}
+.bd-dialog-header .bd-heading:focus-visible {
+  outline: var(--bd-strong) solid var(--bd-focus);
+  outline-offset: var(--bd-space-4);
+}

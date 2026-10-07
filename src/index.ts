@@ -143,6 +143,8 @@ export type { TextProps } from "./text/Text.js";
 export { Text } from "./text/Text.js";
 export type { TextAreaProps } from "./text-area/TextArea.js";
 export { TextArea } from "./text-area/TextArea.js";
+export type { TextButtonProps } from "./text-button/TextButton.js";
+export { TextButton } from "./text-button/TextButton.js";
 export type { TextFieldProps } from "./text-field/TextField.js";
 export { TextField } from "./text-field/TextField.js";
 export type { TimelineProps } from "./timeline/Timeline.js";

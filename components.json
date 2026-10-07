@@ -4304,6 +4304,10 @@
         {
           "name": "EventColumns",
           "href": "./?path=/story/data-timeline--event-columns"
+        },
+        {
+          "name": "ActionColumns",
+          "href": "./?path=/story/data-timeline--action-columns"
         }
       ]
     },

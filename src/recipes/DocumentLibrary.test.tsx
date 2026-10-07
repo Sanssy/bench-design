@@ -25,8 +25,8 @@ test("search and facet combine, then recover from no matching documents", async 
   ).toBeVisible();
   await user.clear(search);
   expect(screen.getAllByRole("row")).toHaveLength(2);
-  await user.click(screen.getByRole("radio", { name: "All, 10" }));
-  expect(screen.getAllByRole("row")).toHaveLength(10);
+  await user.click(screen.getByRole("radio", { name: "All, 6" }));
+  expect(screen.getAllByRole("row")).toHaveLength(6);
 });
 
 test("document previews highlight a short passage within readable context", () => {
@@ -89,7 +89,7 @@ test("accepted files open the import dialog and become readable documents", asyn
   expect(screen.getByRole("dialog", { name: "water.pdf" })).toBeVisible();
   await user.keyboard("{Escape}");
   expect(screen.getByRole("row", { name: "water.pdf" })).toBeVisible();
-  expect(screen.getByText("11 documents", { exact: true })).toBeVisible();
+  expect(screen.getByText("7 documents", { exact: true })).toBeVisible();
 });
 
 test("imports progress to completion and release their timer", async () => {
@@ -163,4 +163,42 @@ test("import dialog reports type and size refusals once without adding them", as
   expect(
     within(dialog).getByRole("list", { name: "Document imports" }).children,
   ).toHaveLength(2);
+});
+
+test("record fields reveal their source and related documents reset selection", async () => {
+  const user = userEvent.setup();
+  render(<DocumentLibrary />);
+  await user.click(screen.getByRole("row", { name: "Energy invoice" }));
+  let dialog = screen.getByRole("dialog", { name: "Energy invoice" });
+  expect(within(dialog).getByText("Source passage")).toBeVisible();
+  expect(
+    within(dialog).getByRole("row", { name: "Amount due" }),
+  ).toHaveAttribute("aria-selected", "true");
+  expect(
+    within(dialog).getByText("Total payable: 64.80 EUR.", { selector: "mark" }),
+  ).toBeVisible();
+  await user.click(within(dialog).getByRole("row", { name: "Payment date" }));
+  expect(within(dialog).getByText("Page 2 / 2")).toBeVisible();
+  expect(
+    within(dialog).getByText("Payment due by 15 September 2026.", {
+      selector: "mark",
+    }),
+  ).toBeVisible();
+  await user.click(
+    within(dialog).getByRole("button", { name: "Equipment invoice" }),
+  );
+  dialog = screen.getByRole("dialog", { name: "Equipment invoice" });
+  expect(within(dialog).getByText("Page 1 / 1")).toBeVisible();
+  expect(
+    within(dialog).getByText("Item: office equipment. Total: 120.00 EUR.", {
+      selector: "mark",
+    }),
+  ).toBeVisible();
+  await user.click(within(dialog).getByRole("button", { name: "Invoices" }));
+  expect(screen.queryByRole("dialog")).toBeNull();
+  expect(screen.getByRole("radio", { name: "Invoices, 2" })).toHaveAttribute(
+    "aria-checked",
+    "true",
+  );
+  expect(screen.getAllByRole("row")).toHaveLength(2);
 });

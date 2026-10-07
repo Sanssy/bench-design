@@ -11,7 +11,7 @@ import { Status } from "../status/Status.js";
 import { Text } from "../text/Text.js";
 import { TextButton } from "../text-button/TextButton.js";
 
-type RecordDocument = {
+export type RecordDocument = {
   id: string;
   title: string;
   kind: string;
@@ -28,17 +28,20 @@ type RecordDocument = {
 };
 export function RecordView({
   document,
-  related,
+  related = [],
+  initialFieldId,
   onOpen,
   onFile,
 }: {
   document: RecordDocument;
-  related: readonly RecordDocument[];
-  onOpen: (id: string) => void;
-  onFile: (kind: string) => void;
+  related?: readonly RecordDocument[];
+  /** Field whose passage is shown first, for example a cited passage. */
+  initialFieldId?: string;
+  onOpen?: (id: string) => void;
+  onFile?: (kind: string) => void;
 }) {
   const fields = document.fields;
-  const [selectedId, setSelectedId] = useState(fields[0]?.id);
+  const [selectedId, setSelectedId] = useState(initialFieldId ?? fields[0]?.id);
   const selected = fields.find((field) => field.id === selectedId) ?? fields[0];
   const [wide, setWide] = useState(false);
   useEffect(() => {
@@ -113,11 +116,15 @@ export function RecordView({
             </Stack>
           )}
         />
-        <Text variant="mono">Filed in</Text>
-        <TextButton onPress={() => onFile(document.kind)}>
-          {document.kind}
-        </TextButton>
-        {related.length > 0 && (
+        {onFile && (
+          <>
+            <Text variant="mono">Filed in</Text>
+            <TextButton onPress={() => onFile(document.kind)}>
+              {document.kind}
+            </TextButton>
+          </>
+        )}
+        {related.length > 0 && onOpen && (
           <Stack gap={8}>
             <ActionList
               label="Related documents"
@@ -126,7 +133,7 @@ export function RecordView({
                 title: item.title,
                 description: item.date,
                 trailingIcon: "arrow-right",
-                onPress: () => onOpen(item.id),
+                onPress: () => onOpen?.(item.id),
               }))}
             />
           </Stack>

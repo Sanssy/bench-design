@@ -95,3 +95,62 @@ test("The header exposes the three example pages with Ask current", () => {
     "page",
   );
 });
+
+test("Conversation keeps previous turns while sending and after answering", () => {
+  vi.useFakeTimers();
+  render(<AskWithSourcesRecipe />);
+  const input = screen.getByRole("textbox", { name: "Your question" });
+  fireEvent.click(
+    screen.getByRole("button", { name: "What should I prepare?" }),
+  );
+  act(() => vi.advanceTimersByTime(1000));
+  fireEvent.change(input, {
+    target: { value: "Where can I find the schedule?" },
+  });
+  fireEvent.keyDown(input, { key: "Enter" });
+  expect(screen.getByRole("heading", { name: "Sample answer" })).toBeVisible();
+  expect(screen.getByRole("status")).toHaveTextContent("Sending…");
+  act(() => vi.advanceTimersByTime(1000));
+  expect(
+    screen.getAllByRole("heading", { name: "Sample answer" }),
+  ).toHaveLength(2);
+  expect(screen.getByRole("region", { name: "Answer" })).toHaveTextContent(
+    "What should I prepare?",
+  );
+  expect(
+    screen.getAllByRole("link", { name: "Preparation checklist" })[1],
+  ).toHaveAttribute("href", "#sample-excerpt-2");
+});
+
+test("A sourced answer includes the final reserve", () => {
+  vi.useFakeTimers();
+  render(<AskWithSourcesRecipe />);
+  fireEvent.click(
+    screen.getByRole("button", { name: "What should I prepare?" }),
+  );
+  act(() => vi.advanceTimersByTime(1000));
+  expect(
+    screen.getByText("These records do not cover every monthly cost."),
+  ).toBeVisible();
+});
+
+test("An unsupported question shows help without sources", () => {
+  vi.useFakeTimers();
+  render(<AskWithSourcesRecipe />);
+  const input = screen.getByRole("textbox", { name: "Your question" });
+  fireEvent.change(input, {
+    target: { value: "What is the weather tomorrow?" },
+  });
+  fireEvent.keyDown(input, { key: "Enter" });
+  act(() => vi.advanceTimersByTime(1000));
+  expect(
+    screen.getByRole("heading", { name: "Answer unavailable" }),
+  ).toBeVisible();
+  expect(
+    screen.getByText("Try a suggested question to explore the sample records."),
+  ).toBeVisible();
+  expect(
+    screen.queryByRole("link", { name: "Preparation checklist" }),
+  ).toBeNull();
+  expect(screen.queryByRole("heading", { name: "Source excerpt" })).toBeNull();
+});

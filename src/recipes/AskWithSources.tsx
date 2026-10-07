@@ -36,6 +36,10 @@ export function AskWithSourcesRecipe() {
   const [draft, setDraft] = useState("");
   const [state, setState] = useState<"idle" | "pending" | "answered">("idle");
   const [question, setQuestion] = useState("");
+  const [turns, setTurns] = useState<
+    { id: number; question: string; sourced: boolean }[]
+  >([]);
+  const newestTurn = useRef<HTMLDivElement>(null);
   const composer = useRef<HTMLDivElement>(null);
   const send = (value: string) => {
     if (state === "pending") return;
@@ -61,9 +65,25 @@ export function AskWithSourcesRecipe() {
   }, []);
   useEffect(() => {
     if (state !== "pending") return;
-    const timer = setTimeout(() => setState("answered"), 1000);
+    const timer = setTimeout(() => {
+      setTurns((previous) => [
+        ...previous,
+        {
+          id: previous.length + 1,
+          question,
+          sourced: suggestions.some(
+            (suggestion) =>
+              suggestion.toLowerCase() === question.trim().toLowerCase(),
+          ),
+        },
+      ]);
+      setState("answered");
+    }, 1000);
     return () => clearTimeout(timer);
-  }, [state]);
+  }, [state, question]);
+  useEffect(() => {
+    if (turns.length) newestTurn.current?.scrollIntoView?.({ block: "start" });
+  }, [turns.length]);
   return (
     <Page
       width="narrow"
@@ -165,19 +185,21 @@ export function AskWithSourcesRecipe() {
             </Grid>
           )}
           <section
-            hidden={state !== "answered"}
+            hidden={turns.length === 0}
             aria-label="Answer"
             aria-live="polite"
-            aria-atomic="true"
+            aria-relevant="additions"
           >
-            {state === "answered" && (
-              <Stack gap={24}>
-                <Inline gap={12}>
-                  <Avatar name="Demo reader" tone="accent" />
-                  <Text>
-                    <strong>{question}</strong>
-                  </Text>
-                </Inline>
+            {turns.map((turn, index) => (
+              <Stack key={turn.id} gap={24}>
+                <div ref={index === turns.length - 1 ? newestTurn : undefined}>
+                  <Inline gap={12}>
+                    <Avatar name="Demo reader" tone="accent" />
+                    <Text>
+                      <strong>{turn.question}</strong>
+                    </Text>
+                  </Inline>
+                </div>
                 <div
                   style={{
                     borderInlineStart:
@@ -186,66 +208,90 @@ export function AskWithSourcesRecipe() {
                   }}
                 >
                   <Stack gap={16}>
-                    <Text tone="muted">Sample answer ready.</Text>
+                    <Text tone="muted">
+                      {turn.sourced
+                        ? "Sample answer ready."
+                        : "No sample answer found."}
+                    </Text>
                     <Heading level={2} size="ui">
-                      Sample answer
+                      {turn.sourced ? "Sample answer" : "Answer unavailable"}
                     </Heading>
-                    <Text variant="mono">Archive / sourced answer</Text>
-                    <Text>
-                      This fictional workshop includes preparation, a shared
-                      session and a follow-up. Check the sample excerpt for the
-                      original wording.
-                    </Text>
-                    <Text variant="mono">The supporting passages</Text>
-                    <ReferenceList
-                      label="Answer sources"
-                      marker="accent"
-                      items={[
-                        {
-                          id: "guide",
-                          title: "Workshop guide",
-                          href: "#sample-excerpt",
-                          description:
-                            "The session starts with a shared reading.",
-                          meta: "p. 1",
-                        },
-                        {
-                          id: "checklist",
-                          title: "Preparation checklist",
-                          href: "#sample-excerpt",
-                          description:
-                            "Bring your notes and a question to discuss.",
-                          meta: "p. 2",
-                        },
-                      ]}
-                    />
-                    <Text size="meta" tone="muted">
-                      Read the excerpts to check this fictional answer.
-                    </Text>
+                    {turn.sourced ? (
+                      <>
+                        <Text variant="mono">Archive / sourced answer</Text>
+                        <Text>
+                          This fictional workshop includes preparation, a shared
+                          session and a follow-up. Check the sample excerpt for
+                          the original wording.
+                        </Text>
+                        <Text variant="mono">The supporting passages</Text>
+                        <ReferenceList
+                          label="Answer sources"
+                          marker="accent"
+                          items={[
+                            {
+                              id: "guide",
+                              title: "Workshop guide",
+                              href:
+                                index === 0
+                                  ? "#sample-excerpt"
+                                  : `#sample-excerpt-${index + 1}`,
+                              description:
+                                "The session starts with a shared reading.",
+                              meta: "p. 1",
+                            },
+                            {
+                              id: "checklist",
+                              title: "Preparation checklist",
+                              href:
+                                index === 0
+                                  ? "#sample-excerpt"
+                                  : `#sample-excerpt-${index + 1}`,
+                              description:
+                                "Bring your notes and a question to discuss.",
+                              meta: "p. 2",
+                            },
+                          ]}
+                        />
+                        <Text size="meta" tone="muted">
+                          These records do not cover every monthly cost.
+                        </Text>
+                      </>
+                    ) : (
+                      <Text>
+                        Try a suggested question to explore the sample records.
+                      </Text>
+                    )}
                   </Stack>
                 </div>
-                <Paper>
-                  <div
-                    id="sample-excerpt"
-                    tabIndex={-1}
-                    style={{ scrollMarginBlock: "var(--bd-space-32)" }}
-                  >
-                    <Heading level={3}>Source excerpt</Heading>
-                    <Text>
-                      Before the workshop:{" "}
-                      <mark>Bring your notes and a question to discuss.</mark>{" "}
-                      The session starts with a shared reading. A summary
-                      follows afterwards.
-                    </Text>
-                  </div>
-                </Paper>
+                {turn.sourced && (
+                  <Paper>
+                    <div
+                      id={
+                        index === 0
+                          ? "sample-excerpt"
+                          : `sample-excerpt-${index + 1}`
+                      }
+                      tabIndex={-1}
+                      style={{ scrollMarginBlock: "var(--bd-space-32)" }}
+                    >
+                      <Heading level={3}>Source excerpt</Heading>
+                      <Text>
+                        Before the workshop:{" "}
+                        <mark>Bring your notes and a question to discuss.</mark>{" "}
+                        The session starts with a shared reading. A summary
+                        follows afterwards.
+                      </Text>
+                    </div>
+                  </Paper>
+                )}
               </Stack>
-            )}
+            ))}
           </section>
           <div
             ref={composer}
             style={{
-              position: state === "answered" ? "sticky" : "static",
+              position: turns.length ? "sticky" : "static",
               bottom: "var(--bd-space-16)",
               zIndex: 1,
             }}

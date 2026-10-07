@@ -1,0 +1,37 @@
+import { Meta, Canvas, Controls } from '@storybook/addon-docs/blocks';
+import { ManifestProps } from "../../.storybook/ManifestProps";
+import * as Stories from './ProgressBar.stories';
+
+<Meta of={Stories} />
+
+# ProgressBar
+
+Import `ProgressBar` from `bench-design` and load `bench-design/styles.css` once.
+
+## Usage
+
+Display progress reported by your application. Use a concise `label` describing the ongoing work. Values default to a range of 0–100; supply `minValue` and `maxValue` for another range. `valueLabel` overrides the formatted percentage. Use `isIndeterminate` when progress cannot be measured. The component does not start or manage work.
+
+Keep the label visible unless nearby content already supplies visual context. `hideLabel` preserves the accessible name. Avoid inventing a percentage for work whose duration is unknown.
+
+## API
+
+<ManifestProps component="ProgressBar" />
+
+## Try the props
+
+<Controls of={Stories.Processing} />
+
+## Examples
+
+<Canvas of={Stories.Processing} />
+<Canvas of={Stories.Waiting} />
+<Canvas of={Stories.Completed} />
+<Canvas of={Stories.ItemCount} />
+<Canvas of={Stories.Compact} />
+
+Use the theme selector to inspect light and dark themes.
+
+## Accessibility
+
+React Aria owns the `progressbar` role, accessible label, range and value text. Indeterminate progress omits the numeric value. This display is not interactive and has no keyboard commands. Its animation stops when reduced motion is requested. Provide completion or error announcements in the surrounding application when needed.

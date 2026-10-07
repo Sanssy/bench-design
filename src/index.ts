@@ -103,6 +103,8 @@ export type { PaperProps } from "./paper/Paper.js";
 export { Paper } from "./paper/Paper.js";
 export type { PopoverProps } from "./popover/Popover.js";
 export { Popover } from "./popover/Popover.js";
+export type { ProgressBarProps } from "./progress-bar/ProgressBar.js";
+export { ProgressBar } from "./progress-bar/ProgressBar.js";
 export type { RadioGroupProps } from "./radio-group/RadioGroup.js";
 export { RadioGroup } from "./radio-group/RadioGroup.js";
 export type { ReferenceListProps } from "./reference-list/ReferenceList.js";

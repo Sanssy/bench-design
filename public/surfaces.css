@@ -1,3 +1,71 @@
+.bd-citation-group {
+  border: var(--bd-hair) solid var(--bd-border-subtle);
+  background: var(--bd-surface-raised);
+  color: var(--bd-text);
+  font: var(--bd-size-ui) / var(--bd-line-reading) var(--bd-font-ui);
+  overflow-wrap: anywhere;
+}
+.bd-citation-header {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--bd-space-12);
+  padding: var(--bd-space-16);
+  background: var(--bd-surface-subtle);
+  border-block-end: var(--bd-hair) solid var(--bd-border-subtle);
+}
+.bd-citation-header > svg {
+  flex-shrink: 0;
+}
+.bd-citation-header > div {
+  min-inline-size: 0;
+}
+.bd-citation-header :is(h1, h2, h3, h4, h5, h6) {
+  margin: 0;
+  font:
+    var(--bd-weight-bold) var(--bd-size-ui) / var(--bd-line-normal)
+    var(--bd-font-ui);
+}
+.bd-citation-header p {
+  margin: var(--bd-space-4) 0 0;
+  color: var(--bd-text-muted);
+  font-size: var(--bd-size-meta);
+}
+.bd-citations {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.bd-citations > li {
+  padding: var(--bd-space-16);
+}
+.bd-citations > :where(li + li) {
+  border-block-start: var(--bd-hair) solid var(--bd-border-subtle);
+}
+.bd-citation-label {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--bd-space-12);
+  color: var(--bd-text-muted);
+  font: var(--bd-size-meta) / var(--bd-line-normal) var(--bd-font-mono);
+}
+.bd-citation-label > :where(span + span) {
+  text-align: end;
+}
+.bd-citations blockquote {
+  margin: var(--bd-space-12) 0;
+  padding-inline-start: var(--bd-space-12);
+  border-inline-start: calc(var(--bd-stroke) + var(--bd-hair)) solid
+    var(--bd-accent);
+}
+.bd-citation-action {
+  border: 0;
+  padding: 0;
+  background: transparent;
+  font: inherit;
+  text-align: start;
+  cursor: pointer;
+}
+
 .bd-badge > svg,
 .bd-category-label > svg {
   flex-shrink: 0;

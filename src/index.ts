@@ -30,6 +30,11 @@ export type { CheckboxProps } from "./checkbox/Checkbox.js";
 export { Checkbox } from "./checkbox/Checkbox.js";
 export type { CheckboxGroupProps } from "./checkbox-group/CheckboxGroup.js";
 export { CheckboxGroup } from "./checkbox-group/CheckboxGroup.js";
+export type {
+  Citation,
+  CitationGroupProps,
+} from "./citation-group/CitationGroup.js";
+export { CitationGroup } from "./citation-group/CitationGroup.js";
 export type { CollectionViewProps } from "./collection-view/CollectionView.js";
 export { CollectionView } from "./collection-view/CollectionView.js";
 export type {

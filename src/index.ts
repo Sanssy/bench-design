@@ -157,5 +157,7 @@ export type { TopNavProps } from "./top-nav/TopNav.js";
 export { TopNav } from "./top-nav/TopNav.js";
 export type { TreeNode, TreeProps } from "./tree/Tree.js";
 export { Tree } from "./tree/Tree.js";
+export type { UploadQueueProps } from "./upload-queue/UploadQueue.js";
+export { UploadQueue } from "./upload-queue/UploadQueue.js";
 export type { ValueProps } from "./value/Value.js";
 export { Value } from "./value/Value.js";

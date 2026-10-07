@@ -1,0 +1,31 @@
+import { Meta, Canvas } from '@storybook/addon-docs/blocks';
+import { ManifestProps } from "../../.storybook/ManifestProps";
+import * as Stories from './UploadQueue.stories';
+
+<Meta of={Stories} />
+
+# UploadQueue
+
+Import `UploadQueue` from `bench-design` and load `bench-design/styles.css` once.
+
+## Usage
+
+Display application-controlled uploads in a named list. Give each item a stable unique `id`, a `name` and a `status`. Supply `progress` from 0–100 while uploading, or omit it for indeterminate progress. Completed items display a full bar and a check; errors display an error icon. Use `description` for helpful context.
+Provide an `action` with a visible `label` and either `href` for navigation or `onAction` for an application action. Actions appear only after completion. The component does not upload files, validate them or retry requests. Keep transport and state in your application; avoid inventing percentages for unmeasured work.
+
+## API
+
+<ManifestProps component="UploadQueue" />
+
+## Examples
+
+<Canvas of={Stories.Uploading} />
+<Canvas of={Stories.Complete} />
+<Canvas of={Stories.Failed} />
+<Canvas of={Stories.Mixed} />
+Use the theme selector to inspect light and dark themes.
+
+## Accessibility
+
+The list uses `label` as its accessible name. Each progress bar has a hidden localized name describing its file. One polite, atomic status region announces changed item statuses; percentage updates do not generate announcements. Initial statuses are available through progress and icon semantics. Internal English and French copy can be configured through `BenchProvider`; names, descriptions and action labels belong to the caller.
+Tab focuses completed actions. Enter activates links; Enter or Space activates callback buttons through React Aria. Indeterminate animation respects reduced motion.

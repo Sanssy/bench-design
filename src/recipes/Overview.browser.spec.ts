@@ -32,22 +32,54 @@ for (const theme of ["light", "dark"]) {
     );
     await page.keyboard.press("ArrowDown");
     await expect(
-      page.getByRole("link", { name: "City bicycle" }),
+      page.getByRole("button", { name: "City bicycle" }),
     ).toBeVisible();
-    await tabTo(page, page.getByRole("link", { name: "City bicycle" }));
-    await tabTo(page, page.getByRole("link", { name: /Purchase receipt/ }));
-    await tabTo(page, page.getByRole("link", { name: /Service record/ }));
+    await tabTo(page, page.getByRole("button", { name: "City bicycle" }));
+    await tabTo(page, page.getByRole("button", { name: /Purchase receipt/ }));
+    await tabTo(page, page.getByRole("button", { name: /Service record/ }));
     await tabTo(
       page,
-      page.getByRole("link", { name: "Understand the change" }),
+      page.getByRole("button", { name: "Understand the change" }),
     );
     await expect(
-      page.getByRole("link", { name: "Understand the change" }),
+      page.getByRole("button", { name: "Understand the change" }),
     ).toBeFocused();
-    await tabTo(page, page.getByRole("link", { name: "Bicycle purchased" }));
+    await tabTo(page, page.getByRole("button", { name: "Bicycle purchased" }));
     await page.getByRole("tab", { name: "Housing — Home and cover" }).click();
     for (const width of [1280, 320]) {
       await page.setViewportSize({ width, height: 900 });
+      expect(
+        (
+          await new AxeBuilder({ page })
+            .withTags(["wcag2a", "wcag2aa", "wcag21aa"])
+            .analyze()
+        ).violations,
+      ).toEqual([]);
+      await page.getByRole("button", { name: "Read person sources" }).click();
+      const proof = page.getByRole("dialog", { name: "Alex Morgan" });
+      await expect(proof).toBeVisible();
+      if (width < 640) {
+        const bounds = await page.locator(".bd-modal").boundingBox();
+        expect(bounds?.width).toBe(width);
+      }
+      await proof
+        .getByRole("button", { name: "Read this passage in the record" })
+        .first()
+        .click();
+      await expect(
+        page
+          .getByRole("heading", { name: "Rental agreement", exact: true })
+          .first(),
+      ).toBeFocused();
+      await expect(page.locator("mark")).toContainText("Alex Morgan");
+      await page
+        .getByRole("button", {
+          name: "Back to the information and its sources",
+        })
+        .click();
+      await expect(
+        proof.getByRole("heading", { name: "Alex Morgan" }),
+      ).toBeFocused();
       expect(
         await page.evaluate(
           () => document.documentElement.scrollWidth <= innerWidth,
@@ -60,6 +92,10 @@ for (const theme of ["light", "dark"]) {
             .analyze()
         ).violations,
       ).toEqual([]);
+      await page.keyboard.press("Escape");
+      await expect(
+        page.getByRole("button", { name: "Read person sources" }),
+      ).toBeFocused();
     }
     await page
       .getByRole("tab", { name: "Vehicle — Purchase and service" })
@@ -115,9 +151,10 @@ for (const width of [390, 1280]) {
         .getByText("Monthly", { exact: true })
         .boundingBox();
       const source = await page
-        .locator('a[href="#agreement"]')
-        .filter({ hasText: "1 source record" })
-        .last()
+        .getByRole("button", {
+          name: "1 source record — Rent and charges",
+          exact: true,
+        })
         .boundingBox();
       expect(badge).not.toBeNull();
       expect(source).not.toBeNull();

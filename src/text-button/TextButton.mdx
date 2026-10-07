@@ -1,0 +1,39 @@
+import { Meta, Canvas } from '@storybook/addon-docs/blocks';
+import { ManifestProps } from "../../.storybook/ManifestProps";
+import * as Stories from './TextButton.stories';
+
+<Meta of={Stories} />
+
+# TextButton
+
+An in-page action that reads as link text. Import `TextButton` from
+`bench-design` and load `bench-design/styles.css` once.
+
+## Usage
+
+Use TextButton for an action inside running text or metadata, such as opening
+the sources of a fact in a panel. It renders a native button with the Link
+styling: underlined, inheriting the surrounding color, with optional `icon`,
+`trailingIcon` and `variant="meta"`. Use Link for navigation and Button for
+standalone actions.
+
+- Do describe the result of the action in the visible text.
+- Avoid using it to navigate; a destination needs a Link.
+
+## API
+
+<ManifestProps component="TextButton" />
+
+`onPress` is required and has no arguments. The DOM `ref` can restore focus.
+General HTML attribute passthrough is not supported.
+
+## Examples
+
+<Canvas of={Stories.InText} />
+<Canvas of={Stories.Metadata} />
+
+## Keyboard and ARIA
+
+Tab reaches the action with the Link focus outline. Enter and Space activate
+once. The role is button; icons are decorative. As inline text, the target
+follows the surrounding line height.

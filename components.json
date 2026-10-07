@@ -4099,6 +4099,62 @@
       ]
     },
     {
+      "name": "TextButton",
+      "import": "import { TextButton } from \"bench-design\";",
+      "description": "A native button that reads as a link, for actions inside running text or metadata, such as opening the sources of a fact. Use Link for navigation. Accessible names should include the visible label; prefer children alone.",
+      "props": [
+        {
+          "name": "children",
+          "type": "ReactNode",
+          "required": true
+        },
+        {
+          "name": "onPress",
+          "type": "() => void",
+          "required": true
+        },
+        {
+          "name": "icon",
+          "type": "\"arrow-left\" | \"arrow-right\" | \"arrow-up-right\" | \"arrow-up\" | \"asterisk\" | \"bike\" | \"bin\" | \"briefcase\" | \"calendar\" | \"check\" | \"chevron-down\" | \"chevron-right\" | \"download\" | \"file-text\" | \"grip\" | \"heart\" | \"home\" | \"info\" | \"layers\" | \"layout-grid\" | \"link\" | \"list\" | \"menu\" | \"pen\" | \"plus\" | \"scan\" | \"search\" | \"settings\" | \"shopping-bag\" | \"triangle-alert\" | \"upload\" | \"user\" | \"wallet\" | \"x\"",
+          "required": false,
+          "description": "Decorative icon before the visible text."
+        },
+        {
+          "name": "trailingIcon",
+          "type": "\"arrow-left\" | \"arrow-right\" | \"arrow-up-right\" | \"arrow-up\" | \"asterisk\" | \"bike\" | \"bin\" | \"briefcase\" | \"calendar\" | \"check\" | \"chevron-down\" | \"chevron-right\" | \"download\" | \"file-text\" | \"grip\" | \"heart\" | \"home\" | \"info\" | \"layers\" | \"layout-grid\" | \"link\" | \"list\" | \"menu\" | \"pen\" | \"plus\" | \"scan\" | \"search\" | \"settings\" | \"shopping-bag\" | \"triangle-alert\" | \"upload\" | \"user\" | \"wallet\" | \"x\"",
+          "required": false,
+          "description": "Decorative icon after the visible text; does not replace it."
+        },
+        {
+          "name": "variant",
+          "type": "\"default\" | \"meta\"",
+          "required": false,
+          "description": "Metadata typography; default inherits the surrounding typography.",
+          "default": "\"default\""
+        },
+        {
+          "name": "ref",
+          "type": "Ref<HTMLButtonElement>",
+          "required": false
+        },
+        {
+          "name": "aria-label",
+          "type": "string",
+          "required": false
+        }
+      ],
+      "stories": [
+        {
+          "name": "InText",
+          "href": "./?path=/story/typography-textbutton--in-text"
+        },
+        {
+          "name": "Metadata",
+          "href": "./?path=/story/typography-textbutton--metadata"
+        }
+      ]
+    },
+    {
       "name": "TextField",
       "import": "import { TextField } from \"bench-design\";",
       "description": "A React Aria input retaining native form validation.",

@@ -44,6 +44,7 @@ test("a component edit also selects the components that import it", () => {
     "side-panel",
     "stack",
     "surface",
+    "text-button",
     "value",
   ]);
 });

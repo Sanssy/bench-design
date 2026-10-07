@@ -12,6 +12,15 @@
   text-decoration-thickness: var(--bd-stroke);
 }
 
+.bd-text-button {
+  padding: 0;
+  border: 0;
+  background: transparent;
+  font: inherit;
+  text-align: start;
+  cursor: pointer;
+}
+
 .bd-link:focus {
   outline: none;
 }

@@ -31,10 +31,13 @@ The component never parses dates or sorts items.
 
 <Canvas of={Stories.PublicationHistory} />
 <Canvas of={Stories.EventColumns} />
+<Canvas of={Stories.ActionColumns} />
 
 Set `layout="columns"` for ruled rows: markers and linked titles align from
 640px and stack below it. Optional item `href` makes the title a shared Link
-with a decorative arrow; the entire row remains static.
+with a decorative arrow; the entire row remains static. For an in-page action,
+pass a `TextButton` with `trailingIcon` as the title: its arrow aligns at the row
+end in the same way.
 
 Use the theme selector to inspect light and dark themes.
 

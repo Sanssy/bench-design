@@ -610,6 +610,7 @@
 }
 .bd-timeline[data-layout="columns"] .bd-timeline-title .bd-link {
   display: grid;
+  inline-size: 100%;
   grid-template-columns: minmax(0, 1fr) auto;
   align-items: center;
   gap: var(--bd-space-16);

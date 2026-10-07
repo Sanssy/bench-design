@@ -113,3 +113,20 @@ for (const theme of ["light", "dark"] as const) {
     ).toEqual([]);
   });
 }
+
+test("Timeline action titles align their arrow at the row end", {
+  tag: ["@component:timeline", "@theme:light"],
+}, async ({ page }) => {
+  await page.goto(
+    "/iframe.html?id=data-timeline--action-columns&viewMode=story&globals=a11y.manual:!true;theme:light",
+  );
+  const item = page.locator(".bd-timeline-item").first();
+  const arrow = item.locator(".bd-link-icon-trailing");
+  await expect(arrow).toBeVisible();
+  const [row, icon] = await Promise.all([
+    item.boundingBox(),
+    arrow.boundingBox(),
+  ]);
+  if (!row || !icon) throw new Error("Timeline geometry unavailable");
+  expect(row.x + row.width - (icon.x + icon.width)).toBeLessThan(2);
+});

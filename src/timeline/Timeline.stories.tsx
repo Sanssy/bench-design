@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { Link } from "../link/Link";
+import { TextButton } from "../text-button/TextButton";
 import { Timeline } from "./Timeline";
 export default {
   title: "Data/Timeline",
@@ -57,6 +58,26 @@ export const EventColumns: Story = {
         children: "Supporting material updated.",
       },
       { id: "next", marker: "Date unknown", title: "Next edition planned" },
+    ],
+  },
+};
+export const ActionColumns: Story = {
+  args: {
+    label: "Milestones",
+    layout: "columns",
+    items: [
+      {
+        id: "start",
+        marker: "September 2024",
+        title: (
+          <TextButton
+            trailingIcon="arrow-up-right"
+            onPress={() => window.dispatchEvent(new Event("timeline-action"))}
+          >
+            Agreement starts
+          </TextButton>
+        ),
+      },
     ],
   },
 };

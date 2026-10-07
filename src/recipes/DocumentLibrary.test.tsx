@@ -39,7 +39,9 @@ test("document previews highlight a short passage within readable context", () =
   const row = screen.getByRole("row", { name: "Energy invoice" });
   const passage = "Total payable: 64.80 EUR.";
   const preview = within(row).getByText(passage, { selector: "mark" });
-  expect(preview.parentElement?.textContent).not.toBe(passage);
+  const paper = preview.closest(".bd-paper");
+  expect(paper).toHaveTextContent("Energy invoice");
+  expect(paper?.textContent).not.toBe(passage);
 });
 
 test("document page offers a footer and a route to questions", () => {

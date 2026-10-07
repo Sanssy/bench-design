@@ -117,6 +117,19 @@ for (const theme of ["light", "dark"]) {
       page.getByRole("dialog", { name: "Preparation checklist" }),
     ).toBeVisible();
     await expect(page.locator("mark")).toContainText("Bring your notes");
+    // The sticky composer stays under the open dialog.
+    const covered = await page.evaluate(() => {
+      const box = document
+        .querySelector(".bd-composer")
+        ?.getBoundingClientRect();
+      if (!box) return false;
+      const hit = document.elementFromPoint(
+        box.x + box.width / 2,
+        box.y + box.height / 2,
+      );
+      return Boolean(hit?.closest(".bd-composer"));
+    });
+    expect(covered).toBe(false);
     await expect(page.getByText("Page 2 / 2")).toBeVisible();
     expect(
       (

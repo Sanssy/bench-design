@@ -1,4 +1,7 @@
+/* Overlays share one layer above in-page sticky or raised content; later portals
+   (a popover opened from a dialog) stack above earlier ones. */
 .bd-modal-overlay {
+  z-index: 100;
   position: fixed;
   inset: 0;
   display: flex;
@@ -90,6 +93,7 @@
   flex-shrink: 0;
 }
 .bd-popover {
+  z-index: 100;
   box-sizing: border-box;
   max-inline-size: min(var(--bd-measure), calc(100vw - var(--bd-space-32)));
   background: var(--bd-surface-raised);
@@ -120,6 +124,7 @@
 }
 
 .bd-toast-region {
+  z-index: 100;
   position: fixed;
   inset-block-end: var(--bd-space-16);
   inset-inline-end: var(--bd-space-16);

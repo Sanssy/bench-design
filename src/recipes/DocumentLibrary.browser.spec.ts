@@ -141,3 +141,53 @@ for (const theme of ["light", "dark"]) {
     await expect(row).toBeFocused();
   });
 }
+
+for (const theme of ["light", "dark"]) {
+  test(`Document imports, reduced motion and dialog axe ${theme}`, {
+    tag: ["@component:document-library", `@theme:${theme}`],
+  }, async ({ page }) => {
+    await page.emulateMedia({ reducedMotion: "reduce" });
+    await page.setViewportSize({ width: 320, height: 900 });
+    await page.goto(
+      `/iframe.html?id=recipes-document-library--browse-documents&globals=a11y.manual:!true;theme:${theme}`,
+    );
+    await page.getByRole("button", { name: "Add documents" }).click();
+    const dialog = page.getByRole("dialog", { name: "Add your documents" });
+    await expect(dialog).toBeVisible();
+    await dialog.locator('input[type="file"]').setInputFiles({
+      name: "water.pdf",
+      mimeType: "application/pdf",
+      buffer: Buffer.from("sample"),
+    });
+    await expect(dialog.getByText("Bill recognised · Housing")).toBeVisible();
+    await dialog
+      .getByRole("button", { name: "Try with a sample water bill" })
+      .click();
+    await expect(
+      dialog.getByRole("button", { name: "View document" }),
+    ).toHaveCount(2);
+    await dialog.locator('input[type="file"]').setInputFiles({
+      name: "photo.png",
+      mimeType: "image/png",
+      buffer: Buffer.from("sample"),
+    });
+    await expect(
+      dialog.getByText("Some files could not be added"),
+    ).toBeVisible();
+    expect(
+      (
+        await new AxeBuilder({ page })
+          .withTags(["wcag2a", "wcag2aa", "wcag21a", "wcag21aa"])
+          .analyze()
+      ).violations,
+    ).toEqual([]);
+    expect(
+      await dialog.evaluate((el) => el.scrollWidth <= el.clientWidth),
+    ).toBe(true);
+    await dialog.getByRole("button", { name: "View document" }).first().click();
+    await expect(page.getByRole("dialog", { name: "water.pdf" })).toBeVisible();
+    await page.keyboard.press("Escape");
+    await expect(page.getByRole("row", { name: "water.pdf" })).toBeVisible();
+    await expect(page.getByText("12 documents", { exact: true })).toBeVisible();
+  });
+}

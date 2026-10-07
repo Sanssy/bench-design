@@ -282,3 +282,22 @@ test("disabled editorial prevents both picker alternatives", () => {
     expect(picker).toBeDisabled();
   }
 });
+
+test("onBrowse replaces the native picker while drops still validate", async () => {
+  const user = userEvent.setup();
+  const browse = vi.fn();
+  const { container } = render(
+    <DropZone
+      label="Import"
+      variant="editorial"
+      buttonLabel="Add documents"
+      onBrowse={browse}
+      onDrop={vi.fn()}
+    />,
+  );
+  expect(container.querySelector('input[type="file"]')).toBeNull();
+  await user.click(
+    screen.getAllByRole("button", { name: "Add documents" })[0] as HTMLElement,
+  );
+  expect(browse).toHaveBeenCalledTimes(1);
+});

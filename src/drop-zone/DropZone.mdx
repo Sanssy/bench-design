@@ -16,6 +16,8 @@ Use `variant="editorial"` for a prominent import area. Optional `eyebrow` metada
 
 Below 640 px, the editorial layout becomes compact: the tile and eyebrow are hidden while the title, help and formats remain. A 48 px upload IconButton sits to the right of the text; its accessible name and tooltip use `buttonLabel` (or the localized default). Only the visible picker participates in keyboard navigation. This viewport breakpoint is an explicit exception for the touch layout. The default variant retains its existing presentation and file acceptance policy.
 
+Pass `onBrowse` when the button should start the application's own import flow, such as an import dialog, instead of the native file picker. Dropped files are still validated and delivered through `onDrop` and `onReject`.
+
 ## API
 
 <ManifestProps component="DropZone" />

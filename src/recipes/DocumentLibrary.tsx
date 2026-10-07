@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { ActionList } from "../action-list/ActionList.js";
 import { AppHeader } from "../app-header/AppHeader.js";
 import { Avatar } from "../avatar/Avatar.js";
 import { Badge } from "../badge/Badge.js";
@@ -6,6 +7,7 @@ import { CategoryLabel } from "../category-label/CategoryLabel.js";
 import { CollectionView } from "../collection-view/CollectionView.js";
 import { Dialog } from "../dialog/Dialog.js";
 import { Divider } from "../divider/Divider.js";
+import type { FileRejection } from "../drop-zone/DropZone.js";
 import { DropZone } from "../drop-zone/DropZone.js";
 import { EmptyState } from "../empty-state/EmptyState.js";
 import { Grid } from "../grid/Grid.js";
@@ -15,6 +17,7 @@ import { Icon } from "../icon/Icon.js";
 import { Inline } from "../inline/Inline.js";
 import { Link } from "../link/Link.js";
 import { MetaList } from "../meta-list/MetaList.js";
+import { Notice } from "../notice/Notice.js";
 import { Page } from "../page/Page.js";
 import { Paper } from "../paper/Paper.js";
 import { ReferenceList } from "../reference-list/ReferenceList.js";
@@ -25,6 +28,7 @@ import { Surface } from "../surface/Surface.js";
 import { Text } from "../text/Text.js";
 import { Timeline } from "../timeline/Timeline.js";
 import { TopNav } from "../top-nav/TopNav.js";
+import { UploadQueue } from "../upload-queue/UploadQueue.js";
 
 const categories = {
   Invoices: "green",
@@ -123,13 +127,71 @@ export function DocumentLibrary() {
   const [query, setQuery] = useState("");
   const [facet, setFacet] = useState("All");
   const [opened, setOpened] = useState<string>();
-  const [imports, setImports] = useState<string[]>([]);
-  const shown = archive.filter(
+  const [documents, setDocuments] = useState(archive);
+  const [adding, setAdding] = useState(false);
+  const [rejections, setRejections] = useState<FileRejection[]>([]);
+  const [pending, setPending] = useState<
+    ((typeof archive)[number] & { progress: number })[]
+  >([]);
+  const nextId = useRef(0);
+  const reduced = useRef(false);
+  useEffect(() => {
+    const media = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const update = () => {
+      reduced.current = media.matches;
+      if (media.matches)
+        setPending((items) =>
+          items.map((item) => ({ ...item, progress: 100 })),
+        );
+    };
+    update();
+    media.addEventListener("change", update);
+    return () => media.removeEventListener("change", update);
+  }, []);
+  const uploading = pending.some((item) => item.progress < 100);
+  useEffect(() => {
+    if (!uploading) return;
+    const timer = window.setInterval(() => {
+      setPending((items) =>
+        items.map((item) => ({
+          ...item,
+          progress: Math.min(100, item.progress + 25),
+        })),
+      );
+    }, 500);
+    return () => window.clearInterval(timer);
+  }, [uploading]);
+  useEffect(() => {
+    const complete = pending.filter((item) => item.progress === 100);
+    if (complete.length)
+      setDocuments((items) => [
+        ...items,
+        ...complete.filter(
+          (item) => !items.some((existing) => existing.id === item.id),
+        ),
+      ]);
+  }, [pending]);
+  function receive(files: File[]) {
+    setAdding(true);
+    setPending((items) => [
+      ...items,
+      ...files.map((file) => ({
+        id: `import-${nextId.current++}`,
+        title: file.name,
+        kind: "Invoices",
+        date: "7 October 2026",
+        passage: "Water bill total: 42.00 EUR.",
+        pages: 1,
+        progress: reduced.current ? 100 : 0,
+      })),
+    ]);
+  }
+  const shown = documents.filter(
     (item) =>
       item.title.toLowerCase().includes(query.toLowerCase()) &&
       (facet === "All" || item.kind === facet),
   );
-  const selected = archive.find((item) => item.id === opened);
+  const selected = documents.find((item) => item.id === opened);
   return (
     <Page
       header={
@@ -146,7 +208,7 @@ export function DocumentLibrary() {
                   id: "library",
                   label: "Library",
                   href: "#",
-                  count: archive.length,
+                  count: documents.length,
                 },
                 {
                   id: "overview",
@@ -196,7 +258,15 @@ export function DocumentLibrary() {
             acceptedFileTypes={[".pdf", ".txt"]}
             maxSize={20_000_000}
             allowsMultiple
-            onDrop={(files) => setImports(files.map((file) => file.name))}
+            onDrop={receive}
+            onBrowse={() => {
+              setRejections([]);
+              setAdding(true);
+            }}
+            onReject={(items) => {
+              setRejections(items);
+              setAdding(true);
+            }}
           />
         </Grid>
         <Stack gap={16} as="section">
@@ -204,7 +274,7 @@ export function DocumentLibrary() {
           <Inline gap={24} justify="space-between">
             <Text variant="mono">At a glance</Text>
             <Text>
-              <strong>{archive.length} documents</strong>
+              <strong>{documents.length} documents</strong>
             </Text>
             <Text tone="muted">5 document types</Text>
             <Link href="#overview" trailingIcon="arrow-right">
@@ -212,18 +282,10 @@ export function DocumentLibrary() {
             </Link>
           </Inline>
           <Divider />
-          {imports.length > 0 && (
-            <Text size="meta" tone="muted">
-              <span role="status">
-                Files selected: {imports.join(", ")}. Preview only; nothing is
-                uploaded.
-              </span>
-            </Text>
-          )}
         </Stack>
         <CollectionView
           label="Document library"
-          count={archive.length}
+          count={documents.length}
           countVariant="outlined"
           isEmpty={shown.length === 0}
           stickyToolbar={false}
@@ -249,8 +311,8 @@ export function DocumentLibrary() {
                   label: kind,
                   count:
                     kind === "All"
-                      ? archive.length
-                      : archive.filter((item) => item.kind === kind).length,
+                      ? documents.length
+                      : documents.filter((item) => item.kind === kind).length,
                 }))}
               />
               <SegmentedControl
@@ -265,7 +327,7 @@ export function DocumentLibrary() {
               />
             </Inline>
           }
-          footer={`${shown.length} of ${archive.length} documents shown`}
+          footer={`${shown.length} of ${documents.length} documents shown`}
           emptyState={
             <EmptyState
               variant="editorial"
@@ -351,6 +413,87 @@ export function DocumentLibrary() {
           </Inline>
         </Surface>
       </Stack>
+      <Dialog
+        title={
+          <>
+            Add <em>your documents</em>
+          </>
+        }
+        isOpen={adding}
+        onOpenChange={setAdding}
+      >
+        <Stack gap={24}>
+          <DropZone
+            label="Drop your files here"
+            buttonLabel="Choose files"
+            acceptedFileTypes={[".pdf", ".txt"]}
+            maxSize={20_000_000}
+            allowsMultiple
+            onDrop={receive}
+            onReject={setRejections}
+          />
+          <ActionList
+            label="Sample document"
+            items={[
+              {
+                id: "water",
+                title: "Try with a sample water bill",
+                icon: "file-text",
+                trailingIcon: "arrow-right",
+                onPress: () =>
+                  receive([
+                    new File(["Fictional water bill"], "Water bill.pdf", {
+                      type: "application/pdf",
+                    }),
+                  ]),
+              },
+            ]}
+          />
+          <Text tone="muted" size="meta">
+            Demonstration only. Progress and recognition are simulated locally;
+            no files are uploaded or read.
+          </Text>
+          {rejections.length > 0 && (
+            <Notice tone="danger" title="Some files could not be added">
+              <Stack gap={8}>
+                {rejections.map(({ file, reason }) => (
+                  <Text
+                    key={`${file.name}-${file.size}-${file.lastModified}-${reason}`}
+                    size="meta"
+                  >
+                    {file.name}:{" "}
+                    {reason === "type"
+                      ? "Unsupported type. Choose PDF or TXT."
+                      : "File exceeds 20 MB."}
+                  </Text>
+                ))}
+              </Stack>
+            </Notice>
+          )}
+          {pending.length > 0 && (
+            <UploadQueue
+              label="Document imports"
+              items={pending.map((item) => ({
+                id: item.id,
+                name: item.title,
+                status: item.progress === 100 ? "complete" : "uploading",
+                progress: item.progress,
+                description:
+                  item.progress === 100
+                    ? "Bill recognised · Housing"
+                    : "Reading document…",
+                action: {
+                  label: "View document",
+                  onAction: () => {
+                    setAdding(false);
+                    setOpened(item.id);
+                  },
+                },
+              }))}
+            />
+          )}
+        </Stack>
+      </Dialog>
       <Dialog
         placement="end"
         size="wide"

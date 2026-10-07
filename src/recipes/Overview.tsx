@@ -13,10 +13,8 @@ import { Icon } from "../icon/Icon.js";
 import { IconButton } from "../icon-button/IconButton.js";
 import { IconTile } from "../icon-tile/IconTile.js";
 import { Inline } from "../inline/Inline.js";
-import { Link } from "../link/Link.js";
 import { Notice } from "../notice/Notice.js";
 import { Page } from "../page/Page.js";
-import { Paper } from "../paper/Paper.js";
 import { Stack } from "../stack/Stack.js";
 import { Surface } from "../surface/Surface.js";
 import { Tabs } from "../tabs/Tabs.js";
@@ -25,6 +23,8 @@ import { TextButton } from "../text-button/TextButton.js";
 import { Timeline } from "../timeline/Timeline.js";
 import { TopNav } from "../top-nav/TopNav.js";
 import { Value } from "../value/Value.js";
+
+import { type RecordDocument, RecordView } from "./RecordView.js";
 
 /** A fictitious overview recipe; applications own data, routes and interpretation. */
 export function Overview() {
@@ -178,8 +178,14 @@ export function Overview() {
         onOpenChange={(isOpen) => {
           if (!isOpen) setFact(null);
         }}
-        eyebrow={record ? record.type : "From information to evidence"}
+        eyebrow={record ? record.kind : "From information to evidence"}
         title={record?.title ?? fact?.title ?? "Information"}
+        meta={
+          !record && fact ? (
+            <Badge variant="outline">{fact.origin}</Badge>
+          ) : undefined
+        }
+        description={!record ? fact?.description : undefined}
         {...(record
           ? {
               backLabel: "Back to the information and its sources",
@@ -188,20 +194,13 @@ export function Overview() {
           : {})}
       >
         {record ? (
-          <Stack gap={24}>
-            <Text variant="mono">{record.meta}</Text>
-            <Paper>
-              <Text>
-                <mark>{record.quote}</mark>
-              </Text>
-            </Paper>
-          </Stack>
+          <RecordView
+            key={record.id}
+            document={record}
+            initialFieldId={record.citedFieldId}
+          />
         ) : fact ? (
           <Stack gap={24}>
-            <Inline>
-              <Badge variant="outline">{fact.origin}</Badge>
-            </Inline>
-            <Text tone="muted">{fact.description}</Text>
             <Notice tone="neutral" title="Why these records are connected">
               {reasons[fact.origin]}
             </Notice>
@@ -219,7 +218,10 @@ export function Overview() {
                     id: source.title,
                     label: "Recorded passage",
                     locator: "Page 1",
-                    quote: source.quote,
+                    quote:
+                      source.fields.find(
+                        (field) => field.id === source.citedFieldId,
+                      )?.passage ?? "",
                     actionLabel: "Read this passage in the record",
                     onAction: () => setRecord(source),
                   },
@@ -256,11 +258,9 @@ const reasons: Record<Fact["origin"], string> = {
   Calculated:
     "This figure is calculated from the amounts recorded below; no single record states it.",
 };
-type SourceRecord = {
-  title: string;
-  type: string;
+type SourceRecord = RecordDocument & {
   meta: string;
-  quote: string;
+  citedFieldId: string;
 };
 type Fact = {
   title: string;
@@ -270,45 +270,214 @@ type Fact = {
 };
 const sourceRecords: SourceRecord[] = [
   {
+    id: "rental",
     title: "Rental agreement",
-    type: "Agreement",
+    kind: "Agreement",
+    date: "September 2024",
     meta: "Garden lettings · September 2024",
-    quote:
+    summary:
       "Alex Morgan rents the Garden apartment from September 2024. Rent and charges: 840 EUR per month.",
+    pages: 1,
+    citedFieldId: "amount",
+    fields: [
+      {
+        id: "person",
+        label: "Tenant",
+        value: "Alex Morgan",
+        page: 1,
+        passage: "The tenant is Alex Morgan.",
+      },
+      {
+        id: "subject",
+        label: "Home",
+        value: "Garden apartment",
+        page: 1,
+        passage: "The rented home is the Garden apartment.",
+      },
+      {
+        id: "amount",
+        label: "Rent and charges",
+        value: "840 EUR / month",
+        page: 1,
+        passage:
+          "Alex Morgan rents the Garden apartment from September 2024. Rent and charges: 840 EUR per month.",
+      },
+    ],
   },
   {
+    id: "cover",
     title: "Home cover",
-    type: "Cover record",
+    kind: "Cover record",
+    date: "September 2026",
     meta: "Meadow cover · September 2026",
-    quote:
+    summary:
       "Alex Morgan — Garden apartment. New cover begins September 2026, replacing cover begun September 2025, and ends August 2027. Annual premium: 186 EUR.",
+    pages: 1,
+    citedFieldId: "amount",
+    fields: [
+      {
+        id: "person",
+        label: "Policyholder",
+        value: "Alex Morgan",
+        page: 1,
+        passage: "The policyholder is Alex Morgan.",
+      },
+      {
+        id: "subject",
+        label: "Cover period",
+        value: "September 2026 – August 2027",
+        page: 1,
+        passage: "Cover runs from September 2026 to August 2027.",
+      },
+      {
+        id: "amount",
+        label: "Annual premium",
+        value: "186 EUR / year",
+        page: 1,
+        passage:
+          "Alex Morgan — Garden apartment. New cover begins September 2026, replacing cover begun September 2025, and ends August 2027. Annual premium: 186 EUR.",
+      },
+    ],
   },
   {
+    id: "may-energy",
     title: "May energy statement",
-    type: "Energy statement",
+    kind: "Energy statement",
+    date: "May 2026",
     meta: "Garden energy · May 2026",
-    quote: "Alex Morgan — Garden apartment. Energy charges for May: 71.20 EUR.",
+    summary:
+      "Alex Morgan — Garden apartment. Energy charges for May: 71.20 EUR.",
+    pages: 1,
+    citedFieldId: "amount",
+    fields: [
+      {
+        id: "person",
+        label: "Customer",
+        value: "Alex Morgan",
+        page: 1,
+        passage: "The customer is Alex Morgan.",
+      },
+      {
+        id: "subject",
+        label: "Billing period",
+        value: "May 2026",
+        page: 1,
+        passage: "This statement covers May 2026.",
+      },
+      {
+        id: "amount",
+        label: "Energy charges",
+        value: "71.20 EUR",
+        page: 1,
+        passage:
+          "Alex Morgan — Garden apartment. Energy charges for May: 71.20 EUR.",
+      },
+    ],
   },
   {
+    id: "august-energy",
     title: "August energy statement",
-    type: "Energy statement",
+    kind: "Energy statement",
+    date: "August 2026",
     meta: "Garden energy · August 2026",
-    quote:
+    summary:
       "Alex Morgan — Garden apartment. Energy charges for August: 64.80 EUR.",
+    pages: 1,
+    citedFieldId: "amount",
+    fields: [
+      {
+        id: "person",
+        label: "Customer",
+        value: "Alex Morgan",
+        page: 1,
+        passage: "The customer is Alex Morgan.",
+      },
+      {
+        id: "subject",
+        label: "Billing period",
+        value: "August 2026",
+        page: 1,
+        passage: "This statement covers August 2026.",
+      },
+      {
+        id: "amount",
+        label: "Energy charges",
+        value: "64.80 EUR",
+        page: 1,
+        passage:
+          "Alex Morgan — Garden apartment. Energy charges for August: 64.80 EUR.",
+      },
+    ],
   },
   {
+    id: "purchase",
     title: "Purchase receipt",
-    type: "Receipt",
+    kind: "Receipt",
+    date: "September 2024",
     meta: "City cycles · September 2024",
-    quote:
+    summary:
       "Alex Morgan purchased the City bicycle, reference CB-24, in September 2024 for 420 EUR.",
+    pages: 1,
+    citedFieldId: "amount",
+    fields: [
+      {
+        id: "person",
+        label: "Buyer",
+        value: "Alex Morgan",
+        page: 1,
+        passage: "The buyer is Alex Morgan.",
+      },
+      {
+        id: "subject",
+        label: "Bicycle reference",
+        value: "CB-24",
+        page: 1,
+        passage: "The City bicycle has reference CB-24.",
+      },
+      {
+        id: "amount",
+        label: "Purchase amount",
+        value: "420 EUR",
+        page: 1,
+        passage:
+          "Alex Morgan purchased the City bicycle, reference CB-24, in September 2024 for 420 EUR.",
+      },
+    ],
   },
   {
+    id: "service",
     title: "Service record",
-    type: "Service record",
+    kind: "Service record",
+    date: "September 2026",
     meta: "City cycles · September 2026",
-    quote:
+    summary:
       "Alex Morgan — City bicycle, reference CB-24. Service completed September 2026. Amount: 65 EUR.",
+    pages: 1,
+    citedFieldId: "amount",
+    fields: [
+      {
+        id: "person",
+        label: "Owner",
+        value: "Alex Morgan",
+        page: 1,
+        passage: "The owner is Alex Morgan.",
+      },
+      {
+        id: "subject",
+        label: "Bicycle reference",
+        value: "CB-24",
+        page: 1,
+        passage: "The serviced City bicycle has reference CB-24.",
+      },
+      {
+        id: "amount",
+        label: "Service amount",
+        value: "65 EUR",
+        page: 1,
+        passage:
+          "Alex Morgan — City bicycle, reference CB-24. Service completed September 2026. Amount: 65 EUR.",
+      },
+    ],
   },
 ];
 

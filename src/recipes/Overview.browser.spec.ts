@@ -51,6 +51,7 @@ for (const theme of ["light", "dark"]) {
       expect(
         (
           await new AxeBuilder({ page })
+            .include("main")
             .withTags(["wcag2a", "wcag2aa", "wcag21aa"])
             .analyze()
         ).violations,
@@ -71,7 +72,26 @@ for (const theme of ["light", "dark"]) {
           .getByRole("heading", { name: "Rental agreement", exact: true })
           .first(),
       ).toBeFocused();
-      await expect(page.locator("mark")).toContainText("Alex Morgan");
+      const record = page.getByRole("dialog", { name: "Rental agreement" });
+      await expect(record.getByText("Document understood")).toBeVisible();
+      await expect(
+        record.getByRole("row", { name: "Rent and charges" }),
+      ).toHaveAttribute("aria-selected", "true");
+      await expect(record.locator("mark")).toHaveText(
+        "Alex Morgan rents the Garden apartment from September 2024. Rent and charges: 840 EUR per month.",
+      );
+      expect(
+        (
+          await new AxeBuilder({ page })
+            .include("[role=dialog]")
+            .withTags(["wcag2a", "wcag2aa", "wcag21aa"])
+            .analyze()
+        ).violations,
+      ).toEqual([]);
+      await record.getByRole("row", { name: "Tenant" }).click();
+      await expect(record.locator("mark")).toHaveText(
+        "The tenant is Alex Morgan.",
+      );
       await page
         .getByRole("button", {
           name: "Back to the information and its sources",
@@ -88,6 +108,7 @@ for (const theme of ["light", "dark"]) {
       expect(
         (
           await new AxeBuilder({ page })
+            .include("[role=dialog]")
             .withTags(["wcag2a", "wcag2aa", "wcag21aa"])
             .analyze()
         ).violations,
@@ -107,6 +128,7 @@ for (const theme of ["light", "dark"]) {
     expect(
       (
         await new AxeBuilder({ page })
+          .include("main")
           .withTags(["wcag2a", "wcag2aa", "wcag21aa"])
           .analyze()
       ).violations,

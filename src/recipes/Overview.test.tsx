@@ -59,6 +59,16 @@ test("person evidence opens a passage and returns to the same sources", async ()
   await user.click(screen.getByRole("button", { name: "Read person sources" }));
   const dialog = screen.getByRole("dialog", { name: "Alex Morgan" });
   expect(within(dialog).getByText("Connected", { exact: true })).toBeVisible();
+  const header = dialog.querySelector("header");
+  if (!header) throw new Error("Evidence header missing");
+  expect(
+    within(header).getByText("Connected", {
+      exact: true,
+    }),
+  ).toBeVisible();
+  expect(dialog).toHaveAccessibleDescription(
+    "The same person is named across these records.",
+  );
   expect(
     within(dialog).getByText("Why these records are connected"),
   ).toBeVisible();
@@ -68,7 +78,23 @@ test("person evidence opens a passage and returns to the same sources", async ()
     ).getByRole("button", { name: "Read this passage in the record" }),
   );
   const record = screen.getByRole("dialog", { name: "Rental agreement" });
-  expect(record.querySelector("mark")).toHaveTextContent("Alex Morgan");
+  expect(within(record).getByText("Document understood")).toBeVisible();
+  const fields = within(record).getByRole("grid", { name: "Document fields" });
+  expect(within(fields).getAllByRole("row")).toHaveLength(3);
+  expect(
+    within(record).getByRole("row", { name: "Rent and charges" }),
+  ).toHaveAttribute("aria-selected", "true");
+  expect(record.querySelector("mark")).toHaveTextContent(
+    "Alex Morgan rents the Garden apartment from September 2024. Rent and charges: 840 EUR per month.",
+  );
+  expect(within(record).queryByText("Filed in")).not.toBeInTheDocument();
+  expect(
+    within(record).queryByRole("list", { name: "Related documents" }),
+  ).not.toBeInTheDocument();
+  await user.click(within(record).getByRole("row", { name: "Tenant" }));
+  expect(record.querySelector("mark")).toHaveTextContent(
+    "The tenant is Alex Morgan.",
+  );
   await user.click(
     within(record).getByRole("button", {
       name: "Back to the information and its sources",

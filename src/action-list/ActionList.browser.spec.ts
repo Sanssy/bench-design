@@ -34,3 +34,23 @@ for (const theme of ["light", "dark"]) {
     expect(result.violations).toEqual([]);
   });
 }
+
+for (const theme of ["light", "dark"]) {
+  test(`ActionList interface typography across examples ${theme}`, {
+    tag: ["@component:action-list", `@theme:${theme}`],
+  }, async ({ page }) => {
+    for (const story of ["resources", "numbered-actions", "outlined-steps"]) {
+      await page.goto(
+        `/iframe.html?id=navigation-actionlist--${story}&globals=a11y.manual:!true;theme:${theme}`,
+      );
+      const list = page.locator(".bd-action-list");
+      await expect(list).toBeVisible();
+      await list.evaluate((el) => {
+        if (el.parentElement) el.parentElement.style.fontSize = "25px";
+      });
+      for (const title of await list.locator(".bd-action-list__title").all()) {
+        await expect(title).toHaveCSS("font-size", "16px");
+      }
+    }
+  });
+}

@@ -93,8 +93,12 @@ for (const theme of ["light", "dark"]) {
       page.getByRole("heading", { name: "No matching documents" }),
     ).toBeVisible();
     await check();
-    await page.keyboard.press("ControlOrMeta+A");
-    await page.keyboard.press("Backspace");
+    const reset = page.getByRole("button", { name: "Show all documents" });
+    await reset.focus();
+    await page.keyboard.press("Enter");
+    await expect(search).toHaveValue("");
+    await expect(page.getByRole("row")).toHaveCount(6);
+    await search.focus();
     const all = page.getByRole("radio", { name: "All, 6" });
     for (
       let step = 0;
@@ -194,14 +198,32 @@ for (const theme of ["light", "dark"]) {
       await hero.dispatchEvent(type, { dataTransfer: dropped });
     const dialog = page.getByRole("dialog", { name: "Add your documents" });
     await expect(dialog).toBeVisible();
+    const zone = dialog.locator(".bd-drop-zone");
+    const sample = dialog.getByRole("button", {
+      name: "Try with a sample water bill",
+    });
+    await expect(sample).toHaveCSS("font-size", "16px");
+    await page.setViewportSize({ width: 1280, height: 900 });
+    await expect(zone).toHaveCSS("flex-direction", "column");
+    await expect(zone).toHaveCSS("align-items", "center");
+    await expect(zone.locator(".bd-drop-zone__icon")).toBeVisible();
+    await expect(
+      zone.getByRole("button", { name: "Choose files" }),
+    ).toBeVisible();
+    await expect(zone.getByText("PDF, TXT · 20 MB max.")).toBeVisible();
+    await expect(sample).toHaveCSS("font-size", "16px");
+    await page.setViewportSize({ width: 320, height: 900 });
     await expect(
       dialog.getByText("Some files could not be added"),
     ).toBeVisible();
-    await dialog.locator('input[type="file"]').setInputFiles({
-      name: "water.pdf",
-      mimeType: "application/pdf",
-      buffer: Buffer.from("sample"),
-    });
+    await dialog
+      .locator('input[type="file"]')
+      .first()
+      .setInputFiles({
+        name: "water.pdf",
+        mimeType: "application/pdf",
+        buffer: Buffer.from("sample"),
+      });
     await expect(dialog.getByText("Bill recognised · Housing")).toBeVisible();
     await dialog
       .getByRole("button", { name: "Try with a sample water bill" })
@@ -209,11 +231,14 @@ for (const theme of ["light", "dark"]) {
     await expect(
       dialog.getByRole("button", { name: "View document" }),
     ).toHaveCount(2);
-    await dialog.locator('input[type="file"]').setInputFiles({
-      name: "photo.png",
-      mimeType: "image/png",
-      buffer: Buffer.from("sample"),
-    });
+    await dialog
+      .locator('input[type="file"]')
+      .first()
+      .setInputFiles({
+        name: "photo.png",
+        mimeType: "image/png",
+        buffer: Buffer.from("sample"),
+      });
     await expect(dialog.getByRole("alert")).toContainText("photo.png");
     await expect(dialog.getByText("Some files could not be added")).toHaveCount(
       0,

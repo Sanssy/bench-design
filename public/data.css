@@ -475,7 +475,7 @@
   border: 0;
   background: transparent;
   color: var(--bd-text);
-  font: var(--bd-size-body) / var(--bd-line-reading) var(--bd-font-ui);
+  font: var(--bd-size-ui) / var(--bd-line-reading) var(--bd-font-ui);
   text-align: start;
   text-decoration: none;
   cursor: pointer;

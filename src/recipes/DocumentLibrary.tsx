@@ -3,6 +3,7 @@ import { ActionList } from "../action-list/ActionList.js";
 import { AppHeader } from "../app-header/AppHeader.js";
 import { Avatar } from "../avatar/Avatar.js";
 import { Badge } from "../badge/Badge.js";
+import { Button } from "../button/Button.js";
 import { CategoryLabel } from "../category-label/CategoryLabel.js";
 import { CollectionView } from "../collection-view/CollectionView.js";
 import { Dialog } from "../dialog/Dialog.js";
@@ -368,6 +369,16 @@ export function DocumentLibrary() {
               variant="editorial"
               icon="search"
               title="No matching documents"
+              action={
+                <Button
+                  onPress={() => {
+                    setQuery("");
+                    setFacet("All");
+                  }}
+                >
+                  Show all documents
+                </Button>
+              }
             >
               Change your search or choose another document type.
             </EmptyState>
@@ -459,6 +470,10 @@ export function DocumentLibrary() {
       >
         <Stack gap={24}>
           <DropZone
+            variant="editorial"
+            align="center"
+            icon="upload"
+            headingLevel={3}
             label="Drop your files here"
             buttonLabel="Choose files"
             acceptedFileTypes={[".pdf", ".txt"]}

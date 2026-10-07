@@ -65,3 +65,103 @@ test("list view retains search and document activation", async () => {
   await user.click(screen.getByRole("row", { name: "Energy invoice" }));
   expect(screen.getByRole("dialog", { name: "Energy invoice" })).toBeVisible();
 });
+
+test("accepted files open the import dialog and become readable documents", async () => {
+  vi.stubGlobal("matchMedia", () => ({
+    matches: true,
+    addEventListener() {},
+    removeEventListener() {},
+  }));
+  const user = userEvent.setup();
+  render(<DocumentLibrary />);
+  await user.click(
+    screen.getAllByRole("button", { name: "Add documents" })[0] as HTMLElement,
+  );
+  const dialog = screen.getByRole("dialog", { name: "Add your documents" });
+  await user.upload(
+    dialog.querySelector('input[type="file"]') as HTMLInputElement,
+    new File(["sample"], "water.pdf", { type: "application/pdf" }),
+  );
+  expect(within(dialog).getByText("Bill recognised · Housing")).toBeVisible();
+  await user.click(
+    within(dialog).getByRole("button", { name: "View document" }),
+  );
+  expect(screen.getByRole("dialog", { name: "water.pdf" })).toBeVisible();
+  await user.keyboard("{Escape}");
+  expect(screen.getByRole("row", { name: "water.pdf" })).toBeVisible();
+  expect(screen.getByText("11 documents", { exact: true })).toBeVisible();
+});
+
+test("imports progress to completion and release their timer", async () => {
+  const user = userEvent.setup();
+  const { unmount } = render(<DocumentLibrary />);
+  await user.click(
+    screen.getAllByRole("button", { name: "Add documents" })[0] as HTMLElement,
+  );
+  const dialog = screen.getByRole("dialog", { name: "Add your documents" });
+  await user.upload(
+    dialog.querySelector('input[type="file"]') as HTMLInputElement,
+    new File(["sample"], "water.pdf", { type: "application/pdf" }),
+  );
+  const queue = within(dialog).getByRole("list", { name: "Document imports" });
+  expect(within(queue).getByRole("progressbar")).toHaveAttribute(
+    "aria-valuenow",
+    "0",
+  );
+  expect(
+    within(queue).queryByRole("button", { name: "View document" }),
+  ).toBeNull();
+  expect(
+    await within(queue).findByRole(
+      "button",
+      { name: "View document" },
+      { timeout: 3500 },
+    ),
+  ).toBeVisible();
+  expect(within(queue).getByRole("progressbar")).toHaveAttribute(
+    "aria-valuenow",
+    "100",
+  );
+  const clear = vi.spyOn(window, "clearInterval");
+  await user.click(
+    within(dialog).getByRole("button", {
+      name: "Try with a sample water bill",
+    }),
+  );
+  unmount();
+  expect(clear).toHaveBeenCalled();
+  clear.mockRestore();
+});
+
+test("import dialog summarises type and size refusals without adding them", async () => {
+  const user = userEvent.setup({ applyAccept: false });
+  render(<DocumentLibrary />);
+  await user.click(
+    screen.getAllByRole("button", { name: "Add documents" })[0] as HTMLElement,
+  );
+  const dialog = screen.getByRole("dialog", { name: "Add your documents" });
+  await user.upload(
+    dialog.querySelector('input[type="file"]') as HTMLInputElement,
+    new File(["sample"], "water.pdf", { type: "application/pdf" }),
+  );
+  const large = new File(["sample"], "large.pdf", { type: "application/pdf" });
+  Object.defineProperty(large, "size", { value: 20_000_001 });
+  await user.upload(
+    dialog.querySelector('input[type="file"]') as HTMLInputElement,
+    [
+      new File(["image"], "photo.png", { type: "image/png" }),
+      large,
+      new File(["sample"], "accepted.txt", { type: "text/plain" }),
+    ],
+  );
+  const notice = within(dialog).getByText(
+    "Some files could not be added",
+  ).parentElement;
+  expect(notice).toHaveTextContent(
+    "photo.png: Unsupported type. Choose PDF or TXT.",
+  );
+  expect(notice).toHaveTextContent("large.pdf: File exceeds 20 MB.");
+  expect(
+    within(dialog).getByRole("list", { name: "Document imports" }).children,
+  ).toHaveLength(2);
+});

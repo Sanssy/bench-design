@@ -605,7 +605,7 @@
 .bd-drop-zone[data-variant="editorial"] > .bd-drop-zone__picker {
   order: 1;
 }
-.bd-drop-zone[data-variant="editorial"] > .bd-drop-zone__errors {
+.bd-drop-zone[data-variant="editorial"] > [role="alert"] {
   order: 2;
   align-self: stretch;
   text-align: start;
@@ -635,7 +635,7 @@
   .bd-drop-zone[data-variant="editorial"] > .bd-drop-zone__meta {
     grid-column: 1;
   }
-  .bd-drop-zone[data-variant="editorial"] > .bd-drop-zone__errors {
+  .bd-drop-zone[data-variant="editorial"] > [role="alert"] {
     grid-column: 1 / -1;
   }
   .bd-drop-zone[data-variant="editorial"] .bd-heading {

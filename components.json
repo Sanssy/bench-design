@@ -1637,6 +1637,12 @@
           "name": "buttonLabel",
           "type": "string",
           "required": false
+        },
+        {
+          "name": "onBrowse",
+          "type": "() => void",
+          "required": false,
+          "description": "Replaces the native file picker, for example to open an import dialog. Drops still call onDrop."
         }
       ],
       "stories": [

@@ -1,7 +1,7 @@
-import { useState } from "react";
+import { type ReactElement, useState } from "react";
 import { DropZone as AriaDropZone } from "react-aria-components";
 import { useBenchMessages } from "../bench-provider/BenchProvider.js";
-import { Button } from "../button/Button.js";
+import { Button, type ButtonProps } from "../button/Button.js";
 import { FileTrigger } from "../file-trigger/FileTrigger.js";
 import { Heading } from "../heading/Heading.js";
 import type { IconName } from "../icon/icons.js";
@@ -37,6 +37,8 @@ export interface DropZoneProps {
   onReject?: (rejections: FileRejection[]) => void;
   isDisabled?: boolean;
   buttonLabel?: string;
+  /** Replaces the native file picker, for example to open an import dialog. Drops still call onDrop. */
+  onBrowse?: () => void;
 }
 function matches(file: File, types: string[]) {
   return (
@@ -77,6 +79,7 @@ export function DropZone({
   onReject,
   isDisabled = false,
   buttonLabel,
+  onBrowse,
 }: DropZoneProps) {
   const { messages: m, number } = useBenchMessages();
   const pickerIcon =
@@ -94,6 +97,18 @@ export function DropZone({
     return m.fileSize(number(Math.round(value * 10) / 10), unit);
   }
   const [rejections, setRejections] = useState<FileRejection[]>([]);
+  const picker = (children: ReactElement<ButtonProps>) =>
+    onBrowse ? (
+      children
+    ) : (
+      <FileTrigger
+        acceptedFileTypes={acceptedFileTypes}
+        allowsMultiple={allowsMultiple}
+        onSelect={receive}
+      >
+        {children}
+      </FileTrigger>
+    );
   function receive(files: File[]) {
     if (isDisabled) return;
     const rejected: FileRejection[] = [],
@@ -153,37 +168,31 @@ export function DropZone({
       )}
       {description && <p className="bd-drop-zone__help">{description}</p>}
       <span className="bd-drop-zone__picker">
-        <FileTrigger
-          acceptedFileTypes={acceptedFileTypes}
-          allowsMultiple={allowsMultiple}
-          onSelect={receive}
-        >
+        {picker(
           <Button
             variant="primary"
             isDisabled={isDisabled}
+            {...(onBrowse ? { onPress: onBrowse } : {})}
             {...(pickerIcon ? { icon: pickerIcon } : {})}
             {...(buttonIconPosition
               ? { iconPosition: buttonIconPosition }
               : {})}
           >
             {buttonLabel ?? m.addFiles}
-          </Button>
-        </FileTrigger>
+          </Button>,
+        )}
       </span>
       {variant === "editorial" && (
         <span className="bd-drop-zone__compact-picker">
-          <FileTrigger
-            acceptedFileTypes={acceptedFileTypes}
-            allowsMultiple={allowsMultiple}
-            onSelect={receive}
-          >
+          {picker(
             <IconButton
               icon="upload"
               label={buttonLabel ?? m.addFiles}
               variant="primary"
               isDisabled={isDisabled}
-            />
-          </FileTrigger>
+              {...(onBrowse ? { onPress: onBrowse } : {})}
+            />,
+          )}
         </span>
       )}
       {(acceptedFileTypes.length > 0 || maxSize !== undefined) && (
@@ -194,16 +203,18 @@ export function DropZone({
         </p>
       )}
       {rejections.length > 0 && (
-        <ul role="alert" className="bd-drop-zone__errors">
-          {rejections.map(({ file, reason }) => (
-            <li key={file.name}>
-              ✕ {file.name}:{" "}
-              {reason === "type"
-                ? m.rejectedType(types)
-                : m.rejectedSize(sizeLabel(maxSize ?? 0))}
-            </li>
-          ))}
-        </ul>
+        <div role="alert">
+          <ul className="bd-drop-zone__errors">
+            {rejections.map(({ file, reason }) => (
+              <li key={file.name}>
+                ✕ {file.name}:{" "}
+                {reason === "type"
+                  ? m.rejectedType(types)
+                  : m.rejectedSize(sizeLabel(maxSize ?? 0))}
+              </li>
+            ))}
+          </ul>
+        </div>
       )}
     </AriaDropZone>
   );

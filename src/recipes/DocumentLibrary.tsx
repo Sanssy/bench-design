@@ -430,7 +430,7 @@ export function DocumentLibrary() {
             maxSize={20_000_000}
             allowsMultiple
             onDrop={receive}
-            onReject={setRejections}
+            onReject={() => setRejections([])}
           />
           <ActionList
             label="Sample document"
@@ -453,6 +453,7 @@ export function DocumentLibrary() {
             Demonstration only. Progress and recognition are simulated locally;
             no files are uploaded or read.
           </Text>
+          {/* The dialog zone reports its own refusals; this covers files dropped on the page. */}
           {rejections.length > 0 && (
             <Notice tone="danger" title="Some files could not be added">
               <Stack gap={8}>

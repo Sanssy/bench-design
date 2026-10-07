@@ -1399,6 +1399,18 @@
           "description": "Optional metadata above the title."
         },
         {
+          "name": "backLabel",
+          "type": "string",
+          "required": false,
+          "description": "Visible return action; rendered only with onBack."
+        },
+        {
+          "name": "onBack",
+          "type": "() => void",
+          "required": false,
+          "description": "Consumer-owned view change; rendered only with backLabel."
+        },
+        {
           "name": "children",
           "type": "ReactNode",
           "required": true,
@@ -1435,6 +1447,10 @@
         {
           "name": "WideDialog",
           "href": "./?path=/story/overlays-dialog--wide-dialog"
+        },
+        {
+          "name": "ViewNavigation",
+          "href": "./?path=/story/overlays-dialog--view-navigation"
         }
       ]
     },
@@ -2124,6 +2140,18 @@
           "type": "\"start\" | \"center\"",
           "required": false,
           "description": "Logical line alignment; omitted alignment inherits from the parent."
+        },
+        {
+          "name": "ref",
+          "type": "Ref<HTMLHeadingElement>",
+          "required": false,
+          "description": "Programmatic focus target for changing reading surfaces."
+        },
+        {
+          "name": "tabIndex",
+          "type": "-1",
+          "required": false,
+          "description": "Use -1 to allow programmatic focus without adding a tab stop."
         },
         {
           "name": "children",

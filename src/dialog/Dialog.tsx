@@ -6,6 +6,7 @@ import {
   useState,
 } from "react";
 import {
+  Button as AriaButton,
   Dialog as AriaDialog,
   DialogTrigger,
   Modal,
@@ -13,6 +14,7 @@ import {
 } from "react-aria-components";
 import { useBenchMessages } from "../bench-provider/BenchProvider.js";
 import { Heading } from "../heading/Heading.js";
+import { Icon } from "../icon/Icon.js";
 import { IconButton } from "../icon-button/IconButton.js";
 import { Text } from "../text/Text.js";
 
@@ -32,6 +34,10 @@ export interface DialogProps {
   size?: "default" | "wide";
   /** Optional metadata above the title. */
   eyebrow?: string;
+  /** Visible return action; rendered only with onBack. */
+  backLabel?: string;
+  /** Consumer-owned view change; rendered only with backLabel. */
+  onBack?: () => void;
   /** Content in the internally scrolling body. */
   children: ReactNode;
   /** Optional actions kept visible below the body. */
@@ -44,6 +50,8 @@ export function Dialog({
   onOpenChange,
   title,
   eyebrow,
+  backLabel,
+  onBack,
   placement = "center",
   size = "default",
   children,
@@ -67,13 +75,20 @@ export function Dialog({
             <>
               <header className="bd-dialog-header">
                 <div>
+                  {backLabel !== undefined && onBack !== undefined ? (
+                    <AriaButton
+                      className="bd-dialog-back bd-link"
+                      onPress={onBack}
+                    >
+                      <Icon name="arrow-left" size={16} />
+                      {backLabel}
+                    </AriaButton>
+                  ) : null}
                   {eyebrow === undefined ? null : (
                     <Text variant="label">{eyebrow}</Text>
                   )}
                   <div id={titleId}>
-                    <Heading level={2} size="heading">
-                      {title}
-                    </Heading>
+                    <DialogTitle>{title}</DialogTitle>
                   </div>
                 </div>
                 <IconButton icon="x" label={m.close} onPress={close} />
@@ -121,4 +136,22 @@ function MountedOnly({ children }: { children: ReactNode }) {
     setMounted(Boolean(marker.current?.isConnected));
   }, []);
   return mounted ? children : <span ref={marker} hidden />;
+}
+
+function DialogTitle({ children }: { children: ReactNode }) {
+  const heading = useRef<HTMLHeadingElement>(null);
+  const previousText = useRef<string | null>(null);
+  // Compare rendered text: JSX titles are new objects on every render.
+  useLayoutEffect(() => {
+    const text = heading.current?.textContent ?? "";
+    if (previousText.current !== null && previousText.current !== text) {
+      heading.current?.focus();
+    }
+    previousText.current = text;
+  });
+  return (
+    <Heading level={2} size="heading" ref={heading} tabIndex={-1}>
+      {children}
+    </Heading>
+  );
 }

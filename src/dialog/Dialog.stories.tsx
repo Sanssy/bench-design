@@ -116,3 +116,33 @@ export const WideSheet: Story = {
 export const WideDialog: Story = {
   args: { ...ReadingGuide.args, size: "wide" },
 };
+
+export const ViewNavigation: Story = {
+  args: {
+    title: "Overview",
+    placement: "end",
+    trigger: <Button>Open overview</Button>,
+  },
+  render: function ViewNavigation(args) {
+    const [detail, setDetail] = useState(false);
+    return (
+      <Dialog
+        {...args}
+        title={detail ? "Source details" : "Overview"}
+        eyebrow={detail ? "Source" : "Summary"}
+        {...(detail
+          ? { backLabel: "Back to overview", onBack: () => setDetail(false) }
+          : {})}
+      >
+        {detail ? (
+          <Text>Read the source description and its supporting context.</Text>
+        ) : (
+          <>
+            <Text>Explore the source behind this summary.</Text>
+            <Button onPress={() => setDetail(true)}>Read source</Button>
+          </>
+        )}
+      </Dialog>
+    );
+  },
+};

@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { useState } from "react";
+import { Badge } from "../badge/Badge";
 import { Button } from "../button/Button";
 import { Text } from "../text/Text";
 import { Dialog } from "./Dialog";
@@ -144,5 +145,20 @@ export const ViewNavigation: Story = {
         )}
       </Dialog>
     );
+  },
+};
+
+export const DescribedDocument: Story = {
+  args: {
+    trigger: <Button>Review document</Button>,
+    eyebrow: "Collection",
+    meta: <Badge>Reviewed</Badge>,
+    title: "Document summary",
+    description: (
+      <>
+        Read the <em>source</em> before sharing this summary.
+      </>
+    ),
+    children: <Text>The original source is available for review.</Text>,
   },
 };

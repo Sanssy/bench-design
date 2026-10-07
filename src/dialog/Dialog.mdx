@@ -22,8 +22,11 @@ Use `placement="end"` for a full-height sheet on the logical end edge (including
 
 Supply `backLabel` and `onBack` together to show a return action above the eyebrow. The consumer replaces the title and content; Dialog focuses the heading when `title` changes while open, for either placement. Keep rich React-node titles stable between unrelated renders to avoid moving focus unnecessarily. The return action does not dismiss the dialog; Escape still does.
 
+Supply `meta` for rich metadata such as a Badge between the eyebrow and title. Supply `description` for supporting text below the title; it uses muted interface text and is announced through `aria-describedby`. Keep both slots non-interactive and put actions in the body or footer. Both props are optional.
+
 ## Examples
 
+<Canvas of={Stories.DescribedDocument} />
 <Canvas of={Stories.DocumentDetails} />
 <Canvas of={Stories.ReadingGuide} />
 <Canvas of={Stories.ControlledHelp} />

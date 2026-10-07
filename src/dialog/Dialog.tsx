@@ -28,6 +28,10 @@ export interface DialogProps {
   onOpenChange?: (isOpen: boolean) => void;
   /** Visible editorial heading and accessible dialog name. */
   title: ReactNode;
+  /** Supporting text below the title, announced as the dialog description. */
+  description?: ReactNode;
+  /** Optional rich metadata between the eyebrow and title, such as a Badge. */
+  meta?: ReactNode;
   /** Centered modal or full-height sheet at the logical end edge. */
   placement?: "center" | "end";
   /** Default reading measure or wider workspace measure. */
@@ -50,6 +54,8 @@ export function Dialog({
   onOpenChange,
   title,
   eyebrow,
+  meta,
+  description,
   backLabel,
   onBack,
   placement = "center",
@@ -59,6 +65,7 @@ export function Dialog({
 }: DialogProps) {
   const { messages: m } = useBenchMessages();
   const titleId = useId();
+  const descriptionId = useId();
   const overlay = (
     <ModalOverlay
       className={`bd-modal-overlay${placement === "end" ? " bd-modal-overlay-end" : ""}`}
@@ -70,7 +77,13 @@ export function Dialog({
       <Modal
         className={`bd-modal${placement === "end" ? " bd-modal-end" : ""}${size === "wide" ? " bd-modal-wide" : ""}`}
       >
-        <AriaDialog className="bd-dialog" aria-labelledby={titleId}>
+        <AriaDialog
+          className="bd-dialog"
+          aria-labelledby={titleId}
+          {...(description == null
+            ? {}
+            : { "aria-describedby": descriptionId })}
+        >
           {({ close }) => (
             <>
               <header className="bd-dialog-header">
@@ -87,9 +100,15 @@ export function Dialog({
                   {eyebrow === undefined ? null : (
                     <Text variant="label">{eyebrow}</Text>
                   )}
+                  {meta == null ? null : <div>{meta}</div>}
                   <div id={titleId}>
                     <DialogTitle>{title}</DialogTitle>
                   </div>
+                  {description == null ? null : (
+                    <div id={descriptionId}>
+                      <Text tone="muted">{description}</Text>
+                    </div>
+                  )}
                 </div>
                 <IconButton icon="x" label={m.close} onPress={close} />
               </header>

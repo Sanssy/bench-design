@@ -180,6 +180,16 @@
   outline: var(--bd-stroke) solid var(--bd-text);
   outline-offset: var(--bd-space-4);
 }
+/* Text tones inside a selected row follow the row colour (4.5:1 in both themes).
+   Rebound on the content, not the row, so the focus outline keeps its colour. */
+.bd-grid-list-item[data-selected] > * {
+  --bd-text: var(--bd-on-accent);
+  --bd-text-muted: var(--bd-on-accent);
+}
+.bd-grid-list[data-variant="strong"] .bd-grid-list-item[data-selected] > * {
+  --bd-text: var(--bd-on-selection-strong);
+  --bd-text-muted: var(--bd-on-selection-strong);
+}
 .bd-grid-list[data-variant="strong"] .bd-grid-list-item[data-selected] {
   background: var(--bd-selection-strong);
   color: var(--bd-on-selection-strong);

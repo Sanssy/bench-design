@@ -2133,6 +2133,14 @@
           "href": "./?path=/story/collections-gridlist--wide-resource-cards"
         },
         {
+          "name": "StrongSelectionDetails",
+          "href": "./?path=/story/collections-gridlist--strong-selection-details"
+        },
+        {
+          "name": "AccentSelectionDetails",
+          "href": "./?path=/story/collections-gridlist--accent-selection-details"
+        },
+        {
           "name": "MediaCards",
           "href": "./?path=/story/collections-gridlist--media-cards"
         },

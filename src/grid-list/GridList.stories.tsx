@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { useState } from "react";
 import { Button } from "../button/Button.js";
+import { Text } from "../text/Text.js";
 import { GridList } from "./GridList.js";
 
 const items = [
@@ -120,6 +121,53 @@ export const WideResourceCards: Story = {
         renderItem={(item) => <strong>{item.label}</strong>}
       />
     </div>
+  ),
+};
+
+export const StrongSelectionDetails: Story = {
+  render: () => (
+    <GridList
+      label="Fields"
+      items={items}
+      layout="list"
+      itemVariant="ruled"
+      selectionVariant="strong"
+      selectionMode="single"
+      defaultSelectedKeys={["a"]}
+      renderItem={(item) => (
+        <>
+          <Text>
+            <strong>{item.label}</strong>
+          </Text>
+          <Text tone="muted" size="meta">
+            Updated weekly
+          </Text>
+        </>
+      )}
+    />
+  ),
+};
+
+export const AccentSelectionDetails: Story = {
+  render: () => (
+    <GridList
+      label="Fields"
+      items={items}
+      layout="list"
+      itemVariant="ruled"
+      selectionMode="single"
+      defaultSelectedKeys={["a"]}
+      renderItem={(item) => (
+        <>
+          <Text>
+            <strong>{item.label}</strong>
+          </Text>
+          <Text tone="muted" size="meta">
+            Updated weekly
+          </Text>
+        </>
+      )}
+    />
   ),
 };
 

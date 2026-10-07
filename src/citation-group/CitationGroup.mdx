@@ -1,0 +1,27 @@
+import { Meta, Canvas } from '@storybook/addon-docs/blocks';
+import { ManifestProps } from "../../.storybook/ManifestProps";
+import * as Stories from './CitationGroup.stories';
+
+<Meta of={Stories} />
+
+# CitationGroup
+
+Import `CitationGroup` from `bench-design` and load `bench-design/styles.css` once.
+
+## Usage
+
+Group caller-owned quotations under a source heading. Provide stable unique passage IDs, concise labels, optional locators and quotation content. The default decorative icon is `file-text`; the heading defaults to level 3.
+
+- Do choose a heading level that fits the surrounding document.
+- Do provide an action label with either `href` for navigation or `onAction` for an application action.
+- Avoid nesting controls in quotation content or making the entire passage clickable.
+- Use ReferenceList for a simple numbered reference list. Source extraction and passage resolution belong to the consumer.
+
+<ManifestProps component="CitationGroup" />
+
+<Canvas of={Stories.SourcePassages} />
+<Canvas of={Stories.PreviewAction} />
+
+## Accessibility
+
+A named section contains a source heading, a list and native blockquotes. Icons are decorative. Only actions enter the tab order. Links navigate with Enter; buttons activate with Enter or Space and use React Aria focus and interaction states.

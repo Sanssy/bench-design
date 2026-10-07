@@ -809,6 +809,52 @@
       ]
     },
     {
+      "name": "CitationGroup",
+      "import": "import { CitationGroup } from \"bench-design\";",
+      "description": "A bordered source group; only individual passage actions are interactive.",
+      "props": [
+        {
+          "name": "title",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "meta",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "icon",
+          "type": "\"arrow-left\" | \"arrow-right\" | \"arrow-up-right\" | \"arrow-up\" | \"asterisk\" | \"bike\" | \"bin\" | \"briefcase\" | \"calendar\" | \"check\" | \"chevron-down\" | \"chevron-right\" | \"download\" | \"file-text\" | \"grip\" | \"heart\" | \"home\" | \"info\" | \"layers\" | \"layout-grid\" | \"link\" | \"list\" | \"menu\" | \"pen\" | \"plus\" | \"scan\" | \"search\" | \"settings\" | \"shopping-bag\" | \"triangle-alert\" | \"upload\" | \"user\" | \"wallet\" | \"x\"",
+          "required": false,
+          "description": "Decorative source icon. Defaults to file-text.",
+          "default": "\"file-text\""
+        },
+        {
+          "name": "headingLevel",
+          "type": "1 | 2 | 3 | 4 | 5 | 6",
+          "required": false,
+          "description": "Source heading in the surrounding document outline. Defaults to 3.",
+          "default": "3"
+        },
+        {
+          "name": "citations",
+          "type": "Citation[]",
+          "required": true
+        }
+      ],
+      "stories": [
+        {
+          "name": "SourcePassages",
+          "href": "./?path=/story/data-citationgroup--source-passages"
+        },
+        {
+          "name": "PreviewAction",
+          "href": "./?path=/story/data-citationgroup--preview-action"
+        }
+      ]
+    },
+    {
       "name": "CollectionView",
       "import": "import { CollectionView } from \"bench-design\";",
       "description": "A named collection region with an optionally sticky tools slot and a result footer.",

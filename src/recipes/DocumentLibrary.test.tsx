@@ -133,7 +133,7 @@ test("imports progress to completion and release their timer", async () => {
   clear.mockRestore();
 });
 
-test("import dialog summarises type and size refusals without adding them", async () => {
+test("import dialog reports type and size refusals once without adding them", async () => {
   const user = userEvent.setup({ applyAccept: false });
   render(<DocumentLibrary />);
   await user.click(
@@ -154,13 +154,12 @@ test("import dialog summarises type and size refusals without adding them", asyn
       new File(["sample"], "accepted.txt", { type: "text/plain" }),
     ],
   );
-  const notice = within(dialog).getByText(
-    "Some files could not be added",
-  ).parentElement;
-  expect(notice).toHaveTextContent(
-    "photo.png: Unsupported type. Choose PDF or TXT.",
-  );
-  expect(notice).toHaveTextContent("large.pdf: File exceeds 20 MB.");
+  const alert = within(dialog).getByRole("alert");
+  expect(alert).toHaveTextContent("photo.png");
+  expect(alert).toHaveTextContent("large.pdf");
+  expect(
+    within(dialog).queryByText("Some files could not be added"),
+  ).toBeNull();
   expect(
     within(dialog).getByRole("list", { name: "Document imports" }).children,
   ).toHaveLength(2);

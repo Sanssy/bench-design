@@ -151,9 +151,27 @@ for (const theme of ["light", "dark"]) {
     await page.goto(
       `/iframe.html?id=recipes-document-library--browse-documents&globals=a11y.manual:!true;theme:${theme}`,
     );
-    await page.getByRole("button", { name: "Add documents" }).click();
+    const dropped = await page.evaluateHandle(() => {
+      const transfer = new DataTransfer();
+      transfer.items.add(
+        new File(["image"], "photo.png", { type: "image/png" }),
+      );
+      // Synthetic files have no filesystem entry; use the File fallback
+      // (Chromium returns a fresh item wrapper on each access).
+      Object.defineProperty(DataTransferItem.prototype, "webkitGetAsEntry", {
+        value: undefined,
+        configurable: true,
+      });
+      return transfer;
+    });
+    const hero = page.locator(".bd-drop-zone").first();
+    for (const type of ["dragenter", "dragover", "drop"])
+      await hero.dispatchEvent(type, { dataTransfer: dropped });
     const dialog = page.getByRole("dialog", { name: "Add your documents" });
     await expect(dialog).toBeVisible();
+    await expect(
+      dialog.getByText("Some files could not be added"),
+    ).toBeVisible();
     await dialog.locator('input[type="file"]').setInputFiles({
       name: "water.pdf",
       mimeType: "application/pdf",
@@ -171,9 +189,10 @@ for (const theme of ["light", "dark"]) {
       mimeType: "image/png",
       buffer: Buffer.from("sample"),
     });
-    await expect(
-      dialog.getByText("Some files could not be added"),
-    ).toBeVisible();
+    await expect(dialog.getByRole("alert")).toContainText("photo.png");
+    await expect(dialog.getByText("Some files could not be added")).toHaveCount(
+      0,
+    );
     expect(
       (
         await new AxeBuilder({ page })

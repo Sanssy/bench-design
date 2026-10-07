@@ -88,6 +88,7 @@
 }
 
 .bd-tooltip.bd-surface {
+  z-index: 100;
   background: var(--bd-surface);
   color: var(--bd-text);
   padding: var(--bd-space-8) var(--bd-space-12);

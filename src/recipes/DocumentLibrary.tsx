@@ -399,9 +399,14 @@ export function DocumentLibrary() {
                 padding={16}
               >
                 <Paper size="compact">
-                  <Text size="meta">
-                    Noted: <mark>{item.passage}</mark>
-                  </Text>
+                  <Stack gap={8}>
+                    <Text size="meta">
+                      <strong>{item.title}</strong>
+                    </Text>
+                    <Text size="meta">
+                      <mark>{item.passage}</mark>
+                    </Text>
+                  </Stack>
                 </Paper>
               </Surface>
             )}

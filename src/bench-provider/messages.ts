@@ -22,6 +22,10 @@ export interface BenchMessages {
   clearFilters: string;
   addFiles: string;
   externalLink: string;
+  uploading: string;
+  uploadComplete: string;
+  uploadError: string;
+  uploadProgress(name: string): string;
   noValue: string;
   valueTotal(value: string, total: string): string;
   results(count: number, context: MessageContext): string;
@@ -54,6 +58,10 @@ export const en: BenchMessages = {
   clearFilters: "Clear filters",
   addFiles: "Add files",
   externalLink: "(opens in a new tab)",
+  uploading: "Uploading",
+  uploadComplete: "Complete",
+  uploadError: "Upload failed",
+  uploadProgress: (name) => `Progress of ${name}`,
   noValue: "No value",
   valueTotal: (value, total) => `${value} of ${total}`,
   results: (count, c) =>
@@ -88,6 +96,10 @@ export const fr: BenchMessages = {
   clearFilters: "Effacer les filtres",
   addFiles: "Ajouter des fichiers",
   externalLink: "(s’ouvre dans un nouvel onglet)",
+  uploading: "Envoi en cours",
+  uploadComplete: "Terminé",
+  uploadError: "Échec de l’envoi",
+  uploadProgress: (name) => `Progression de ${name}`,
   noValue: "Aucune valeur",
   valueTotal: (value, total) => `${value} sur ${total}`,
   results: (count, c) =>

@@ -739,3 +739,64 @@
     animation: none;
   }
 }
+
+.bd-upload-queue {
+  display: grid;
+  gap: var(--bd-space-12);
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  color: var(--bd-text);
+  font: var(--bd-size-ui) / var(--bd-line-normal) var(--bd-font-ui);
+}
+.bd-upload-item {
+  position: relative;
+  min-inline-size: 0;
+  display: grid;
+  gap: var(--bd-space-8);
+  padding: var(--bd-space-12);
+  border: var(--bd-hair) solid var(--bd-border);
+}
+.bd-upload-heading {
+  display: flex;
+  align-items: center;
+  gap: var(--bd-space-8);
+}
+.bd-upload-heading > :where(svg) {
+  flex-shrink: 0;
+}
+.bd-upload-name {
+  flex: 1;
+  min-inline-size: 0;
+  overflow-wrap: anywhere;
+  font-weight: var(--bd-weight-bold);
+}
+.bd-upload-item[data-status="uploading"] .bd-upload-heading {
+  padding-inline-end: calc(var(--bd-space-32) + var(--bd-space-24));
+}
+.bd-upload-item .bd-progress-heading {
+  position: absolute;
+  inset-block-start: var(--bd-space-12);
+  inset-inline-end: var(--bd-space-12);
+}
+.bd-upload-item[data-status="complete"] .bd-progress-value {
+  display: none;
+}
+.bd-upload-item .bd-progress-bar {
+  gap: 0;
+}
+.bd-upload-description {
+  color: var(--bd-text-muted);
+}
+.bd-upload-item[data-status="error"] .bd-upload-heading > svg:last-child {
+  color: var(--bd-danger);
+}
+.bd-upload-action {
+  justify-self: start;
+  border: 0;
+  padding: 0;
+  background: none;
+  font: inherit;
+  text-align: start;
+  cursor: pointer;
+}

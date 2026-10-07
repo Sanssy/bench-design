@@ -4495,6 +4495,42 @@
       ]
     },
     {
+      "name": "UploadQueue",
+      "import": "import { UploadQueue } from \"bench-design\";",
+      "description": "Displays upload states with one polite region announcing status changes.",
+      "props": [
+        {
+          "name": "label",
+          "type": "string",
+          "required": true,
+          "description": "Accessible name of the list."
+        },
+        {
+          "name": "items",
+          "type": "{\n    /** Stable unique identifier. */\n    id: string;\n    name: string;\n    status: \"uploading\" | \"complete\" | \"error\";\n    /** Percentage from 0 to 100; absent means indeterminate. */\n    progress?: number;\n    description?: string;\n    /** Available after completion; navigation or an application callback. */\n    action?: { label: string } & (\n      | { href: string; onAction?: never }\n      | { onAction: () => void; href?: never }\n    );\n  }[]",
+          "required": true
+        }
+      ],
+      "stories": [
+        {
+          "name": "Uploading",
+          "href": "./?path=/story/feedback-uploadqueue--uploading"
+        },
+        {
+          "name": "Complete",
+          "href": "./?path=/story/feedback-uploadqueue--complete"
+        },
+        {
+          "name": "Failed",
+          "href": "./?path=/story/feedback-uploadqueue--failed"
+        },
+        {
+          "name": "Mixed",
+          "href": "./?path=/story/feedback-uploadqueue--mixed"
+        }
+      ]
+    },
+    {
       "name": "Value",
       "import": "import { Value } from \"bench-design\";",
       "description": "Displays a value as one named image; defaults to surrounding text size.",

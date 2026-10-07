@@ -5,6 +5,7 @@ import { AppHeader } from "../app-header/AppHeader.js";
 import { Avatar } from "../avatar/Avatar.js";
 import { Badge } from "../badge/Badge.js";
 import { Composer } from "../composer/Composer.js";
+import { Dialog } from "../dialog/Dialog.js";
 import { Grid } from "../grid/Grid.js";
 import { Heading } from "../heading/Heading.js";
 import { Icon } from "../icon/Icon.js";
@@ -12,16 +13,64 @@ import { IconTile } from "../icon-tile/IconTile.js";
 import { Inline } from "../inline/Inline.js";
 import { Link } from "../link/Link.js";
 import { Page } from "../page/Page.js";
-import { Paper } from "../paper/Paper.js";
 import { ReferenceList } from "../reference-list/ReferenceList.js";
 import { Stack } from "../stack/Stack.js";
 import { Text } from "../text/Text.js";
 import { TopNav } from "../top-nav/TopNav.js";
+import { type RecordDocument, RecordView } from "./RecordView.js";
 
 const suggestions = [
   "What should I prepare?",
   "Where can I find the schedule?",
   "What happens after the workshop?",
+];
+const reserves = [
+  "The checklist does not specify any additional materials.",
+  "The guide does not specify session times.",
+  "The guide does not specify when the summary will arrive.",
+];
+const sources: RecordDocument[] = [
+  {
+    id: "guide",
+    title: "Workshop guide",
+    kind: "Workshop",
+    date: "7 October 2026",
+    summary: "A shared session followed by a summary.",
+    pages: 2,
+    fields: [
+      {
+        id: "session",
+        label: "Session",
+        value: "Shared reading",
+        page: 1,
+        passage: "The session starts with a shared reading.",
+      },
+      {
+        id: "follow-up",
+        label: "Follow-up",
+        value: "Summary",
+        page: 2,
+        passage: "A summary follows afterwards.",
+      },
+    ],
+  },
+  {
+    id: "preparation",
+    title: "Preparation checklist",
+    kind: "Workshop",
+    date: "6 October 2026",
+    summary: "Notes and a question for the discussion.",
+    pages: 2,
+    fields: [
+      {
+        id: "notes",
+        label: "Preparation",
+        value: "Notes and a question",
+        page: 2,
+        passage: "Bring your notes and a question to discuss.",
+      },
+    ],
+  },
 ];
 function subscribe(listener: () => void) {
   const query = window.matchMedia("(width < 640px)");
@@ -39,6 +88,15 @@ export function AskWithSourcesRecipe() {
   const [turns, setTurns] = useState<
     { id: number; question: string; sourced: boolean }[]
   >([]);
+  const [citation, setCitation] = useState<{
+    document: RecordDocument;
+    fieldId: string;
+  } | null>(null);
+  const openCitation = (documentId: string) => {
+    const source = sources.find((item) => item.id === documentId);
+    const field = source?.fields[0];
+    if (source && field) setCitation({ document: source, fieldId: field.id });
+  };
   const newestTurn = useRef<HTMLDivElement>(null);
   const composer = useRef<HTMLDivElement>(null);
   const send = (value: string) => {
@@ -185,7 +243,7 @@ export function AskWithSourcesRecipe() {
             </Grid>
           )}
           <section
-            hidden={turns.length === 0}
+            hidden={turns.length === 0 && state !== "pending"}
             aria-label="Answer"
             aria-live="polite"
             aria-relevant="additions"
@@ -208,21 +266,23 @@ export function AskWithSourcesRecipe() {
                   }}
                 >
                   <Stack gap={16}>
-                    <Text tone="muted">
-                      {turn.sourced
-                        ? "Sample answer ready."
-                        : "No sample answer found."}
-                    </Text>
-                    <Heading level={2} size="ui">
-                      {turn.sourced ? "Sample answer" : "Answer unavailable"}
-                    </Heading>
+                    {turn.sourced ? (
+                      <>
+                        <Text tone="muted">Sample answer ready.</Text>
+                        <Heading level={2} size="ui">
+                          Sample answer
+                        </Heading>
+                      </>
+                    ) : (
+                      <Text variant="mono">Answer unavailable</Text>
+                    )}
                     {turn.sourced ? (
                       <>
                         <Text variant="mono">Archive / sourced answer</Text>
                         <Text>
                           This fictional workshop includes preparation, a shared
-                          session and a follow-up. Check the sample excerpt for
-                          the original wording.
+                          session and a follow-up. Open a citation for the
+                          original wording.
                         </Text>
                         <Text variant="mono">The supporting passages</Text>
                         <ReferenceList
@@ -232,10 +292,7 @@ export function AskWithSourcesRecipe() {
                             {
                               id: "guide",
                               title: "Workshop guide",
-                              href:
-                                index === 0
-                                  ? "#sample-excerpt"
-                                  : `#sample-excerpt-${index + 1}`,
+                              onAction: () => openCitation("guide"),
                               description:
                                 "The session starts with a shared reading.",
                               meta: "p. 1",
@@ -243,10 +300,7 @@ export function AskWithSourcesRecipe() {
                             {
                               id: "checklist",
                               title: "Preparation checklist",
-                              href:
-                                index === 0
-                                  ? "#sample-excerpt"
-                                  : `#sample-excerpt-${index + 1}`,
+                              onAction: () => openCitation("preparation"),
                               description:
                                 "Bring your notes and a question to discuss.",
                               meta: "p. 2",
@@ -254,7 +308,15 @@ export function AskWithSourcesRecipe() {
                           ]}
                         />
                         <Text size="meta" tone="muted">
-                          These records do not cover every monthly cost.
+                          {
+                            reserves[
+                              suggestions.findIndex(
+                                (suggestion) =>
+                                  suggestion.toLowerCase() ===
+                                  turn.question.trim().toLowerCase(),
+                              )
+                            ]
+                          }
                         </Text>
                       </>
                     ) : (
@@ -264,30 +326,37 @@ export function AskWithSourcesRecipe() {
                     )}
                   </Stack>
                 </div>
-                {turn.sourced && (
-                  <Paper>
-                    <div
-                      id={
-                        index === 0
-                          ? "sample-excerpt"
-                          : `sample-excerpt-${index + 1}`
-                      }
-                      tabIndex={-1}
-                      style={{ scrollMarginBlock: "var(--bd-space-32)" }}
-                    >
-                      <Heading level={3}>Source excerpt</Heading>
-                      <Text>
-                        Before the workshop:{" "}
-                        <mark>Bring your notes and a question to discuss.</mark>{" "}
-                        The session starts with a shared reading. A summary
-                        follows afterwards.
-                      </Text>
-                    </div>
-                  </Paper>
-                )}
               </Stack>
             ))}
+            {state === "pending" && (
+              <Stack gap={16}>
+                <Inline gap={12}>
+                  <Avatar name="Demo reader" tone="accent" />
+                  <Text>
+                    <strong>{question}</strong>
+                  </Text>
+                </Inline>
+                <Text tone="muted">Reading your documents…</Text>
+              </Stack>
+            )}
           </section>
+          {citation && (
+            <Dialog
+              isOpen
+              onOpenChange={(open) => {
+                if (!open) setCitation(null);
+              }}
+              placement="end"
+              size="wide"
+              title={citation.document.title}
+            >
+              <RecordView
+                key={`${citation.document.id}-${citation.fieldId}`}
+                document={citation.document}
+                initialFieldId={citation.fieldId}
+              />
+            </Dialog>
+          )}
           <div
             ref={composer}
             style={{

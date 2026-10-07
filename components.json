@@ -3108,7 +3108,7 @@
         },
         {
           "name": "items",
-          "type": "{\n    /** Stable unique identifier. */\n    id: string;\n    title: string;\n    href?: string;\n    description?: string;\n    /** Caller-owned end metadata, such as a page reference. */\n    meta?: string;\n  }[]",
+          "type": "{\n    /** Stable unique identifier. */\n    id: string;\n    title: string;\n    href?: string;\n    /** In-page action for the title, such as opening the cited passage; ignored with href. */\n    onAction?: () => void;\n    description?: string;\n    /** Caller-owned end metadata, such as a page reference. */\n    meta?: string;\n  }[]",
           "required": true
         }
       ],

@@ -1,4 +1,10 @@
-import { act, fireEvent, render, screen } from "@testing-library/react";
+import {
+  act,
+  fireEvent,
+  render,
+  screen,
+  waitFor,
+} from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { afterEach, beforeEach, expect, test, vi } from "vitest";
 import { AskWithSourcesRecipe } from "./AskWithSources.js";
@@ -26,6 +32,9 @@ test("Enter announces waiting, then exposes a response and reachable sources", a
   fireEvent.keyDown(input, { key: "Enter" });
   expect(screen.getByRole("status")).toHaveTextContent("Sending…");
   expect(input).toBeDisabled();
+  expect(screen.getByRole("region", { name: "Answer" })).toHaveTextContent(
+    "Reading your documents…",
+  );
   expect(screen.queryByRole("heading", { name: "Sample answer" })).toBeNull();
   act(() => vi.advanceTimersByTime(1000));
   expect(screen.getByRole("heading", { name: "Sample answer" })).toBeVisible();
@@ -44,12 +53,21 @@ test("Enter announces waiting, then exposes a response and reachable sources", a
   const user = userEvent.setup();
   input.focus();
   await user.tab({ shift: true });
-  const citation = screen.getByRole("link", { name: "Preparation checklist" });
+  const citation = screen.getByRole("button", {
+    name: "Preparation checklist",
+  });
   expect(citation).toHaveFocus();
-  expect(citation).toHaveAttribute("href", "#sample-excerpt");
-  expect(document.getElementById("sample-excerpt")).toHaveTextContent(
-    "Bring your notes",
-  );
+  await user.keyboard("{Enter}");
+  expect(
+    screen.getByRole("dialog", { name: "Preparation checklist" }),
+  ).toBeVisible();
+  expect(document.querySelector("mark")).toHaveTextContent("Bring your notes");
+  expect(screen.getByText("Page 2 / 2")).toBeVisible();
+  await user.keyboard("{Escape}");
+  await waitFor(() => expect(citation).toHaveFocus());
+  await user.click(screen.getByRole("button", { name: "Workshop guide" }));
+  expect(document.querySelector("mark")).toHaveTextContent("shared reading");
+  expect(screen.getByText("Page 1 / 2")).toBeVisible();
 });
 test.each([false, true])(
   "A suggestion sends directly and remains available (mobile=%s)",
@@ -118,20 +136,29 @@ test("Conversation keeps previous turns while sending and after answering", () =
     "What should I prepare?",
   );
   expect(
-    screen.getAllByRole("link", { name: "Preparation checklist" })[1],
-  ).toHaveAttribute("href", "#sample-excerpt-2");
+    screen.getAllByRole("button", { name: "Preparation checklist" }),
+  ).toHaveLength(2);
 });
 
-test("A sourced answer includes the final reserve", () => {
+test.each([
+  [
+    "What should I prepare?",
+    "The checklist does not specify any additional materials.",
+  ],
+  [
+    "Where can I find the schedule?",
+    "The guide does not specify session times.",
+  ],
+  [
+    "What happens after the workshop?",
+    "The guide does not specify when the summary will arrive.",
+  ],
+])("A sourced answer includes its own reserve: %s", (question, reserve) => {
   vi.useFakeTimers();
   render(<AskWithSourcesRecipe />);
-  fireEvent.click(
-    screen.getByRole("button", { name: "What should I prepare?" }),
-  );
+  fireEvent.click(screen.getByRole("button", { name: question }));
   act(() => vi.advanceTimersByTime(1000));
-  expect(
-    screen.getByText("These records do not cover every monthly cost."),
-  ).toBeVisible();
+  expect(screen.getByText(reserve)).toBeVisible();
 });
 
 test("An unsupported question shows help without sources", () => {
@@ -143,12 +170,17 @@ test("An unsupported question shows help without sources", () => {
   });
   fireEvent.keyDown(input, { key: "Enter" });
   act(() => vi.advanceTimersByTime(1000));
+  expect(screen.getByText("Answer unavailable")).toBeVisible();
+  const eyebrow = screen.getByText("Answer unavailable");
+  const explanation = screen.getByText(
+    "Try a suggested question to explore the sample records.",
+  );
+  expect(eyebrow).toHaveAttribute("data-variant", "mono");
   expect(
-    screen.getByRole("heading", { name: "Answer unavailable" }),
-  ).toBeVisible();
-  expect(
-    screen.getByText("Try a suggested question to explore the sample records."),
-  ).toBeVisible();
+    eyebrow.compareDocumentPosition(explanation) &
+      Node.DOCUMENT_POSITION_FOLLOWING,
+  ).toBeTruthy();
+  expect(explanation).toBeVisible();
   expect(
     screen.queryByRole("link", { name: "Preparation checklist" }),
   ).toBeNull();

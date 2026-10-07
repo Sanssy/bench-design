@@ -46,7 +46,7 @@ for (const theme of ["light", "dark"] as const) {
   }, async ({ page }) => {
     await page.setViewportSize({ width: 320, height: 800 });
     await page.goto(
-      `/iframe.html?id=data-referencelist--accent-references&viewMode=story&globals=theme:${theme}`,
+      `/iframe.html?id=data-referencelist--accent-references&viewMode=story&globals=a11y.manual:!true;theme:${theme}`,
     );
     const list = page.getByRole("list", { name: "Supporting references" });
     await expect(list).toBeVisible();

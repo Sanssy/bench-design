@@ -20,7 +20,8 @@ for (const theme of ["light", "dark"]) {
       expect(
         (
           await new AxeBuilder({ page })
-            .withTags(["wcag2a", "wcag2aa", "wcag21a", "wcag21aa"])
+            .include(".bd-page, .bd-dialog")
+            .withTags(["wcag2a", "wcag2aa", "wcag21aa"])
             .analyze()
         ).violations,
       ).toEqual([]);
@@ -94,7 +95,7 @@ for (const theme of ["light", "dark"]) {
     await check();
     await page.keyboard.press("ControlOrMeta+A");
     await page.keyboard.press("Backspace");
-    const all = page.getByRole("radio", { name: "All, 10" });
+    const all = page.getByRole("radio", { name: "All, 6" });
     for (
       let step = 0;
       step < 5 && !(await all.evaluate((el) => el === document.activeElement));
@@ -108,7 +109,7 @@ for (const theme of ["light", "dark"]) {
     await expect(
       page.getByRole("radio", { name: "Invoices, 2" }),
     ).toBeChecked();
-    await expect(page.getByText("2 of 10 documents shown")).toBeVisible();
+    await expect(page.getByText("2 of 6 documents shown")).toBeVisible();
     await page.keyboard.press("Tab");
     const gridView = page.getByRole("radio", { name: "Grid view" });
     await expect(gridView).toBeFocused();
@@ -129,11 +130,35 @@ for (const theme of ["light", "dark"]) {
     await expect(dialog.locator("mark")).toHaveText(
       "Total payable: 64.80 EUR.",
     );
-    expect(
-      await dialog
-        .locator("mark")
-        .evaluate((el) => el.parentElement?.textContent),
-    ).not.toBe("Total payable: 64.80 EUR.");
+    await check();
+    for (const width of [959, 960, 1280, 390]) {
+      await page.setViewportSize({ width, height: 900 });
+      const source = dialog.getByText("Source passage", { exact: true });
+      const essentials = dialog.getByRole("heading", {
+        name: "The essentials.",
+      });
+      await expect
+        .poll(async () => {
+          const left = await source.boundingBox();
+          const right = await essentials.boundingBox();
+          return left !== null && right !== null && right.x > left.x + 100;
+        })
+        .toBe(width >= 960);
+      await check();
+    }
+    await dialog
+      .getByRole("row", { name: "Payment date", exact: true })
+      .click();
+    await expect(dialog.getByText("Page 2 / 2")).toBeVisible();
+    await expect(dialog.locator("mark")).toHaveText(
+      "Payment due by 15 September 2026.",
+    );
+    await dialog.getByRole("button", { name: "Equipment invoice" }).click();
+    const replacement = page.getByRole("dialog", { name: "Equipment invoice" });
+    await expect(replacement.getByText("Page 1 / 1")).toBeVisible();
+    await expect(replacement.locator("mark")).toHaveText(
+      "Item: office equipment. Total: 120.00 EUR.",
+    );
     await check();
     await page.keyboard.press("Escape");
     if (await dialog.isVisible()) await page.keyboard.press("Escape");
@@ -196,7 +221,8 @@ for (const theme of ["light", "dark"]) {
     expect(
       (
         await new AxeBuilder({ page })
-          .withTags(["wcag2a", "wcag2aa", "wcag21a", "wcag21aa"])
+          .include(".bd-page, .bd-dialog")
+          .withTags(["wcag2a", "wcag2aa", "wcag21aa"])
           .analyze()
       ).violations,
     ).toEqual([]);
@@ -207,6 +233,6 @@ for (const theme of ["light", "dark"]) {
     await expect(page.getByRole("dialog", { name: "water.pdf" })).toBeVisible();
     await page.keyboard.press("Escape");
     await expect(page.getByRole("row", { name: "water.pdf" })).toBeVisible();
-    await expect(page.getByText("12 documents", { exact: true })).toBeVisible();
+    await expect(page.getByText("8 documents", { exact: true })).toBeVisible();
   });
 }

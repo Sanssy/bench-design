@@ -16,19 +16,18 @@ import { Heading } from "../heading/Heading.js";
 import { Icon } from "../icon/Icon.js";
 import { Inline } from "../inline/Inline.js";
 import { Link } from "../link/Link.js";
-import { MetaList } from "../meta-list/MetaList.js";
 import { Notice } from "../notice/Notice.js";
 import { Page } from "../page/Page.js";
 import { Paper } from "../paper/Paper.js";
-import { ReferenceList } from "../reference-list/ReferenceList.js";
 import { SearchField } from "../search-field/SearchField.js";
 import { SegmentedControl } from "../segmented-control/SegmentedControl.js";
 import { Stack } from "../stack/Stack.js";
 import { Surface } from "../surface/Surface.js";
 import { Text } from "../text/Text.js";
-import { Timeline } from "../timeline/Timeline.js";
 import { TopNav } from "../top-nav/TopNav.js";
 import { UploadQueue } from "../upload-queue/UploadQueue.js";
+
+import { RecordView } from "./RecordView.js";
 
 const categories = {
   Invoices: "green",
@@ -38,6 +37,10 @@ const categories = {
   Letters: "teal",
 } as const;
 
+function field(label: string, value: string, passage: string, page = 1) {
+  return { id: label, label, value, page, passage };
+}
+
 const archive = [
   {
     id: "energy",
@@ -46,14 +49,31 @@ const archive = [
     date: "31 August 2026",
     passage: "Total payable: 64.80 EUR.",
     pages: 2,
+    summary: "A monthly energy bill for August, payable in September.",
+    fields: [
+      field("Amount due", "64.80 EUR", "Total payable: 64.80 EUR."),
+      field("Billing period", "August 2026", "Period: 1–31 August 2026."),
+      field(
+        "Payment date",
+        "15 September 2026",
+        "Payment due by 15 September 2026.",
+        2,
+      ),
+    ],
   },
   {
     id: "service",
     title: "Service contract",
     kind: "Contracts",
     date: "18 August 2026",
-    passage: "Service period: September 2026 to August 2027.",
+    passage: "Service: Sep 2026–Aug 2027.",
     pages: 3,
+    summary: "A year of maintenance services with monthly billing.",
+    fields: [
+      field("Service term", "2026–2027", "Service: Sep 2026–Aug 2027."),
+      field("Monthly fee", "35.00 EUR", "Fee: 35.00 EUR.", 2),
+      field("Notice period", "30 days", "Notice: 30 days.", 3),
+    ],
   },
   {
     id: "purchase",
@@ -62,6 +82,16 @@ const archive = [
     date: "20 June 2026",
     passage: "Item: office equipment. Total: 120.00 EUR.",
     pages: 1,
+    summary: "Office equipment purchased and paid for in June.",
+    fields: [
+      field(
+        "Amount paid",
+        "120.00 EUR",
+        "Item: office equipment. Total: 120.00 EUR.",
+      ),
+      field("Purchase date", "20 June 2026", "Purchased: 20 June 2026."),
+      field("Payment method", "Bank card", "Paid by bank card."),
+    ],
   },
   {
     id: "insurance",
@@ -70,22 +100,16 @@ const archive = [
     date: "1 May 2026",
     passage: "Coverage valid until 30 April 2027.",
     pages: 2,
-  },
-  {
-    id: "employment",
-    title: "Employment agreement",
-    kind: "Contracts",
-    date: "12 April 2026",
-    passage: "Terms reviewed and agreed.",
-    pages: 3,
-  },
-  {
-    id: "membership",
-    title: "Membership certificate",
-    kind: "Certificates",
-    date: "8 April 2026",
-    passage: "Membership valid for one year.",
-    pages: 2,
+    summary: "Home contents insured for one year, subject to an excess.",
+    fields: [
+      field(
+        "Coverage ends",
+        "30 April 2027",
+        "Coverage valid until 30 April 2027.",
+      ),
+      field("Insured amount", "25,000 EUR", "Contents: 25,000 EUR."),
+      field("Excess", "150 EUR", "Excess: 150 EUR per claim.", 2),
+    ],
   },
   {
     id: "appointment",
@@ -94,14 +118,12 @@ const archive = [
     date: "24 March 2026",
     passage: "Next appointment confirmed.",
     pages: 1,
-  },
-  {
-    id: "review",
-    title: "Annual review",
-    kind: "Records",
-    date: "15 March 2026",
-    passage: "Summary of the annual review.",
-    pages: 2,
+    summary: "A confirmed afternoon appointment at the community office.",
+    fields: [
+      field("Appointment date", "2 April 2026", "Date: 2 April 2026."),
+      field("Time", "14:30", "Time: 14:30."),
+      field("Location", "Community office", "Place: Community office."),
+    ],
   },
   {
     id: "welcome",
@@ -110,14 +132,12 @@ const archive = [
     date: "3 February 2026",
     passage: "Welcome to your new space.",
     pages: 1,
-  },
-  {
-    id: "confirmation",
-    title: "Booking confirmation",
-    kind: "Letters",
-    date: "18 January 2026",
-    passage: "Your reservation is confirmed.",
-    pages: 2,
+    summary: "A welcome letter with access details and a contact address.",
+    fields: [
+      field("Move-in date", "10 February 2026", "Move-in: 10 February 2026."),
+      field("Key collection", "Reception", "Keys: Reception."),
+      field("Contact", "welcome@example.org", "Email: welcome@example.org."),
+    ],
   },
 ];
 
@@ -182,6 +202,21 @@ export function DocumentLibrary() {
         date: "7 October 2026",
         passage: "Water bill total: 42.00 EUR.",
         pages: 1,
+        summary:
+          "A sample water bill with a billing period and payment deadline.",
+        fields: [
+          field("Amount due", "42.00 EUR", "Water bill total: 42.00 EUR."),
+          field(
+            "Billing period",
+            "September 2026",
+            "Billing period: September 2026.",
+          ),
+          field(
+            "Payment date",
+            "21 October 2026",
+            "Payment due by 21 October 2026.",
+          ),
+        ],
         progress: reduced.current ? 100 : 0,
       })),
     ]);
@@ -506,48 +541,19 @@ export function DocumentLibrary() {
         }}
       >
         {selected && (
-          <Stack gap={24}>
-            <Paper>
-              <Stack gap={16}>
-                <Heading level={3}>{selected.kind}</Heading>
-                <Text>{selected.date}</Text>
-                <Text>
-                  This sample records the document details.{" "}
-                  <mark>{selected.passage}</mark> Keep this copy for your
-                  records.
-                </Text>
-              </Stack>
-            </Paper>
-            <MetaList
-              items={[
-                { term: "Type", details: selected.kind },
-                { term: "Date", details: selected.date },
-                { term: "Pages", details: selected.pages },
-              ]}
-            />
-            <ReferenceList
-              label="Document references"
-              items={[
-                {
-                  id: "source",
-                  title: "Source excerpt",
-                  description: "Page 1 · highlighted passage above",
-                },
-              ]}
-            />
-            <Timeline
-              label="Document history"
-              items={[
-                {
-                  id: "added",
-                  marker: selected.date,
-                  title: "Added to sample archive",
-                  children:
-                    "Fictional event; no processing or extraction is performed.",
-                },
-              ]}
-            />
-          </Stack>
+          <RecordView
+            key={selected.id}
+            document={selected}
+            related={documents.filter(
+              (item) => item.id !== selected.id && item.kind === selected.kind,
+            )}
+            onOpen={setOpened}
+            onFile={(kind) => {
+              setQuery("");
+              setFacet(kind);
+              setOpened(undefined);
+            }}
+          />
         )}
       </Dialog>
     </Page>

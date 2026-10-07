@@ -115,6 +115,39 @@ for (const theme of ["light", "dark"]) {
         () => document.documentElement.scrollWidth <= innerWidth,
       ),
     ).toBe(true);
+    await input.fill("What is the weather tomorrow?");
+    await input.press("Enter");
+    await expect(
+      page.getByRole("heading", { name: "Sample answer" }),
+    ).toBeVisible();
+    await expect(
+      page.getByRole("heading", { name: "Answer unavailable" }),
+    ).toBeVisible();
+    await expect(page.locator(".bd-reference-list")).toHaveCount(1);
+    await expect(
+      page.getByText("These records do not cover every monthly cost."),
+    ).toBeVisible();
+    const questionBox = await page
+      .getByText("What is the weather tomorrow?", { exact: true })
+      .boundingBox();
+    const stickyBox = await page.locator(".bd-composer").boundingBox();
+    expect(questionBox).not.toBeNull();
+    expect(stickyBox).not.toBeNull();
+    expect(questionBox?.y).toBeGreaterThanOrEqual(0);
+    expect(
+      (questionBox?.y ?? 0) + (questionBox?.height ?? 0),
+    ).toBeLessThanOrEqual(stickyBox?.y ?? 0);
+    await input.fill("Where can I find the schedule?");
+    await input.press("Enter");
+    await expect(
+      page.getByRole("heading", { name: "Sample answer" }),
+    ).toHaveCount(2);
+    await expect(
+      page.getByRole("heading", { name: "Answer unavailable" }),
+    ).toBeVisible();
+    await expect(
+      page.getByRole("link", { name: "Preparation checklist" }).last(),
+    ).toHaveAttribute("href", "#sample-excerpt-3");
     expect(
       (
         await new AxeBuilder({ page })

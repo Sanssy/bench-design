@@ -41,6 +41,7 @@
   --bd-veil-blur: 3px;
   --bd-elevation-dialog: 8px 8px 0px 0px var(--bd-shadow);
   --bd-elevation-soft: 2px 2px 9px 0px rgba(24, 32, 28, 0.086);
+  --bd-duration-progress: 1200ms;
   --bd-duration-fast: 150ms;
   --bd-ease-out: cubic-bezier(0, 0, 0.58, 1);
   --bd-page-width: 1168px;

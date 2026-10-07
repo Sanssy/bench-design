@@ -2809,6 +2809,78 @@
       ]
     },
     {
+      "name": "ProgressBar",
+      "import": "import { ProgressBar } from \"bench-design\";",
+      "description": "Displays application-controlled progress.",
+      "props": [
+        {
+          "name": "value",
+          "type": "number",
+          "required": false,
+          "description": "Current controlled value; defaults to zero."
+        },
+        {
+          "name": "minValue",
+          "type": "number",
+          "required": false,
+          "description": "Lower bound; defaults to zero."
+        },
+        {
+          "name": "maxValue",
+          "type": "number",
+          "required": false,
+          "description": "Upper bound; defaults to 100."
+        },
+        {
+          "name": "valueLabel",
+          "type": "string",
+          "required": false,
+          "description": "Custom visible and accessible value text."
+        },
+        {
+          "name": "isIndeterminate",
+          "type": "boolean",
+          "required": false,
+          "description": "Show unmeasured progress without a numeric ARIA value."
+        },
+        {
+          "name": "label",
+          "type": "string",
+          "required": true,
+          "description": "Accessible name, visible by default."
+        },
+        {
+          "name": "hideLabel",
+          "type": "boolean",
+          "required": false,
+          "description": "Visually hide the label while preserving its accessible name.",
+          "default": "false"
+        }
+      ],
+      "stories": [
+        {
+          "name": "Processing",
+          "href": "./?path=/story/feedback-progressbar--processing"
+        },
+        {
+          "name": "Waiting",
+          "href": "./?path=/story/feedback-progressbar--waiting"
+        },
+        {
+          "name": "Completed",
+          "href": "./?path=/story/feedback-progressbar--completed"
+        },
+        {
+          "name": "ItemCount",
+          "href": "./?path=/story/feedback-progressbar--item-count"
+        },
+        {
+          "name": "Compact",
+          "href": "./?path=/story/feedback-progressbar--compact"
+        }
+      ]
+    },
+    {
       "name": "RadioGroup",
       "import": "import { RadioGroup } from \"bench-design\";",
       "description": "React Aria owns selection, keyboard navigation and group validation.",

@@ -68,6 +68,8 @@ meaning; ownership depends on the element, not just the attribute name.
 | `data-tone` | Surface, Badge, Status, Notice, Text and Toast semantic tone. |
 | `data-variant` | Button/IconButton/ToggleButton, Badge, Text and RadioGroup presentation; GridList selection treatment; ActionList presentation (`plain` or `outlined`). |
 
+| `data-indeterminate` | ProgressBar wrapper exposes unmeasured progress for its animation. |
+
 ## Maintenance
 
 `pnpm check` parses every `public/*.css` file and fails on any attribute selector

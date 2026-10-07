@@ -1,4 +1,5 @@
 import { Link } from "../link/Link.js";
+import { TextButton } from "../text-button/TextButton.js";
 /** Caller-owned references, with no source resolution or extraction. */
 export interface ReferenceListProps {
   /** Accessible name of the ordered list. */
@@ -10,6 +11,8 @@ export interface ReferenceListProps {
     id: string;
     title: string;
     href?: string;
+    /** In-page action for the title, such as opening the cited passage; ignored with href. */
+    onAction?: () => void;
     description?: string;
     /** Caller-owned end metadata, such as a page reference. */
     meta?: string;
@@ -29,7 +32,7 @@ export function ReferenceList({
       role="list"
       data-marker={marker}
     >
-      {items.map(({ id, title, href, description, meta }, index) => (
+      {items.map(({ id, title, href, onAction, description, meta }, index) => (
         <li key={id}>
           {marker === "accent" && (
             <span className="bd-reference-marker" aria-hidden="true">
@@ -38,7 +41,13 @@ export function ReferenceList({
           )}
           <div className="bd-reference-row">
             <div className="bd-reference-body">
-              {href === undefined ? title : <Link href={href}>{title}</Link>}
+              {href !== undefined ? (
+                <Link href={href}>{title}</Link>
+              ) : onAction !== undefined ? (
+                <TextButton onPress={onAction}>{title}</TextButton>
+              ) : (
+                title
+              )}
               {description !== undefined && <p>{description}</p>}
             </div>
             {meta !== undefined && (

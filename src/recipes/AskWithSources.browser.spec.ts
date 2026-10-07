@@ -81,6 +81,9 @@ for (const theme of ["light", "dark"]) {
     const input = page.getByRole("textbox", { name: "Your question" });
     await expect(input).toHaveValue("");
     await expect(page.getByRole("status")).toContainText("Sending…");
+    await expect(page.getByRole("region", { name: "Answer" })).toContainText(
+      "Reading your documents…",
+    );
     await expect(
       page.getByRole("heading", { name: "Sample answer" }),
     ).toBeVisible();
@@ -95,7 +98,9 @@ for (const theme of ["light", "dark"]) {
       "p. 1",
       "p. 2",
     ]);
-    const citation = page.getByRole("link", { name: "Preparation checklist" });
+    const citation = page.getByRole("button", {
+      name: "Preparation checklist",
+    });
     // Start at the field; backwards Tab reaches the final citation.
     await input.focus();
     await page.keyboard.press("Shift+Tab");
@@ -108,7 +113,21 @@ for (const theme of ["light", "dark"]) {
       composerBox?.y ?? 0,
     );
     await page.keyboard.press("Enter");
-    await expect(page.locator("#sample-excerpt")).toBeFocused();
+    await expect(
+      page.getByRole("dialog", { name: "Preparation checklist" }),
+    ).toBeVisible();
+    await expect(page.locator("mark")).toContainText("Bring your notes");
+    await expect(page.getByText("Page 2 / 2")).toBeVisible();
+    expect(
+      (
+        await new AxeBuilder({ page })
+          .include(".bd-dialog")
+          .withTags(["wcag2a", "wcag2aa", "wcag21aa"])
+          .analyze()
+      ).violations,
+    ).toEqual([]);
+    await page.keyboard.press("Escape");
+    await expect(citation).toBeFocused();
     await page.evaluate(() => document.fonts.ready);
     expect(
       await page.evaluate(
@@ -121,11 +140,13 @@ for (const theme of ["light", "dark"]) {
       page.getByRole("heading", { name: "Sample answer" }),
     ).toBeVisible();
     await expect(
-      page.getByRole("heading", { name: "Answer unavailable" }),
+      page.getByText("Answer unavailable", { exact: true }),
     ).toBeVisible();
     await expect(page.locator(".bd-reference-list")).toHaveCount(1);
     await expect(
-      page.getByText("These records do not cover every monthly cost."),
+      page.getByText(
+        "The checklist does not specify any additional materials.",
+      ),
     ).toBeVisible();
     const questionBox = await page
       .getByText("What is the weather tomorrow?", { exact: true })
@@ -143,15 +164,16 @@ for (const theme of ["light", "dark"]) {
       page.getByRole("heading", { name: "Sample answer" }),
     ).toHaveCount(2);
     await expect(
-      page.getByRole("heading", { name: "Answer unavailable" }),
+      page.getByText("Answer unavailable", { exact: true }),
     ).toBeVisible();
     await expect(
-      page.getByRole("link", { name: "Preparation checklist" }).last(),
-    ).toHaveAttribute("href", "#sample-excerpt-3");
+      page.getByRole("button", { name: "Preparation checklist" }),
+    ).toHaveCount(2);
     expect(
       (
         await new AxeBuilder({ page })
-          .withTags(["wcag2a", "wcag2aa", "wcag21a", "wcag21aa"])
+          .include("#ask-example")
+          .withTags(["wcag2a", "wcag2aa", "wcag21aa"])
           .analyze()
       ).violations,
     ).toEqual([]);

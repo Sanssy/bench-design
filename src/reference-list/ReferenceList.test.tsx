@@ -1,6 +1,6 @@
 import { render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { expect, test } from "vitest";
+import { expect, test, vi } from "vitest";
 import { ReferenceList } from "./ReferenceList.js";
 
 test("names an ordered reference list and preserves caller order", () => {
@@ -73,4 +73,20 @@ test("accent references show decorative numbers in caller order", () => {
   expect(screen.getByText("1")).toHaveAttribute("aria-hidden", "true");
   expect(screen.getByText("2")).toHaveAttribute("aria-hidden", "true");
   expect(screen.getAllByRole("listitem")).toHaveLength(2);
+});
+
+test("an item action renders the title as a link-styled button", async () => {
+  const user = userEvent.setup();
+  const open = vi.fn();
+  render(
+    <ReferenceList
+      label="Sources"
+      items={[
+        { id: "a", title: "Workshop guide", onAction: open, meta: "p. 1" },
+      ]}
+    />,
+  );
+  await user.click(screen.getByRole("button", { name: "Workshop guide" }));
+  expect(open).toHaveBeenCalledTimes(1);
+  expect(screen.queryByRole("link")).toBeNull();
 });

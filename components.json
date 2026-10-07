@@ -1379,6 +1379,18 @@
           "description": "Visible editorial heading and accessible dialog name."
         },
         {
+          "name": "description",
+          "type": "ReactNode",
+          "required": false,
+          "description": "Supporting text below the title, announced as the dialog description."
+        },
+        {
+          "name": "meta",
+          "type": "ReactNode",
+          "required": false,
+          "description": "Optional rich metadata between the eyebrow and title, such as a Badge."
+        },
+        {
           "name": "placement",
           "type": "\"center\" | \"end\"",
           "required": false,
@@ -1451,6 +1463,10 @@
         {
           "name": "ViewNavigation",
           "href": "./?path=/story/overlays-dialog--view-navigation"
+        },
+        {
+          "name": "DescribedDocument",
+          "href": "./?path=/story/overlays-dialog--described-document"
         }
       ]
     },

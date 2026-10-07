@@ -201,3 +201,58 @@ test("Dialog keeps focus when a rich title re-renders with the same text", async
   );
   expect(screen.getByRole("button", { name: "Read" })).toHaveFocus();
 });
+
+test.each(["center", "end"] as const)(
+  "Dialog %s announces its description and orders rich header metadata",
+  (placement) => {
+    render(
+      <Dialog
+        isOpen
+        placement={placement}
+        eyebrow="Collection"
+        meta={<span>Reviewed</span>}
+        title="Document details"
+        description={
+          <>
+            Read the <em>source</em> before sharing.
+          </>
+        }
+      >
+        Content
+      </Dialog>,
+    );
+    const dialog = screen.getByRole("dialog", { name: "Document details" });
+    expect(dialog).toHaveAccessibleDescription(
+      "Read the source before sharing.",
+    );
+    const header = dialog.querySelector("header > div");
+    expect(
+      Array.from(header?.children ?? []).map((child) => child.textContent),
+    ).toEqual([
+      "Collection",
+      "Reviewed",
+      "Document details",
+      "Read the source before sharing.",
+    ]);
+    expect(screen.getByText("source").closest(".bd-text")).toHaveAttribute(
+      "data-tone",
+      "muted",
+    );
+  },
+);
+
+test("Dialog omits optional header slots and description association by default", () => {
+  render(
+    <Dialog isOpen title="Details" eyebrow="Collection">
+      Content
+    </Dialog>,
+  );
+  const dialog = screen.getByRole("dialog", { name: "Details" });
+  expect(dialog).not.toHaveAttribute("aria-describedby");
+  expect(dialog).toHaveAccessibleDescription("");
+  expect(
+    Array.from(dialog.querySelector("header > div")?.children ?? []).map(
+      (child) => child.textContent,
+    ),
+  ).toEqual(["Collection", "Details"]);
+});

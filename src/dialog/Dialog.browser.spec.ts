@@ -206,14 +206,24 @@ test("Open Dialog passes automated axe in both themes", {
     for (const [story, trigger, title] of [
       ["document-details", "View details", "Document details"],
       ["reading-guide", "Read guide", "Reading guide"],
+      ["described-document", "Review document", "Document summary"],
     ] as const) {
       await page.goto(
         `/iframe.html?id=overlays-dialog--${story}&viewMode=story&globals=a11y.manual:!true;theme:${theme}`,
       );
       await page.getByRole("button", { name: trigger }).click();
       await expect(page.getByRole("dialog", { name: title })).toBeVisible();
+      if (story === "described-document") {
+        await expect(
+          page.getByRole("dialog", { name: title }),
+        ).toHaveAccessibleDescription(
+          "Read the source before sharing this summary.",
+        );
+        await expect(page.getByText("Reviewed", { exact: true })).toBeVisible();
+      }
       const result = await new AxeBuilder({ page })
-        .withTags(["wcag2a", "wcag2aa"])
+        .include(".bd-dialog")
+        .withTags(["wcag2a", "wcag2aa", "wcag21aa"])
         .analyze();
       expect(result.violations).toEqual([]);
     }
@@ -237,8 +247,12 @@ test("Controlled Dialog restores origin focus and passes axe at 320px in both th
     const dialog = page.getByRole("dialog", { name: "Editing help" });
     await expect(dialog).toBeVisible();
     expect(
-      (await new AxeBuilder({ page }).withTags(["wcag2a", "wcag2aa"]).analyze())
-        .violations,
+      (
+        await new AxeBuilder({ page })
+          .include(".bd-dialog")
+          .withTags(["wcag2a", "wcag2aa", "wcag21aa"])
+          .analyze()
+      ).violations,
     ).toEqual([]);
     expect(
       await page.evaluate(
@@ -312,7 +326,8 @@ test("End sheets keep the header visible and contain focus across themes and siz
         expect(
           (
             await new AxeBuilder({ page })
-              .withTags(["wcag2a", "wcag2aa"])
+              .include(".bd-dialog")
+              .withTags(["wcag2a", "wcag2aa", "wcag21aa"])
               .analyze()
           ).violations,
         ).toEqual([]);
@@ -339,8 +354,12 @@ test("End sheets keep the header visible and contain focus across themes and siz
     await page.keyboard.press("Enter");
     await expect(page.getByRole("heading", { name: "Overview" })).toBeFocused();
     expect(
-      (await new AxeBuilder({ page }).withTags(["wcag2a", "wcag2aa"]).analyze())
-        .violations,
+      (
+        await new AxeBuilder({ page })
+          .include(".bd-dialog")
+          .withTags(["wcag2a", "wcag2aa", "wcag21aa"])
+          .analyze()
+      ).violations,
     ).toEqual([]);
     await page.keyboard.press("Escape");
     await expect(page.getByRole("dialog")).toHaveCount(0);

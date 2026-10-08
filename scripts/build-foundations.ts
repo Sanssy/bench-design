@@ -1,6 +1,7 @@
 import { copyFileSync, cpSync } from "node:fs";
 
 for (const [source, name] of [
+  ["src/icon/svg/LICENSE", "icons-LICENSE.txt"],
   ["src/tokens.css", "tokens.css"],
   ["src/tokens.json", "tokens.json"],
   ["public/styles.css", "styles.css"],

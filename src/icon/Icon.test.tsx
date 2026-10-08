@@ -3,6 +3,21 @@ import { expect, test } from "vitest";
 import { Icon } from "./Icon";
 import { type IconName, icons } from "./icons";
 
+test("bookmark renders the official Keyline sharp outline", () => {
+  expect(Object.keys(icons)).toContain("bookmark");
+  render(<Icon name="bookmark" label="Saved item" />);
+  const svg = screen.getByRole("img", { name: "Saved item" });
+  expect(svg).toHaveAttribute("fill", "none");
+  expect(svg).toHaveAttribute("stroke-width", "2");
+  expect(svg).toHaveAttribute("stroke-linecap", "butt");
+  expect(svg).toHaveAttribute("stroke-linejoin", "round");
+  expect(svg.children).toHaveLength(1);
+  expect(svg.firstElementChild).toHaveAttribute(
+    "d",
+    "M4 2L20 2L20 22L12 18.4223L4 22L4 2Z",
+  );
+});
+
 for (const name of Object.keys(icons) as IconName[]) {
   test(`decorative ${name} is hidden and has no role`, () => {
     const { container } = render(<Icon name={name} />);

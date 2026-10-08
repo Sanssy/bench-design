@@ -5,6 +5,24 @@ import { expect, test, vi } from "vitest";
 import { Button } from "../button/Button.js";
 import { IconButton, type IconButtonProps } from "./IconButton.js";
 
+test("bookmark composes with a named native keyboard action", async () => {
+  const user = userEvent.setup();
+  const onPress = vi.fn();
+  render(
+    <IconButton icon="bookmark" label="Save for later" onPress={onPress} />,
+  );
+  const button = screen.getByRole("button", { name: "Save for later" });
+  expect(button.querySelector("svg")).toHaveAttribute("aria-hidden", "true");
+  expect(button.querySelector("path")).toHaveAttribute(
+    "d",
+    "M4 2L20 2L20 22L12 18.4223L4 22L4 2Z",
+  );
+  await user.tab();
+  expect(button).toHaveFocus();
+  await user.keyboard("{Enter}");
+  expect(onPress).toHaveBeenCalledTimes(1);
+});
+
 test("Button places a decorative 20px icon before its visible label", () => {
   render(<Button icon="plus">Add</Button>);
   const button = screen.getByRole("button", { name: "Add" });

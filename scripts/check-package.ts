@@ -52,6 +52,7 @@ try {
     "unexpected private/source/test file in tarball",
   );
   for (const name of [
+    "icons-LICENSE.txt",
     "tokens.css",
     "tokens.json",
     "AGENTS.md",
@@ -71,6 +72,11 @@ try {
   const extracted = join(consumer, "extracted");
   mkdirSync(extracted);
   execFileSync("tar", ["-xzf", tarball, "-C", extracted]);
+  assert.deepEqual(
+    readFileSync(join(extracted, "package/dist/icons-LICENSE.txt")),
+    readFileSync("src/icon/svg/LICENSE"),
+    "packed artwork notices differ from source",
+  );
   checkPublicTypes(join(extracted, "package/dist"));
   checkPublicJavaScript(join(extracted, "package/dist"));
   checkFontAssets(pathToFileURL(join(extracted, "package/dist/styles.css")));

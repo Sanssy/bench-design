@@ -1,4 +1,5 @@
 .bd-heading {
+  margin-block: 0;
   font-family: var(--bd-font-editorial);
   font-weight: var(--bd-weight-editorial);
   font-variation-settings:
@@ -28,6 +29,7 @@
   font-size: var(--bd-size-ui);
 }
 .bd-text {
+  margin-block: 0;
   font-family: var(--bd-font-ui);
   font-weight: var(--bd-weight-regular);
   line-height: var(--bd-line-reading);

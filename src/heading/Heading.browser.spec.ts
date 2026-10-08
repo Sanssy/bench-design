@@ -3,6 +3,7 @@ import { expect, test } from "@playwright/test";
 test("Heading typography and theme colors", {
   tag: ["@theme:light", "@theme:dark", "@component:heading"],
 }, async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
   const theme = "light";
   for (const [story, size] of [
     ["article", "display"],
@@ -57,6 +58,8 @@ test("Heading typography and theme colors", {
         "data-theme",
         colorTheme,
       );
+      await expect(heading).toHaveCSS("margin-block-start", "0px");
+      await expect(heading).toHaveCSS("margin-block-end", "0px");
       const colors = await heading.evaluate((element, muted) => {
         const probe = document.createElement("span");
         probe.style.color = `var(--bd-text${muted ? "-muted" : ""})`;

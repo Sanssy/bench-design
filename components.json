@@ -361,7 +361,7 @@
         },
         {
           "name": "icon",
-          "type": "\"arrow-left\" | \"arrow-right\" | \"arrow-up-right\" | \"arrow-up\" | \"asterisk\" | \"bike\" | \"bin\" | \"briefcase\" | \"calendar\" | \"check\" | \"chevron-down\" | \"chevron-right\" | \"download\" | \"file-text\" | \"grip\" | \"heart\" | \"home\" | \"info\" | \"layers\" | \"layout-grid\" | \"link\" | \"list\" | \"menu\" | \"pen\" | \"plus\" | \"scan\" | \"search\" | \"settings\" | \"shopping-bag\" | \"triangle-alert\" | \"upload\" | \"user\" | \"wallet\" | \"x\"",
+          "type": "\"arrow-left\" | \"arrow-right\" | \"arrow-up-right\" | \"arrow-up\" | \"asterisk\" | \"bike\" | \"bin\" | \"bookmark\" | \"briefcase\" | \"calendar\" | \"check\" | \"chevron-down\" | \"chevron-right\" | \"download\" | \"file-text\" | \"grip\" | \"heart\" | \"home\" | \"info\" | \"layers\" | \"layout-grid\" | \"link\" | \"list\" | \"menu\" | \"pen\" | \"plus\" | \"scan\" | \"search\" | \"settings\" | \"shopping-bag\" | \"triangle-alert\" | \"upload\" | \"user\" | \"wallet\" | \"x\"",
           "required": false,
           "description": "Decorative catalogue icon; the visible label supplies meaning."
         }
@@ -443,7 +443,7 @@
         },
         {
           "name": "icon",
-          "type": "\"arrow-left\" | \"arrow-right\" | \"arrow-up-right\" | \"arrow-up\" | \"asterisk\" | \"bike\" | \"bin\" | \"briefcase\" | \"calendar\" | \"check\" | \"chevron-down\" | \"chevron-right\" | \"download\" | \"file-text\" | \"grip\" | \"heart\" | \"home\" | \"info\" | \"layers\" | \"layout-grid\" | \"link\" | \"list\" | \"menu\" | \"pen\" | \"plus\" | \"scan\" | \"search\" | \"settings\" | \"shopping-bag\" | \"triangle-alert\" | \"upload\" | \"user\" | \"wallet\" | \"x\"",
+          "type": "\"arrow-left\" | \"arrow-right\" | \"arrow-up-right\" | \"arrow-up\" | \"asterisk\" | \"bike\" | \"bin\" | \"bookmark\" | \"briefcase\" | \"calendar\" | \"check\" | \"chevron-down\" | \"chevron-right\" | \"download\" | \"file-text\" | \"grip\" | \"heart\" | \"home\" | \"info\" | \"layers\" | \"layout-grid\" | \"link\" | \"list\" | \"menu\" | \"pen\" | \"plus\" | \"scan\" | \"search\" | \"settings\" | \"shopping-bag\" | \"triangle-alert\" | \"upload\" | \"user\" | \"wallet\" | \"x\"",
           "required": false,
           "description": "Decorative icon beside the visible label."
         },
@@ -609,7 +609,7 @@
         },
         {
           "name": "icon",
-          "type": "\"arrow-left\" | \"arrow-right\" | \"arrow-up-right\" | \"arrow-up\" | \"asterisk\" | \"bike\" | \"bin\" | \"briefcase\" | \"calendar\" | \"check\" | \"chevron-down\" | \"chevron-right\" | \"download\" | \"file-text\" | \"grip\" | \"heart\" | \"home\" | \"info\" | \"layers\" | \"layout-grid\" | \"link\" | \"list\" | \"menu\" | \"pen\" | \"plus\" | \"scan\" | \"search\" | \"settings\" | \"shopping-bag\" | \"triangle-alert\" | \"upload\" | \"user\" | \"wallet\" | \"x\"",
+          "type": "\"arrow-left\" | \"arrow-right\" | \"arrow-up-right\" | \"arrow-up\" | \"asterisk\" | \"bike\" | \"bin\" | \"bookmark\" | \"briefcase\" | \"calendar\" | \"check\" | \"chevron-down\" | \"chevron-right\" | \"download\" | \"file-text\" | \"grip\" | \"heart\" | \"home\" | \"info\" | \"layers\" | \"layout-grid\" | \"link\" | \"list\" | \"menu\" | \"pen\" | \"plus\" | \"scan\" | \"search\" | \"settings\" | \"shopping-bag\" | \"triangle-alert\" | \"upload\" | \"user\" | \"wallet\" | \"x\"",
           "required": false,
           "description": "Decorative icon replacing the category square."
         },
@@ -825,7 +825,7 @@
         },
         {
           "name": "icon",
-          "type": "\"arrow-left\" | \"arrow-right\" | \"arrow-up-right\" | \"arrow-up\" | \"asterisk\" | \"bike\" | \"bin\" | \"briefcase\" | \"calendar\" | \"check\" | \"chevron-down\" | \"chevron-right\" | \"download\" | \"file-text\" | \"grip\" | \"heart\" | \"home\" | \"info\" | \"layers\" | \"layout-grid\" | \"link\" | \"list\" | \"menu\" | \"pen\" | \"plus\" | \"scan\" | \"search\" | \"settings\" | \"shopping-bag\" | \"triangle-alert\" | \"upload\" | \"user\" | \"wallet\" | \"x\"",
+          "type": "\"arrow-left\" | \"arrow-right\" | \"arrow-up-right\" | \"arrow-up\" | \"asterisk\" | \"bike\" | \"bin\" | \"bookmark\" | \"briefcase\" | \"calendar\" | \"check\" | \"chevron-down\" | \"chevron-right\" | \"download\" | \"file-text\" | \"grip\" | \"heart\" | \"home\" | \"info\" | \"layers\" | \"layout-grid\" | \"link\" | \"list\" | \"menu\" | \"pen\" | \"plus\" | \"scan\" | \"search\" | \"settings\" | \"shopping-bag\" | \"triangle-alert\" | \"upload\" | \"user\" | \"wallet\" | \"x\"",
           "required": false,
           "description": "Decorative source icon. Defaults to file-text.",
           "default": "\"file-text\""
@@ -1589,7 +1589,7 @@
         },
         {
           "name": "icon",
-          "type": "\"arrow-left\" | \"arrow-right\" | \"arrow-up-right\" | \"arrow-up\" | \"asterisk\" | \"bike\" | \"bin\" | \"briefcase\" | \"calendar\" | \"check\" | \"chevron-down\" | \"chevron-right\" | \"download\" | \"file-text\" | \"grip\" | \"heart\" | \"home\" | \"info\" | \"layers\" | \"layout-grid\" | \"link\" | \"list\" | \"menu\" | \"pen\" | \"plus\" | \"scan\" | \"search\" | \"settings\" | \"shopping-bag\" | \"triangle-alert\" | \"upload\" | \"user\" | \"wallet\" | \"x\"",
+          "type": "\"arrow-left\" | \"arrow-right\" | \"arrow-up-right\" | \"arrow-up\" | \"asterisk\" | \"bike\" | \"bin\" | \"bookmark\" | \"briefcase\" | \"calendar\" | \"check\" | \"chevron-down\" | \"chevron-right\" | \"download\" | \"file-text\" | \"grip\" | \"heart\" | \"home\" | \"info\" | \"layers\" | \"layout-grid\" | \"link\" | \"list\" | \"menu\" | \"pen\" | \"plus\" | \"scan\" | \"search\" | \"settings\" | \"shopping-bag\" | \"triangle-alert\" | \"upload\" | \"user\" | \"wallet\" | \"x\"",
           "required": false,
           "description": "Decorative neutral tile in the editorial presentation."
         },
@@ -1601,7 +1601,7 @@
         },
         {
           "name": "buttonIcon",
-          "type": "\"arrow-left\" | \"arrow-right\" | \"arrow-up-right\" | \"arrow-up\" | \"asterisk\" | \"bike\" | \"bin\" | \"briefcase\" | \"calendar\" | \"check\" | \"chevron-down\" | \"chevron-right\" | \"download\" | \"file-text\" | \"grip\" | \"heart\" | \"home\" | \"info\" | \"layers\" | \"layout-grid\" | \"link\" | \"list\" | \"menu\" | \"pen\" | \"plus\" | \"scan\" | \"search\" | \"settings\" | \"shopping-bag\" | \"triangle-alert\" | \"upload\" | \"user\" | \"wallet\" | \"x\"",
+          "type": "\"arrow-left\" | \"arrow-right\" | \"arrow-up-right\" | \"arrow-up\" | \"asterisk\" | \"bike\" | \"bin\" | \"bookmark\" | \"briefcase\" | \"calendar\" | \"check\" | \"chevron-down\" | \"chevron-right\" | \"download\" | \"file-text\" | \"grip\" | \"heart\" | \"home\" | \"info\" | \"layers\" | \"layout-grid\" | \"link\" | \"list\" | \"menu\" | \"pen\" | \"plus\" | \"scan\" | \"search\" | \"settings\" | \"shopping-bag\" | \"triangle-alert\" | \"upload\" | \"user\" | \"wallet\" | \"x\"",
           "required": false,
           "description": "Decorative picker icon; editorial defaults to upload."
         },
@@ -1717,7 +1717,7 @@
         },
         {
           "name": "icon",
-          "type": "\"arrow-left\" | \"arrow-right\" | \"arrow-up-right\" | \"arrow-up\" | \"asterisk\" | \"bike\" | \"bin\" | \"briefcase\" | \"calendar\" | \"check\" | \"chevron-down\" | \"chevron-right\" | \"download\" | \"file-text\" | \"grip\" | \"heart\" | \"home\" | \"info\" | \"layers\" | \"layout-grid\" | \"link\" | \"list\" | \"menu\" | \"pen\" | \"plus\" | \"scan\" | \"search\" | \"settings\" | \"shopping-bag\" | \"triangle-alert\" | \"upload\" | \"user\" | \"wallet\" | \"x\"",
+          "type": "\"arrow-left\" | \"arrow-right\" | \"arrow-up-right\" | \"arrow-up\" | \"asterisk\" | \"bike\" | \"bin\" | \"bookmark\" | \"briefcase\" | \"calendar\" | \"check\" | \"chevron-down\" | \"chevron-right\" | \"download\" | \"file-text\" | \"grip\" | \"heart\" | \"home\" | \"info\" | \"layers\" | \"layout-grid\" | \"link\" | \"list\" | \"menu\" | \"pen\" | \"plus\" | \"scan\" | \"search\" | \"settings\" | \"shopping-bag\" | \"triangle-alert\" | \"upload\" | \"user\" | \"wallet\" | \"x\"",
           "required": false,
           "description": "Decorative catalogue icon on a neutral tile."
         },
@@ -2227,7 +2227,7 @@
       "props": [
         {
           "name": "name",
-          "type": "\"arrow-left\" | \"arrow-right\" | \"arrow-up-right\" | \"arrow-up\" | \"asterisk\" | \"bike\" | \"bin\" | \"briefcase\" | \"calendar\" | \"check\" | \"chevron-down\" | \"chevron-right\" | \"download\" | \"file-text\" | \"grip\" | \"heart\" | \"home\" | \"info\" | \"layers\" | \"layout-grid\" | \"link\" | \"list\" | \"menu\" | \"pen\" | \"plus\" | \"scan\" | \"search\" | \"settings\" | \"shopping-bag\" | \"triangle-alert\" | \"upload\" | \"user\" | \"wallet\" | \"x\"",
+          "type": "\"arrow-left\" | \"arrow-right\" | \"arrow-up-right\" | \"arrow-up\" | \"asterisk\" | \"bike\" | \"bin\" | \"bookmark\" | \"briefcase\" | \"calendar\" | \"check\" | \"chevron-down\" | \"chevron-right\" | \"download\" | \"file-text\" | \"grip\" | \"heart\" | \"home\" | \"info\" | \"layers\" | \"layout-grid\" | \"link\" | \"list\" | \"menu\" | \"pen\" | \"plus\" | \"scan\" | \"search\" | \"settings\" | \"shopping-bag\" | \"triangle-alert\" | \"upload\" | \"user\" | \"wallet\" | \"x\"",
           "required": true,
           "description": "Name from the generated SVG catalogue."
         },
@@ -2291,7 +2291,7 @@
         },
         {
           "name": "icon",
-          "type": "\"arrow-left\" | \"arrow-right\" | \"arrow-up-right\" | \"arrow-up\" | \"asterisk\" | \"bike\" | \"bin\" | \"briefcase\" | \"calendar\" | \"check\" | \"chevron-down\" | \"chevron-right\" | \"download\" | \"file-text\" | \"grip\" | \"heart\" | \"home\" | \"info\" | \"layers\" | \"layout-grid\" | \"link\" | \"list\" | \"menu\" | \"pen\" | \"plus\" | \"scan\" | \"search\" | \"settings\" | \"shopping-bag\" | \"triangle-alert\" | \"upload\" | \"user\" | \"wallet\" | \"x\"",
+          "type": "\"arrow-left\" | \"arrow-right\" | \"arrow-up-right\" | \"arrow-up\" | \"asterisk\" | \"bike\" | \"bin\" | \"bookmark\" | \"briefcase\" | \"calendar\" | \"check\" | \"chevron-down\" | \"chevron-right\" | \"download\" | \"file-text\" | \"grip\" | \"heart\" | \"home\" | \"info\" | \"layers\" | \"layout-grid\" | \"link\" | \"list\" | \"menu\" | \"pen\" | \"plus\" | \"scan\" | \"search\" | \"settings\" | \"shopping-bag\" | \"triangle-alert\" | \"upload\" | \"user\" | \"wallet\" | \"x\"",
           "required": true,
           "description": "Decorative icon from the shared catalogue."
         },
@@ -2324,7 +2324,7 @@
       "props": [
         {
           "name": "icon",
-          "type": "\"arrow-left\" | \"arrow-right\" | \"arrow-up-right\" | \"arrow-up\" | \"asterisk\" | \"bike\" | \"bin\" | \"briefcase\" | \"calendar\" | \"check\" | \"chevron-down\" | \"chevron-right\" | \"download\" | \"file-text\" | \"grip\" | \"heart\" | \"home\" | \"info\" | \"layers\" | \"layout-grid\" | \"link\" | \"list\" | \"menu\" | \"pen\" | \"plus\" | \"scan\" | \"search\" | \"settings\" | \"shopping-bag\" | \"triangle-alert\" | \"upload\" | \"user\" | \"wallet\" | \"x\"",
+          "type": "\"arrow-left\" | \"arrow-right\" | \"arrow-up-right\" | \"arrow-up\" | \"asterisk\" | \"bike\" | \"bin\" | \"bookmark\" | \"briefcase\" | \"calendar\" | \"check\" | \"chevron-down\" | \"chevron-right\" | \"download\" | \"file-text\" | \"grip\" | \"heart\" | \"home\" | \"info\" | \"layers\" | \"layout-grid\" | \"link\" | \"list\" | \"menu\" | \"pen\" | \"plus\" | \"scan\" | \"search\" | \"settings\" | \"shopping-bag\" | \"triangle-alert\" | \"upload\" | \"user\" | \"wallet\" | \"x\"",
           "required": true,
           "description": "Icon from the shared catalogue."
         },
@@ -2484,13 +2484,13 @@
         },
         {
           "name": "icon",
-          "type": "\"arrow-left\" | \"arrow-right\" | \"arrow-up-right\" | \"arrow-up\" | \"asterisk\" | \"bike\" | \"bin\" | \"briefcase\" | \"calendar\" | \"check\" | \"chevron-down\" | \"chevron-right\" | \"download\" | \"file-text\" | \"grip\" | \"heart\" | \"home\" | \"info\" | \"layers\" | \"layout-grid\" | \"link\" | \"list\" | \"menu\" | \"pen\" | \"plus\" | \"scan\" | \"search\" | \"settings\" | \"shopping-bag\" | \"triangle-alert\" | \"upload\" | \"user\" | \"wallet\" | \"x\"",
+          "type": "\"arrow-left\" | \"arrow-right\" | \"arrow-up-right\" | \"arrow-up\" | \"asterisk\" | \"bike\" | \"bin\" | \"bookmark\" | \"briefcase\" | \"calendar\" | \"check\" | \"chevron-down\" | \"chevron-right\" | \"download\" | \"file-text\" | \"grip\" | \"heart\" | \"home\" | \"info\" | \"layers\" | \"layout-grid\" | \"link\" | \"list\" | \"menu\" | \"pen\" | \"plus\" | \"scan\" | \"search\" | \"settings\" | \"shopping-bag\" | \"triangle-alert\" | \"upload\" | \"user\" | \"wallet\" | \"x\"",
           "required": false,
           "description": "Decorative icon before the visible text."
         },
         {
           "name": "trailingIcon",
-          "type": "\"arrow-left\" | \"arrow-right\" | \"arrow-up-right\" | \"arrow-up\" | \"asterisk\" | \"bike\" | \"bin\" | \"briefcase\" | \"calendar\" | \"check\" | \"chevron-down\" | \"chevron-right\" | \"download\" | \"file-text\" | \"grip\" | \"heart\" | \"home\" | \"info\" | \"layers\" | \"layout-grid\" | \"link\" | \"list\" | \"menu\" | \"pen\" | \"plus\" | \"scan\" | \"search\" | \"settings\" | \"shopping-bag\" | \"triangle-alert\" | \"upload\" | \"user\" | \"wallet\" | \"x\"",
+          "type": "\"arrow-left\" | \"arrow-right\" | \"arrow-up-right\" | \"arrow-up\" | \"asterisk\" | \"bike\" | \"bin\" | \"bookmark\" | \"briefcase\" | \"calendar\" | \"check\" | \"chevron-down\" | \"chevron-right\" | \"download\" | \"file-text\" | \"grip\" | \"heart\" | \"home\" | \"info\" | \"layers\" | \"layout-grid\" | \"link\" | \"list\" | \"menu\" | \"pen\" | \"plus\" | \"scan\" | \"search\" | \"settings\" | \"shopping-bag\" | \"triangle-alert\" | \"upload\" | \"user\" | \"wallet\" | \"x\"",
           "required": false,
           "description": "Decorative icon after the visible text; does not replace it."
         },
@@ -4145,13 +4145,13 @@
         },
         {
           "name": "icon",
-          "type": "\"arrow-left\" | \"arrow-right\" | \"arrow-up-right\" | \"arrow-up\" | \"asterisk\" | \"bike\" | \"bin\" | \"briefcase\" | \"calendar\" | \"check\" | \"chevron-down\" | \"chevron-right\" | \"download\" | \"file-text\" | \"grip\" | \"heart\" | \"home\" | \"info\" | \"layers\" | \"layout-grid\" | \"link\" | \"list\" | \"menu\" | \"pen\" | \"plus\" | \"scan\" | \"search\" | \"settings\" | \"shopping-bag\" | \"triangle-alert\" | \"upload\" | \"user\" | \"wallet\" | \"x\"",
+          "type": "\"arrow-left\" | \"arrow-right\" | \"arrow-up-right\" | \"arrow-up\" | \"asterisk\" | \"bike\" | \"bin\" | \"bookmark\" | \"briefcase\" | \"calendar\" | \"check\" | \"chevron-down\" | \"chevron-right\" | \"download\" | \"file-text\" | \"grip\" | \"heart\" | \"home\" | \"info\" | \"layers\" | \"layout-grid\" | \"link\" | \"list\" | \"menu\" | \"pen\" | \"plus\" | \"scan\" | \"search\" | \"settings\" | \"shopping-bag\" | \"triangle-alert\" | \"upload\" | \"user\" | \"wallet\" | \"x\"",
           "required": false,
           "description": "Decorative icon before the visible text."
         },
         {
           "name": "trailingIcon",
-          "type": "\"arrow-left\" | \"arrow-right\" | \"arrow-up-right\" | \"arrow-up\" | \"asterisk\" | \"bike\" | \"bin\" | \"briefcase\" | \"calendar\" | \"check\" | \"chevron-down\" | \"chevron-right\" | \"download\" | \"file-text\" | \"grip\" | \"heart\" | \"home\" | \"info\" | \"layers\" | \"layout-grid\" | \"link\" | \"list\" | \"menu\" | \"pen\" | \"plus\" | \"scan\" | \"search\" | \"settings\" | \"shopping-bag\" | \"triangle-alert\" | \"upload\" | \"user\" | \"wallet\" | \"x\"",
+          "type": "\"arrow-left\" | \"arrow-right\" | \"arrow-up-right\" | \"arrow-up\" | \"asterisk\" | \"bike\" | \"bin\" | \"bookmark\" | \"briefcase\" | \"calendar\" | \"check\" | \"chevron-down\" | \"chevron-right\" | \"download\" | \"file-text\" | \"grip\" | \"heart\" | \"home\" | \"info\" | \"layers\" | \"layout-grid\" | \"link\" | \"list\" | \"menu\" | \"pen\" | \"plus\" | \"scan\" | \"search\" | \"settings\" | \"shopping-bag\" | \"triangle-alert\" | \"upload\" | \"user\" | \"wallet\" | \"x\"",
           "required": false,
           "description": "Decorative icon after the visible text; does not replace it."
         },
@@ -4380,7 +4380,7 @@
         },
         {
           "name": "icon",
-          "type": "\"arrow-left\" | \"arrow-right\" | \"arrow-up-right\" | \"arrow-up\" | \"asterisk\" | \"bike\" | \"bin\" | \"briefcase\" | \"calendar\" | \"check\" | \"chevron-down\" | \"chevron-right\" | \"download\" | \"file-text\" | \"grip\" | \"heart\" | \"home\" | \"info\" | \"layers\" | \"layout-grid\" | \"link\" | \"list\" | \"menu\" | \"pen\" | \"plus\" | \"scan\" | \"search\" | \"settings\" | \"shopping-bag\" | \"triangle-alert\" | \"upload\" | \"user\" | \"wallet\" | \"x\"",
+          "type": "\"arrow-left\" | \"arrow-right\" | \"arrow-up-right\" | \"arrow-up\" | \"asterisk\" | \"bike\" | \"bin\" | \"bookmark\" | \"briefcase\" | \"calendar\" | \"check\" | \"chevron-down\" | \"chevron-right\" | \"download\" | \"file-text\" | \"grip\" | \"heart\" | \"home\" | \"info\" | \"layers\" | \"layout-grid\" | \"link\" | \"list\" | \"menu\" | \"pen\" | \"plus\" | \"scan\" | \"search\" | \"settings\" | \"shopping-bag\" | \"triangle-alert\" | \"upload\" | \"user\" | \"wallet\" | \"x\"",
           "required": false,
           "description": "Decorative catalogue icon displayed instead of the visible label."
         },

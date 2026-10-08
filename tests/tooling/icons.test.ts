@@ -27,7 +27,7 @@ test("every catalogue SVG passes and its licences are present", () => {
   const files = readdirSync("src/icon/svg").filter((name) =>
     name.endsWith(".svg"),
   );
-  assert.equal(files.length, 34);
+  assert.equal(files.length, 35);
   for (const file of files)
     checkIcon(readFileSync(`src/icon/svg/${file}`, "utf8"), file);
   const licence = readFileSync("src/icon/svg/LICENSE", "utf8");

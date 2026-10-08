@@ -122,3 +122,37 @@ test("soft elevation follows the system theme live", {
   await page.emulateMedia({ colorScheme: "dark" });
   await expect(relief).toHaveCSS("box-shadow", "none");
 });
+
+for (const theme of ["light", "dark"] as const) {
+  test(`semantic radius roles preserve legacy overrides in ${theme}`, {
+    tag: [`@theme:${theme}`, "@component:button", "@component:card"],
+  }, async ({ page }) => {
+    await page.goto(
+      `/iframe.html?id=form-button--primary&viewMode=story&globals=a11y.manual:!true;theme:${theme}`,
+    );
+    const button = page.getByRole("button", { name: "Save" });
+    await expect(button).toBeVisible();
+    await page.evaluate(() => {
+      document.documentElement.style.setProperty("--bd-radius", "12px");
+    });
+    await expect(button).toHaveCSS("border-radius", "12px");
+
+    await page.evaluate(() => {
+      document.documentElement.style.setProperty("--bd-radius-control", "10px");
+      document.documentElement.style.setProperty("--bd-radius-surface", "14px");
+    });
+    await expect(button).toHaveCSS("border-radius", "10px");
+    await page.goto(
+      `/iframe.html?id=surfaces-card--collection-summary&viewMode=story&globals=a11y.manual:!true;theme:${theme}`,
+    );
+    const card = page.locator(".bd-card");
+    await expect(card).toBeVisible();
+    await page.evaluate(() => {
+      document.documentElement.style.setProperty("--bd-radius", "12px");
+      document.documentElement.style.setProperty("--bd-radius-control", "10px");
+      document.documentElement.style.setProperty("--bd-radius-surface", "14px");
+    });
+    await expect(card).toHaveCSS("border-radius", "14px");
+    await expect(page.locator("html")).toHaveCSS("--bd-radius", "12px");
+  });
+}

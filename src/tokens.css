@@ -30,8 +30,8 @@
   --bd-stroke: 2px;
   --bd-strong: 4px;
   --bd-radius: 0;
-  --bd-radius-surface: 0px;
-  --bd-radius-control: 0px;
+  --bd-radius-surface: var(--bd-radius);
+  --bd-radius-control: var(--bd-radius);
   --bd-radius-pill: 0px;
   --bd-offset: 3px;
   --bd-breakpoint: 640px;

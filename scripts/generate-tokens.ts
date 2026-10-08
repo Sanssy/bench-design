@@ -6,7 +6,9 @@ function baseValue(token: BaseToken) {
   const value = token.$value;
   const fallbackMetadata = token.$extensions["org.bench-design"] as {
     fallback?: string;
+    useSiteFallback?: boolean;
   };
+  if (fallbackMetadata.useSiteFallback) return "initial";
   const fallback = fallbackMetadata.fallback;
   if (fallback) return `var(--bd-${fallback})`;
   if (Array.isArray(value)) return `cubic-bezier(${value.join(", ")})`;

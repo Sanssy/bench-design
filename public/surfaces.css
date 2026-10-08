@@ -74,7 +74,7 @@
 .bd-surface {
   --bd-surface-padding: 0;
   padding: var(--bd-surface-padding);
-  border-radius: var(--bd-radius-surface);
+  border-radius: var(--bd-radius-surface, var(--bd-radius));
   background: var(--bd-surface-raised);
   color: var(--bd-text);
 }
@@ -90,7 +90,7 @@
 }
 .bd-card {
   border: var(--bd-hair) solid var(--bd-divider);
-  border-radius: var(--bd-radius-surface);
+  border-radius: var(--bd-radius-surface, var(--bd-radius));
   --bd-card-padding: var(--bd-space-12);
   padding: var(--bd-card-padding);
   background: var(--bd-surface-raised);

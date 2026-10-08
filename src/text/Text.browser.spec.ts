@@ -3,6 +3,7 @@ import { expect, test } from "@playwright/test";
 test("Text typography and theme colors", {
   tag: ["@theme:light", "@theme:dark", "@component:text"],
 }, async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
   const theme = "light";
   for (const [story, size, variant, tone] of [
     ["paragraph", "ui", "default", "default"],
@@ -65,6 +66,8 @@ test("Text typography and theme colors", {
         "data-theme",
         colorTheme,
       );
+      await expect(text).toHaveCSS("margin-block-start", "0px");
+      await expect(text).toHaveCSS("margin-block-end", "0px");
       const colors = await text.evaluate((element, muted) => {
         const probe = document.createElement("span");
         probe.style.color = `var(--bd-text${muted ? "-muted" : ""})`;

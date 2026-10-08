@@ -7,7 +7,7 @@
   max-inline-size: 100%;
   padding: var(--bd-space-4) var(--bd-space-12);
   border: var(--bd-hair) solid var(--bd-border-strong);
-  border-radius: var(--bd-radius);
+  border-radius: var(--bd-radius-control);
   background: var(--bd-surface);
   color: var(--bd-text);
   font-family: var(--bd-font-ui);

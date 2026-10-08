@@ -5,7 +5,7 @@
   font-size: var(--bd-size-meta);
   font-weight: var(--bd-weight-semibold);
   line-height: var(--bd-line-normal);
-  border-radius: var(--bd-radius);
+  border-radius: var(--bd-radius-control);
   max-inline-size: 100%;
   white-space: normal;
   overflow-wrap: anywhere;
@@ -95,7 +95,7 @@
   font-family: var(--bd-font-ui);
   font-size: var(--bd-size-meta);
   line-height: var(--bd-line-normal);
-  border-radius: var(--bd-radius);
+  border-radius: var(--bd-radius-control);
   overflow-wrap: anywhere;
 }
 

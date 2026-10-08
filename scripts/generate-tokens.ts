@@ -4,6 +4,11 @@ import tokens from "../src/tokens.json" with { type: "json" };
 type BaseToken = (typeof tokens.base)[keyof typeof tokens.base];
 function baseValue(token: BaseToken) {
   const value = token.$value;
+  const fallbackMetadata = token.$extensions["org.bench-design"] as {
+    fallback?: string;
+  };
+  const fallback = fallbackMetadata.fallback;
+  if (fallback) return `var(--bd-${fallback})`;
   if (Array.isArray(value)) return `cubic-bezier(${value.join(", ")})`;
   if (typeof value === "object") {
     if ("offsetX" in value) {

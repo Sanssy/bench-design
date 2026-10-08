@@ -281,7 +281,8 @@ test("End sheets keep the header visible and contain focus across themes and siz
         ["add-documents", "Add documents", "Add documents"],
         ["wide-sheet", "Open reading workspace", "Reading workspace"],
       ] as const) {
-        await page.setViewportSize({ width, height: 640 });
+        const height = story === "wide-sheet" ? 480 : 640;
+        await page.setViewportSize({ width, height });
         await page.goto(
           `/iframe.html?id=overlays-dialog--${story}&viewMode=story&globals=a11y.manual:!true;theme:${theme}`,
         );
@@ -292,7 +293,7 @@ test("End sheets keep the header visible and contain focus across themes and siz
         await page.evaluate(() => document.fonts.ready);
         const modal = await page.locator(".bd-modal").boundingBox();
         expect(modal?.y).toBe(0);
-        expect(modal?.height).toBe(640);
+        expect(modal?.height).toBe(height);
         expect((modal?.x ?? 0) + (modal?.width ?? 0)).toBe(width);
         if (width === 320) expect(modal?.width).toBe(320);
         const heading = page.getByRole("heading", { name: title });

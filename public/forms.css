@@ -701,6 +701,34 @@
   overflow-wrap: anywhere;
 }
 
+.bd-segmented[data-variant="track"] {
+  box-sizing: border-box;
+  align-self: stretch;
+  inline-size: 100%;
+  flex-wrap: wrap;
+  gap: var(--bd-space-4);
+  padding: var(--bd-space-4);
+  border: none;
+  border-radius: var(--bd-radius-surface, var(--bd-radius));
+  background: var(--bd-surface-subtle);
+}
+.bd-segmented[data-variant="track"] .bd-segment {
+  flex: 1 0 calc(var(--bd-space-32) + var(--bd-space-12));
+  min-inline-size: fit-content;
+  max-inline-size: 100%;
+  min-block-size: calc(var(--bd-space-32) + var(--bd-space-12));
+  block-size: auto;
+  padding: var(--bd-space-4);
+  border: none;
+  border-radius: var(--bd-radius-control, var(--bd-radius));
+  background: transparent;
+  overflow-wrap: anywhere;
+}
+.bd-segmented[data-variant="track"] .bd-segment[data-selected] {
+  background: var(--bd-accent);
+  color: var(--bd-on-accent);
+}
+
 .bd-composer[data-variant="card"] {
   padding: var(--bd-space-12);
   border: var(--bd-hair) solid var(--bd-border-strong);

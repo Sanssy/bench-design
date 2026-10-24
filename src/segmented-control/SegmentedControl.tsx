@@ -24,6 +24,8 @@ export interface SegmentedControlProps extends FieldProps {
   }[];
   /** Wrap up to six single-choice options; use FilterBar for larger sets. @default "inline" */
   layout?: "inline" | "wrap";
+  /** Visual treatment for the group. @default "default" */
+  variant?: "default" | "track";
   /** Controlled selection ID. */
   value?: string;
   /** Initial uncontrolled selection ID; defaults to the first enabled option. */
@@ -47,6 +49,7 @@ export function SegmentedControl({
   onChange,
   hideLabel = false,
   layout = "inline",
+  variant = "default",
 }: SegmentedControlProps) {
   const id = useId();
   if (layout === "wrap" && options.length > 6) {
@@ -72,6 +75,7 @@ export function SegmentedControl({
       <ToggleButtonGroup
         className="bd-segmented"
         data-layout={layout}
+        data-variant={variant}
         aria-labelledby={id}
         {...(describedBy ? { "aria-describedby": describedBy } : {})}
         selectionMode="single"

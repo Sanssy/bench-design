@@ -114,6 +114,163 @@ for (const theme of ["light", "dark"]) {
       ).toEqual([]);
     }
   });
+
+  test(`track fills its container and distributes fitting options in ${theme}`, {
+    tag: ["@component:segmented-control", `@theme:${theme}`],
+  }, async ({ page }) => {
+    await page.goto(
+      `/iframe.html?id=form-segmentedcontrol--track&viewMode=story&globals=a11y.manual:!true;theme:${theme}`,
+    );
+    await expect(page.locator("html")).toHaveAttribute("data-theme", theme);
+    await page.evaluate(() => document.fonts.ready);
+    const group = page.getByRole("radiogroup", { name: "Category" });
+    const field = page.locator(".bd-field").first();
+    const groupStyle = await group.evaluate((element) => {
+      const probe = document.createElement("span");
+      probe.style.cssText =
+        "background:var(--bd-surface-subtle);padding:var(--bd-space-4);gap:var(--bd-space-4)";
+      document.body.append(probe);
+      const expected = getComputedStyle(probe);
+      const result = {
+        surface: expected.backgroundColor,
+        space: expected.paddingTop,
+        background: getComputedStyle(element).backgroundColor,
+        padding: getComputedStyle(element).paddingTop,
+        gap: getComputedStyle(element).columnGap,
+        border: getComputedStyle(element).borderTopWidth,
+      };
+      probe.remove();
+      return result;
+    });
+    expect(groupStyle.background).toBe(groupStyle.surface);
+    expect(groupStyle.padding).toBe(groupStyle.space);
+    expect(groupStyle.gap).toBe(groupStyle.space);
+    expect(groupStyle.border).toBe("0px");
+    await expect(group).toHaveAttribute("data-variant", "track");
+    const fieldBox = await field.boundingBox();
+    const groupBox = await group.boundingBox();
+    expect(fieldBox).not.toBeNull();
+    expect(groupBox?.width).toBeCloseTo(fieldBox?.width ?? 0, 0);
+    const segments = page.locator(".bd-segment");
+    const boxes = await segments.evaluateAll((elements) =>
+      elements.map((element) => {
+        const style = getComputedStyle(element);
+        const box = element.getBoundingClientRect();
+        return {
+          width: box.width,
+          height: box.height,
+          border: style.borderTopWidth,
+          background: style.backgroundColor,
+        };
+      }),
+    );
+    expect(boxes).toHaveLength(4);
+    expect(
+      Math.max(...boxes.map((box) => box.width)) -
+        Math.min(...boxes.map((box) => box.width)),
+    ).toBeLessThanOrEqual(1);
+    expect(boxes.every((box) => box.height >= 44 && box.border === "0px")).toBe(
+      true,
+    );
+    expect(boxes[1]?.background).toBe("rgba(0, 0, 0, 0)");
+  });
+
+  test(`track uses consumer radius roles with a legacy fallback in ${theme}`, {
+    tag: ["@component:segmented-control", `@theme:${theme}`],
+  }, async ({ page }) => {
+    await page.goto(
+      `/iframe.html?id=form-segmentedcontrol--track&viewMode=story&globals=a11y.manual:!true;theme:${theme}`,
+    );
+    const group = page.locator(".bd-segmented");
+    const segment = page.locator(".bd-segment").first();
+    await expect(group).toHaveCSS("border-radius", "0px");
+    await expect(segment).toHaveCSS("border-radius", "0px");
+    await page.locator(".bd-field").evaluate((field) => {
+      field.style.setProperty("--bd-radius", "12px");
+    });
+    await expect(group).toHaveCSS("border-radius", "12px");
+    await expect(segment).toHaveCSS("border-radius", "12px");
+    await page.locator(".bd-field").evaluate((field) => {
+      field.style.setProperty("--bd-radius-surface", "14px");
+      field.style.setProperty("--bd-radius-control", "10px");
+    });
+    await expect(group).toHaveCSS("border-radius", "14px");
+    await expect(segment).toHaveCSS("border-radius", "10px");
+  });
+
+  test(`track keeps readable choices and 44px targets at 320px in ${theme}`, {
+    tag: ["@component:segmented-control", `@theme:${theme}`],
+  }, async ({ page }) => {
+    await page.setViewportSize({ width: 320, height: 800 });
+    for (const story of ["track", "track-wrapped"]) {
+      await page.goto(
+        `/iframe.html?id=form-segmentedcontrol--${story}&viewMode=story&globals=a11y.manual:!true;theme:${theme}`,
+      );
+      await page.evaluate(() => document.fonts.ready);
+      const group = page.locator(".bd-segmented");
+      const groupBox = await group.boundingBox();
+      const boxes = await page.locator(".bd-segment").evaluateAll((elements) =>
+        elements.map((element) => {
+          const box = element.getBoundingClientRect();
+          const range = document.createRange();
+          range.selectNodeContents(element);
+          return {
+            x: box.x,
+            right: box.right,
+            width: box.width,
+            height: box.height,
+            lineCount: range.getClientRects().length,
+          };
+        }),
+      );
+      expect(groupBox).not.toBeNull();
+      expect(boxes.every((box) => box.width >= 44 && box.height >= 44)).toBe(
+        true,
+      );
+      const groupRight = (groupBox?.x ?? 0) + (groupBox?.width ?? 320);
+      expect(
+        boxes.every(
+          (box) => box.x >= (groupBox?.x ?? 0) && box.right <= groupRight,
+        ),
+      ).toBe(true);
+      expect(boxes.some((box) => box.lineCount > 1)).toBe(
+        story === "track-wrapped",
+      );
+      expect(
+        await page.evaluate(() => document.documentElement.scrollWidth),
+      ).toBeLessThanOrEqual(320);
+    }
+  });
+
+  test(`track preserves labels, disabled options, focus and keyboard selection in ${theme}`, {
+    tag: ["@component:segmented-control", `@theme:${theme}`],
+  }, async ({ page }) => {
+    await page.goto(
+      `/iframe.html?id=form-segmentedcontrol--track&viewMode=story&globals=a11y.manual:!true;theme:${theme}`,
+    );
+    const group = page.getByRole("radiogroup", { name: "Category" });
+    const all = page.getByRole("radio", { name: "All" });
+    const housing = page.getByRole("radio", { name: "Housing" });
+    const travel = page.getByRole("radio", { name: "Travel" });
+    const archived = page.getByRole("radio", { name: "Archived" });
+    await expect(group).toBeVisible();
+    await expect(all).toHaveAttribute("aria-checked", "true");
+    await expect(archived).toBeDisabled();
+    await page.keyboard.press("Tab");
+    await expect(all).toBeFocused();
+    await expect(all).toHaveCSS("outline-style", "solid");
+    await page.keyboard.press("ArrowRight");
+    await expect(housing).toBeFocused();
+    await page.keyboard.press("Space");
+    await expect(housing).toHaveAttribute("aria-checked", "true");
+    await page.keyboard.press("ArrowRight");
+    await expect(travel).toBeFocused();
+    await page.keyboard.press("ArrowRight");
+    await expect(travel).toBeFocused();
+    await expect(archived).not.toBeFocused();
+    await page.keyboard.press("ArrowLeft");
+    await expect(housing).toBeFocused();
+  });
 }
 test("SegmentedControl keyboard editing", {
   tag: ["@component:segmented-control"],

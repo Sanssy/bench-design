@@ -149,6 +149,23 @@ test("a zero count is visible and included in the name", () => {
   );
 });
 
+test("SegmentedControl exposes its selected visual variant", () => {
+  const props = {
+    label: "Category",
+    options: [{ id: "all", label: "All" }],
+  };
+  const { rerender } = render(<SegmentedControl {...props} />);
+  expect(screen.getByRole("radiogroup", { name: "Category" })).toHaveAttribute(
+    "data-variant",
+    "default",
+  );
+  rerender(<SegmentedControl {...props} variant="track" />);
+  expect(screen.getByRole("radiogroup", { name: "Category" })).toHaveAttribute(
+    "data-variant",
+    "track",
+  );
+});
+
 for (const layout of ["inline", "wrap"] as const) {
   test(`counts remain visible and named through selection in ${layout}`, async () => {
     const user = userEvent.setup();

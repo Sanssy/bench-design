@@ -2690,6 +2690,10 @@
         {
           "name": "LocalStorage",
           "href": "./?path=/story/feedback-notice--local-storage"
+        },
+        {
+          "name": "CompactFeedback",
+          "href": "./?path=/story/feedback-notice--compact-feedback"
         }
       ]
     },

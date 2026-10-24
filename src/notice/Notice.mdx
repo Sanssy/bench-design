@@ -22,6 +22,17 @@ Use for neutral, success, warning or danger feedback with a meaningful label. Ne
 <Canvas of={Stories.UploadComplete} />
 <Canvas of={Stories.StorageMessages} />
 <Canvas of={Stories.LocalStorage} />
+<Canvas of={Stories.CompactFeedback} />
+
+## Spacing
+
+Notice uses the consumer-owned `--bd-notice-padding-block` and
+`--bd-notice-padding-inline` CSS roles. Each role independently falls back to
+`--bd-space-16`, so the default remains uniform and follows the active theme.
+Set either role on a wrapper to tune one logical axis without changing the
+other. The compact example maps block spacing to `--bd-space-12` and inline
+spacing to `--bd-space-16`; its local `--bd-space-16` remapping demonstrates
+that the fallback remains scoped to the consumer wrapper.
 
 Use the tone control and theme selector to inspect all tones in light and dark themes.
 

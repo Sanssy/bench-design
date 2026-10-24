@@ -764,6 +764,11 @@
   color: var(--bd-text-muted);
   cursor: default;
 }
+.bd-segmented[data-variant="pills"]
+  .bd-segment[data-disabled]
+  .bd-segment-count {
+  color: var(--bd-text-muted);
+}
 
 .bd-composer[data-variant="card"] {
   padding: var(--bd-space-12);

@@ -179,6 +179,7 @@ async function checkDefaultPresentation(page: Page, theme: string) {
 
   const lockedGroup = page.getByRole("radiogroup", { name: "Locked category" });
   const locked = lockedGroup.getByRole("radio", { name: "All, 12" });
+  const lockedCount = locked.locator(".bd-segment-count");
   await expect(locked).toBeDisabled();
   await expect(locked).toHaveAttribute("aria-checked", "true");
   await expect(locked.locator('svg[aria-hidden="true"]')).toHaveCount(2);
@@ -187,6 +188,7 @@ async function checkDefaultPresentation(page: Page, theme: string) {
     stateTokens.disabledBackground,
   );
   await expect(locked).toHaveCSS("color", stateTokens.disabledColor);
+  await expect(lockedCount).toHaveCSS("color", stateTokens.disabledColor);
 }
 
 async function checkTrackPresentation(page: Page, theme: string) {

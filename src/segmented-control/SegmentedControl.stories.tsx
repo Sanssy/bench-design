@@ -72,3 +72,39 @@ export const FacetsWithCounts: Story = {
     ],
   },
 };
+
+export const Track: Story = {
+  args: {
+    label: "Category",
+    description: "Choose a category",
+    variant: "track",
+    options: [
+      { id: "all", label: "All" },
+      { id: "housing", label: "Housing" },
+      { id: "travel", label: "Travel" },
+      { id: "archived", label: "Archived", isDisabled: true },
+    ],
+  },
+  parameters: { layout: "padded" },
+};
+
+export const TrackWrapped: Story = {
+  args: {
+    label: "Category",
+    description: "Choose one category",
+    layout: "wrap",
+    variant: "track",
+    options: [
+      { id: "all", label: "All" },
+      { id: "housing", label: "Housing" },
+      { id: "travel", label: "Travel" },
+      {
+        id: "international",
+        label: "Internationalclassificationreferenceandcorrespondence",
+      },
+      { id: "archive", label: "Archive" },
+      { id: "other", label: "Other" },
+    ],
+  },
+  parameters: { layout: "padded" },
+};

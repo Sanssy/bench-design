@@ -3317,6 +3317,13 @@
           "default": "\"inline\""
         },
         {
+          "name": "variant",
+          "type": "\"default\" | \"track\"",
+          "required": false,
+          "description": "Visual treatment for the group. @default \"default\"",
+          "default": "\"default\""
+        },
+        {
           "name": "value",
           "type": "string",
           "required": false,
@@ -3358,6 +3365,14 @@
         {
           "name": "FacetsWithCounts",
           "href": "./?path=/story/form-segmentedcontrol--facets-with-counts"
+        },
+        {
+          "name": "Track",
+          "href": "./?path=/story/form-segmentedcontrol--track"
+        },
+        {
+          "name": "TrackWrapped",
+          "href": "./?path=/story/form-segmentedcontrol--track-wrapped"
         }
       ]
     },

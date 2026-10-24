@@ -24,6 +24,12 @@ multiple selection, use FilterBar and a filter sheet labelled “Filters N”.
 An optional `count` appears after the label and is included in the accessible name,
 including zero. The default inline layout remains compact.
 
+Use `variant="track"` for a full-width inset surface with equally distributed
+options when their labels fit. Its surface and segment radii follow the semantic
+surface/control roles, with `--bd-radius` as the consumer-scoped fallback.
+Track options keep a 44 px minimum target in both axes. In wrap layout, complete
+options move to another row and long words can break within their option.
+
 ## TypeScript API
 
 <ManifestProps component="SegmentedControl" />
@@ -34,6 +40,8 @@ including zero. The default inline layout remains compact.
 <Canvas of={Stories.Review} />
 <Canvas of={Stories.Wrapped} />
 <Canvas of={Stories.FacetsWithCounts} />
+<Canvas of={Stories.Track} />
+<Canvas of={Stories.TrackWrapped} />
 
 ## Keyboard and ARIA
 

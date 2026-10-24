@@ -78,7 +78,7 @@ export type { GridListProps } from "./grid-list/GridList.js";
 export { GridList } from "./grid-list/GridList.js";
 export type { HeadingProps } from "./heading/Heading.js";
 export { Heading } from "./heading/Heading.js";
-export type { IconProps } from "./icon/Icon.js";
+export type { IconProps, IconSize } from "./icon/Icon.js";
 export { Icon } from "./icon/Icon.js";
 export type { IconName } from "./icon/icons.js";
 export type { IconButtonProps } from "./icon-button/IconButton.js";

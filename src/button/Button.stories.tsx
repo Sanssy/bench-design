@@ -36,12 +36,17 @@ export const Variants: Story = {
 };
 
 export const WithIcon: Story = {
-  name: "With icon",
-  args: { icon: "plus", children: "Add item" },
+  name: "With icon (18px glyph)",
+  args: { icon: "plus", iconSize: 18, children: "Add item" },
 };
 
 export const IconEnd: Story = {
-  args: { icon: "plus", iconPosition: "end", children: "Add item" },
+  args: {
+    icon: "plus",
+    iconPosition: "end",
+    iconSize: 14,
+    children: "Add item",
+  },
 };
 
 export const Pending: Story = {

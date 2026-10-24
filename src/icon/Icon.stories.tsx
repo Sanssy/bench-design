@@ -23,7 +23,7 @@ export const Gallery: Story = {
 export const Sizes: Story = {
   render: () => (
     <div>
-      {([16, 20, 24] as const).map((size) => (
+      {([14, 16, 18, 20, 24] as const).map((size) => (
         <p key={size}>
           <Icon name="search" size={size} label="Search" /> {size} px
         </p>

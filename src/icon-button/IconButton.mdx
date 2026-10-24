@@ -33,6 +33,13 @@ can restore focus. General HTML attribute passthrough is not supported.
 
 Use the theme selector to view light and dark examples.
 
+Set `iconSize` to 14, 16, 18, 20 or 24px to adjust the glyph; the default is
+20px and the 48 × 48px action target remains unchanged.
+
+```tsx
+<IconButton icon="search" label="Search documents" iconSize={18} />
+```
+
 ## Keyboard and ARIA
 
 Tab reaches enabled actions with visible focus. Enter and Space activate once.

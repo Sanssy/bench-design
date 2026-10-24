@@ -1,6 +1,6 @@
 import type { ReactNode, Ref } from "react";
 import { Button as AriaButton } from "react-aria-components";
-
+import type { IconSize } from "../icon/Icon.js";
 import { Icon } from "../icon/Icon.js";
 import type { IconName } from "../icon/icons.js";
 
@@ -11,6 +11,8 @@ export interface ButtonProps {
   icon?: IconName;
   /** Icon placement relative to the label. Defaults to start. */
   iconPosition?: "start" | "end";
+  /** Decorative glyph size in pixels. Defaults to 20. */
+  iconSize?: IconSize;
   /** Blocks activation while retaining focus and the visible label. */
   isPending?: boolean;
   onPress?: () => void;
@@ -32,6 +34,7 @@ export function Button({
   children,
   icon,
   iconPosition = "start",
+  iconSize = 20,
   isPending = false,
   onPress,
   isDisabled = false,
@@ -58,11 +61,11 @@ export function Button({
         : { "aria-labelledby": ariaLabelledby })}
     >
       {icon !== undefined && iconPosition === "start" ? (
-        <Icon name={icon} size={20} />
+        <Icon name={icon} size={iconSize} />
       ) : null}
       {children}
       {icon !== undefined && iconPosition === "end" ? (
-        <Icon name={icon} size={20} />
+        <Icon name={icon} size={iconSize} />
       ) : null}
     </AriaButton>
   );

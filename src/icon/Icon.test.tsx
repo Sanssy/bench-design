@@ -1,7 +1,25 @@
 import { render, screen } from "@testing-library/react";
 import { expect, test } from "vitest";
-import { Icon } from "./Icon";
+import type { IconSize as PublicIconSize } from "../index";
+import { Icon, type IconSize } from "./Icon";
 import { type IconName, icons } from "./icons";
+
+const allowedSizes: IconSize[] = [14, 16, 18, 20, 24];
+const publicSizes: PublicIconSize[] = [14, 16, 18, 20, 24];
+// @ts-expect-error 15 is not a supported glyph size
+const unsupportedSize: IconSize = 15;
+// @ts-expect-error arbitrary strings are not supported glyph sizes
+const stringSize: IconSize = "18";
+const wideNumber: number = 18;
+// @ts-expect-error wide numbers are not supported glyph sizes
+const unsupportedNumber: IconSize = wideNumber;
+void [
+  allowedSizes,
+  publicSizes,
+  unsupportedSize,
+  stringSize,
+  unsupportedNumber,
+];
 
 test("bookmark renders the official Keyline sharp outline", () => {
   expect(Object.keys(icons)).toContain("bookmark");
@@ -35,7 +53,7 @@ test("label exposes an image with an accessible name", () => {
     "aria-hidden",
   );
 });
-for (const size of [16, 20, 24] as const) {
+for (const size of [14, 16, 18, 20, 24] as const) {
   test(`explicit size ${size}`, () => {
     render(<Icon name="check" size={size} label="Done" />);
     expect(screen.getByRole("img")).toHaveAttribute("width", String(size));

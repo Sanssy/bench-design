@@ -21,6 +21,20 @@ test("Icon inherits parent color in both themes", {
       expect(actual.child).toBe(actual.parent);
       colors.push(actual.stroke);
     }
+    await page.goto(
+      `/iframe.html?id=media-icon--sizes&viewMode=story&globals=a11y.manual:!true;theme:${theme}`,
+    );
+    const sizeIcons = page.locator("#storybook-root svg");
+    await expect(sizeIcons).toHaveCount(5);
+    const sizes = await sizeIcons.evaluateAll((elements) =>
+      elements.map((element) => [
+        element.getAttribute("width"),
+        element.getAttribute("height"),
+      ]),
+    );
+    expect(sizes).toEqual(
+      [14, 16, 18, 20, 24].map((size) => [String(size), String(size)]),
+    );
   }
   // First light icon against first dark icon.
   expect(colors[0]).not.toBe(colors[colors.length / 2]);

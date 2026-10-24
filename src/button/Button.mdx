@@ -43,7 +43,9 @@ is not supported.
 <Canvas of={ButtonStories.Pending} />
 
 Use `icon` for a decorative 20px icon before the visible label, separated by 8px.
-Set `iconPosition="end"` to place the icon after the label.
+Set `iconPosition="end"` to place the icon after the label. `iconSize` opts into
+14, 16, 18, 20 or 24px glyphs while the button target and padding stay unchanged;
+its default is 20px.
 Use `IconButton` for an action without visible text.
 
 Control `isPending` while an action is running. The label and width remain
@@ -64,6 +66,7 @@ The DOM ref lets the application restore focus without importing React Aria:
 const ref = useRef<HTMLButtonElement>(null);
 <Button ref={ref}>Save</Button>
 <Button onPress={() => ref.current?.focus()}>Restore focus</Button>
+<Button icon="plus" iconSize={18}>Add item</Button>
 ```
 
 ## Keyboard and ARIA

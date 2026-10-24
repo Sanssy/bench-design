@@ -138,6 +138,55 @@ async function checkDefaultPresentation(page: Page, theme: string) {
   expect(
     await page.evaluate(() => document.documentElement.scrollWidth),
   ).toBeLessThanOrEqual(320);
+
+  await page.goto(storyUrl("pills-states", theme));
+  await page.evaluate(() => document.fonts.ready);
+  const invalidField = page.locator(".bd-field[data-invalid]");
+  const invalidGroup = invalidField.getByRole("radiogroup", {
+    name: "Category",
+  });
+  const housing = invalidGroup.getByRole("radio", { name: "Housing, 5" });
+  const travel = invalidGroup.getByRole("radio", { name: "Travel, 0" });
+  await expect(
+    invalidField.getByText("Choose an available category"),
+  ).toBeVisible();
+  await expect(invalidGroup).toHaveAccessibleDescription(
+    "Choose an available category",
+  );
+  await expect(housing).toHaveAttribute("aria-checked", "true");
+  await expect(housing.locator('svg[aria-hidden="true"]')).toHaveCount(2);
+  await expect(travel).toBeDisabled();
+  const stateTokens = await page.evaluate(() => {
+    const probe = document.createElement("span");
+    probe.style.cssText =
+      "border-color:var(--bd-danger);background:var(--bd-surface-subtle);color:var(--bd-text-muted)";
+    document.body.append(probe);
+    const style = getComputedStyle(probe);
+    const result = {
+      danger: style.borderTopColor,
+      disabledBackground: style.backgroundColor,
+      disabledColor: style.color,
+    };
+    probe.remove();
+    return result;
+  });
+  await expect(housing).toHaveCSS("border-top-color", stateTokens.danger);
+  await expect(travel).toHaveCSS(
+    "background-color",
+    stateTokens.disabledBackground,
+  );
+  await expect(travel).toHaveCSS("color", stateTokens.disabledColor);
+
+  const lockedGroup = page.getByRole("radiogroup", { name: "Locked category" });
+  const locked = lockedGroup.getByRole("radio", { name: "All, 12" });
+  await expect(locked).toBeDisabled();
+  await expect(locked).toHaveAttribute("aria-checked", "true");
+  await expect(locked.locator('svg[aria-hidden="true"]')).toHaveCount(2);
+  await expect(locked).toHaveCSS(
+    "background-color",
+    stateTokens.disabledBackground,
+  );
+  await expect(locked).toHaveCSS("color", stateTokens.disabledColor);
 }
 
 async function checkTrackPresentation(page: Page, theme: string) {
@@ -296,6 +345,7 @@ for (const theme of ["light", "dark"]) {
       "wrapped",
       "facets-with-counts",
       "pills",
+      "pills-states",
     ]) {
       await page.goto(storyUrl(story, theme));
       await expect(page.locator(".bd-field").first()).toBeVisible();

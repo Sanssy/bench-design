@@ -3377,6 +3377,10 @@
         {
           "name": "Pills",
           "href": "./?path=/story/form-segmentedcontrol--pills"
+        },
+        {
+          "name": "PillsStates",
+          "href": "./?path=/story/form-segmentedcontrol--pills-states"
         }
       ]
     },

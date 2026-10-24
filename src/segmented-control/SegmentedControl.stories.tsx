@@ -126,3 +126,38 @@ export const Pills: Story = {
   },
   parameters: { layout: "padded" },
 };
+
+export const PillsStates: Story = {
+  render: () => (
+    <Stack gap={24}>
+      <SegmentedControl
+        label="Category"
+        variant="pills"
+        isInvalid
+        errorMessage="Choose an available category"
+        defaultValue="housing"
+        options={[
+          { id: "housing", label: "Housing", icon: "search", count: 5 },
+          {
+            id: "travel",
+            label: "Travel",
+            icon: "menu",
+            count: 0,
+            isDisabled: true,
+          },
+        ]}
+      />
+      <SegmentedControl
+        label="Locked category"
+        variant="pills"
+        isDisabled
+        defaultValue="all"
+        options={[
+          { id: "all", label: "All", icon: "search", count: 12 },
+          { id: "recent", label: "Recent", icon: "menu", count: 3 },
+        ]}
+      />
+    </Stack>
+  ),
+  parameters: { layout: "padded" },
+};

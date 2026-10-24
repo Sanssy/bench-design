@@ -756,6 +756,14 @@
   color: var(--bd-on-accent);
   font-weight: var(--bd-weight-bold);
 }
+.bd-field[data-invalid] .bd-segmented[data-variant="pills"] .bd-segment {
+  border-color: var(--bd-danger);
+}
+.bd-segmented[data-variant="pills"] .bd-segment[data-disabled] {
+  background: var(--bd-surface-subtle);
+  color: var(--bd-text-muted);
+  cursor: default;
+}
 
 .bd-composer[data-variant="card"] {
   padding: var(--bd-space-12);

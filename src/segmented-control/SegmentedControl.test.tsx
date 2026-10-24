@@ -180,15 +180,15 @@ test("pills mark only the selected radio without changing its name or form value
       name="answer"
       variant="pills"
       options={[
-        { id: "comparison", label: "A comparison" },
-        { id: "summary", label: "A summary" },
+        { id: "comparison", label: "A comparison", icon: "search", count: 5 },
+        { id: "summary", label: "A summary", icon: "menu", count: 0 },
       ]}
     />,
   );
-  const comparison = screen.getByRole("radio", { name: "A comparison" });
-  const summary = screen.getByRole("radio", { name: "A summary" });
+  const comparison = screen.getByRole("radio", { name: "A comparison, 5" });
+  const summary = screen.getByRole("radio", { name: "A summary, 0" });
   const check = (radio: HTMLElement) =>
-    radio.querySelector('svg[aria-hidden="true"]');
+    radio.querySelector('svg path[d^="M4.7311"]');
 
   expect(comparison).toHaveAttribute("aria-checked", "true");
   expect(check(comparison)).toBeInTheDocument();
@@ -198,11 +198,37 @@ test("pills mark only the selected radio without changing its name or form value
   );
 
   await user.click(summary);
-  expect(summary).toHaveAccessibleName("A summary");
+  expect(summary).toHaveAccessibleName("A summary, 0");
   expect(summary).toHaveAttribute("aria-checked", "true");
   expect(check(summary)).toBeInTheDocument();
+  expect(summary.querySelectorAll('svg[aria-hidden="true"]')).toHaveLength(2);
   expect(check(comparison)).toBeNull();
   expect(document.querySelector('input[name="answer"]')).toHaveValue("summary");
+});
+
+test("pills preserve invalid description and disabled radio semantics", () => {
+  render(
+    <SegmentedControl
+      label="Category"
+      variant="pills"
+      isInvalid
+      errorMessage="Choose an available category"
+      options={[
+        { id: "housing", label: "Housing", icon: "search", count: 5 },
+        {
+          id: "travel",
+          label: "Travel",
+          icon: "menu",
+          count: 0,
+          isDisabled: true,
+        },
+      ]}
+    />,
+  );
+  const group = screen.getByRole("radiogroup", { name: "Category" });
+  expect(group).toHaveAccessibleDescription("Choose an available category");
+  expect(screen.getByRole("radio", { name: "Travel, 0" })).toBeDisabled();
+  expect(screen.getByRole("radio", { name: "Housing, 5" })).toBeEnabled();
 });
 
 test("SegmentedControl exposes its selected visual variant", () => {

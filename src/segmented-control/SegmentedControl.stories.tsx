@@ -108,3 +108,56 @@ export const TrackWrapped: Story = {
   },
   parameters: { layout: "padded" },
 };
+
+export const Pills: Story = {
+  args: {
+    label: "Expected answer",
+    description: "Choose the kind of answer you want",
+    variant: "pills",
+    defaultValue: "comparison",
+    options: [
+      { id: "comparison", label: "A comparison" },
+      { id: "summary", label: "A summary" },
+      {
+        id: "sources",
+        label: "Sources to follow across international publications",
+      },
+    ],
+  },
+  parameters: { layout: "padded" },
+};
+
+export const PillsStates: Story = {
+  render: () => (
+    <Stack gap={24}>
+      <SegmentedControl
+        label="Category"
+        variant="pills"
+        isInvalid
+        errorMessage="Choose an available category"
+        defaultValue="housing"
+        options={[
+          { id: "housing", label: "Housing", icon: "search", count: 5 },
+          {
+            id: "travel",
+            label: "Travel",
+            icon: "menu",
+            count: 0,
+            isDisabled: true,
+          },
+        ]}
+      />
+      <SegmentedControl
+        label="Locked category"
+        variant="pills"
+        isDisabled
+        defaultValue="all"
+        options={[
+          { id: "all", label: "All", icon: "search", count: 12 },
+          { id: "recent", label: "Recent", icon: "menu", count: 3 },
+        ]}
+      />
+    </Stack>
+  ),
+  parameters: { layout: "padded" },
+};

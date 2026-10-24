@@ -24,8 +24,8 @@ export interface SegmentedControlProps extends FieldProps {
   }[];
   /** Wrap up to six single-choice options; use FilterBar for larger sets. @default "inline" */
   layout?: "inline" | "wrap";
-  /** Visual treatment for the group. @default "default" */
-  variant?: "default" | "track";
+  /** Visual treatment for the group. Pills always use wrapped layout. @default "default" */
+  variant?: "default" | "track" | "pills";
   /** Controlled selection ID. */
   value?: string;
   /** Initial uncontrolled selection ID; defaults to the first enabled option. */
@@ -52,7 +52,8 @@ export function SegmentedControl({
   variant = "default",
 }: SegmentedControlProps) {
   const id = useId();
-  if (layout === "wrap" && options.length > 6) {
+  const effectiveLayout = variant === "pills" ? "wrap" : layout;
+  if (effectiveLayout === "wrap" && options.length > 6) {
     throw new RangeError(
       "SegmentedControl wrap supports at most six options; use FilterBar for larger sets.",
     );
@@ -74,7 +75,7 @@ export function SegmentedControl({
       <ChoiceFieldLabel label={label} id={id} hideLabel={hideLabel} />
       <ToggleButtonGroup
         className="bd-segmented"
-        data-layout={layout}
+        data-layout={effectiveLayout}
         data-variant={variant}
         aria-labelledby={id}
         {...(describedBy ? { "aria-describedby": describedBy } : {})}
@@ -99,34 +100,49 @@ export function SegmentedControl({
                 value={Array.from(state.selectedKeys)[0] ?? ""}
               />
             )}
-            {options.map((option) => (
-              <ToggleButton
-                key={option.id}
-                id={option.id}
-                className="bd-segment"
-                // The visible count is part of the name, e.g. "Housing, 5".
-                aria-label={
-                  option.count === undefined
-                    ? option.label
-                    : `${option.label}, ${option.count}`
-                }
-                isDisabled={option.isDisabled ?? false}
-              >
-                {option.icon ? (
-                  <Icon name={option.icon} size={16} />
-                ) : (
-                  option.label
-                )}
-                {option.count !== undefined && (
-                  <span
-                    className="bd-segment-count bd-field-mono"
-                    aria-hidden="true"
-                  >
-                    {option.count}
-                  </span>
-                )}
-              </ToggleButton>
-            ))}
+            {options.map((option) => {
+              const isSelected = state.selectedKeys.has(option.id);
+              const content = option.icon ? (
+                <Icon name={option.icon} size={16} />
+              ) : (
+                option.label
+              );
+              return (
+                <ToggleButton
+                  key={option.id}
+                  id={option.id}
+                  className="bd-segment"
+                  // The visible count is part of the name, e.g. "Housing, 5".
+                  aria-label={
+                    option.count === undefined
+                      ? option.label
+                      : `${option.label}, ${option.count}`
+                  }
+                  isDisabled={option.isDisabled ?? false}
+                >
+                  {variant === "pills" ? (
+                    <span className="bd-segment-label">
+                      {isSelected && (
+                        <span className="bd-segment-check" aria-hidden="true">
+                          {"✓\u00a0"}
+                        </span>
+                      )}
+                      {content}
+                    </span>
+                  ) : (
+                    content
+                  )}
+                  {option.count !== undefined && (
+                    <span
+                      className="bd-segment-count bd-field-mono"
+                      aria-hidden="true"
+                    >
+                      {option.count}
+                    </span>
+                  )}
+                </ToggleButton>
+              );
+            })}
           </>
         )}
       </ToggleButtonGroup>

@@ -744,8 +744,9 @@
   min-block-size: calc(var(--bd-space-32) + var(--bd-space-12));
   min-inline-size: calc(var(--bd-space-32) + var(--bd-space-12));
   max-inline-size: 100%;
-  padding: var(--bd-space-8) var(--bd-space-16);
-  border: var(--bd-hair) solid var(--bd-border-strong);
+  padding: 0 var(--bd-space-16);
+  border: 0;
+  box-shadow: inset 0 0 0 var(--bd-stroke) var(--bd-border-strong);
   border-radius: var(--bd-radius-pill, var(--bd-radius));
   background: var(--bd-surface-raised);
   font-weight: var(--bd-weight-semibold);
@@ -755,9 +756,10 @@
   background: var(--bd-accent);
   color: var(--bd-on-accent);
   font-weight: var(--bd-weight-bold);
+  box-shadow: none;
 }
 .bd-field[data-invalid] .bd-segmented[data-variant="pills"] .bd-segment {
-  border-color: var(--bd-danger);
+  box-shadow: inset 0 0 0 var(--bd-stroke) var(--bd-danger);
 }
 .bd-segmented[data-variant="pills"] .bd-segment[data-disabled] {
   background: var(--bd-surface-subtle);

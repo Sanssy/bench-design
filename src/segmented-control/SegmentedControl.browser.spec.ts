@@ -88,53 +88,72 @@ async function checkDefaultPresentation(page: Page, theme: string) {
   await page.evaluate(() => document.fonts.ready);
   const pills = page.getByRole("radiogroup", { name: "Expected answer" });
   await expect(pills).toHaveAttribute("data-layout", "wrap");
-  const roles = await page.evaluate(() => {
-    const probe = document.createElement("span");
-    probe.style.cssText =
-      "gap:var(--bd-space-8);padding-inline:var(--bd-space-16);font-size:var(--bd-size-meta);border-radius:var(--bd-radius-pill, var(--bd-radius))";
-    document.body.append(probe);
-    const style = getComputedStyle(probe);
-    const result = {
-      gap: style.columnGap,
-      padding: style.paddingInlineStart,
-      fontSize: style.fontSize,
-      radius: style.borderTopLeftRadius,
-    };
-    probe.remove();
-    return result;
-  });
-  await expect(pills).toHaveCSS("column-gap", roles.gap);
+  const roles = { padding: "16px", fontSize: "12.8px", radius: "0px" };
+  await expect(pills).toHaveCSS("column-gap", "8px");
   await expect(pills).toHaveCSS("background-color", "rgba(0, 0, 0, 0)");
   await expect(pills).toHaveCSS("border-top-width", "0px");
+  const selected = pills.getByRole("radio", { name: "A comparison" });
+  const unselected = pills.getByRole("radio", { name: "A summary" });
+  await expect(selected).toHaveCSS("border-top-width", "0px");
+  await expect(unselected).toHaveCSS("border-top-width", "0px");
+  await expect(selected).toHaveCSS("box-shadow", "none");
+  expect(
+    await unselected.evaluate((element) => getComputedStyle(element).boxShadow),
+  ).toContain("inset");
   const boxes = await pills.getByRole("radio").evaluateAll((elements) =>
     elements.map((element) => {
       const style = getComputedStyle(element);
       const box = element.getBoundingClientRect();
-      return {
-        x: box.x,
-        right: box.right,
-        y: box.y,
-        width: box.width,
-        height: box.height,
-        flexGrow: style.flexGrow,
-        padding: style.paddingInlineStart,
-        fontSize: style.fontSize,
-        radius: style.borderTopLeftRadius,
-      };
+      const label = element.querySelector(".bd-segment-label");
+      if (!label) throw new Error("pill label is missing");
+      const range = document.createRange();
+      range.selectNodeContents(label);
+      return [
+        box.x,
+        box.right,
+        box.y,
+        box.width,
+        box.height,
+        style.flexGrow,
+        style.paddingInlineStart,
+        style.fontSize,
+        style.borderTopLeftRadius,
+        range.getBoundingClientRect().width,
+      ] as const;
     }),
   );
-  expect(boxes.every((box) => box.width >= 44 && box.height >= 44)).toBe(true);
-  expect(boxes.every((box) => box.flexGrow === "0")).toBe(true);
-  expect(boxes.every((box) => box.padding === roles.padding)).toBe(true);
-  expect(boxes.every((box) => box.fontSize === roles.fontSize)).toBe(true);
-  expect(boxes.every((box) => box.radius === roles.radius)).toBe(true);
   expect(
-    boxes.some((box, index) => index > 0 && box.y > (boxes[index - 1]?.y ?? 0)),
+    boxes.every(
+      ([x, right, , width, height, grow, padding, fontSize, radius]) =>
+        width >= 44 &&
+        height >= 44 &&
+        grow === "0" &&
+        padding === roles.padding &&
+        Math.abs(
+          Number.parseFloat(fontSize) - Number.parseFloat(roles.fontSize),
+        ) < 0.01 &&
+        radius === roles.radius &&
+        x >= 0 &&
+        right <= 320,
+    ),
   ).toBe(true);
-  expect(boxes.every((box) => box.x >= 0 && box.right <= 320)).toBe(true);
-  await expect(
-    pills.getByRole("radio", { name: "A comparison" }).locator("svg"),
-  ).toHaveAttribute("aria-hidden", "true");
+  expect(
+    boxes
+      .slice(0, 2)
+      .every(
+        (box) => Math.abs(box[3] - box[9] - Number.parseFloat(box[6]) * 2) <= 1,
+      ),
+  ).toBe(true);
+  expect(
+    boxes.some(
+      ([, , y], index) => index > 0 && y > (boxes[index - 1]?.[2] ?? 0),
+    ),
+  ).toBe(true);
+  const check = selected.locator(".bd-segment-check");
+  await expect(check).toHaveAttribute("aria-hidden", "true");
+  expect(await check.locator("..").evaluate((label) => label.textContent)).toBe(
+    "✓ A comparison",
+  );
   expect(
     await page.evaluate(() => document.documentElement.scrollWidth),
   ).toBeLessThanOrEqual(320);
@@ -154,41 +173,47 @@ async function checkDefaultPresentation(page: Page, theme: string) {
     "Choose an available category",
   );
   await expect(housing).toHaveAttribute("aria-checked", "true");
-  await expect(housing.locator('svg[aria-hidden="true"]')).toHaveCount(2);
+  await expect(housing.locator('svg[aria-hidden="true"]')).toHaveCount(1);
   await expect(travel).toBeDisabled();
-  const stateTokens = await page.evaluate(() => {
-    const probe = document.createElement("span");
-    probe.style.cssText =
-      "border-color:var(--bd-danger);background:var(--bd-surface-subtle);color:var(--bd-text-muted)";
-    document.body.append(probe);
-    const style = getComputedStyle(probe);
-    const result = {
-      danger: style.borderTopColor,
-      disabledBackground: style.backgroundColor,
-      disabledColor: style.color,
-    };
-    probe.remove();
-    return result;
-  });
-  await expect(housing).toHaveCSS("border-top-color", stateTokens.danger);
-  await expect(travel).toHaveCSS(
-    "background-color",
-    stateTokens.disabledBackground,
+  const stateTokens = await Promise.all([
+    travel.evaluate((button) => {
+      const probe = document.createElement("span");
+      probe.style.cssText =
+        "display:inline-block;background-color:var(--bd-surface-subtle);color:var(--bd-text-muted)";
+      button.append(probe);
+      const style = getComputedStyle(probe);
+      const result = [style.backgroundColor, style.color] as const;
+      probe.remove();
+      return result;
+    }),
+    housing.evaluate((button) => {
+      const probe = document.createElement("span");
+      probe.style.cssText =
+        "display:inline-block;border-color:var(--bd-danger)";
+      button.append(probe);
+      const result = getComputedStyle(probe).borderTopColor;
+      probe.remove();
+      return result;
+    }),
+  ]);
+  await expect(housing).toHaveCSS("border-top-width", "0px");
+  const invalidShadow = await housing.evaluate(
+    (element) => getComputedStyle(element).boxShadow,
   );
-  await expect(travel).toHaveCSS("color", stateTokens.disabledColor);
+  expect(invalidShadow).toContain("inset");
+  expect(invalidShadow).toContain(stateTokens[1]);
+  await expect(travel).toHaveCSS("background-color", stateTokens[0][0]);
+  await expect(travel).toHaveCSS("color", stateTokens[0][1]);
 
   const lockedGroup = page.getByRole("radiogroup", { name: "Locked category" });
   const locked = lockedGroup.getByRole("radio", { name: "All, 12" });
   const lockedCount = locked.locator(".bd-segment-count");
   await expect(locked).toBeDisabled();
   await expect(locked).toHaveAttribute("aria-checked", "true");
-  await expect(locked.locator('svg[aria-hidden="true"]')).toHaveCount(2);
-  await expect(locked).toHaveCSS(
-    "background-color",
-    stateTokens.disabledBackground,
-  );
-  await expect(locked).toHaveCSS("color", stateTokens.disabledColor);
-  await expect(lockedCount).toHaveCSS("color", stateTokens.disabledColor);
+  await expect(locked.locator('svg[aria-hidden="true"]')).toHaveCount(1);
+  await expect(locked).toHaveCSS("background-color", stateTokens[0][0]);
+  await expect(locked).toHaveCSS("color", stateTokens[0][1]);
+  await expect(lockedCount).toHaveCSS("color", stateTokens[0][1]);
 }
 
 async function checkTrackPresentation(page: Page, theme: string) {
@@ -385,7 +410,10 @@ test("SegmentedControl keyboard editing", {
   await expect(summary).toBeFocused();
   await page.keyboard.press("Space");
   await expect(summary).toHaveAttribute("aria-checked", "true");
-  await expect(summary.locator("svg")).toHaveAttribute("aria-hidden", "true");
+  await expect(summary.locator(".bd-segment-check")).toHaveAttribute(
+    "aria-hidden",
+    "true",
+  );
 });
 
 test("wrapped facets fit 320 px and traverse successive rows", {

@@ -102,6 +102,11 @@ export function SegmentedControl({
             )}
             {options.map((option) => {
               const isSelected = state.selectedKeys.has(option.id);
+              const content = option.icon ? (
+                <Icon name={option.icon} size={16} />
+              ) : (
+                option.label
+              );
               return (
                 <ToggleButton
                   key={option.id}
@@ -115,13 +120,17 @@ export function SegmentedControl({
                   }
                   isDisabled={option.isDisabled ?? false}
                 >
-                  {variant === "pills" && isSelected && (
-                    <Icon name="check" size={16} />
-                  )}
-                  {option.icon ? (
-                    <Icon name={option.icon} size={16} />
+                  {variant === "pills" ? (
+                    <span className="bd-segment-label">
+                      {isSelected && (
+                        <span className="bd-segment-check" aria-hidden="true">
+                          {"✓\u00a0"}
+                        </span>
+                      )}
+                      {content}
+                    </span>
                   ) : (
-                    option.label
+                    content
                   )}
                   {option.count !== undefined && (
                     <span

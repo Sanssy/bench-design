@@ -149,6 +149,62 @@ test("a zero count is visible and included in the name", () => {
   );
 });
 
+test("pills always wrap and keep the six-option limit", () => {
+  const { rerender } = render(
+    <SegmentedControl label="Category" options={options} variant="pills" />,
+  );
+  const group = screen.getByRole("radiogroup", { name: "Category" });
+  expect(group).toHaveAttribute("data-variant", "pills");
+  expect(group).toHaveAttribute("data-layout", "wrap");
+
+  expect(() =>
+    rerender(
+      <SegmentedControl
+        label="Category"
+        layout="inline"
+        variant="pills"
+        options={Array.from({ length: 7 }, (_, i) => ({
+          id: String(i),
+          label: String(i),
+        }))}
+      />,
+    ),
+  ).toThrow(/six/);
+});
+
+test("pills mark only the selected radio without changing its name or form value", async () => {
+  const user = userEvent.setup();
+  render(
+    <SegmentedControl
+      label="Expected answer"
+      name="answer"
+      variant="pills"
+      options={[
+        { id: "comparison", label: "A comparison" },
+        { id: "summary", label: "A summary" },
+      ]}
+    />,
+  );
+  const comparison = screen.getByRole("radio", { name: "A comparison" });
+  const summary = screen.getByRole("radio", { name: "A summary" });
+  const check = (radio: HTMLElement) =>
+    radio.querySelector('svg[aria-hidden="true"]');
+
+  expect(comparison).toHaveAttribute("aria-checked", "true");
+  expect(check(comparison)).toBeInTheDocument();
+  expect(check(summary)).toBeNull();
+  expect(document.querySelector('input[name="answer"]')).toHaveValue(
+    "comparison",
+  );
+
+  await user.click(summary);
+  expect(summary).toHaveAccessibleName("A summary");
+  expect(summary).toHaveAttribute("aria-checked", "true");
+  expect(check(summary)).toBeInTheDocument();
+  expect(check(comparison)).toBeNull();
+  expect(document.querySelector('input[name="answer"]')).toHaveValue("summary");
+});
+
 test("SegmentedControl exposes its selected visual variant", () => {
   const props = {
     label: "Category",
@@ -159,11 +215,17 @@ test("SegmentedControl exposes its selected visual variant", () => {
     "data-variant",
     "default",
   );
+  expect(
+    screen.getByRole("radio", { name: "All" }).querySelector("svg"),
+  ).toBeNull();
   rerender(<SegmentedControl {...props} variant="track" />);
   expect(screen.getByRole("radiogroup", { name: "Category" })).toHaveAttribute(
     "data-variant",
     "track",
   );
+  expect(
+    screen.getByRole("radio", { name: "All" }).querySelector("svg"),
+  ).toBeNull();
 });
 
 for (const layout of ["inline", "wrap"] as const) {

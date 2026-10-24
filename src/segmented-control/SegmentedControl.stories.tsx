@@ -108,3 +108,21 @@ export const TrackWrapped: Story = {
   },
   parameters: { layout: "padded" },
 };
+
+export const Pills: Story = {
+  args: {
+    label: "Expected answer",
+    description: "Choose the kind of answer you want",
+    variant: "pills",
+    defaultValue: "comparison",
+    options: [
+      { id: "comparison", label: "A comparison" },
+      { id: "summary", label: "A summary" },
+      {
+        id: "sources",
+        label: "Sources to follow across international publications",
+      },
+    ],
+  },
+  parameters: { layout: "padded" },
+};

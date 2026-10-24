@@ -82,6 +82,62 @@ async function checkDefaultPresentation(page: Page, theme: string) {
     await page.getByRole("radio", { name: /^All,/ }).click();
     await expect(count).toHaveCSS("color", roles.muted);
   }
+
+  await page.setViewportSize({ width: 320, height: 800 });
+  await page.goto(storyUrl("pills", theme));
+  await page.evaluate(() => document.fonts.ready);
+  const pills = page.getByRole("radiogroup", { name: "Expected answer" });
+  await expect(pills).toHaveAttribute("data-layout", "wrap");
+  const roles = await page.evaluate(() => {
+    const probe = document.createElement("span");
+    probe.style.cssText =
+      "gap:var(--bd-space-8);padding-inline:var(--bd-space-16);font-size:var(--bd-size-meta);border-radius:var(--bd-radius-pill, var(--bd-radius))";
+    document.body.append(probe);
+    const style = getComputedStyle(probe);
+    const result = {
+      gap: style.columnGap,
+      padding: style.paddingInlineStart,
+      fontSize: style.fontSize,
+      radius: style.borderTopLeftRadius,
+    };
+    probe.remove();
+    return result;
+  });
+  await expect(pills).toHaveCSS("column-gap", roles.gap);
+  await expect(pills).toHaveCSS("background-color", "rgba(0, 0, 0, 0)");
+  await expect(pills).toHaveCSS("border-top-width", "0px");
+  const boxes = await pills.getByRole("radio").evaluateAll((elements) =>
+    elements.map((element) => {
+      const style = getComputedStyle(element);
+      const box = element.getBoundingClientRect();
+      return {
+        x: box.x,
+        right: box.right,
+        y: box.y,
+        width: box.width,
+        height: box.height,
+        flexGrow: style.flexGrow,
+        padding: style.paddingInlineStart,
+        fontSize: style.fontSize,
+        radius: style.borderTopLeftRadius,
+      };
+    }),
+  );
+  expect(boxes.every((box) => box.width >= 44 && box.height >= 44)).toBe(true);
+  expect(boxes.every((box) => box.flexGrow === "0")).toBe(true);
+  expect(boxes.every((box) => box.padding === roles.padding)).toBe(true);
+  expect(boxes.every((box) => box.fontSize === roles.fontSize)).toBe(true);
+  expect(boxes.every((box) => box.radius === roles.radius)).toBe(true);
+  expect(
+    boxes.some((box, index) => index > 0 && box.y > (boxes[index - 1]?.y ?? 0)),
+  ).toBe(true);
+  expect(boxes.every((box) => box.x >= 0 && box.right <= 320)).toBe(true);
+  await expect(
+    pills.getByRole("radio", { name: "A comparison" }).locator("svg"),
+  ).toHaveAttribute("aria-hidden", "true");
+  expect(
+    await page.evaluate(() => document.documentElement.scrollWidth),
+  ).toBeLessThanOrEqual(320);
 }
 
 async function checkTrackPresentation(page: Page, theme: string) {
@@ -239,6 +295,7 @@ for (const theme of ["light", "dark"]) {
       "review",
       "wrapped",
       "facets-with-counts",
+      "pills",
     ]) {
       await page.goto(storyUrl(story, theme));
       await expect(page.locator(".bd-field").first()).toBeVisible();
@@ -267,6 +324,16 @@ test("SegmentedControl keyboard editing", {
   await expect(recent).toHaveAttribute("aria-checked", "true");
   await page.keyboard.press("Space");
   await expect(recent).toHaveAttribute("aria-checked", "true");
+
+  await page.goto(storyUrl("pills"));
+  const comparison = page.getByRole("radio", { name: "A comparison" });
+  await comparison.focus();
+  await page.keyboard.press("ArrowRight");
+  const summary = page.getByRole("radio", { name: "A summary" });
+  await expect(summary).toBeFocused();
+  await page.keyboard.press("Space");
+  await expect(summary).toHaveAttribute("aria-checked", "true");
+  await expect(summary.locator("svg")).toHaveAttribute("aria-hidden", "true");
 });
 
 test("wrapped facets fit 320 px and traverse successive rows", {

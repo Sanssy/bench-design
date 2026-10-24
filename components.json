@@ -3318,9 +3318,9 @@
         },
         {
           "name": "variant",
-          "type": "\"default\" | \"track\"",
+          "type": "\"default\" | \"track\" | \"pills\"",
           "required": false,
-          "description": "Visual treatment for the group. @default \"default\"",
+          "description": "Visual treatment for the group. Pills always use wrapped layout. @default \"default\"",
           "default": "\"default\""
         },
         {
@@ -3373,6 +3373,10 @@
         {
           "name": "TrackWrapped",
           "href": "./?path=/story/form-segmentedcontrol--track-wrapped"
+        },
+        {
+          "name": "Pills",
+          "href": "./?path=/story/form-segmentedcontrol--pills"
         }
       ]
     },

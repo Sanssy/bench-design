@@ -30,6 +30,14 @@ surface/control roles, with `--bd-radius` as the consumer-scoped fallback.
 Track options keep a 44 px minimum target in both axes. In wrap layout, complete
 options move to another row and long words can break within their option.
 
+Use `variant="pills"` for separate, content-sized choices with a selected check.
+Pills always use the wrapped layout, even when `layout="inline"` is supplied,
+and accept at most six options. Their gaps, horizontal padding, type size and
+radius use the existing public spacing, metadata and pill-radius roles. The
+`--bd-radius-pill` role defaults to zero; a consumer theme may provide its shape.
+Each option keeps a 44 px minimum target, and the check is decorative so it does
+not change the radio's accessible name.
+
 ## TypeScript API
 
 <ManifestProps component="SegmentedControl" />
@@ -42,6 +50,7 @@ options move to another row and long words can break within their option.
 <Canvas of={Stories.FacetsWithCounts} />
 <Canvas of={Stories.Track} />
 <Canvas of={Stories.TrackWrapped} />
+<Canvas of={Stories.Pills} />
 
 ## Keyboard and ARIA
 

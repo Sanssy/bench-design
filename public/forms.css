@@ -729,6 +729,34 @@
   color: var(--bd-on-accent);
 }
 
+.bd-segmented[data-variant="pills"] {
+  align-self: flex-start;
+  flex-wrap: wrap;
+  gap: var(--bd-space-8);
+  max-inline-size: 100%;
+  min-inline-size: 0;
+  border: none;
+  background: transparent;
+}
+.bd-segmented[data-variant="pills"] .bd-segment {
+  flex: none;
+  block-size: auto;
+  min-block-size: calc(var(--bd-space-32) + var(--bd-space-12));
+  min-inline-size: calc(var(--bd-space-32) + var(--bd-space-12));
+  max-inline-size: 100%;
+  padding: var(--bd-space-8) var(--bd-space-16);
+  border: var(--bd-hair) solid var(--bd-border-strong);
+  border-radius: var(--bd-radius-pill, var(--bd-radius));
+  background: var(--bd-surface-raised);
+  font-weight: var(--bd-weight-semibold);
+  overflow-wrap: anywhere;
+}
+.bd-segmented[data-variant="pills"] .bd-segment[data-selected] {
+  background: var(--bd-accent);
+  color: var(--bd-on-accent);
+  font-weight: var(--bd-weight-bold);
+}
+
 .bd-composer[data-variant="card"] {
   padding: var(--bd-space-12);
   border: var(--bd-hair) solid var(--bd-border-strong);

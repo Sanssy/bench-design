@@ -21,6 +21,10 @@ for (const theme of ["light", "dark"]) {
     );
     for (const width of [390, 320]) {
       await page.setViewportSize({ width, height: 844 });
+      await expect(
+        page.getByRole("list", { name: "Suggested questions" }),
+      ).toBeVisible();
+      await expect(page.locator(".bd-action-card")).toHaveCount(0);
       const last = page.getByRole("button", {
         name: "What happens after the workshop?",
       });

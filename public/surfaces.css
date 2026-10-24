@@ -198,7 +198,8 @@
   flex-shrink: 0;
 }
 .bd-notice {
-  padding: var(--bd-space-16);
+  padding-block: var(--bd-notice-padding-block, var(--bd-space-16));
+  padding-inline: var(--bd-notice-padding-inline, var(--bd-space-16));
   border-left: var(--bd-strong) solid var(--bd-feedback-color);
   background: var(--bd-feedback-subtle);
 }

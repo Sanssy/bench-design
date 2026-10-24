@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
+import type { CSSProperties } from "react";
 import { Stack } from "../stack/Stack";
 import { Notice } from "./Notice";
 export default {
@@ -40,4 +41,27 @@ export const LocalStorage: Story = {
     title: "Saved locally",
     children: "Changes will sync when you reconnect.",
   },
+};
+
+export const CompactFeedback: Story = {
+  args: {
+    tone: "warning",
+    title: "Your files are almost ready",
+    children:
+      "Review the selected files and confirm their names before sharing them with your team.",
+  },
+  render: (args) => (
+    <div
+      style={
+        {
+          "--bd-notice-padding-block": "var(--bd-space-12)",
+          "--bd-notice-padding-inline": "var(--bd-space-16)",
+          "--bd-space-16": "14px",
+          width: "min(100%, 36rem)",
+        } as CSSProperties
+      }
+    >
+      <Notice {...args} />
+    </div>
+  ),
 };

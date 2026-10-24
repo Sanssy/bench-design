@@ -1,3 +1,4 @@
+import AxeBuilder from "@axe-core/playwright";
 import { expect, test } from "@playwright/test";
 
 for (const theme of ["light", "dark"] as const) {
@@ -93,4 +94,120 @@ test("Notice geometry follows tokens", {
   const icon = root.locator("svg");
   await expect(icon).toHaveAttribute("width", "20");
   await expect(icon).toHaveAttribute("aria-hidden", "true");
+});
+
+test("Notice block and inline padding roles fall back independently", {
+  tag: ["@component:notice", "@theme:light"],
+}, async ({ page }) => {
+  await page.goto(
+    "/iframe.html?id=feedback-notice--upload-complete&viewMode=story&globals=a11y.manual:!true;theme:light",
+  );
+  const root = page.locator(".bd-notice");
+  const padding = () =>
+    root.evaluate((element) => {
+      const style = getComputedStyle(element);
+      return [style.paddingBlockStart, style.paddingInlineStart];
+    });
+
+  await root.evaluate((element) =>
+    element.style.setProperty("--bd-space-16", "18px"),
+  );
+  expect(await padding()).toEqual(["18px", "18px"]);
+  await root.evaluate((element) =>
+    element.style.setProperty("--bd-notice-padding-block", "12px"),
+  );
+  expect(await padding()).toEqual(["12px", "18px"]);
+  await root.evaluate((element) => {
+    element.style.removeProperty("--bd-notice-padding-block");
+    element.style.setProperty("--bd-notice-padding-inline", "14px");
+  });
+  expect(await padding()).toEqual(["18px", "14px"]);
+  await root.evaluate((element) =>
+    element.style.setProperty("--bd-notice-padding-block", "12px"),
+  );
+  expect(await padding()).toEqual(["12px", "14px"]);
+});
+
+test("Notice consumer spacing stays readable on narrow and RTL layouts", {
+  tag: ["@component:notice", "@theme:light"],
+}, async ({ page }) => {
+  for (const theme of ["light", "dark"] as const) {
+    await page.goto(
+      `/iframe.html?id=feedback-notice--compact-feedback&viewMode=story&globals=a11y.manual:!true;theme:${theme}`,
+    );
+    await expect(page.locator("html")).toHaveAttribute("data-theme", theme);
+    const root = page.locator(".bd-notice");
+    await expect(root).toBeVisible();
+    const padding = await root.evaluate((element) => {
+      const style = getComputedStyle(element);
+      return [style.paddingBlockStart, style.paddingInlineStart];
+    });
+    expect(padding).toEqual(["12px", "14px"]);
+
+    for (const width of [320, 1024]) {
+      await page.setViewportSize({ width, height: 768 });
+      const fits = await page.evaluate(
+        () => document.documentElement.scrollWidth <= window.innerWidth,
+      );
+      expect(fits).toBe(true);
+    }
+    await page.setViewportSize({ width: 320, height: 768 });
+    await page.locator("html").evaluate((element) => {
+      element.setAttribute("dir", "rtl");
+    });
+    await expect(root).toHaveCSS("direction", "rtl");
+    const rtlPadding = await root.evaluate((element) => {
+      const style = getComputedStyle(element);
+      return [
+        style.paddingBlockStart,
+        style.paddingInlineStart,
+        style.paddingTop,
+        style.paddingRight,
+        style.paddingBottom,
+        style.paddingLeft,
+      ];
+    });
+    expect(rtlPadding).toEqual([
+      "12px",
+      "14px",
+      "12px",
+      "14px",
+      "12px",
+      "14px",
+    ]);
+    expect(
+      await page.evaluate(
+        () => document.documentElement.scrollWidth <= window.innerWidth,
+      ),
+    ).toBe(true);
+    await root.evaluate((element) => {
+      element.style.writingMode = "vertical-rl";
+    });
+    const verticalPadding = await root.evaluate((element) => {
+      const style = getComputedStyle(element);
+      return [
+        style.paddingBlockStart,
+        style.paddingInlineStart,
+        style.paddingTop,
+        style.paddingRight,
+        style.paddingBottom,
+        style.paddingLeft,
+      ];
+    });
+    expect(verticalPadding).toEqual([
+      "12px",
+      "14px",
+      "14px",
+      "12px",
+      "14px",
+      "12px",
+    ]);
+    await root.evaluate((element) => {
+      element.style.removeProperty("writing-mode");
+    });
+    const accessibility = await new AxeBuilder({ page })
+      .include(".bd-notice")
+      .analyze();
+    expect(accessibility.violations).toEqual([]);
+  }
 });

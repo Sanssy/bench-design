@@ -14,6 +14,15 @@ Use for short counts or format labels. Both variants are noninteractive. Neutral
 
 Use `meta` for monospaced metadata (the default outline presentation), or `tag` for interface text on a subtle category background. Existing outline and solid variants remain available. Category tones are abstract hues assigned by the consumer. `icon` is decorative; always keep a visible label. Long labels wrap within the available width.
 
+For compact groups, set the inherited CSS roles on a consumer-owned wrapper:
+`--bd-metadata-radius` defaults to `0`; `--bd-metadata-padding-vertical` and
+`--bd-metadata-padding-horizontal` each default to `--bd-space-4` and keep
+physical top/bottom and left/right axes, including in vertical writing modes;
+`--bd-metadata-gap` defaults to `--bd-space-4`; and
+`--bd-badge-min-height` defaults to `--bd-space-24`. The physical minimum width
+remains `--bd-space-24`. These values inherit through nested wrappers and are
+not reset by the Badge root. `RelatedTopics` shows an opt-in compact example.
+
 ## API
 
 <ManifestProps component="Badge" />

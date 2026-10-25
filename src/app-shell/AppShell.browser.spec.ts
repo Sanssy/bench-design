@@ -1,12 +1,13 @@
 import AxeBuilder from "@axe-core/playwright";
 import { expect, test } from "@playwright/test";
+import { pressTab } from "../../tests/browser/keyboard.js";
 
 const workspace =
   "/iframe.html?id=layout-appshell--workspace&viewMode=story&globals=a11y.manual:!true;theme:light";
 
 test("AppShell scrolls each wide workspace zone independently", {
   tag: ["@component:app-shell", "@theme:light"],
-}, async ({ page }) => {
+}, async ({ page, browserName }) => {
   for (const viewport of [
     { width: 1280, height: 800 },
     { width: 960, height: 560 },
@@ -21,7 +22,7 @@ test("AppShell scrolls each wide workspace zone independently", {
     await expect(end).toBeVisible();
     const skip = page.getByRole("link", { name: "Skip to main content" });
     await expect(skip).toHaveCSS("clip-path", "inset(50%)");
-    await page.keyboard.press("Tab");
+    await pressTab(page, browserName);
     await expect(skip).toBeFocused();
     await expect(skip).toHaveCSS("clip-path", "none");
     await expect(skip).toBeInViewport();
@@ -147,7 +148,7 @@ test("AppShell keeps mobile document order, natural scrolling and sticky selecto
 for (const theme of ["light", "dark"] as const) {
   test(`AppShell mobile Tabs keyboard, linked panels and axe ${theme}`, {
     tag: ["@component:app-shell", `@theme:${theme}`],
-  }, async ({ page }) => {
+  }, async ({ page, browserName }) => {
     await page.setViewportSize({ width: 375, height: 800 });
     await page.goto(workspace.replace("theme:light", `theme:${theme}`));
     const library = page.getByRole("tab", { name: "Library" });
@@ -155,7 +156,7 @@ for (const theme of ["light", "dark"] as const) {
     await expect(library).toBeVisible();
     const skip = page.getByRole("link", { name: "Skip to main content" });
     await expect(skip).toHaveCSS("clip-path", "inset(50%)");
-    await page.keyboard.press("Tab");
+    await pressTab(page, browserName);
     await expect(skip).toBeFocused();
     await expect(skip).toHaveCSS("clip-path", "none");
     await expect(skip).toBeInViewport();

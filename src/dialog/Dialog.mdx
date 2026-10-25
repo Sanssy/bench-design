@@ -18,6 +18,12 @@ Use for a focused task or a longer reading surface that interrupts the page. Sup
 
 The optional eyebrow is metadata. Actions stay visible while the body scrolls. Action behavior belongs to the consumer; the built-in Close button and Escape dismiss the dialog.
 
+Pass `closeIconSize` to opt into a different Close glyph size. It accepts the
+`IconSize` values 14, 16, 18, 20, and 24, and defaults to 20 when omitted.
+The `ControlledHelp` example opts into 16; `DocumentDetails` omits the prop and
+keeps 20. This changes the SVG glyph bounds only; the Close button target remains
+48 × 48 px.
+
 Use `placement="end"` for a full-height sheet on the logical end edge (including RTL). It fills the screen below 640px. Use `size="wide"` for a wider reading workspace; the defaults remain `center` and `default`. The header stays visible while only the body scrolls. A rich `title` must contain meaningful text; keep interactive controls in the body or actions.
 
 Supply `backLabel` and `onBack` together to show a return action above the eyebrow. The consumer replaces the title and content; Dialog focuses the heading when `title` changes while open, for either placement. Keep rich React-node titles stable between unrelated renders to avoid moving focus unnecessarily. The return action does not dismiss the dialog; Escape still does.

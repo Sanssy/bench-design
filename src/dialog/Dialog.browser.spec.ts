@@ -208,65 +208,93 @@ test("Open Dialog passes automated axe in both themes", {
       ["reading-guide", "Read guide", "Reading guide"],
       ["described-document", "Review document", "Document summary"],
     ] as const) {
-      await page.goto(
-        `/iframe.html?id=overlays-dialog--${story}&viewMode=story&globals=a11y.manual:!true;theme:${theme}`,
-      );
-      await page.getByRole("button", { name: trigger }).click();
-      await expect(page.getByRole("dialog", { name: title })).toBeVisible();
-      if (story === "described-document") {
-        await expect(
-          page.getByRole("dialog", { name: title }),
-        ).toHaveAccessibleDescription(
-          "Read the source before sharing this summary.",
+      const widths = story === "document-details" ? [320, 1280] : [1280];
+      for (const width of widths) {
+        await page.setViewportSize({ width, height: 720 });
+        await page.goto(
+          `/iframe.html?id=overlays-dialog--${story}&viewMode=story&globals=a11y.manual:!true;theme:${theme}`,
         );
-        await expect(page.getByText("Reviewed", { exact: true })).toBeVisible();
+        await page.getByRole("button", { name: trigger }).click();
+        const dialog = page.getByRole("dialog", { name: title });
+        await expect(dialog).toBeVisible();
+        if (story === "document-details") {
+          const close = dialog.getByRole("button", {
+            name: "Close",
+            exact: true,
+          });
+          const glyph = await close.locator("svg").boundingBox();
+          const target = await close.boundingBox();
+          expect(glyph?.width).toBe(20);
+          expect(glyph?.height).toBe(20);
+          expect(target?.width).toBe(48);
+          expect(target?.height).toBe(48);
+        }
+        if (story === "described-document") {
+          await expect(
+            page.getByRole("dialog", { name: title }),
+          ).toHaveAccessibleDescription(
+            "Read the source before sharing this summary.",
+          );
+          await expect(
+            page.getByText("Reviewed", { exact: true }),
+          ).toBeVisible();
+        }
+        const result = await new AxeBuilder({ page })
+          .include(".bd-dialog")
+          .withTags(["wcag2a", "wcag2aa", "wcag21aa"])
+          .analyze();
+        expect(result.violations).toEqual([]);
       }
-      const result = await new AxeBuilder({ page })
-        .include(".bd-dialog")
-        .withTags(["wcag2a", "wcag2aa", "wcag21aa"])
-        .analyze();
-      expect(result.violations).toEqual([]);
     }
   }
 });
 
-test("Controlled Dialog restores origin focus and passes axe at 320px in both themes", {
+test("Controlled Dialog restores origin focus and passes axe at 320px and desktop in both themes", {
   tag: ["@component:dialog", "@theme:light", "@theme:dark"],
 }, async ({ page }) => {
   for (const theme of ["light", "dark"] as const) {
-    await page.setViewportSize({ width: 320, height: 640 });
-    await page.goto(
-      `/iframe.html?id=overlays-dialog--controlled-help&viewMode=story&globals=a11y.manual:!true;theme:${theme}`,
-    );
-    await expect(page.locator("html")).toHaveAttribute("data-theme", theme);
-    const origin = page.getByRole("button", { name: "Read editing help" });
-    await expect(origin).toBeVisible();
-    await page.evaluate(() => document.fonts.ready);
-    await origin.focus();
-    await page.keyboard.press("Enter");
-    const dialog = page.getByRole("dialog", { name: "Editing help" });
-    await expect(dialog).toBeVisible();
-    expect(
-      (
-        await new AxeBuilder({ page })
-          .include(".bd-dialog")
-          .withTags(["wcag2a", "wcag2aa", "wcag21aa"])
-          .analyze()
-      ).violations,
-    ).toEqual([]);
-    expect(
-      await page.evaluate(
-        () => document.documentElement.scrollWidth <= window.innerWidth,
-      ),
-    ).toBe(true);
-    await page.keyboard.press("Escape");
-    await expect(dialog).toHaveCount(0);
-    await expect(origin).toBeFocused();
-    await page.keyboard.press("Enter");
-    await expect(dialog).toBeVisible();
-    await page.getByRole("button", { name: "Close", exact: true }).click();
-    await expect(dialog).toHaveCount(0);
-    await expect(origin).toBeFocused();
+    for (const width of [320, 1280]) {
+      await page.setViewportSize({ width, height: 640 });
+      await page.goto(
+        `/iframe.html?id=overlays-dialog--controlled-help&viewMode=story&globals=a11y.manual:!true;theme:${theme}`,
+      );
+      await expect(page.locator("html")).toHaveAttribute("data-theme", theme);
+      const origin = page.getByRole("button", { name: "Read editing help" });
+      await expect(origin).toBeVisible();
+      await page.evaluate(() => document.fonts.ready);
+      await origin.focus();
+      await page.keyboard.press("Enter");
+      const dialog = page.getByRole("dialog", { name: "Editing help" });
+      await expect(dialog).toBeVisible();
+      const close = dialog.getByRole("button", { name: "Close", exact: true });
+      const glyph = await close.locator("svg").boundingBox();
+      const target = await close.boundingBox();
+      expect(glyph?.width).toBe(16);
+      expect(glyph?.height).toBe(16);
+      expect(target?.width).toBe(48);
+      expect(target?.height).toBe(48);
+      expect(
+        (
+          await new AxeBuilder({ page })
+            .include(".bd-dialog")
+            .withTags(["wcag2a", "wcag2aa", "wcag21aa"])
+            .analyze()
+        ).violations,
+      ).toEqual([]);
+      expect(
+        await page.evaluate(
+          () => document.documentElement.scrollWidth <= window.innerWidth,
+        ),
+      ).toBe(true);
+      await page.keyboard.press("Escape");
+      await expect(dialog).toHaveCount(0);
+      await expect(origin).toBeFocused();
+      await page.keyboard.press("Enter");
+      await expect(dialog).toBeVisible();
+      await page.getByRole("button", { name: "Close", exact: true }).click();
+      await expect(dialog).toHaveCount(0);
+      await expect(origin).toBeFocused();
+    }
   }
 });
 
@@ -344,14 +372,24 @@ test("End sheets keep the header visible and contain focus across themes and siz
     );
     const origin = page.getByRole("button", { name: "Open overview" });
     await origin.click();
+    const dialog = page.getByRole("dialog", { name: "Overview" });
+    const close = dialog.getByRole("button", { name: "Close", exact: true });
+    const closeGlyph = await close.locator("svg").boundingBox();
+    const closeTarget = await close.boundingBox();
+    expect(closeGlyph?.width).toBe(20);
+    expect(closeGlyph?.height).toBe(20);
+    expect(closeTarget?.width).toBe(48);
+    expect(closeTarget?.height).toBe(48);
     await page.getByRole("button", { name: "Read source" }).click();
     await expect(
       page.getByRole("heading", { name: "Source details" }),
     ).toBeFocused();
     await page.keyboard.press("Shift+Tab");
-    await expect(
-      page.getByRole("button", { name: "Back to overview" }),
-    ).toBeFocused();
+    const back = page.getByRole("button", { name: "Back to overview" });
+    await expect(back).toBeFocused();
+    const backGlyph = await back.locator("svg").boundingBox();
+    expect(backGlyph?.width).toBe(16);
+    expect(backGlyph?.height).toBe(16);
     await page.keyboard.press("Enter");
     await expect(page.getByRole("heading", { name: "Overview" })).toBeFocused();
     expect(

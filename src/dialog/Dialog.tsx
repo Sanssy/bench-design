@@ -14,7 +14,7 @@ import {
 } from "react-aria-components";
 import { useBenchMessages } from "../bench-provider/BenchProvider.js";
 import { Heading } from "../heading/Heading.js";
-import { Icon } from "../icon/Icon.js";
+import { Icon, type IconSize } from "../icon/Icon.js";
 import { IconButton } from "../icon-button/IconButton.js";
 import { Text } from "../text/Text.js";
 
@@ -46,6 +46,8 @@ export interface DialogProps {
   children: ReactNode;
   /** Optional actions kept visible below the body. */
   actions?: ReactNode;
+  /** Size of the close glyph; defaults to 20px. */
+  closeIconSize?: IconSize;
 }
 /** A named modal with React Aria focus containment, Escape and focus restoration. */
 export function Dialog({
@@ -60,6 +62,7 @@ export function Dialog({
   onBack,
   placement = "center",
   size = "default",
+  closeIconSize = 20,
   children,
   actions,
 }: DialogProps) {
@@ -110,7 +113,12 @@ export function Dialog({
                     </div>
                   )}
                 </div>
-                <IconButton icon="x" label={m.close} onPress={close} />
+                <IconButton
+                  icon="x"
+                  iconSize={closeIconSize}
+                  label={m.close}
+                  onPress={close}
+                />
               </header>
               <section
                 className="bd-dialog-body"

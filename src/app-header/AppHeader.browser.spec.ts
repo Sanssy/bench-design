@@ -1,11 +1,12 @@
 import AxeBuilder from "@axe-core/playwright";
 import { expect, test } from "@playwright/test";
+import { pressTab } from "../../tests/browser/keyboard.js";
 
 for (const theme of ["light", "dark"]) {
   for (const width of [320, 1280]) {
     test(`AppHeader keeps all slots visible at ${width} in ${theme}`, {
       tag: ["@component:app-header", `@theme:${theme}`],
-    }, async ({ page }) => {
+    }, async ({ page, browserName }) => {
       await page.setViewportSize({ width, height: 720 });
       await page.goto(
         `/iframe.html?id=layout-appheader--workspace&viewMode=story&globals=a11y.manual:!true;theme:${theme}`,
@@ -70,7 +71,7 @@ for (const theme of ["light", "dark"]) {
           () => document.documentElement.scrollWidth <= innerWidth,
         ),
       ).toBe(true);
-      await page.keyboard.press("Tab");
+      await pressTab(page, browserName);
       await expect(
         page.getByRole("link", { name: "Skip to main content" }),
       ).toBeFocused();
@@ -79,7 +80,7 @@ for (const theme of ["light", "dark"]) {
         ...(await nav.getByRole("link").all()),
         action,
       ]) {
-        await page.keyboard.press("Tab");
+        await pressTab(page, browserName);
         await expect(control).toBeFocused();
         await expect(control).toHaveCSS("outline-style", "solid");
       }

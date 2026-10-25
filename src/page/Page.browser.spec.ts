@@ -1,11 +1,12 @@
 import AxeBuilder from "@axe-core/playwright";
 import { expect, test } from "@playwright/test";
+import { pressTab } from "../../tests/browser/keyboard.js";
 
 for (const theme of ["light", "dark"] as const) {
   for (const width of [390, 1440]) {
     test(`Page document flow at ${width} in ${theme}`, {
       tag: ["@component:page", `@theme:${theme}`],
-    }, async ({ page }) => {
+    }, async ({ page, browserName }) => {
       await page.setViewportSize({ width, height: 844 });
       await page.goto(
         `/iframe.html?id=layout-page--document&viewMode=story&globals=a11y.manual:!true;theme:${theme}`,
@@ -21,7 +22,7 @@ for (const theme of ["light", "dark"] as const) {
       expect(box?.width).toBe(expected);
       expect(box?.x).toBe((available - expected) / 2);
       const skip = page.getByRole("link", { name: "Skip to main content" });
-      await page.keyboard.press("Tab");
+      await pressTab(page, browserName);
       await expect(skip).toBeFocused();
       await expect(skip).toHaveCSS("clip-path", "none");
       await page.keyboard.press("Enter");

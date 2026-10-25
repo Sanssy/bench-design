@@ -1,9 +1,14 @@
 import AxeBuilder from "@axe-core/playwright";
 import { expect, type Locator, type Page, test } from "@playwright/test";
+import { pressTab } from "../../tests/browser/keyboard.js";
 
-async function tabTo(page: Page, target: Locator) {
+async function tabTo(
+  page: Page,
+  browserName: "chromium" | "firefox" | "webkit",
+  target: Locator,
+) {
   for (let step = 0; step < 20; step++) {
-    await page.keyboard.press("Tab");
+    await pressTab(page, browserName);
     if (await target.evaluate((element) => element === document.activeElement))
       return;
   }
@@ -12,7 +17,7 @@ async function tabTo(page: Page, target: Locator) {
 for (const theme of ["light", "dark"]) {
   test(`Overview keyboard, axe and reflow ${theme}`, {
     tag: ["@component:overview", `@theme:${theme}`],
-  }, async ({ page }) => {
+  }, async ({ page, browserName }) => {
     await page.setViewportSize({ width: 1280, height: 900 });
     await page.goto(
       `/iframe.html?id=recipes-overview--personal-records&globals=a11y.manual:!true;theme:${theme}`,
@@ -23,28 +28,50 @@ for (const theme of ["light", "dark"]) {
     await expect(
       page.getByRole("link", { name: "Overview", exact: true }),
     ).toHaveAttribute("aria-current", "page");
-    await tabTo(page, page.getByRole("link", { name: "Skip to main content" }));
+    await tabTo(
+      page,
+      browserName,
+      page.getByRole("link", { name: "Skip to main content" }),
+    );
     await page.keyboard.press("Enter");
     await expect(page.getByRole("main")).toBeFocused();
     await tabTo(
       page,
+      browserName,
       page.getByRole("tab", { name: "Housing — Home and cover" }),
     );
     await page.keyboard.press("ArrowDown");
     await expect(
       page.getByRole("button", { name: "City bicycle" }),
     ).toBeVisible();
-    await tabTo(page, page.getByRole("button", { name: "City bicycle" }));
-    await tabTo(page, page.getByRole("button", { name: /Purchase receipt/ }));
-    await tabTo(page, page.getByRole("button", { name: /Service record/ }));
     await tabTo(
       page,
+      browserName,
+      page.getByRole("button", { name: "City bicycle" }),
+    );
+    await tabTo(
+      page,
+      browserName,
+      page.getByRole("button", { name: /Purchase receipt/ }),
+    );
+    await tabTo(
+      page,
+      browserName,
+      page.getByRole("button", { name: /Service record/ }),
+    );
+    await tabTo(
+      page,
+      browserName,
       page.getByRole("button", { name: "Understand the change" }),
     );
     await expect(
       page.getByRole("button", { name: "Understand the change" }),
     ).toBeFocused();
-    await tabTo(page, page.getByRole("button", { name: "Bicycle purchased" }));
+    await tabTo(
+      page,
+      browserName,
+      page.getByRole("button", { name: "Bicycle purchased" }),
+    );
     await page.getByRole("tab", { name: "Housing — Home and cover" }).click();
     for (const width of [1280, 320]) {
       await page.setViewportSize({ width, height: 900 });

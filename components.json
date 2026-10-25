@@ -2704,6 +2704,12 @@
           "name": "children",
           "type": "ReactNode",
           "required": true
+        },
+        {
+          "name": "showIcon",
+          "type": "boolean",
+          "required": false,
+          "default": "true"
         }
       ],
       "stories": [
@@ -2722,6 +2728,10 @@
         {
           "name": "CompactFeedback",
           "href": "./?path=/story/feedback-notice--compact-feedback"
+        },
+        {
+          "name": "QuietNote",
+          "href": "./?path=/story/feedback-notice--quiet-note"
         }
       ]
     },

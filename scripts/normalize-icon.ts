@@ -1,7 +1,7 @@
 import { readFileSync, writeFileSync } from "node:fs";
 import { resolve } from "node:path";
 import { pathToFileURL } from "node:url";
-import { checkIcon } from "./check-icons.ts";
+import { checkIcon, getIconArtworkProfile } from "./check-icons.ts";
 import { type Element, geometry, paint, parseIcon } from "./icon-xml.ts";
 
 function serializeIcon(element: Element): string {
@@ -26,6 +26,7 @@ const neutral: Record<string, string> = {
 };
 
 export function normalizeIcon(source: string, file = "icon.svg"): string {
+  const profile = getIconArtworkProfile(file);
   const cleaned = source
     .replace(/<!--[\s\S]*?-->/g, "")
     .replace(
@@ -36,8 +37,8 @@ export function normalizeIcon(source: string, file = "icon.svg"): string {
   const defaults = {
     fill: "none",
     stroke: "currentColor",
-    "stroke-width": "2",
-    "stroke-linecap": "butt",
+    "stroke-width": profile.strokeWidth,
+    "stroke-linecap": profile.linecap,
     "stroke-linejoin": "round",
   };
   const rootPaint: Record<string, string> = {};
@@ -70,8 +71,10 @@ export function normalizeIcon(source: string, file = "icon.svg"): string {
       if (own[name] !== undefined) effective[name] = own[name];
     for (const name of ["fill", "stroke"])
       if (effective[name] !== "none") effective[name] = "currentColor";
-    if (effective["stroke-width"] !== "2")
-      throw new Error(`${file}: stroke-width must be 2 before normalization`);
+    if (effective["stroke-width"] !== profile.strokeWidth)
+      throw new Error(
+        `${file}: stroke-width must be ${profile.strokeWidth} before normalization`,
+      );
     if (element === root) Object.assign(rootPaint, effective);
     const children = element.children.flatMap((child) =>
       flatten(child, effective),

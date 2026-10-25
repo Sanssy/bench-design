@@ -36,6 +36,25 @@ test("bookmark renders the official Keyline sharp outline", () => {
   );
 });
 
+test("close-rounded renders the approved source geometry without changing x", () => {
+  render(<Icon name="close-rounded" size={16} label="Close" />);
+  const svg = screen.getByRole("img", { name: "Close" });
+  expect(svg).toHaveAttribute("width", "16");
+  expect(svg).toHaveAttribute("height", "16");
+  expect(svg).toHaveAttribute("viewBox", "0 0 24 24");
+  expect(svg).toHaveAttribute("fill", "none");
+  expect(svg).toHaveAttribute("stroke", "currentColor");
+  expect(svg).toHaveAttribute("stroke-width", "3");
+  expect(svg).toHaveAttribute("stroke-linecap", "round");
+  expect(svg.firstElementChild).toHaveAttribute("d", "M6 6l12 12M18 6L6 18");
+  const { container } = render(<Icon name="x" label="Sharp close" />);
+  expect(container.querySelector("svg")).toHaveAttribute("stroke-width", "2");
+  expect(container.querySelector("svg")).toHaveAttribute(
+    "stroke-linecap",
+    "butt",
+  );
+});
+
 for (const name of Object.keys(icons) as IconName[]) {
   test(`decorative ${name} is hidden and has no role`, () => {
     const { container } = render(<Icon name={name} />);

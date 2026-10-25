@@ -9,6 +9,8 @@ import { normalizeIcon } from "../../scripts/normalize-icon.ts";
 
 const valid =
   '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="butt"><path d="M4 12H20"/></svg>';
+const roundedClose =
+  '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M6 6l12 12M18 6L6 18"/></svg>';
 test("normalizes an Inkscape export, preserving filled details", () => {
   const source = readFileSync("tests/fixtures/icons/inkscape.svg", "utf8");
   const result = normalizeIcon(source, "drawing.svg");
@@ -21,6 +23,18 @@ test("refuses transforms with actionable guidance", () => {
     () =>
       normalizeIcon(valid.replace("<path", '<path transform="translate(1)"')),
     /Apply.*Inkscape/,
+  );
+});
+test("normalizes the approved rounded close by its exact filename and is idempotent", () => {
+  const result = normalizeIcon(roundedClose, "close-rounded.svg");
+  checkIcon(result, "close-rounded.svg");
+  assert.match(result, /stroke-width="3"/);
+  assert.match(result, /stroke-linecap="round"/);
+  assert.match(result, /d="M6 6l12 12M18 6L6 18"/);
+  assert.equal(normalizeIcon(result, "close-rounded.svg"), result);
+  assert.throws(
+    () => normalizeIcon(roundedClose, "close-other.svg"),
+    /stroke-width must be 2/,
   );
 });
 test("normalizer CLI writes valid output and leaves refused input intact", () => {

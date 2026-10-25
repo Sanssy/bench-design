@@ -94,6 +94,49 @@ test("Notice geometry follows tokens", {
   const icon = root.locator("svg");
   await expect(icon).toHaveAttribute("width", "20");
   await expect(icon).toHaveAttribute("aria-hidden", "true");
+
+  for (const theme of ["light", "dark"] as const) {
+    for (const tone of ["neutral", "success", "warning", "danger"] as const) {
+      await page.goto(
+        `/iframe.html?id=feedback-notice--quiet-note&args=tone:${tone}&viewMode=story&globals=a11y.manual:!true;theme:${theme}`,
+      );
+      await expect(page.locator("html")).toHaveAttribute("data-theme", theme);
+      await expect(root).toHaveAttribute("data-tone", tone);
+      await expect(root.locator("svg")).toHaveCount(0);
+      await expect(root).toHaveAttribute(
+        "role",
+        tone === "danger" ? "alert" : "status",
+      );
+      for (const width of [320, 1024]) {
+        await page.setViewportSize({ width, height: 768 });
+        const contentBounds = await root.locator("> div").boundingBox();
+        const rootBounds = await root.boundingBox();
+        const inset = await root.evaluate((element) => {
+          const style = getComputedStyle(element);
+          return {
+            leftBorder: Number.parseFloat(style.borderLeftWidth),
+            leftPadding: Number.parseFloat(style.paddingLeft),
+            rightBorder: Number.parseFloat(style.borderRightWidth),
+            rightPadding: Number.parseFloat(style.paddingRight),
+          };
+        });
+        if (!contentBounds || !rootBounds) {
+          throw new Error("Notice content and root need measurable bounds");
+        }
+        expect(contentBounds.x).toBeCloseTo(
+          rootBounds.x + inset.leftBorder + inset.leftPadding,
+          1,
+        );
+        expect(contentBounds.x + contentBounds.width).toBeCloseTo(
+          rootBounds.x +
+            rootBounds.width -
+            inset.rightBorder -
+            inset.rightPadding,
+          1,
+        );
+      }
+    }
+  }
 });
 
 test("Notice block and inline padding roles fall back independently", {

@@ -7,6 +7,7 @@ export default {
   component: Notice,
   parameters: { layout: "centered" },
   argTypes: {
+    showIcon: { control: "boolean" },
     tone: {
       control: "select",
       options: ["neutral", "success", "warning", "danger"],
@@ -64,4 +65,14 @@ export const CompactFeedback: Story = {
       <Notice {...args} />
     </div>
   ),
+};
+
+export const QuietNote: Story = {
+  args: {
+    tone: "neutral",
+    title: "Project saved",
+    children:
+      "Your changes are stored on this device. Review each section before sharing the project with your collaborators.",
+    showIcon: false,
+  },
 };

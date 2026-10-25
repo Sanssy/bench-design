@@ -22,6 +22,7 @@ Use for neutral, success, warning or danger feedback with a meaningful label. Ne
 <Canvas of={Stories.UploadComplete} />
 <Canvas of={Stories.StorageMessages} />
 <Canvas of={Stories.LocalStorage} />
+<Canvas of={Stories.QuietNote} />
 <Canvas of={Stories.CompactFeedback} />
 
 ## Spacing
@@ -38,4 +39,4 @@ Use the tone control and theme selector to inspect all tones in light and dark t
 
 ## Accessibility
 
-Neutral, success and warning use role="status"; danger uses role="alert". The icon is decorative. Text uses the standard text token on tinted backgrounds. Neutral uses the standard border token on a subtle surface. The left border uses the existing strong token (4 px). No keyboard interaction is added. Use alerts only for messages requiring immediate attention.
+Neutral, success and warning use role="status"; danger uses role="alert". The icon is decorative and shown by default. Set `showIcon={false}` when the feedback can stand without it. Text uses the standard text token on tinted backgrounds. Neutral uses the standard border token on a subtle surface. The left border uses the existing strong token (4 px). No keyboard interaction is added. Use alerts only for messages requiring immediate attention.

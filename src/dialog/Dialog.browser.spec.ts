@@ -372,14 +372,24 @@ test("End sheets keep the header visible and contain focus across themes and siz
     );
     const origin = page.getByRole("button", { name: "Open overview" });
     await origin.click();
+    const dialog = page.getByRole("dialog", { name: "Overview" });
+    const close = dialog.getByRole("button", { name: "Close", exact: true });
+    const closeGlyph = await close.locator("svg").boundingBox();
+    const closeTarget = await close.boundingBox();
+    expect(closeGlyph?.width).toBe(20);
+    expect(closeGlyph?.height).toBe(20);
+    expect(closeTarget?.width).toBe(48);
+    expect(closeTarget?.height).toBe(48);
     await page.getByRole("button", { name: "Read source" }).click();
     await expect(
       page.getByRole("heading", { name: "Source details" }),
     ).toBeFocused();
     await page.keyboard.press("Shift+Tab");
-    await expect(
-      page.getByRole("button", { name: "Back to overview" }),
-    ).toBeFocused();
+    const back = page.getByRole("button", { name: "Back to overview" });
+    await expect(back).toBeFocused();
+    const backGlyph = await back.locator("svg").boundingBox();
+    expect(backGlyph?.width).toBe(16);
+    expect(backGlyph?.height).toBe(16);
     await page.keyboard.press("Enter");
     await expect(page.getByRole("heading", { name: "Overview" })).toBeFocused();
     expect(

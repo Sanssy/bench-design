@@ -2,6 +2,7 @@ import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { useState } from "react";
 import { expect, test, vi } from "vitest";
+import { BenchProvider } from "../bench-provider/BenchProvider.js";
 import { Button } from "../button/Button.js";
 import { Dialog } from "./Dialog.js";
 
@@ -50,6 +51,42 @@ test("controlled Dialog rerender updates only the close glyph size", () => {
   expect(close).toHaveAccessibleName("Close");
   expect(close.querySelector("svg")).toHaveAttribute("width", "24");
   expect(close.querySelector("svg")).toHaveAttribute("height", "24");
+});
+
+test("Dialog close name follows the French locale and closes", async () => {
+  const user = userEvent.setup();
+  render(
+    <BenchProvider locale="fr-FR">
+      <Dialog trigger={<Button>Open French dialog</Button>} title="Aide">
+        Instructions
+      </Dialog>
+    </BenchProvider>,
+  );
+
+  await user.click(screen.getByRole("button", { name: "Open French dialog" }));
+  const close = screen.getByRole("button", { name: "Fermer" });
+  await user.click(close);
+  expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
+});
+
+test("Dialog close name follows a message override and closes", async () => {
+  const user = userEvent.setup();
+  render(
+    <BenchProvider messages={{ close: "Fermer la fenêtre" }}>
+      <Dialog trigger={<Button>Open overridden dialog</Button>} title="Help">
+        Instructions
+      </Dialog>
+    </BenchProvider>,
+  );
+
+  await user.click(
+    screen.getByRole("button", { name: "Open overridden dialog" }),
+  );
+  const close = screen.getByRole("button", {
+    name: "Fermer la fenêtre",
+  });
+  await user.click(close);
+  expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
 });
 
 test("Dialog opens with its title as accessible name", async () => {

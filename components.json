@@ -1440,6 +1440,13 @@
           "type": "ReactNode",
           "required": false,
           "description": "Optional actions kept visible below the body."
+        },
+        {
+          "name": "closeIconSize",
+          "type": "14 | 16 | 18 | 20 | 24",
+          "required": false,
+          "description": "Size of the close glyph; defaults to 20px.",
+          "default": "20"
         }
       ],
       "stories": [

@@ -4,7 +4,27 @@ import { useState } from "react";
 import { expect, test, vi } from "vitest";
 import { BenchProvider } from "../bench-provider/BenchProvider.js";
 import { Button } from "../button/Button.js";
+import type { IconName } from "../icon/icons.js";
+import type { DialogProps } from "../index.js";
 import { Dialog } from "./Dialog.js";
+
+type CloseIconVariant = NonNullable<DialogProps["closeIconVariant"]>;
+const validCloseIconVariants: CloseIconVariant[] = ["sharp", "rounded"];
+const widenedCloseIconVariant: string = "rounded";
+// @ts-expect-error a widened string is not a supported close variant
+const invalidWidenedCloseIconVariant: CloseIconVariant =
+  widenedCloseIconVariant;
+// @ts-expect-error unsupported literal variants are not accepted
+const invalidLiteralCloseIconVariant: CloseIconVariant = "rounded-outline";
+const arbitraryCloseIcon: IconName = "close-rounded";
+// @ts-expect-error callers choose a bounded variant, not an IconName
+const invalidIconNameCloseIconVariant: CloseIconVariant = arbitraryCloseIcon;
+void [
+  validCloseIconVariants,
+  invalidWidenedCloseIconVariant,
+  invalidLiteralCloseIconVariant,
+  invalidIconNameCloseIconVariant,
+];
 
 test.each([undefined, 14, 16, 18, 20, 24] as const)(
   "Dialog renders close glyph size %s through its trigger",
@@ -31,6 +51,66 @@ test.each([undefined, 14, 16, 18, 20, 24] as const)(
     expect(close.querySelector("svg")).toHaveAttribute(
       "height",
       String(expectedSize),
+    );
+    expect(close.querySelector("svg")).toHaveAttribute("stroke-width", "2");
+    expect(close.querySelector("svg")).toHaveAttribute(
+      "stroke-linecap",
+      "butt",
+    );
+    expect(close.querySelector("svg path")).toHaveAttribute(
+      "d",
+      "M6.7071 6.7071L17.2929 17.2929M17.2929 6.7071L6.7071 17.2929",
+    );
+  },
+);
+
+test.each([16, 20] as const)(
+  "controlled Dialog changes only the close glyph to rounded at size %s",
+  (size) => {
+    const { rerender } = render(
+      <Dialog
+        isOpen
+        title="Sizing"
+        closeIconSize={size}
+        closeIconVariant="sharp"
+      >
+        Content
+      </Dialog>,
+    );
+    const close = screen.getByRole("button", { name: "Close" });
+    const glyph = close.querySelector("svg");
+    expect(close).toHaveClass("bd-icon-button");
+    expect(glyph).toHaveAttribute("width", String(size));
+    expect(glyph).toHaveAttribute("height", String(size));
+    expect(glyph).toHaveAttribute("stroke-width", "2");
+    expect(glyph).toHaveAttribute("stroke-linecap", "butt");
+    expect(glyph?.querySelector("path")).toHaveAttribute(
+      "d",
+      "M6.7071 6.7071L17.2929 17.2929M17.2929 6.7071L6.7071 17.2929",
+    );
+
+    rerender(
+      <Dialog
+        isOpen
+        title="Sizing"
+        closeIconSize={size}
+        closeIconVariant="rounded"
+      >
+        Content
+      </Dialog>,
+    );
+    expect(screen.getByRole("button", { name: "Close" })).toBe(close);
+    expect(close).toHaveAccessibleName("Close");
+    expect(close).toHaveClass("bd-icon-button");
+    expect(glyph).toHaveAttribute("width", String(size));
+    expect(glyph).toHaveAttribute("height", String(size));
+    expect(glyph).toHaveAttribute("stroke", "currentColor");
+    expect(glyph).toHaveAttribute("stroke-width", "3");
+    expect(glyph).toHaveAttribute("stroke-linecap", "round");
+    expect(glyph).toHaveAttribute("stroke-linejoin", "round");
+    expect(glyph?.querySelector("path")).toHaveAttribute(
+      "d",
+      "M6 6l12 12M18 6L6 18",
     );
   },
 );

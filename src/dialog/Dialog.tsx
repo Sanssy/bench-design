@@ -48,6 +48,8 @@ export interface DialogProps {
   actions?: ReactNode;
   /** Size of the close glyph; defaults to 20px. */
   closeIconSize?: IconSize;
+  /** Close glyph drawing; defaults to the sharp variant. */
+  closeIconVariant?: "sharp" | "rounded";
 }
 /** A named modal with React Aria focus containment, Escape and focus restoration. */
 export function Dialog({
@@ -63,6 +65,7 @@ export function Dialog({
   placement = "center",
   size = "default",
   closeIconSize = 20,
+  closeIconVariant = "sharp",
   children,
   actions,
 }: DialogProps) {
@@ -114,7 +117,7 @@ export function Dialog({
                   )}
                 </div>
                 <IconButton
-                  icon="x"
+                  icon={closeIconVariant === "rounded" ? "close-rounded" : "x"}
                   iconSize={closeIconSize}
                   label={m.close}
                   onPress={close}

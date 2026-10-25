@@ -4,7 +4,7 @@ import { type IconName, icons } from "./icons.js";
 /** Supported rendered glyph sizes in pixels. */
 export type IconSize = 14 | 16 | 18 | 20 | 24;
 
-/** A sharp catalogue icon, colored by its parent. */
+/** A catalogue icon, colored by its parent. */
 export interface IconProps {
   /** Name from the generated SVG catalogue. */
   name: IconName;

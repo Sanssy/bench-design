@@ -37,3 +37,19 @@ test("rejects stale output and reflects new SVG names and geometry", () => {
     rmSync(directory, { recursive: true, force: true });
   }
 });
+test("generates the reserved close-rounded name and exact artwork", () => {
+  const directory = mkdtempSync(join(tmpdir(), "bd-icons-"));
+  try {
+    writeFileSync(
+      join(directory, "close-rounded.svg"),
+      '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M6 6l12 12M18 6L6 18"/></svg>',
+    );
+    const source = generateIcons(directory);
+    assert.match(source, /"close-rounded"/);
+    assert.match(source, /"strokeWidth":"3"/);
+    assert.match(source, /"strokeLinecap":"round"/);
+    assert.match(source, /M6 6l12 12M18 6L6 18/);
+  } finally {
+    rmSync(directory, { recursive: true, force: true });
+  }
+});

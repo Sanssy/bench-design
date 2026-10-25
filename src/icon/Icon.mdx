@@ -34,12 +34,15 @@ There are no `color`, `className` or `style` props.
 Use `<Icon name="search" size={18} />` when a smaller glyph fits the content;
 the default remains 24 px. Use the theme selector to inspect light and dark themes.
 The catalogue combines Keyline artwork and adapted Lucide v1.52.0 geometry.
-All icons use a 24 px grid, a 2 px stroke and straight line caps.
+Icons use a 24 px grid and inherit color from their parent. The `close-rounded`
+artwork follows the approved project reference with a 3 px stroke and rounded
+caps; all other catalogue icons retain a 2 px stroke and straight caps.
 `bookmark` uses the original Keyline sharp 1.5.0 outline. Compose it with
 `<IconButton icon="bookmark" label="Save for later" />` for a named action;
 the consuming application owns its saved state and persistence.
-Lucide’s `house` is available as `home`. Attribution and license notices are
-maintained in `src/icon/svg/LICENSE`.
+Lucide’s `house` is available as `home`. Attribution and license notices,
+including the source of `close-rounded`, are maintained in
+`src/icon/svg/LICENSE`.
 
 ## Accessibility
 

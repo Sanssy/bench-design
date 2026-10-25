@@ -13,6 +13,7 @@ export const icons = {
   "check": {"tag":"svg","attrs":{"xmlns":"http://www.w3.org/2000/svg","viewBox":"0 0 24 24","fill":"none","stroke":"currentColor","strokeWidth":"2","strokeLinecap":"butt","strokeLinejoin":"round"},"children":[{"tag":"path","attrs":{"d":"M4.7311 11.7118L9.6667 17L19.2689 6.7118"},"children":[]}]},
   "chevron-down": {"tag":"svg","attrs":{"xmlns":"http://www.w3.org/2000/svg","viewBox":"0 0 24 24","fill":"none","stroke":"currentColor","strokeWidth":"2","strokeLinecap":"butt","strokeLinejoin":"round"},"children":[{"tag":"path","attrs":{"d":"M5.7071 8.7071L12 15L18.2929 8.7071"},"children":[]}]},
   "chevron-right": {"tag":"svg","attrs":{"xmlns":"http://www.w3.org/2000/svg","viewBox":"0 0 24 24","fill":"none","stroke":"currentColor","strokeWidth":"2","strokeLinecap":"butt","strokeLinejoin":"round"},"children":[{"tag":"path","attrs":{"d":"m9 18 6-6-6-6"},"children":[]}]},
+  "close-rounded": {"tag":"svg","attrs":{"xmlns":"http://www.w3.org/2000/svg","viewBox":"0 0 24 24","fill":"none","stroke":"currentColor","strokeWidth":"3","strokeLinecap":"round","strokeLinejoin":"round"},"children":[{"tag":"path","attrs":{"d":"M6 6l12 12M18 6L6 18"},"children":[]}]},
   "download": {"tag":"svg","attrs":{"xmlns":"http://www.w3.org/2000/svg","viewBox":"0 0 24 24","fill":"none","stroke":"currentColor","strokeWidth":"2","strokeLinecap":"butt","strokeLinejoin":"round"},"children":[{"tag":"path","attrs":{"d":"M12 2L12 14M7.7071 9.7071L12 14L16.2929 9.7071M4 17L4 21L20 21L20 17"},"children":[]}]},
   "file-text": {"tag":"svg","attrs":{"xmlns":"http://www.w3.org/2000/svg","viewBox":"0 0 24 24","fill":"none","stroke":"currentColor","strokeWidth":"2","strokeLinecap":"butt","strokeLinejoin":"round"},"children":[{"tag":"path","attrs":{"d":"M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z"},"children":[]},{"tag":"path","attrs":{"d":"M14 2v5a1 1 0 0 0 1 1h5"},"children":[]},{"tag":"path","attrs":{"d":"M10 9H8"},"children":[]},{"tag":"path","attrs":{"d":"M16 13H8"},"children":[]},{"tag":"path","attrs":{"d":"M16 17H8"},"children":[]}]},
   "grip": {"tag":"svg","attrs":{"xmlns":"http://www.w3.org/2000/svg","viewBox":"0 0 24 24","fill":"none","stroke":"currentColor","strokeWidth":"2","strokeLinecap":"butt","strokeLinejoin":"round"},"children":[{"tag":"circle","attrs":{"cx":"9","cy":"5","r":"1"},"children":[]},{"tag":"circle","attrs":{"cx":"15","cy":"5","r":"1"},"children":[]},{"tag":"circle","attrs":{"cx":"9","cy":"12","r":"1"},"children":[]},{"tag":"circle","attrs":{"cx":"15","cy":"12","r":"1"},"children":[]},{"tag":"circle","attrs":{"cx":"9","cy":"19","r":"1"},"children":[]},{"tag":"circle","attrs":{"cx":"15","cy":"19","r":"1"},"children":[]}]},
@@ -52,6 +53,7 @@ export type IconName =
   | "check"
   | "chevron-down"
   | "chevron-right"
+  | "close-rounded"
   | "download"
   | "file-text"
   | "grip"

@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
+import type { CSSProperties } from "react";
 import { Inline } from "../inline/Inline";
 import { Text } from "../text/Text";
 import { Badge } from "./Badge";
@@ -50,25 +51,37 @@ export const PublicationStates: Story = {
 
 export const RelatedTopics: Story = {
   render: () => (
-    <Inline gap={8}>
-      <Badge variant="meta" icon="file-text">
-        PDF
-      </Badge>
-      {(
-        [
-          "neutral",
-          "teal",
-          "magenta",
-          "orange",
-          "violet",
-          "green",
-          "blue",
-        ] as const
-      ).map((tone) => (
-        <Badge key={tone} variant="tag" tone={tone} icon="link">
-          Related research and supporting documentation
+    <div
+      style={
+        {
+          "--bd-metadata-radius": "999px",
+          "--bd-metadata-padding-vertical": "2px",
+          "--bd-metadata-padding-horizontal": "10px",
+          "--bd-metadata-gap": "6px",
+          "--bd-badge-min-height": "0px",
+        } as CSSProperties
+      }
+    >
+      <Inline gap={8}>
+        <Badge variant="meta" icon="file-text">
+          PDF
         </Badge>
-      ))}
-    </Inline>
+        {(
+          [
+            "neutral",
+            "teal",
+            "magenta",
+            "orange",
+            "violet",
+            "green",
+            "blue",
+          ] as const
+        ).map((tone) => (
+          <Badge key={tone} variant="tag" tone={tone} icon="link">
+            Related research and supporting documentation
+          </Badge>
+        ))}
+      </Inline>
+    </div>
   ),
 };

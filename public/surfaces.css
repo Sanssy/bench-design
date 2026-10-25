@@ -135,9 +135,11 @@
   align-items: center;
   justify-content: center;
   min-width: var(--bd-space-24);
-  min-height: var(--bd-space-24);
+  min-height: var(--bd-badge-min-height, var(--bd-space-24));
+  border-radius: var(--bd-metadata-radius, 0);
   border: var(--bd-hair) solid var(--bd-divider);
-  padding: var(--bd-space-4);
+  padding: var(--bd-metadata-padding-vertical, var(--bd-space-4))
+    var(--bd-metadata-padding-horizontal, var(--bd-space-4));
   color: var(--bd-text);
   font: var(--bd-size-meta) / var(--bd-line-normal) var(--bd-font-mono);
   letter-spacing: var(--bd-tracking-normal);
@@ -488,7 +490,7 @@
 
 /* Shared label geometry keeps decorative icons stable beside wrapping text. */
 .bd-badge {
-  gap: var(--bd-space-4);
+  gap: var(--bd-metadata-gap, var(--bd-space-4));
   max-inline-size: 100%;
   box-sizing: border-box;
   overflow-wrap: anywhere;

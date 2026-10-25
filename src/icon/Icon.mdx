@@ -16,7 +16,7 @@ Use `<Icon name="search" label="Search" />` when the image conveys meaning alone
 Names come from the SVG catalogue; the default size is 24 px.
 
 - Do inherit color from the parent: the SVG uses `currentColor`.
-- Do choose 16, 20 or 24 px to match the surrounding content.
+- Do choose 14, 16, 18, 20 or 24 px to match the surrounding content.
 - Avoid repeating adjacent text in an accessible label.
 - Avoid using Icon as an interactive control.
 
@@ -31,7 +31,8 @@ There are no `color`, `className` or `style` props.
 <Canvas of={Stories.Gallery} />
 <Canvas of={Stories.Sizes} />
 
-Use the theme selector to inspect light and dark themes.
+Use `<Icon name="search" size={18} />` when a smaller glyph fits the content;
+the default remains 24 px. Use the theme selector to inspect light and dark themes.
 The catalogue combines Keyline artwork and adapted Lucide v1.52.0 geometry.
 All icons use a 24 px grid, a 2 px stroke and straight line caps.
 `bookmark` uses the original Keyline sharp 1.5.0 outline. Compose it with

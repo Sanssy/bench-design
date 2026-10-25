@@ -12,6 +12,10 @@ for (const theme of ["light", "dark"]) {
       await expect(page.locator("html")).toHaveAttribute("data-theme", theme);
       const button = page.getByRole("button", { name: "Search documents" });
       await expect(button).toBeVisible();
+      await expect(button.locator("svg")).toHaveAttribute(
+        "width",
+        variant === "primary" ? "18" : "20",
+      );
       await page.evaluate(() => document.fonts.ready);
       const box = await button.boundingBox();
       expect(box?.width).toBe(48);
@@ -48,7 +52,13 @@ for (const theme of ["light", "dark"]) {
     await expect(page.locator("html")).toHaveAttribute("data-theme", theme);
     const button = page.getByRole("button", { name: "Add item" });
     await expect(button).toHaveCSS("column-gap", "8px");
-    await expect(button.locator("svg")).toHaveCSS("width", "20px");
+    await expect(button.locator("svg")).toHaveCSS("width", "18px");
+    await page.goto(
+      `/iframe.html?id=form-button--icon-end&viewMode=story&globals=a11y.manual:!true;theme:${theme}`,
+    );
+    const iconEnd = page.getByRole("button", { name: "Add item" });
+    await expect(iconEnd).toHaveCSS("column-gap", "8px");
+    await expect(iconEnd.locator("svg")).toHaveCSS("width", "14px");
   });
 }
 

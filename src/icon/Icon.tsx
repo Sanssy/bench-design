@@ -1,12 +1,15 @@
 import { createElement, type ReactNode } from "react";
 import { type IconName, icons } from "./icons.js";
 
+/** Supported rendered glyph sizes in pixels. */
+export type IconSize = 14 | 16 | 18 | 20 | 24;
+
 /** A sharp catalogue icon, colored by its parent. */
 export interface IconProps {
   /** Name from the generated SVG catalogue. */
   name: IconName;
   /** Rendered width and height in pixels. Defaults to 24. */
-  size?: 16 | 20 | 24;
+  size?: IconSize;
   /** Accessible image name; omit for a decorative icon. */
   label?: string;
 }

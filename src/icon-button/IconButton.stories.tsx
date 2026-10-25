@@ -8,6 +8,6 @@ export default {
   parameters: { layout: "centered" },
 } satisfies Meta<typeof IconButton>;
 type Story = StoryObj<typeof IconButton>;
-export const Primary: Story = { args: { variant: "primary" } };
+export const Primary: Story = { args: { variant: "primary", iconSize: 18 } };
 export const Secondary: Story = { args: { variant: "secondary" } };
 export const Disabled: Story = { args: { isDisabled: true } };

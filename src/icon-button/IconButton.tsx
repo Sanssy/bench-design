@@ -13,7 +13,7 @@ import type { SpaceToken } from "../space-tokens.js";
 export interface IconButtonProps
   extends Pick<
     ButtonProps,
-    "variant" | "isDisabled" | "onPress" | "type" | "ref"
+    "variant" | "isDisabled" | "onPress" | "type" | "ref" | "iconSize"
   > {
   /** Decorative icon from the shared catalogue. */
   icon: IconName;
@@ -24,6 +24,7 @@ export interface IconButtonProps
 export function IconButton({
   icon,
   label,
+  iconSize = 20,
   variant = "secondary",
   isDisabled = false,
   onPress,
@@ -43,7 +44,7 @@ export function IconButton({
         ref={domRef}
         {...(onPress === undefined ? {} : { onPress })}
       >
-        <Icon name={icon} size={20} />
+        <Icon name={icon} size={iconSize} />
       </AriaButton>
       {/* 12 px (space-12) clears the 8 px focus ring of the button. */}
       <Tooltip

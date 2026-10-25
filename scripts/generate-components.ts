@@ -7,6 +7,74 @@ export function generateComponents(entry = "src/index.ts") {
   const entrySource = readFileSync(entry, "utf8");
   const ast = (source: string) =>
     parse(source, { sourceType: "module", plugins: ["typescript", "jsx"] });
+  const resolveSourceFile = (ownerFile: string, importPath: string) => {
+    const path = resolve(dirname(ownerFile), importPath.replace(/\.js$/, ""));
+    const candidates =
+      path.endsWith(".ts") || path.endsWith(".tsx")
+        ? [path]
+        : [`${path}.ts`, `${path}.tsx`];
+    return candidates.find(existsSync) ?? path;
+  };
+  const resolveLiteralAlias = (name: string, source: string) => {
+    const alias = ast(source).program.body.find((node) => {
+      const declaration =
+        node.type === "ExportNamedDeclaration" ? node.declaration : node;
+      return (
+        declaration?.type === "TSTypeAliasDeclaration" &&
+        declaration.id.name === name
+      );
+    });
+    const declaration =
+      alias?.type === "ExportNamedDeclaration" ? alias.declaration : alias;
+    if (declaration?.type !== "TSTypeAliasDeclaration") return undefined;
+    const union = declaration.typeAnnotation;
+    const members = union.type === "TSUnionType" ? union.types : [union];
+    return members.every(
+      (member) =>
+        member.type === "TSLiteralType" &&
+        (member.literal.type === "StringLiteral" ||
+          member.literal.type === "NumericLiteral"),
+    )
+      ? members
+          .map((member) =>
+            member.type === "TSLiteralType" &&
+            (member.literal.type === "StringLiteral" ||
+              member.literal.type === "NumericLiteral")
+              ? JSON.stringify(member.literal.value)
+              : "",
+          )
+          .join(" | ")
+      : undefined;
+  };
+  const resolveAlias = (
+    typeName: string,
+    ownerSource: string,
+    ownerFile: string,
+  ) => {
+    const owner = ast(ownerSource);
+    const local = resolveLiteralAlias(typeName, ownerSource);
+    if (local !== undefined) return local;
+    const imported = owner.program.body.find(
+      (node) =>
+        node.type === "ImportDeclaration" &&
+        node.source.value.startsWith(".") &&
+        node.specifiers.some((specifier) => specifier.local.name === typeName),
+    );
+    if (imported?.type !== "ImportDeclaration") return typeName;
+    const specifier = imported.specifiers.find(
+      (item) => item.local.name === typeName,
+    );
+    if (specifier?.type !== "ImportSpecifier") return typeName;
+    const importedName =
+      specifier.imported.type === "Identifier"
+        ? specifier.imported.name
+        : specifier.imported.value;
+    const target = resolveSourceFile(ownerFile, imported.source.value);
+    return (
+      resolveLiteralAlias(importedName, readFileSync(target, "utf8")) ??
+      typeName
+    );
+  };
   const components = ast(entrySource).program.body.flatMap((item) => {
     if (
       item.type !== "ExportNamedDeclaration" ||
@@ -82,49 +150,6 @@ export function generateComponents(entry = "src/index.ts") {
             ),
           );
       }
-      // Expand relative literal aliases so the manifest lists valid values.
-      const resolveAlias = (text: string) => {
-        const imported = ast(source).program.body.find(
-          (node) =>
-            node.type === "ImportDeclaration" &&
-            node.source.value.startsWith(".") &&
-            node.specifiers.some((specifier) => specifier.local.name === text),
-        );
-        if (imported?.type !== "ImportDeclaration") return text;
-        const target = resolve(
-          dirname(file),
-          `${imported.source.value.replace(/\.js$/, "")}.ts`,
-        );
-        const alias = ast(readFileSync(target, "utf8")).program.body.find(
-          (node) =>
-            node.type === "ExportNamedDeclaration" &&
-            node.declaration?.type === "TSTypeAliasDeclaration" &&
-            node.declaration.id.name === text,
-        );
-        if (
-          alias?.type !== "ExportNamedDeclaration" ||
-          alias.declaration?.type !== "TSTypeAliasDeclaration"
-        )
-          return text;
-        const union = alias.declaration.typeAnnotation;
-        const members = union.type === "TSUnionType" ? union.types : [union];
-        return members.every(
-          (member) =>
-            member.type === "TSLiteralType" &&
-            (member.literal.type === "StringLiteral" ||
-              member.literal.type === "NumericLiteral"),
-        )
-          ? members
-              .map((member) =>
-                member.type === "TSLiteralType" &&
-                (member.literal.type === "StringLiteral" ||
-                  member.literal.type === "NumericLiteral")
-                  ? JSON.stringify(member.literal.value)
-                  : "",
-              )
-              .join(" | ")
-          : text;
-      };
       // Resolve inherited public metadata from relative interface imports.
       const interfaceProps = (
         filePath: string,
@@ -139,6 +164,7 @@ export function generateComponents(entry = "src/index.ts") {
           { type: "TSPropertySignature" }
         >;
         source: string;
+        filePath: string;
       }[] => {
         const key = `${filePath}:${interfaceName}`;
         if (visited.has(key)) throw new Error(`Cyclic props interface: ${key}`);
@@ -192,14 +218,7 @@ export function generateComponents(entry = "src/index.ts") {
             let target = filePath;
             let name = baseName;
             if (imported?.type === "ImportDeclaration") {
-              const stem = resolve(
-                dirname(filePath),
-                imported.source.value.replace(/\.js$/, ""),
-              );
-              target =
-                [`${stem}.ts`, `${stem}.tsx`].find((candidate) =>
-                  existsSync(candidate),
-                ) ?? stem;
+              target = resolveSourceFile(filePath, imported.source.value);
               const specifier = imported.specifiers.find(
                 (item) => item.local.name === baseName,
               );
@@ -224,12 +243,12 @@ export function generateComponents(entry = "src/index.ts") {
           ...declaration.declaration.body.body.map((prop) => {
             if (prop.type !== "TSPropertySignature")
               throw new Error(`Unsupported prop: ${key}`);
-            return { prop, source: text };
+            return { prop, source: text, filePath };
           }),
         ];
       };
       const props = (propsName ? interfaceProps(file, propsName) : []).map(
-        ({ prop, source }) => {
+        ({ prop, source, filePath }) => {
           if (prop.type !== "TSPropertySignature" || !prop.typeAnnotation)
             throw new Error(`Unsupported prop: ${name}`);
           const key =
@@ -241,7 +260,11 @@ export function generateComponents(entry = "src/index.ts") {
           const type = prop.typeAnnotation.typeAnnotation;
           return {
             name: key,
-            type: resolveAlias(source.slice(type.start ?? 0, type.end ?? 0)),
+            type: resolveAlias(
+              source.slice(type.start ?? 0, type.end ?? 0),
+              source,
+              filePath,
+            ),
             required: !prop.optional,
             // TSDoc on the prop, so Docs pages and agents see its intent.
             ...(() => {

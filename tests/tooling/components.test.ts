@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import { mkdtempSync, rmSync, writeFileSync } from "node:fs";
+import { mkdirSync, mkdtempSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { test } from "node:test";
@@ -158,6 +158,122 @@ test("manifest expands relative numeric spacing aliases", () => {
         .props[0].type,
       "4 | 8 | 96",
     );
+  } finally {
+    rmSync(root, { recursive: true, force: true });
+  }
+});
+
+test("manifest expands a local numeric literal alias", () => {
+  const root = mkdtempSync(join(tmpdir(), "bd-local-alias-"));
+  try {
+    writeFileSync(
+      join(root, "index.ts"),
+      'export { Glyph } from "./Glyph.js";',
+    );
+    writeFileSync(
+      join(root, "Glyph.tsx"),
+      "/** Glyph. */ export type IconSize = 14 | 16 | 18 | 20 | 24; export interface Props { /** Rendered glyph size. */ size?: IconSize } export function Glyph({ size = 24 }: Props) { return null; }",
+    );
+    writeFileSync(
+      join(root, "Glyph.stories.tsx"),
+      'export default { title: "Media/Glyph" }; export const Default = {};',
+    );
+    const [size] = JSON.parse(generateComponents(join(root, "index.ts")))
+      .components[0].props;
+    assert.deepEqual(size, {
+      name: "size",
+      type: "14 | 16 | 18 | 20 | 24",
+      required: false,
+      description: "Rendered glyph size.",
+      default: "24",
+    });
+  } finally {
+    rmSync(root, { recursive: true, force: true });
+  }
+});
+
+test("manifest resolves renamed literal aliases from TSX imports", () => {
+  const root = mkdtempSync(join(tmpdir(), "bd-tsx-alias-"));
+  try {
+    writeFileSync(
+      join(root, "index.ts"),
+      'export { Glyph } from "./Glyph.js";',
+    );
+    writeFileSync(
+      join(root, "glyph-size.tsx"),
+      "export type GlyphSize = 14 | 16 | 18 | 20 | 24;",
+    );
+    writeFileSync(
+      join(root, "Glyph.tsx"),
+      'import type { GlyphSize as IconSize } from "./glyph-size.js"; export interface Props { /** Rendered glyph size. */ size?: IconSize } export function Glyph({ size = 24 }: Props) { return null; }',
+    );
+    writeFileSync(
+      join(root, "Glyph.stories.tsx"),
+      'export default { title: "Media/Glyph" }; export const Default = {};',
+    );
+    let output = "";
+    assert.doesNotThrow(() => {
+      output = generateComponents(join(root, "index.ts"));
+    });
+    const [size] = JSON.parse(output).components[0].props;
+    assert.deepEqual(size, {
+      name: "size",
+      type: "14 | 16 | 18 | 20 | 24",
+      required: false,
+      description: "Rendered glyph size.",
+      default: "24",
+    });
+  } finally {
+    rmSync(root, { recursive: true, force: true });
+  }
+});
+
+test("picked inherited aliases resolve in their declaring file", () => {
+  const root = mkdtempSync(join(tmpdir(), "bd-inherited-alias-"));
+  try {
+    mkdirSync(join(root, "controls"));
+    writeFileSync(
+      join(root, "index.ts"),
+      'export { IconButton } from "./controls/IconButton.js";',
+    );
+    writeFileSync(
+      join(root, "glyph-size.tsx"),
+      "export type GlyphSize = 14 | 16 | 18 | 20 | 24;",
+    );
+    writeFileSync(
+      join(root, "shared.tsx"),
+      'import type { GlyphSize as Size } from "./glyph-size.js"; export interface SharedProps { /** Shared glyph size. */ iconSize?: Size }',
+    );
+    writeFileSync(
+      join(root, "Button.tsx"),
+      'import type { SharedProps } from "./shared.js"; export interface ButtonProps extends SharedProps {} export function Button({ iconSize = 18 }: ButtonProps) { return null; }',
+    );
+    writeFileSync(
+      join(root, "controls/IconButton.tsx"),
+      'import type { ButtonProps } from "../Button.js"; export type Size = 24; export interface IconButtonProps extends Pick<ButtonProps, "iconSize"> { /** Component-owned size. */ ownSize?: Size } export function IconButton({ iconSize = 20, ownSize = 24 }: IconButtonProps) { return null; }',
+    );
+    writeFileSync(
+      join(root, "controls/IconButton.stories.tsx"),
+      'export default { title: "Form/IconButton" }; export const Default = {};',
+    );
+    const props = JSON.parse(generateComponents(join(root, "index.ts")))
+      .components[0].props;
+    assert.deepEqual(props, [
+      {
+        name: "iconSize",
+        type: "14 | 16 | 18 | 20 | 24",
+        required: false,
+        description: "Shared glyph size.",
+        default: "20",
+      },
+      {
+        name: "ownSize",
+        type: "24",
+        required: false,
+        description: "Component-owned size.",
+        default: "24",
+      },
+    ]);
   } finally {
     rmSync(root, { recursive: true, force: true });
   }

@@ -292,6 +292,27 @@ test("end icon preserves FileTrigger activation", async () => {
   expect(click).toHaveBeenCalledTimes(1);
 });
 
+for (const position of ["start", "end"] as const) {
+  test(`iconSize 18 reaches the ${position} decorative icon`, () => {
+    render(
+      <Button icon="plus" iconPosition={position} iconSize={18}>
+        Add item
+      </Button>,
+    );
+    const button = screen.getByRole("button", { name: "Add item" });
+    expect(button.querySelector("svg")).toHaveAttribute("width", "18");
+    expect(button.querySelector("svg")).toHaveAttribute("height", "18");
+    expect(button.querySelector("svg")).toHaveAttribute("aria-hidden", "true");
+  });
+}
+
+test("iconSize does not add an icon to an iconless Button", () => {
+  render(<Button iconSize={14}>Add item</Button>);
+  expect(
+    screen.getByRole("button", { name: "Add item" }).querySelector("svg"),
+  ).toBeNull();
+});
+
 for (const name of ["aria-label", "aria-labelledby"] as const) {
   test(`pending preserves explicit ${name}`, () => {
     render(

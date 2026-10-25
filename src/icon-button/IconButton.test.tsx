@@ -84,6 +84,15 @@ test("IconButton forwards its DOM ref, variant and native type", () => {
   expect(ref.current).toHaveAttribute("data-variant", "primary");
 });
 
+test("IconButton forwards iconSize to its decorative glyph", () => {
+  render(<IconButton icon="search" label="Search" iconSize={18} />);
+  const button = screen.getByRole("button", { name: "Search" });
+  expect(button).toHaveAttribute("data-variant", "secondary");
+  expect(button.querySelector("svg")).toHaveAttribute("width", "18");
+  expect(button.querySelector("svg")).toHaveAttribute("height", "18");
+  expect(button.querySelector("svg")).toHaveAttribute("aria-hidden", "true");
+});
+
 // @ts-expect-error an accessible label is required
 const missingLabel: IconButtonProps = { icon: "search" };
 // @ts-expect-error an icon is required

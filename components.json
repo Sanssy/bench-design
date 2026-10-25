@@ -455,6 +455,13 @@
           "default": "\"start\""
         },
         {
+          "name": "iconSize",
+          "type": "14 | 16 | 18 | 20 | 24",
+          "required": false,
+          "description": "Decorative glyph size in pixels. Defaults to 20.",
+          "default": "20"
+        },
+        {
           "name": "isPending",
           "type": "boolean",
           "required": false,
@@ -2233,7 +2240,7 @@
         },
         {
           "name": "size",
-          "type": "16 | 20 | 24",
+          "type": "14 | 16 | 18 | 20 | 24",
           "required": false,
           "description": "Rendered width and height in pixels. Defaults to 24.",
           "default": "24"
@@ -2261,6 +2268,13 @@
       "import": "import { IconButton } from \"bench-design\";",
       "description": "A 48px square action; label supplies its accessible name and tooltip.",
       "props": [
+        {
+          "name": "iconSize",
+          "type": "14 | 16 | 18 | 20 | 24",
+          "required": false,
+          "description": "Decorative glyph size in pixels. Defaults to 20.",
+          "default": "20"
+        },
         {
           "name": "onPress",
           "type": "() => void",

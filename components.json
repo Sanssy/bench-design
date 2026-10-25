@@ -1447,6 +1447,13 @@
           "required": false,
           "description": "Size of the close glyph; defaults to 20px.",
           "default": "20"
+        },
+        {
+          "name": "closeIconVariant",
+          "type": "\"sharp\" | \"rounded\"",
+          "required": false,
+          "description": "Close glyph drawing; defaults to the sharp variant.",
+          "default": "\"sharp\""
         }
       ],
       "stories": [

@@ -35,7 +35,7 @@ export function checkIcon(source: string, file = "icon.svg") {
     fail('viewBox must be "0 0 24 24" on the svg root');
   if (root.attrs["stroke-width"] !== profile.strokeWidth)
     fail(`root stroke-width must be ${profile.strokeWidth}`);
-  // Sharp style (ICON ratification): butt caps on every icon.
+  // The default sharp profile uses butt caps; close-rounded.svg is the named exception.
   if (root.attrs["stroke-linecap"] !== profile.linecap)
     fail(`root stroke-linecap must be "${profile.linecap}"`);
   if (!root.attrs.fill || !root.attrs.stroke)

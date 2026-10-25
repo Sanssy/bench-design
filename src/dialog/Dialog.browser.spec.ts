@@ -228,6 +228,18 @@ test("Open Dialog passes automated axe in both themes", {
           expect(glyph?.height).toBe(20);
           expect(target?.width).toBe(48);
           expect(target?.height).toBe(48);
+          await expect(close.locator("svg")).toHaveAttribute(
+            "stroke-width",
+            "2",
+          );
+          await expect(close.locator("svg")).toHaveAttribute(
+            "stroke-linecap",
+            "butt",
+          );
+          await expect(close.locator("svg path")).toHaveAttribute(
+            "d",
+            "M6.7071 6.7071L17.2929 17.2929M17.2929 6.7071L6.7071 17.2929",
+          );
         }
         if (story === "described-document") {
           await expect(
@@ -267,12 +279,27 @@ test("Controlled Dialog restores origin focus and passes axe at 320px and deskto
       const dialog = page.getByRole("dialog", { name: "Editing help" });
       await expect(dialog).toBeVisible();
       const close = dialog.getByRole("button", { name: "Close", exact: true });
+      const closeGlyphElement = close.locator("svg");
       const glyph = await close.locator("svg").boundingBox();
       const target = await close.boundingBox();
       expect(glyph?.width).toBe(16);
       expect(glyph?.height).toBe(16);
       expect(target?.width).toBe(48);
       expect(target?.height).toBe(48);
+      await expect(closeGlyphElement).toHaveAttribute("stroke", "currentColor");
+      await expect(closeGlyphElement).toHaveAttribute("stroke-width", "3");
+      await expect(closeGlyphElement).toHaveAttribute(
+        "stroke-linecap",
+        "round",
+      );
+      await expect(closeGlyphElement).toHaveAttribute(
+        "stroke-linejoin",
+        "round",
+      );
+      await expect(closeGlyphElement.locator("path")).toHaveAttribute(
+        "d",
+        "M6 6l12 12M18 6L6 18",
+      );
       expect(
         (
           await new AxeBuilder({ page })

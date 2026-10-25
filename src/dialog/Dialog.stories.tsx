@@ -76,6 +76,7 @@ export const ControlledHelp: Story = {
   args: {
     title: "Editing help",
     closeIconSize: 16,
+    closeIconVariant: "rounded",
     children: <Text>Use guides to align your composition.</Text>,
   },
   render: function ControlledHelp(args) {

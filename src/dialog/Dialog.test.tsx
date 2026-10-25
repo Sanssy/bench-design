@@ -5,6 +5,53 @@ import { expect, test, vi } from "vitest";
 import { Button } from "../button/Button.js";
 import { Dialog } from "./Dialog.js";
 
+test.each([undefined, 14, 16, 18, 20, 24] as const)(
+  "Dialog renders close glyph size %s through its trigger",
+  async (size) => {
+    const user = userEvent.setup();
+    const sizeProps = size === undefined ? {} : { closeIconSize: size };
+    render(
+      <Dialog
+        trigger={<Button>Open sized dialog</Button>}
+        title="Sizing"
+        {...sizeProps}
+      >
+        Content
+      </Dialog>,
+    );
+    await user.click(screen.getByRole("button", { name: "Open sized dialog" }));
+    const close = screen.getByRole("button", { name: "Close" });
+    const expectedSize = size ?? 20;
+    expect(close).toHaveClass("bd-icon-button");
+    expect(close.querySelector("svg")).toHaveAttribute(
+      "width",
+      String(expectedSize),
+    );
+    expect(close.querySelector("svg")).toHaveAttribute(
+      "height",
+      String(expectedSize),
+    );
+  },
+);
+
+test("controlled Dialog rerender updates only the close glyph size", () => {
+  const renderDialog = (closeIconSize: 16 | 24) => (
+    <Dialog isOpen title="Sizing" closeIconSize={closeIconSize}>
+      Content
+    </Dialog>
+  );
+  const { rerender } = render(renderDialog(16));
+  const close = screen.getByRole("button", { name: "Close" });
+  expect(close.querySelector("svg")).toHaveAttribute("width", "16");
+  expect(close.querySelector("svg")).toHaveAttribute("height", "16");
+
+  rerender(renderDialog(24));
+  expect(screen.getByRole("button", { name: "Close" })).toBe(close);
+  expect(close).toHaveAccessibleName("Close");
+  expect(close.querySelector("svg")).toHaveAttribute("width", "24");
+  expect(close.querySelector("svg")).toHaveAttribute("height", "24");
+});
+
 test("Dialog opens with its title as accessible name", async () => {
   const user = userEvent.setup();
   render(

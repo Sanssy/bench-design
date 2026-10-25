@@ -16,6 +16,20 @@ Never communicate meaning through color alone or use these hues for small text.
 
 Use `icon` to replace the decorative square. `marker` keeps the outlined surface (default); `plain` removes its border, padding and background. Both retain the visible text and support wrapping long labels.
 
+Geometry roles inherit from a consumer-owned wrapper and are not reset on the
+component root. `--bd-metadata-radius` defaults to `0`; the shared vertical and
+horizontal padding roles default to `calc(var(--bd-space-4) - var(--bd-hair))` and
+`--bd-space-8`, respectively, and keep physical top/bottom and left/right axes
+in vertical writing modes. `--bd-metadata-gap` defaults to
+`calc(var(--bd-space-8) - var(--bd-hair))`. `--bd-category-label-min-block-size` defaults
+to `--bd-space-24`; `--bd-category-label-marker-size` defaults to
+`calc(var(--bd-space-8) + var(--bd-stroke))`; and
+`--bd-category-label-marker-radius` defaults to `0`. The marker roles do not
+resize the optional 16px icon. `plain` keeps zero padding by default, but
+explicit inherited padding roles opt it into consumer-defined padding. The
+`TopicLabels` example shows these roles together without changing the defaults
+of other usages.
+
 ## API
 
 <ManifestProps component="CategoryLabel" />
